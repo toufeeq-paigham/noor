@@ -1,0 +1,260 @@
+/* ============================================================
+   Noor POC — canvas-level supplement tokens
+   Loaded AFTER colors_and_type.css in every page's helmet.
+   ============================================================ */
+:root,
+[data-theme="light"] {
+  --canvas-bg: #FBFAF8;                        /* near-white field for the dotted canvas */
+  --canvas-dot: rgba(40, 35, 25, 0.20);        /* Figma-style dotted grid */
+  --canvas-label: rgba(60, 50, 40, 0.50);      /* uppercase captions on the canvas */
+  --color-info-faint: #C4C4C9;                 /* dashed borders, disabled glyphs */
+  --sheet-shadow: 0 20px 50px rgba(0, 0, 0, 0.16);
+}
+
+[data-theme="dark"] {
+  --canvas-bg: #0B0B0D;
+  --canvas-dot: rgba(255, 255, 255, 0.08);
+  --canvas-label: rgba(225, 220, 210, 0.40);
+  --color-info-faint: #52525C;
+  --sheet-shadow: 0 20px 50px rgba(0, 0, 0, 0.55);
+}
+
+/* ============================================================
+   Figma-style dotted canvas — the dots live on <html> as a
+   VIEWPORT-FIXED background, so they sit behind everything and
+   never band no matter how tall the page scrolls. The content
+   layers (body, DC's #dc-root/.sc-host) are forced transparent
+   so the dots show through. Overrides the DS rule that paints
+   html/body with surface-primary (opaque white in light mode).
+   ============================================================ */
+html {
+  background-color: var(--canvas-bg) !important;
+  background-image: radial-gradient(var(--canvas-dot) 1.3px, transparent 1.3px) !important;
+  background-size: 22px 22px !important;
+  transition: background-color 0.25s ease;
+}
+body {
+  background: transparent !important;         /* content layer — let the dots show */
+}
+
+/* Figma-style drag-to-pan (wired in chrome.js) */
+html.noor-panning, html.noor-panning * {
+  cursor: grabbing !important;
+  user-select: none !important;
+}
+
+/* ============================================================
+   Seamless navigation — cross-document View Transitions.
+   The live device panel and the top bar are NAMED, so when you
+   navigate between flow pages the browser morphs them in place
+   (same position → the frame visually persists; only the screen
+   content and the storyboard behind it change).
+   ============================================================ */
+@view-transition { navigation: auto; }
+.poc-live { view-transition-name: noor-live; }
+#noor-chrome { view-transition-name: noor-chrome; }
+::view-transition-old(noor-live),
+::view-transition-new(noor-live) { animation-duration: 0.22s; }
+::view-transition-old(root),
+::view-transition-new(root) { animation-duration: 0.18s; }
+
+/* ============================================================
+   Canvas mode (board pages) — the storyboard is a free canvas:
+   pan any direction, pinch-zoom the board only. chrome.js adds
+   .noor-canvas-mode on <html> and drives --transform on frames.
+   The page never scrolls; the live device + top bar stay fixed.
+   ============================================================ */
+html.noor-canvas-mode,
+html.noor-canvas-mode body {
+  overflow: hidden !important;
+  height: 100%;
+}
+html.noor-canvas-mode .poc-frames {
+  transform: translate(var(--noor-px, 0px), var(--noor-py, 0px)) scale(var(--noor-z, 1));
+  transform-origin: 0 0;
+  will-change: transform;
+}
+#noor-zoom-badge {
+  height: 28px;
+  padding: 0 10px;
+  border: none;
+  border-radius: 9px;
+  background: var(--color-action-background, #E4E4E7);
+  color: var(--color-info-secondary, #71717B);
+  font-family: var(--font-body, "Nunito", sans-serif);
+  font-size: 11.5px;
+  font-weight: 700;
+  cursor: pointer;
+  margin-right: 8px;
+}
+#noor-zoom-badge:hover { color: var(--color-info-primary, #09090B); }
+
+/* ============================================================
+   Two-pane "flow board" layout (Figma-like):
+   static screen frames on the left (~65%), one live interactive
+   device on the right (~35%, sticky). Used by flow/screen pages.
+   ============================================================ */
+/* The interactive device is a FLOATING overlay — fixed, always on
+   top, never scrolls. The static storyboard is a free canvas that
+   pans in any direction UNDERNEATH it (drag-to-pan in chrome.js). */
+:root { --live-w: 400px; }
+
+.poc-stage { display: block; width: max-content; min-width: 100%; }
+.poc-frames { width: max-content; min-width: 0; }
+.poc-live {
+  position: fixed;
+  top: 52px;                          /* below the top app bar */
+  right: 24px;
+  height: calc(100vh - 52px);
+  width: calc(var(--live-w) - 48px);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 14px;
+  z-index: 40;
+}
+
+/* Figma-style row label — one per flow row on a section board */
+.poc-row-label {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-family: var(--font-body, "Nunito", sans-serif);
+  font-size: 12px;
+  font-weight: 800;
+  letter-spacing: 0.07em;
+  text-transform: uppercase;
+  color: var(--canvas-label);
+  margin-bottom: 18px;
+}
+.poc-row-label .material-symbols-rounded { font-size: 16px; }
+
+.poc-panel-label {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-family: var(--font-body, "Nunito", sans-serif);
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--canvas-label);
+  margin-bottom: 18px;
+}
+.poc-panel-label .material-symbols-rounded { font-size: 15px; }
+
+/* Storyboard strip of static frames — a single horizontal row that
+   grows with the number of state frames; the canvas pans to reach
+   them (it extends under and past the floating live device). */
+.poc-board {
+  display: flex;
+  flex-wrap: nowrap;
+  align-items: flex-start;
+  gap: 30px 26px;
+  width: max-content;
+  padding-right: calc(var(--live-w) + 60px);  /* room to pan clear of the device */
+  padding-bottom: 120px;
+}
+.poc-board-item { display: flex; flex-direction: column; align-items: center; gap: 9px; }
+.poc-frame-caption {
+  font-family: var(--font-body, "Nunito", sans-serif);
+  font-size: 11px;
+  font-weight: 700;
+  color: var(--canvas-label);
+}
+
+/* Scaled device slot — child renders at true 402x874, slot reserves
+   the scaled box. Set --s per usage (default 0.44). */
+.noor-frame {
+  --s: 0.44;
+  width: calc(402px * var(--s));
+  height: calc(874px * var(--s));
+  position: relative;
+  flex-shrink: 0;
+}
+.noor-frame > .noor-frame-inner {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 402px;
+  height: 874px;
+  transform: scale(var(--s));
+  transform-origin: top left;
+}
+.noor-frame.is-active > .noor-frame-inner::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  border-radius: 48px;
+  box-shadow: 0 0 0 4px var(--color-action-primary);
+  pointer-events: none;
+}
+
+/* Static device shell (no React) for storyboard snapshots —
+   matches IOSDevice silhouette, theme-aware. Fill with screen markup. */
+.noor-screen {
+  width: 402px;
+  height: 874px;
+  border-radius: 48px;
+  overflow: hidden;
+  position: relative;
+  background: var(--color-surface-primary);
+  box-shadow: 0 40px 80px rgba(0, 0, 0, 0.18), 0 0 0 1px rgba(0, 0, 0, 0.12);
+}
+.noor-screen > .noor-island {
+  position: absolute;
+  top: 11px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 126px;
+  height: 37px;
+  border-radius: 24px;
+  background: #000;
+  z-index: 50;
+}
+.noor-screen > .noor-home {
+  position: absolute;
+  bottom: 8px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 139px;
+  height: 5px;
+  border-radius: 100px;
+  background: rgba(0, 0, 0, 0.25);
+  z-index: 60;
+}
+[data-theme="dark"] .noor-screen > .noor-home { background: rgba(255, 255, 255, 0.7); }
+
+/* Play/restart control on the live panel */
+.poc-play {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  height: 36px;
+  padding: 0 16px 0 12px;
+  border: none;
+  border-radius: 999px;
+  cursor: pointer;
+  background: var(--color-action-primary);
+  color: var(--color-action-primary-inverse);
+  font-family: var(--font-body, "Nunito", sans-serif);
+  font-size: 13px;
+  font-weight: 700;
+  box-shadow: var(--shadow-button);
+}
+.poc-play .material-symbols-rounded { font-size: 18px; }
+.poc-live-hint {
+  font-family: var(--font-body, "Nunito", sans-serif);
+  font-size: 11px;
+  color: var(--canvas-label);
+  text-align: center;
+  max-width: 260px;
+}
+
+/* DC wraps {{ }} interpolations in .sc-interp spans that get the body font,
+   which kills Material Symbols ligatures for dynamically-bound icon names.
+   Force interpolated text inside an icon span back to the icon font. */
+.material-symbols-rounded .sc-interp {
+  font-family: inherit !important;
+}

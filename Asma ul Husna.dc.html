@@ -1,0 +1,204 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+  <link rel="stylesheet" href="_ds/noor-design-system-46f42e91-1858-412f-bdb6-560a6cc3df9f/colors_and_type.css">
+  <script src="_ds/noor-design-system-46f42e91-1858-412f-bdb6-560a6cc3df9f/_ds_bundle.js"></script>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Rounded:opsz,wght,FILL,GRAD@24,400,0..1,0&amp;display=block">
+  <style>
+    @font-face{font-family:'AlQuranIndoPak';src:url('_ds/noor-design-system-46f42e91-1858-412f-bdb6-560a6cc3df9f/fonts/AlQuran-IndoPak.ttf') format('truetype')}
+    body{background:#E8E4DE;display:flex;justify-content:center;align-items:flex-start;padding:40px 20px 60px;min-height:100vh;box-sizing:border-box}
+    ::-webkit-scrollbar{display:none}*{-ms-overflow-style:none;scrollbar-width:none}
+  </style>
+</helmet>
+
+<div style="display:flex;flex-direction:column;align-items:center;gap:40px">
+
+  <!-- Grid view -->
+  <div style="display:flex;flex-direction:column;align-items:center;gap:12px">
+    <div style="font:600 11px/1 system-ui;color:rgba(60,50,40,.42);letter-spacing:.08em;text-transform:uppercase">Asma ul Husna · Paigham app</div>
+
+    <x-import component="IOSDevice" from="./ios-frame.jsx" dark="" hint-size="402px,874px">
+      <div data-theme="dark" style="width:100%;height:100%;display:flex;flex-direction:column;overflow:hidden;background:var(--color-surface-primary)">
+
+        <!-- AppBar -->
+        <div style="flex-shrink:0;display:flex;align-items:center;gap:12px;padding:12px 16px 10px;border-bottom:1px solid var(--color-neutral-border)">
+          <x-import component-from-global-scope="TonalIconButton" icon="arrow_back" color="#FFFFFF" hint-size="40px,40px"></x-import>
+          <span style="font-family:'Nunito',sans-serif;font-size:20px;font-weight:800;color:#fff">Asma ul Husna</span>
+        </div>
+
+        <!-- 3-column grid -->
+        <div style="flex:1;overflow-y:auto;-webkit-overflow-scrolling:touch;padding:12px 12px 20px">
+          <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:8px">
+
+            <!-- 1. Ar-Rahman -->
+            <div style="border-radius:14px;overflow:hidden;background:linear-gradient(160deg,#006B30 0%,#003D1C 100%);padding:12px 8px;text-align:center;min-height:100px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:6px">
+              <div style="font-family:'AlQuranIndoPak',serif;font-size:18px;color:rgba(0,201,80,0.9);direction:rtl;line-height:1.8">اَلرَّحۡمَٰنُ</div>
+              <div style="font-family:'Nunito',sans-serif;font-size:11px;font-weight:600;color:rgba(0,201,80,0.8)">Ar-Rahmān</div>
+            </div>
+
+            <!-- 2. Ar-Rahim -->
+            <div style="border-radius:14px;overflow:hidden;background:linear-gradient(160deg,#7A5A10 0%,#402E08 100%);padding:12px 8px;text-align:center;min-height:100px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:6px">
+              <div style="font-family:'AlQuranIndoPak',serif;font-size:18px;color:rgba(201,173,123,0.9);direction:rtl;line-height:1.8">اَلرَّحِيمُ</div>
+              <div style="font-family:'Nunito',sans-serif;font-size:11px;font-weight:600;color:rgba(201,173,123,0.8)">Ar-Rahīm</div>
+            </div>
+
+            <!-- 3. Al-Malik -->
+            <div style="border-radius:14px;overflow:hidden;background:linear-gradient(160deg,#1A3080 0%,#0A1840 100%);padding:12px 8px;text-align:center;min-height:100px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:6px">
+              <div style="font-family:'AlQuranIndoPak',serif;font-size:18px;color:rgba(120,160,255,0.9);direction:rtl;line-height:1.8">اَلْمَلِكُ</div>
+              <div style="font-family:'Nunito',sans-serif;font-size:11px;font-weight:600;color:rgba(120,160,255,0.8)">Al-Malik</div>
+            </div>
+
+            <!-- 4. Al-Quddus -->
+            <div style="border-radius:14px;overflow:hidden;background:linear-gradient(160deg,#7A1020 0%,#3A080E 100%);padding:12px 8px;text-align:center;min-height:100px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:6px">
+              <div style="font-family:'AlQuranIndoPak',serif;font-size:18px;color:rgba(255,100,120,0.9);direction:rtl;line-height:1.8">اَلْقُدُّوسُ</div>
+              <div style="font-family:'Nunito',sans-serif;font-size:11px;font-weight:600;color:rgba(255,100,120,0.8)">Al-Quddus</div>
+            </div>
+
+            <!-- 5. As-Salam -->
+            <div style="border-radius:14px;overflow:hidden;background:linear-gradient(160deg,#4A1880 0%,#260C40 100%);padding:12px 8px;text-align:center;min-height:100px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:6px">
+              <div style="font-family:'AlQuranIndoPak',serif;font-size:18px;color:rgba(180,120,255,0.9);direction:rtl;line-height:1.8">اَلسَّلَامُ</div>
+              <div style="font-family:'Nunito',sans-serif;font-size:11px;font-weight:600;color:rgba(180,120,255,0.8)">As-Salām</div>
+            </div>
+
+            <!-- 6. Al-Mu'min -->
+            <div style="border-radius:14px;overflow:hidden;background:linear-gradient(160deg,#7A5510 0%,#3A2808 100%);padding:12px 8px;text-align:center;min-height:100px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:6px">
+              <div style="font-family:'AlQuranIndoPak',serif;font-size:18px;color:rgba(220,180,80,0.9);direction:rtl;line-height:1.8">اَلْمُؤْمِنُ</div>
+              <div style="font-family:'Nunito',sans-serif;font-size:11px;font-weight:600;color:rgba(220,180,80,0.8)">Al-Mu'min</div>
+            </div>
+
+            <!-- 7. Al-Muhaymin -->
+            <div style="border-radius:14px;overflow:hidden;background:linear-gradient(160deg,#005A45 0%,#003028 100%);padding:12px 8px;text-align:center;min-height:100px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:6px">
+              <div style="font-family:'AlQuranIndoPak',serif;font-size:18px;color:rgba(0,201,150,0.9);direction:rtl;line-height:1.8">اَلْمُهَيْمِنُ</div>
+              <div style="font-family:'Nunito',sans-serif;font-size:11px;font-weight:600;color:rgba(0,201,150,0.8)">Al-Muhaymin</div>
+            </div>
+
+            <!-- 8. Al-'Azeez -->
+            <div style="border-radius:14px;overflow:hidden;background:linear-gradient(160deg,#605020 0%,#302810 100%);padding:12px 8px;text-align:center;min-height:100px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:6px">
+              <div style="font-family:'AlQuranIndoPak',serif;font-size:18px;color:rgba(201,173,123,0.9);direction:rtl;line-height:1.8">اَلْعَزِيزُ</div>
+              <div style="font-family:'Nunito',sans-serif;font-size:11px;font-weight:600;color:rgba(201,173,123,0.8)">Al-'Azeez</div>
+            </div>
+
+            <!-- 9. Al-Jabbar -->
+            <div style="border-radius:14px;overflow:hidden;background:linear-gradient(160deg,#102060 0%,#081030 100%);padding:12px 8px;text-align:center;min-height:100px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:6px">
+              <div style="font-family:'AlQuranIndoPak',serif;font-size:18px;color:rgba(100,140,255,0.9);direction:rtl;line-height:1.8">اَلْجَبَّارُ</div>
+              <div style="font-family:'Nunito',sans-serif;font-size:11px;font-weight:600;color:rgba(100,140,255,0.8)">Al-Jabbār</div>
+            </div>
+
+            <!-- 10. Al-Mutakabbir -->
+            <div style="border-radius:14px;overflow:hidden;background:linear-gradient(160deg,#600818 0%,#30040C 100%);padding:12px 8px;text-align:center;min-height:100px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:6px">
+              <div style="font-family:'AlQuranIndoPak',serif;font-size:17px;color:rgba(255,90,110,0.9);direction:rtl;line-height:1.8">اَلْمُتَكَبِّرُ</div>
+              <div style="font-family:'Nunito',sans-serif;font-size:10px;font-weight:600;color:rgba(255,90,110,0.8)">Al-Mutakabbir</div>
+            </div>
+
+            <!-- 11. Al-Khaliq -->
+            <div style="border-radius:14px;overflow:hidden;background:linear-gradient(160deg,#3A1060 0%,#1C0830 100%);padding:12px 8px;text-align:center;min-height:100px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:6px">
+              <div style="font-family:'AlQuranIndoPak',serif;font-size:18px;color:rgba(160,100,255,0.9);direction:rtl;line-height:1.8">اَلْخَالِقُ</div>
+              <div style="font-family:'Nunito',sans-serif;font-size:11px;font-weight:600;color:rgba(160,100,255,0.8)">Al-Khāliq</div>
+            </div>
+
+            <!-- 12. Al-Bari' -->
+            <div style="border-radius:14px;overflow:hidden;background:linear-gradient(160deg,#7A5A08 0%,#3C2C04 100%);padding:12px 8px;text-align:center;min-height:100px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:6px">
+              <div style="font-family:'AlQuranIndoPak',serif;font-size:18px;color:rgba(220,175,60,0.9);direction:rtl;line-height:1.8">اَلْبَارِئُ</div>
+              <div style="font-family:'Nunito',sans-serif;font-size:11px;font-weight:600;color:rgba(220,175,60,0.8)">Al-Bāri'</div>
+            </div>
+
+            <!-- 13. Al-Musawwir -->
+            <div style="border-radius:14px;overflow:hidden;background:linear-gradient(160deg,#004838 0%,#002420 100%);padding:12px 8px;text-align:center;min-height:100px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:6px">
+              <div style="font-family:'AlQuranIndoPak',serif;font-size:17px;color:rgba(0,180,130,0.9);direction:rtl;line-height:1.8">اَلْمُصَوِّرُ</div>
+              <div style="font-family:'Nunito',sans-serif;font-size:10px;font-weight:600;color:rgba(0,180,130,0.8)">Al-Musawwir</div>
+            </div>
+
+            <!-- 14. Al-Ghaffar -->
+            <div style="border-radius:14px;overflow:hidden;background:linear-gradient(160deg,#6A4A10 0%,#362508 100%);padding:12px 8px;text-align:center;min-height:100px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:6px">
+              <div style="font-family:'AlQuranIndoPak',serif;font-size:18px;color:rgba(200,165,80,0.9);direction:rtl;line-height:1.8">اَلْغَفَّارُ</div>
+              <div style="font-family:'Nunito',sans-serif;font-size:11px;font-weight:600;color:rgba(200,165,80,0.8)">Al-Ghaffār</div>
+            </div>
+
+            <!-- 15. Al-Qahhar -->
+            <div style="border-radius:14px;overflow:hidden;background:linear-gradient(160deg,#0C1C5A 0%,#060E2E 100%);padding:12px 8px;text-align:center;min-height:100px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:6px">
+              <div style="font-family:'AlQuranIndoPak',serif;font-size:18px;color:rgba(90,130,240,0.9);direction:rtl;line-height:1.8">اَلْقَهَّارُ</div>
+              <div style="font-family:'Nunito',sans-serif;font-size:11px;font-weight:600;color:rgba(90,130,240,0.8)">Al-Qahhār</div>
+            </div>
+
+            <!-- 16. Al-Wahhab -->
+            <div style="border-radius:14px;overflow:hidden;background:linear-gradient(160deg,#580810 0%,#2C0408 100%);padding:12px 8px;text-align:center;min-height:100px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:6px">
+              <div style="font-family:'AlQuranIndoPak',serif;font-size:18px;color:rgba(240,80,100,0.9);direction:rtl;line-height:1.8">اَلْوَهَّابُ</div>
+              <div style="font-family:'Nunito',sans-serif;font-size:11px;font-weight:600;color:rgba(240,80,100,0.8)">Al-Wahhāb</div>
+            </div>
+
+            <!-- 17. Ar-Razzaq -->
+            <div style="border-radius:14px;overflow:hidden;background:linear-gradient(160deg,#321058 0%,#19082C 100%);padding:12px 8px;text-align:center;min-height:100px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:6px">
+              <div style="font-family:'AlQuranIndoPak',serif;font-size:18px;color:rgba(150,80,240,0.9);direction:rtl;line-height:1.8">اَلرَّزَّاقُ</div>
+              <div style="font-family:'Nunito',sans-serif;font-size:11px;font-weight:600;color:rgba(150,80,240,0.8)">Ar-Razzāq</div>
+            </div>
+
+            <!-- 18. Al-Fattah -->
+            <div style="border-radius:14px;overflow:hidden;background:linear-gradient(160deg,#6A4808 0%,#342404 100%);padding:12px 8px;text-align:center;min-height:100px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:6px">
+              <div style="font-family:'AlQuranIndoPak',serif;font-size:18px;color:rgba(200,160,70,0.9);direction:rtl;line-height:1.8">اَلْفَتَّاحُ</div>
+              <div style="font-family:'Nunito',sans-serif;font-size:11px;font-weight:600;color:rgba(200,160,70,0.8)">Al-Fattāh</div>
+            </div>
+
+          </div>
+        </div>
+
+      </div>
+    </x-import>
+  </div>
+
+  <!-- Detail view -->
+  <div style="display:flex;flex-direction:column;align-items:center;gap:12px">
+    <div style="font:600 11px/1 system-ui;color:rgba(60,50,40,.42);letter-spacing:.08em;text-transform:uppercase">Name detail · Paigham app</div>
+
+    <x-import component="IOSDevice" from="./ios-frame.jsx" dark="" hint-size="402px,874px">
+      <div data-theme="dark" style="width:100%;height:100%;display:flex;flex-direction:column;overflow:hidden;background:var(--color-surface-primary)">
+
+        <!-- Back only -->
+        <div style="flex-shrink:0;padding:12px 16px 8px">
+          <x-import component-from-global-scope="TonalIconButton" icon="arrow_back" color="#FFFFFF" hint-size="40px,40px"></x-import>
+        </div>
+
+        <!-- Detail card -->
+        <div style="flex:1;display:flex;align-items:center;justify-content:center;padding:16px 24px">
+          <div style="width:100%;border-radius:24px;background:linear-gradient(160deg,#005A45 0%,#003028 60%,#001810 100%);padding:48px 24px;text-align:center;border:1px solid rgba(0,201,120,0.2);box-shadow:0 16px 48px rgba(0,100,60,0.4)">
+            <!-- Arabic -->
+            <div style="font-family:'AlQuranIndoPak',serif;font-size:42px;color:rgba(0,201,150,0.9);direction:rtl;line-height:1.6;margin-bottom:20px">اَلْمُهَيْمِنُ</div>
+            <!-- Divider -->
+            <div style="width:60%;height:1px;background:rgba(0,201,100,0.3);margin:0 auto 20px"></div>
+            <!-- Latin name -->
+            <div style="font-family:'Nunito',sans-serif;font-size:22px;font-weight:700;color:var(--color-action-primary);margin-bottom:12px">Al-Muhaymin</div>
+            <!-- Meaning -->
+            <div style="font-family:'Nunito',sans-serif;font-size:16px;color:rgba(255,255,255,0.75);line-height:1.6">The Guardian, The Witness, The Overseer</div>
+          </div>
+        </div>
+
+        <!-- Navigation -->
+        <div style="flex-shrink:0;display:flex;align-items:center;justify-content:space-between;padding:16px 24px 28px">
+          <div style="width:52px;height:52px;border-radius:50%;background:var(--color-action-primary);display:flex;align-items:center;justify-content:center;box-shadow:0 4px 16px rgba(0,201,80,0.4)">
+            <span class="material-symbols-rounded" style="font-size:26px;color:#fff">arrow_back</span>
+          </div>
+          <div style="background:#1C1C20;border-radius:20px;padding:8px 18px;border:1px solid rgba(255,255,255,0.12)">
+            <span style="font-family:'Nunito',sans-serif;font-size:14px;font-weight:600;color:rgba(255,255,255,0.7)">7 / 99</span>
+          </div>
+          <div style="width:52px;height:52px;border-radius:50%;background:var(--color-action-primary);display:flex;align-items:center;justify-content:center;box-shadow:0 4px 16px rgba(0,201,80,0.4)">
+            <span class="material-symbols-rounded" style="font-size:26px;color:#fff">arrow_forward</span>
+          </div>
+        </div>
+
+      </div>
+    </x-import>
+  </div>
+
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script>
+class Component extends DCLogic {}
+</script>
+</body>
+</html>

@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+  <link rel="stylesheet" href="_ds/noor-design-system-46f42e91-1858-412f-bdb6-560a6cc3df9f/colors_and_type.css">
+  <script src="_ds/noor-design-system-46f42e91-1858-412f-bdb6-560a6cc3df9f/_ds_bundle.js"></script>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Rounded:opsz,wght,FILL,GRAD@24,400,0..1,0&amp;display=block">
+  <style>
+    body{background:#E8E4DE;display:flex;justify-content:center;align-items:flex-start;padding:40px 20px 60px;min-height:100vh;box-sizing:border-box}
+    ::-webkit-scrollbar{display:none}*{-ms-overflow-style:none;scrollbar-width:none}
+  </style>
+</helmet>
+
+<div style="display:flex;flex-direction:column;align-items:center;gap:12px">
+  <div style="font:600 11px/1 system-ui;color:rgba(60,50,40,.42);letter-spacing:.08em;text-transform:uppercase">Calculate Zakaat · Paigham app</div>
+
+  <x-import component="IOSDevice" from="./ios-frame.jsx" dark="" hint-size="402px,874px">
+    <div data-theme="dark" style="width:100%;height:100%;display:flex;flex-direction:column;overflow:hidden;background:var(--color-surface-primary)">
+
+      <!-- AppBar -->
+      <div style="flex-shrink:0;display:flex;align-items:center;gap:12px;padding:12px 16px 10px;border-bottom:1px solid var(--color-neutral-border)">
+        <x-import component-from-global-scope="TonalIconButton" icon="arrow_back" color="#FFFFFF" hint-size="40px,40px"></x-import>
+        <span style="font-family:'Nunito',sans-serif;font-size:20px;font-weight:800;color:#fff">Calculate Zakaat</span>
+      </div>
+
+      <!-- Step content -->
+      <div style="flex:1;overflow-y:auto;-webkit-overflow-scrolling:touch;padding:20px 16px 100px">
+
+        <!-- Step card -->
+        <div style="background:#111418;border-radius:20px;padding:22px;border:1px solid var(--color-neutral-border)">
+          <div style="display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:6px">
+            <div style="font-family:'DM Serif Display',Georgia,serif;font-size:28px;color:var(--color-info-primary);line-height:1.15;flex:1">Gold &amp; Silver</div>
+            <span style="font-family:'Nunito',sans-serif;font-size:13px;color:var(--color-status-disabled-alt);margin-top:6px">1 / 6</span>
+          </div>
+          <div style="font-family:'Nunito',sans-serif;font-size:14px;color:rgba(255,255,255,0.5);margin-bottom:22px">Enter the weight of gold and silver you own</div>
+
+          <!-- Gold section -->
+          <div style="background:#080D08;border-radius:14px;padding:16px;margin-bottom:10px;border:1px solid rgba(255,255,255,0.06)">
+            <div style="display:flex;align-items:center;gap:8px;margin-bottom:12px">
+              <span style="font-family:'Nunito',sans-serif;font-size:18px;font-weight:700;color:#fff">Gold</span>
+              <div style="background:rgba(0,201,80,0.12);border-radius:8px;padding:3px 10px;cursor:pointer">
+                <span style="font-family:'Nunito',sans-serif;font-size:12px;font-weight:600;color:var(--color-action-primary)">24k Gold (995) ▾</span>
+              </div>
+            </div>
+            <div style="background:#1C1C20;border-radius:12px;padding:14px;display:flex;align-items:center">
+              <div style="flex:1"></div>
+              <span style="font-family:'Nunito',sans-serif;font-size:15px;color:rgba(255,255,255,0.35)">grams</span>
+            </div>
+            <div style="display:flex;justify-content:space-between;margin-top:8px">
+              <span style="font-family:'Nunito',sans-serif;font-size:12px;color:var(--color-status-disabled-alt)">₹14133.0 / gm</span>
+              <span style="font-family:'Nunito',sans-serif;font-size:12px;color:var(--color-status-disabled-alt)">Total: ₹0.0</span>
+            </div>
+          </div>
+
+          <!-- Add variants -->
+          <x-import component-from-global-scope="TonalButton" color="var(--color-action-primary)" contained="{{ true }}" size="md" hint-size="100%,40px">+ Add More Gold Variants</x-import>
+
+          <!-- Silver section -->
+          <div style="background:#080D08;border-radius:14px;padding:16px;border:1px solid rgba(255,255,255,0.06)">
+            <div style="margin-bottom:12px">
+              <span style="font-family:'Nunito',sans-serif;font-size:18px;font-weight:700;color:#fff">Silver</span>
+            </div>
+            <div style="background:#1C1C20;border-radius:12px;padding:14px;display:flex;align-items:center">
+              <div style="flex:1"></div>
+              <span style="font-family:'Nunito',sans-serif;font-size:15px;color:rgba(255,255,255,0.35)">grams</span>
+            </div>
+            <div style="display:flex;justify-content:space-between;margin-top:8px">
+              <span style="font-family:'Nunito',sans-serif;font-size:12px;color:var(--color-status-disabled-alt)">₹25.0 / gm</span>
+              <span style="font-family:'Nunito',sans-serif;font-size:12px;color:var(--color-status-disabled-alt)">Total: ₹0.0</span>
+            </div>
+            <div style="margin-top:10px">
+              <span style="font-family:'Nunito',sans-serif;font-size:11px;color:rgba(255,255,255,0.32)">* Gold and Silver rates are updated regularly</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Step indicators -->
+        <div style="display:flex;gap:6px;justify-content:center;margin-top:20px">
+          <div style="width:24px;height:4px;border-radius:2px;background:var(--color-action-primary)"></div>
+          <div style="width:8px;height:4px;border-radius:2px;background:rgba(255,255,255,0.2)"></div>
+          <div style="width:8px;height:4px;border-radius:2px;background:rgba(255,255,255,0.2)"></div>
+          <div style="width:8px;height:4px;border-radius:2px;background:rgba(255,255,255,0.2)"></div>
+          <div style="width:8px;height:4px;border-radius:2px;background:rgba(255,255,255,0.2)"></div>
+          <div style="width:8px;height:4px;border-radius:2px;background:rgba(255,255,255,0.2)"></div>
+        </div>
+
+      </div>
+
+      <!-- FAB navigation -->
+      <div style="position:absolute;bottom:20px;right:20px">
+        <x-import component-from-global-scope="FilledIconButton" icon="arrow_forward" size="lg" hint-size="56px,56px"></x-import>
+      </div>
+
+    </div>
+  </x-import>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script>
+class Component extends DCLogic {}
+</script>
+</body>
+</html>

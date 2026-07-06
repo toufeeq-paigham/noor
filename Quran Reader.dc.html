@@ -1,0 +1,204 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+<script src="./_theme/chrome.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+  <link rel="stylesheet" href="_ds/noor-design-system-46f42e91-1858-412f-bdb6-560a6cc3df9f/colors_and_type.css">
+  <link rel="stylesheet" href="_theme/poc.css">
+  <script src="_ds/noor-design-system-46f42e91-1858-412f-bdb6-560a6cc3df9f/_ds_bundle.js"></script>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Rounded:opsz,wght,FILL,GRAD@24,400,0..1,0&amp;display=block">
+  <style>
+    @font-face{font-family:'AlQuranIndoPak';src:url('_ds/noor-design-system-46f42e91-1858-412f-bdb6-560a6cc3df9f/fonts/AlQuran-IndoPak.ttf') format('truetype')}
+    @font-face{font-family:'QWBWSurah';src:url('_ds/noor-design-system-46f42e91-1858-412f-bdb6-560a6cc3df9f/fonts/QWBWSurah.ttf') format('truetype')}
+    body{background:var(--canvas-bg);display:flex;justify-content:center;align-items:flex-start;padding:40px 20px 60px;min-height:100vh;box-sizing:border-box}
+    ::-webkit-scrollbar{display:none}*{-ms-overflow-style:none;scrollbar-width:none}
+  </style>
+</helmet>
+
+<div style="display:flex;flex-direction:column;align-items:center;gap:12px">
+  <div style="font:600 11px/1 system-ui;color:var(--canvas-label);letter-spacing:.08em;text-transform:uppercase">Quran reader · Paigham app</div>
+
+  <x-import component="IOSDevice" from="./ios-frame.jsx" hint-size="402px,874px">
+    <div style="width:100%;height:100%;display:flex;flex-direction:column;overflow:hidden;background:var(--color-surface-primary)">
+
+      <!-- AppBar -->
+      <div style="flex-shrink:0;display:flex;align-items:center;justify-content:space-between;padding:12px 16px 10px;background:var(--color-surface-primary)">
+        <div onClick="{{ goBack }}" style="width:40px;height:40px;border-radius:50%;background:color-mix(in oklab, var(--color-info-primary) 10%, transparent);border:1px solid color-mix(in oklab, var(--color-info-primary) 20%, transparent);display:flex;align-items:center;justify-content:center;cursor:pointer;box-sizing:border-box">
+          <span class="material-symbols-rounded" style="font-size:20px;color:var(--color-info-primary)">arrow_back</span>
+        </div>
+        <div style="font-family:'QWBWSurah',serif;font-size:22px;color:var(--color-info-primary);direction:rtl">سُورَةُ الْفَاتِحَةِ</div>
+        <div onClick="{{ toggleSettings }}" style="width:40px;height:40px;border-radius:50%;background:color-mix(in oklab, var(--color-info-primary) 10%, transparent);border:1px solid color-mix(in oklab, var(--color-info-primary) 20%, transparent);display:flex;align-items:center;justify-content:center;cursor:pointer;box-sizing:border-box">
+          <span class="material-symbols-rounded" style="font-size:20px;color:var(--color-info-primary)">settings</span>
+        </div>
+      </div>
+
+      <!-- Surah info bar -->
+      <div style="flex-shrink:0;padding:6px 20px 12px;border-bottom:1px solid var(--color-neutral-border)">
+        <div style="display:flex;justify-content:space-between;align-items:center">
+          <span style="font-family:'Nunito',sans-serif;font-size:14px;font-weight:600;color:var(--color-info-primary)">1. Al-Faatiha</span>
+          <span style="font-family:'Nunito',sans-serif;font-size:13px;color:var(--color-info-secondary)">Juz 1 | 1 – 7 ayahs</span>
+        </div>
+      </div>
+
+      <!-- Ayahs -->
+      <div style="flex:1;overflow-y:auto;-webkit-overflow-scrolling:touch">
+        <sc-for list="{{ ayahs }}" as="a" hint-placeholder-count="7">
+          <div style="padding:{{ a.rowPad }};border-bottom:{{ a.rowBorder }};background:{{ a.rowBg }};transition:background 200ms">
+            <div style="text-align:right;direction:rtl;font-family:'AlQuranIndoPak',serif;font-size:{{ a.size }}px;color:var(--color-info-primary);line-height:2;margin-bottom:10px">{{ a.arabic }}</div>
+            <sc-if value="{{ a.showTr }}">
+              <div style="font-family:'Nunito',sans-serif;font-size:14px;font-style:italic;color:var(--color-action-primary);margin-bottom:6px">{{ a.translit }}</div>
+            </sc-if>
+            <sc-if value="{{ a.showTl }}">
+              <div style="font-family:'Nunito',sans-serif;font-size:14px;color:var(--color-info-primary);margin-bottom:8px;line-height:1.5">{{ a.translation }}</div>
+            </sc-if>
+            <div style="display:flex;justify-content:space-between;align-items:center">
+              <div style="display:inline-block;background:var(--color-action-background);border-radius:6px;padding:2px 8px"><span style="font-family:'Nunito',sans-serif;font-size:11px;font-weight:600;color:var(--color-info-secondary)">{{ a.ref }}</span></div>
+              <div style="display:flex;align-items:center;gap:4px">
+                <div onClick="{{ a.onPlay }}" style="width:30px;height:30px;border-radius:50%;display:flex;align-items:center;justify-content:center;cursor:pointer">
+                  <span class="material-symbols-rounded" style="font-size:20px;color:{{ a.playColor }};font-variation-settings:'FILL' {{ a.playFill }}">{{ a.playIcon }}</span>
+                </div>
+                <div onClick="{{ a.onBookmark }}" style="width:30px;height:30px;border-radius:50%;display:flex;align-items:center;justify-content:center;cursor:pointer">
+                  <span class="material-symbols-rounded" style="font-size:20px;color:{{ a.bmColor }};font-variation-settings:'FILL' {{ a.bmFill }}">bookmark</span>
+                </div>
+              </div>
+            </div>
+          </div>
+        </sc-for>
+      </div>
+
+      <!-- View Settings bottom sheet -->
+      <sc-if value="{{ settingsOpen }}">
+        <div style="flex-shrink:0;background:var(--color-surface-card);border-radius:24px 24px 0 0;padding:12px 20px 36px;border-top:1px solid var(--color-neutral-border)">
+          <div onClick="{{ closeSettings }}" style="display:flex;justify-content:center;margin-bottom:14px;cursor:pointer;padding:4px 0">
+            <div style="width:36px;height:4px;background:var(--color-info-faint);border-radius:2px"></div>
+          </div>
+          <div style="font-family:'DM Serif Display',Georgia,serif;font-size:22px;color:var(--color-info-primary);margin-bottom:4px">View Settings</div>
+          <div style="font-family:'Nunito',sans-serif;font-size:13px;color:var(--color-info-secondary);margin-bottom:18px">Customize your Quran reading experience</div>
+          <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:14px">
+            <span style="font-family:'Nunito',sans-serif;font-size:16px;color:var(--color-info-primary)">Quran Transliteration</span>
+            <div onClick="{{ toggleTransliteration }}" style="width:44px;height:24px;border-radius:999px;background:{{ trBg }};border:1px solid {{ trBorder }};position:relative;cursor:pointer;transition:background 120ms;box-sizing:border-box">
+              <span style="position:absolute;top:2px;left:2px;width:18px;height:18px;border-radius:50%;background:{{ trKnob }};transform:translateX({{ trX }}px);transition:transform 120ms cubic-bezier(.4,0,.2,1)"></span>
+            </div>
+          </div>
+          <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:14px">
+            <span style="font-family:'Nunito',sans-serif;font-size:16px;color:var(--color-info-primary)">Quran Translation</span>
+            <div onClick="{{ toggleTranslation }}" style="width:44px;height:24px;border-radius:999px;background:{{ tlBg }};border:1px solid {{ tlBorder }};position:relative;cursor:pointer;transition:background 120ms;box-sizing:border-box">
+              <span style="position:absolute;top:2px;left:2px;width:18px;height:18px;border-radius:50%;background:{{ tlKnob }};transform:translateX({{ tlX }}px);transition:transform 120ms cubic-bezier(.4,0,.2,1)"></span>
+            </div>
+          </div>
+          <div style="display:flex;justify-content:space-between;align-items:center">
+            <span style="font-family:'Nunito',sans-serif;font-size:16px;color:var(--color-info-primary)">Arabic Text Size</span>
+            <div style="display:flex;align-items:center;gap:10px">
+              <div onClick="{{ decFont }}" style="width:30px;height:30px;border-radius:50%;background:var(--color-action-background);display:flex;align-items:center;justify-content:center;cursor:pointer;opacity:{{ decOpacity }};transition:opacity 120ms">
+                <span class="material-symbols-rounded" style="font-size:18px;color:var(--color-info-primary)">remove</span>
+              </div>
+              <span style="font-family:'Nunito',sans-serif;font-size:14px;font-weight:700;color:var(--color-info-primary);min-width:22px;text-align:center">{{ arabicSizeLabel }}</span>
+              <div onClick="{{ incFont }}" style="width:30px;height:30px;border-radius:50%;background:var(--color-action-background);display:flex;align-items:center;justify-content:center;cursor:pointer;opacity:{{ incOpacity }};transition:opacity 120ms">
+                <span class="material-symbols-rounded" style="font-size:18px;color:var(--color-info-primary)">add</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </sc-if>
+
+    </div>
+  </x-import>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script>
+class Component extends DCLogic {
+  state = {
+    settingsOpen: true,
+    showTransliteration: true,
+    showTranslation: true,
+    arabicSize: 28,
+    bookmarked: {},
+    playingId: null,
+  };
+
+  ayahData = [
+    { n: 1, arabic: 'بِسۡمِ ٱللَّهِ ٱلرَّحۡمَٰنِ ٱلرَّحِيمِ ١', translit: 'Bismi Allahi arrahmani arraheem', translation: 'In the name of Allah, the Compassionate, the Merciful.' },
+    { n: 2, arabic: 'ٱلۡحَمۡدُ لِلَّهِ رَبِّ ٱلۡعَٰلَمِينَ ٢', translit: 'Alhamdu lillahi rabbi alAAalameen', translation: 'All praise unto Allah, the Lord of all the worlds.' },
+    { n: 3, arabic: 'ٱلرَّحۡمَٰنِ ٱلرَّحِيمِ ٣', translit: 'Arrahmani arraheem', translation: 'The Compassionate, the Merciful.' },
+    { n: 4, arabic: 'مَٰلِكِ يَوۡمِ ٱلدِّينِ ٤', translit: 'Maliki yawmi addeen', translation: 'Sovereign of the Day of Requital.' },
+    { n: 5, arabic: 'إِيَّاكَ نَعۡبُدُ وَإِيَّاكَ نَسۡتَعِينُ ٥', translit: 'Iyyaka naAAbudu wa-iyyaka nastaAAeen', translation: 'Thee alone do we worship and of Thee alone do we seek help.' },
+    { n: 6, arabic: 'ٱهۡدِنَا ٱلصِّرَٰطَ ٱلۡمُسۡتَقِيمَ ٦', translit: 'Ihdina alssirata almustaqeema', translation: 'Guide us to the straight path.' },
+    { n: 7, arabic: 'صِرَٰطَ ٱلَّذِينَ أَنۡعَمۡتَ عَلَيۡهِمۡ غَيۡرِ ٱلۡمَغۡضُوبِ عَلَيۡهِمۡ وَلَا ٱلضَّآلِّينَ ٧', translit: 'Sirata allatheena anAAamta AAalayhim ghayri almaghdoobi AAalayhim wala alddalleen', translation: 'The path of those on whom Thou hast bestowed favors; not those who incurred Thy wrath, nor those who went astray.' },
+  ];
+
+  goBack = () => { window.location.href = 'Quran Screen.dc.html'; };
+  toggleSettings = () => this.setState(s => ({ settingsOpen: !s.settingsOpen }));
+  closeSettings = () => this.setState({ settingsOpen: false });
+  toggleTransliteration = () => this.setState(s => ({ showTransliteration: !s.showTransliteration }));
+  toggleTranslation = () => this.setState(s => ({ showTranslation: !s.showTranslation }));
+  incFont = () => this.setState(s => ({ arabicSize: Math.min(36, s.arabicSize + 2) }));
+  decFont = () => this.setState(s => ({ arabicSize: Math.max(22, s.arabicSize - 2) }));
+  toggleBookmark = (n) => this.setState(s => {
+    const b = { ...s.bookmarked };
+    b[n] = !b[n];
+    return { bookmarked: b };
+  });
+  togglePlay = (n) => this.setState(s => ({ playingId: s.playingId === n ? null : n }));
+
+  switchVals(on) {
+    return {
+      bg: on ? 'var(--color-action-primary)' : 'var(--color-input-background)',
+      border: on ? 'transparent' : 'var(--color-neutral-border)',
+      knob: on ? '#fff' : 'var(--color-info-primary)',
+      x: on ? 20 : 0,
+    };
+  }
+
+  renderVals() {
+    const s = this.state;
+    const last = this.ayahData.length - 1;
+    const ayahs = this.ayahData.map((a, i) => {
+      const playing = s.playingId === a.n;
+      const marked = !!s.bookmarked[a.n];
+      return {
+        ...a,
+        ref: '1:' + a.n,
+        size: s.arabicSize,
+        showTr: s.showTransliteration,
+        showTl: s.showTranslation,
+        rowPad: i === last ? '20px 20px 32px' : '20px 20px 16px',
+        rowBorder: i === last ? 'none' : '1px solid var(--color-neutral-border)',
+        rowBg: playing ? 'var(--color-surface-secondary)' : 'transparent',
+        playIcon: playing ? 'pause' : 'play_arrow',
+        playColor: playing ? 'var(--color-action-primary)' : 'var(--color-info-secondary)',
+        playFill: playing ? 1 : 0,
+        bmColor: marked ? 'var(--color-action-primary)' : 'var(--color-info-secondary)',
+        bmFill: marked ? 1 : 0,
+        onPlay: () => this.togglePlay(a.n),
+        onBookmark: () => this.toggleBookmark(a.n),
+      };
+    });
+    const tr = this.switchVals(s.showTransliteration);
+    const tl = this.switchVals(s.showTranslation);
+    return {
+      ayahs,
+      settingsOpen: s.settingsOpen,
+      arabicSizeLabel: s.arabicSize,
+      decOpacity: s.arabicSize <= 22 ? '.4' : '1',
+      incOpacity: s.arabicSize >= 36 ? '.4' : '1',
+      trBg: tr.bg, trBorder: tr.border, trKnob: tr.knob, trX: tr.x,
+      tlBg: tl.bg, tlBorder: tl.border, tlKnob: tl.knob, tlX: tl.x,
+      goBack: this.goBack,
+      toggleSettings: this.toggleSettings,
+      closeSettings: this.closeSettings,
+      toggleTransliteration: this.toggleTransliteration,
+      toggleTranslation: this.toggleTranslation,
+      incFont: this.incFont,
+      decFont: this.decFont,
+    };
+  }
+}
+</script>
+</body>
+</html>

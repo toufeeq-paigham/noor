@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+  <link rel="stylesheet" href="_ds/noor-design-system-46f42e91-1858-412f-bdb6-560a6cc3df9f/colors_and_type.css">
+  <script src="_ds/noor-design-system-46f42e91-1858-412f-bdb6-560a6cc3df9f/_ds_bundle.js"></script>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Rounded:opsz,wght,FILL,GRAD@24,400,0..1,0&amp;display=block">
+  <style>
+    body{background:#E8E4DE;display:flex;justify-content:center;align-items:flex-start;padding:40px 20px 60px;min-height:100vh;box-sizing:border-box}
+    ::-webkit-scrollbar{display:none}*{-ms-overflow-style:none;scrollbar-width:none}
+  </style>
+</helmet>
+
+<div style="display:flex;flex-direction:column;align-items:center;gap:12px">
+  <div style="font:600 11px/1 system-ui;color:rgba(60,50,40,.42);letter-spacing:.08em;text-transform:uppercase">Du'a list · Paigham app</div>
+
+  <x-import component="IOSDevice" from="./ios-frame.jsx" dark="" hint-size="402px,874px">
+    <div data-theme="dark" style="width:100%;height:100%;display:flex;flex-direction:column;overflow:hidden;background:var(--color-surface-primary)">
+
+      <!-- AppBar -->
+      <div style="flex-shrink:0;display:flex;align-items:center;gap:12px;padding:12px 16px 10px;border-bottom:1px solid var(--color-neutral-border)">
+        <x-import component-from-global-scope="TonalIconButton" icon="arrow_back" color="#FFFFFF" hint-size="40px,40px"></x-import>
+        <span style="font-family:'Nunito',sans-serif;font-size:22px;font-weight:800;color:#fff">All</span>
+      </div>
+
+      <!-- List -->
+      <div style="flex:1;overflow-y:auto;-webkit-overflow-scrolling:touch;padding:12px 16px;display:flex;flex-direction:column;gap:8px">
+
+        <div style="background:#080D08;border:1px solid rgba(0,201,80,0.22);border-radius:16px;padding:14px 16px;display:flex;align-items:center;gap:12px">
+          <div style="width:38px;height:38px;border-radius:50%;background:var(--color-action-primary);flex-shrink:0;display:flex;align-items:center;justify-content:center"><span style="font-family:'Nunito',sans-serif;font-size:15px;font-weight:700;color:#fff">1</span></div>
+          <span style="font-family:'Nunito',sans-serif;font-size:16px;font-weight:600;color:#fff">When waking up</span>
+        </div>
+
+        <div style="background:#080D08;border:1px solid rgba(0,201,80,0.22);border-radius:16px;padding:14px 16px;display:flex;align-items:center;gap:12px">
+          <div style="width:38px;height:38px;border-radius:50%;background:var(--color-action-primary);flex-shrink:0;display:flex;align-items:center;justify-content:center"><span style="font-family:'Nunito',sans-serif;font-size:15px;font-weight:700;color:#fff">2</span></div>
+          <span style="font-family:'Nunito',sans-serif;font-size:16px;font-weight:600;color:#fff">When wearing a garment</span>
+        </div>
+
+        <div style="background:#080D08;border:1px solid rgba(0,201,80,0.22);border-radius:16px;padding:14px 16px;display:flex;align-items:center;gap:12px">
+          <div style="width:38px;height:38px;border-radius:50%;background:var(--color-action-primary);flex-shrink:0;display:flex;align-items:center;justify-content:center"><span style="font-family:'Nunito',sans-serif;font-size:15px;font-weight:700;color:#fff">3</span></div>
+          <span style="font-family:'Nunito',sans-serif;font-size:16px;font-weight:600;color:#fff">When wearing a new garment</span>
+        </div>
+
+        <div style="background:#080D08;border:1px solid rgba(0,201,80,0.22);border-radius:16px;padding:14px 16px;display:flex;align-items:center;gap:12px">
+          <div style="width:38px;height:38px;border-radius:50%;background:var(--color-action-primary);flex-shrink:0;display:flex;align-items:center;justify-content:center"><span style="font-family:'Nunito',sans-serif;font-size:15px;font-weight:700;color:#fff">4</span></div>
+          <span style="font-family:'Nunito',sans-serif;font-size:16px;font-weight:600;color:#fff">To someone wearing a new garment</span>
+        </div>
+
+        <div style="background:#080D08;border:1px solid rgba(0,201,80,0.22);border-radius:16px;padding:14px 16px;display:flex;align-items:center;gap:12px">
+          <div style="width:38px;height:38px;border-radius:50%;background:var(--color-action-primary);flex-shrink:0;display:flex;align-items:center;justify-content:center"><span style="font-family:'Nunito',sans-serif;font-size:15px;font-weight:700;color:#fff">5</span></div>
+          <span style="font-family:'Nunito',sans-serif;font-size:16px;font-weight:600;color:#fff">Before undressing</span>
+        </div>
+
+        <div style="background:#080D08;border:1px solid rgba(0,201,80,0.22);border-radius:16px;padding:14px 16px;display:flex;align-items:center;gap:12px">
+          <div style="width:38px;height:38px;border-radius:50%;background:var(--color-action-primary);flex-shrink:0;display:flex;align-items:center;justify-content:center"><span style="font-family:'Nunito',sans-serif;font-size:15px;font-weight:700;color:#fff">6</span></div>
+          <span style="font-family:'Nunito',sans-serif;font-size:16px;font-weight:600;color:#fff">Before entering the bathroom</span>
+        </div>
+
+        <div style="background:#080D08;border:1px solid rgba(0,201,80,0.22);border-radius:16px;padding:14px 16px;display:flex;align-items:center;gap:12px">
+          <div style="width:38px;height:38px;border-radius:50%;background:var(--color-action-primary);flex-shrink:0;display:flex;align-items:center;justify-content:center"><span style="font-family:'Nunito',sans-serif;font-size:15px;font-weight:700;color:#fff">7</span></div>
+          <span style="font-family:'Nunito',sans-serif;font-size:16px;font-weight:600;color:#fff">After leaving the bathroom</span>
+        </div>
+
+        <div style="background:#080D08;border:1px solid rgba(0,201,80,0.22);border-radius:16px;padding:14px 16px;display:flex;align-items:center;gap:12px">
+          <div style="width:38px;height:38px;border-radius:50%;background:var(--color-action-primary);flex-shrink:0;display:flex;align-items:center;justify-content:center"><span style="font-family:'Nunito',sans-serif;font-size:15px;font-weight:700;color:#fff">8</span></div>
+          <span style="font-family:'Nunito',sans-serif;font-size:16px;font-weight:600;color:#fff">Before ablution</span>
+        </div>
+
+        <div style="background:#080D08;border:1px solid rgba(0,201,80,0.22);border-radius:16px;padding:14px 16px;display:flex;align-items:center;gap:12px">
+          <div style="width:38px;height:38px;border-radius:50%;background:var(--color-action-primary);flex-shrink:0;display:flex;align-items:center;justify-content:center"><span style="font-family:'Nunito',sans-serif;font-size:15px;font-weight:700;color:#fff">9</span></div>
+          <span style="font-family:'Nunito',sans-serif;font-size:16px;font-weight:600;color:#fff">Upon completing the ablution</span>
+        </div>
+
+        <div style="background:#080D08;border:1px solid rgba(0,201,80,0.22);border-radius:16px;padding:14px 16px;display:flex;align-items:center;gap:12px">
+          <div style="width:38px;height:38px;border-radius:50%;background:var(--color-action-primary);flex-shrink:0;display:flex;align-items:center;justify-content:center"><span style="font-family:'Nunito',sans-serif;font-size:13px;font-weight:700;color:#fff">10</span></div>
+          <span style="font-family:'Nunito',sans-serif;font-size:16px;font-weight:600;color:#fff">Remembrance when leaving the home</span>
+        </div>
+
+        <div style="background:#080D08;border:1px solid rgba(0,201,80,0.22);border-radius:16px;padding:14px 16px;display:flex;align-items:center;gap:12px">
+          <div style="width:38px;height:38px;border-radius:50%;background:var(--color-action-primary);flex-shrink:0;display:flex;align-items:center;justify-content:center"><span style="font-family:'Nunito',sans-serif;font-size:13px;font-weight:700;color:#fff">11</span></div>
+          <span style="font-family:'Nunito',sans-serif;font-size:16px;font-weight:600;color:#fff">Remembrance upon entering the home</span>
+        </div>
+
+        <div style="background:#080D08;border:1px solid rgba(0,201,80,0.22);border-radius:16px;padding:14px 16px;display:flex;align-items:center;gap:12px">
+          <div style="width:38px;height:38px;border-radius:50%;background:var(--color-action-primary);flex-shrink:0;display:flex;align-items:center;justify-content:center"><span style="font-family:'Nunito',sans-serif;font-size:13px;font-weight:700;color:#fff">12</span></div>
+          <span style="font-family:'Nunito',sans-serif;font-size:16px;font-weight:600;color:#fff">Du'a for travelling</span>
+        </div>
+
+      </div>
+    </div>
+  </x-import>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script>
+class Component extends DCLogic {}
+</script>
+</body>
+</html>

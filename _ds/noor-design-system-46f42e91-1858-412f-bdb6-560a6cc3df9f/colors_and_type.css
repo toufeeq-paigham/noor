@@ -1,0 +1,390 @@
+/* ============================================================
+   Noor Design System — Colors & Type
+   Source of truth: noor/src/commonMain/kotlin/app/paigham/noor/tokens/
+   Light theme by default. Add data-theme="dark" on <html> for dark.
+   ============================================================ */
+
+/* ---------- Fonts ---------- */
+@font-face {
+  font-family: "DM Serif Display";
+  src: url("fonts/DMSerifDisplay.ttf") format("truetype");
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: "DM Serif Display";
+  src: url("fonts/DMSerifDisplay-Italic.ttf") format("truetype");
+  font-weight: 400;
+  font-style: italic;
+  font-display: swap;
+}
+@font-face {
+  font-family: "Nunito";
+  src: url("fonts/Nunito.ttf") format("truetype-variations");
+  font-weight: 200 1000;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: "Nunito";
+  src: url("fonts/Nunito-Italic.ttf") format("truetype-variations");
+  font-weight: 200 1000;
+  font-style: italic;
+  font-display: swap;
+}
+@font-face {
+  font-family: "AlQuran IndoPak";
+  src: url("fonts/AlQuran-IndoPak.ttf") format("truetype");
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: "QWBW Surah";
+  src: url("fonts/QWBWSurah.ttf") format("truetype");
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+
+/* ============================================================
+   Palette (raw token names match NoorColors.kt)
+   ============================================================ */
+:root {
+  /* Brand */
+  --noor-brand: #C9AD7B;          /* gold — Islamic motif accent */
+  --noor-transparent: rgba(0,0,0,0);
+
+  /* Light theme primitives */
+  --noor-pure-white: #FFFFFF;
+  --noor-jet-black: #09090B;
+  --noor-jade-green: #00C950;     /* primary (light) */
+  --noor-mint-cream: #F0FDF4;
+  --noor-cultured-gray: #F4F4F5;
+  --noor-eerie-black: #18181B;
+  --noor-slate-gray: #71717B;
+  --noor-scarlet-red: #E7000B;
+  --noor-gainsboro: #E4E4E7;
+  --noor-vermilion: #F54900;      /* chart1 */
+  --noor-teal: #009689;           /* chart2 / secondary */
+  --noor-midnight-teal: #104E64;  /* chart3 */
+  --noor-amber: #FFB900;          /* chart4 */
+  --noor-tangerine: #FE9A00;      /* chart5 */
+  --noor-snow-drift: #FAFAFA;     /* card / sidebar */
+
+  /* Dark theme primitives */
+  --noor-rich-black: #09090B;
+  --noor-snow-white: #FAFAFA;
+  --noor-gunmetal: #18181B;
+  --noor-emerald-green: #00BC7D;  /* primary (dark) */
+  --noor-forest-green: #0D542B;
+  --noor-onyx-gray: #27272A;
+  --noor-ash-gray: #9F9FA9;
+  --noor-coral-red: #FF6467;
+  --noor-pine-green: #008236;
+  --noor-sapphire-blue: #1447E6;
+  --noor-amber-orange: #FE9A00;
+  --noor-amethyst-purple: #AD46FF;
+  --noor-hot-pink: #FF2056;
+
+  /* Alpha-composited */
+  --noor-white-a10: rgba(255,255,255,0.10);
+  --noor-white-a15: rgba(255,255,255,0.15);
+  --noor-white-a60: rgba(255,255,255,0.60);
+  --noor-black-a40: rgba(9,9,11,0.40);
+  --noor-black-a60: rgba(9,9,11,0.60);
+  --noor-gunmetal-a80: rgba(24,24,27,0.80);
+}
+
+/* ============================================================
+   Semantic tokens — LIGHT (default)
+   Mirrors ColorsLight.value in Colors.kt
+   ============================================================ */
+:root,
+[data-theme="light"] {
+  /* surface */
+  --color-surface-primary: var(--noor-pure-white);
+  --color-surface-secondary: var(--noor-mint-cream);
+  --color-surface-card: var(--noor-snow-drift);
+  --color-surface-overlay: var(--noor-white-a60);
+  --color-surface-scrim: var(--noor-black-a40);
+
+  /* action */
+  --color-action-primary: var(--noor-jade-green);
+  --color-action-primary-inverse: var(--noor-mint-cream);
+  --color-action-secondary: var(--noor-teal);
+  --color-action-secondary-inverse: var(--noor-eerie-black);
+  --color-action-border: var(--noor-jade-green);
+  --color-action-background: var(--noor-gainsboro);
+  --color-action-destructive: var(--noor-scarlet-red);
+
+  /* input */
+  --color-input-background: var(--noor-cultured-gray);
+  --color-input-text: var(--noor-jet-black);
+  --color-input-placeholder: var(--noor-slate-gray);
+  --color-input-border: var(--noor-gainsboro);
+  --color-input-border-focused: var(--noor-jade-green);
+  --color-input-border-disabled: var(--noor-gainsboro);
+  --color-input-border-error: var(--noor-scarlet-red);
+  --color-input-text-error: var(--noor-scarlet-red);
+
+  /* info (text/foregrounds) */
+  --color-info-primary: var(--noor-jet-black);
+  --color-info-primary-inverse: var(--noor-pure-white);
+  --color-info-secondary: var(--noor-slate-gray);
+  --color-info-tertiary: var(--noor-slate-gray);
+
+  /* status */
+  --color-status-error: var(--noor-scarlet-red);
+  --color-status-disabled: var(--noor-cultured-gray);
+  --color-status-disabled-alt: var(--noor-slate-gray);
+  --color-status-warning: var(--noor-tangerine);
+  --color-status-warning-alt: var(--noor-amber);
+  --color-status-success: var(--noor-jade-green);
+
+  /* neutral */
+  --color-neutral-black: var(--noor-jet-black);
+  --color-neutral-white: var(--noor-pure-white);
+  --color-neutral-brand: var(--noor-brand);
+  --color-neutral-border: var(--noor-gainsboro);
+
+  color-scheme: light;
+}
+
+/* ============================================================
+   Semantic tokens — DARK
+   Mirrors ColorsDark.value in Colors.kt
+   ============================================================ */
+[data-theme="dark"] {
+  --color-surface-primary: var(--noor-rich-black);
+  --color-surface-secondary: var(--noor-gunmetal);
+  --color-surface-card: var(--noor-gunmetal);
+  --color-surface-overlay: var(--noor-gunmetal-a80);
+  --color-surface-scrim: var(--noor-black-a60);
+
+  --color-action-primary: var(--noor-emerald-green);
+  --color-action-primary-inverse: var(--noor-forest-green);
+  --color-action-secondary: var(--noor-teal);
+  --color-action-secondary-inverse: var(--noor-snow-white);
+  --color-action-border: var(--noor-emerald-green);
+  --color-action-background: var(--noor-white-a10);
+  --color-action-destructive: var(--noor-coral-red);
+
+  --color-input-background: var(--noor-white-a15);
+  --color-input-text: var(--noor-snow-white);
+  --color-input-placeholder: var(--noor-ash-gray);
+  --color-input-border: var(--noor-white-a10);
+  --color-input-border-focused: var(--noor-emerald-green);
+  --color-input-border-disabled: var(--noor-white-a10);
+  --color-input-border-error: var(--noor-coral-red);
+  --color-input-text-error: var(--noor-coral-red);
+
+  --color-info-primary: var(--noor-snow-white);
+  --color-info-primary-inverse: var(--noor-jet-black);
+  --color-info-secondary: var(--noor-ash-gray);
+  --color-info-tertiary: var(--noor-ash-gray);
+
+  --color-status-error: var(--noor-coral-red);
+  --color-status-disabled: var(--noor-onyx-gray);
+  --color-status-disabled-alt: var(--noor-ash-gray);
+  --color-status-warning: var(--noor-amber-orange);
+  --color-status-warning-alt: var(--noor-amber);
+  --color-status-success: var(--noor-emerald-green);
+
+  --color-neutral-black: var(--noor-rich-black);
+  --color-neutral-white: var(--noor-snow-white);
+  --color-neutral-brand: var(--noor-brand);
+  --color-neutral-border: var(--noor-white-a10);
+
+  color-scheme: dark;
+}
+
+/* ============================================================
+   Sizing / Spacing — mirrors SizingDefaults.value
+   ============================================================ */
+:root {
+  --size-none: 0px;
+  --size-xs: 2px;
+  --size-sm: 4px;
+  --size-md: 8px;
+  --size-lg: 10px;
+  --size-xl: 12px;
+  --size-2xl: 16px;
+  --size-huge: 24px;
+  --size-max: 32px;
+
+  /* Radius — mirrors RadiusDefaults.value */
+  --radius-none: 0px;
+  --radius-xs: 2px;
+  --radius-sm: 4px;
+  --radius-md: 8px;
+  --radius-lg: 10px;
+  --radius-xl: 12px;
+  --radius-2xl: 16px;
+  --radius-huge: 24px;
+  --radius-circle: 360px;
+
+  /* Common touch / control heights */
+  --control-h-sm: 32px;
+  --control-h-md: 40px;
+  --control-h-lg: 48px;
+  --input-h: 46px;
+}
+
+/* ============================================================
+   Typography — mirrors TypographyDefaults
+   Title family: DM Serif Display (display serif)
+   Body family: Nunito (humanist sans)
+   Arabic: AlQuran IndoPak or QWBW Surah
+   ============================================================ */
+:root {
+  --font-title: "DM Serif Display", "Cormorant Garamond", "Playfair Display", Georgia, serif;
+  --font-body: "Nunito", system-ui, -apple-system, "Segoe UI", sans-serif;
+  --font-arabic: "AlQuran IndoPak", "QWBW Surah", "Amiri Quran", "Scheherazade New", serif;
+
+  /* Title sizes (DM Serif Display, normal weight, slight negative tracking) */
+  --title-h1-size: 32px;   --title-h1-lh: 40px;   --title-h1-tracking: -0.5px;
+  --title-h2-size: 28px;   --title-h2-lh: 36px;   --title-h2-tracking: -0.5px;
+  --title-h3-size: 24px;   --title-h3-lh: 32px;   --title-h3-tracking: -0.5px;
+  --title-h4-size: 22px;   --title-h4-lh: 28px;   --title-h4-tracking: 0;
+  --title-h5-size: 20px;   --title-h5-lh: 24px;   --title-h5-tracking: 0;
+
+  /* Body sizes (Nunito, range of weights) */
+  --body-h1-size: 32px;    --body-h1-lh: 40px;    --body-h1-tracking: -0.5px;
+  --body-h2-size: 28px;    --body-h2-lh: 36px;    --body-h2-tracking: -0.5px;
+  --body-h3-size: 24px;    --body-h3-lh: 32px;
+  --body-h4-size: 22px;    --body-h4-lh: 28px;
+  --body-h5-size: 20px;    --body-h5-lh: 24px;
+  --body-l-size: 18px;     --body-l-lh: 24px;
+  --body-m-size: 16px;     --body-m-lh: 24px;
+  --body-s-size: 14px;     --body-s-lh: 20px;
+  --body-xs-size: 12px;    --body-xs-lh: 16px;
+}
+
+/* ============================================================
+   Element base styles
+   ============================================================ */
+html, body {
+  font-family: var(--font-body);
+  font-size: var(--body-m-size);
+  line-height: var(--body-m-lh);
+  color: var(--color-info-primary);
+  background: var(--color-surface-primary);
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
+}
+
+/* Title family (use .title-h1 OR <h1>/<h2>/... within a .titles container) */
+.title-h1, .title-h2, .title-h3, .title-h4, .title-h5 {
+  font-family: var(--font-title);
+  font-weight: 400;
+  color: var(--color-info-primary);
+  text-wrap: balance;
+}
+.title-h1 { font-size: var(--title-h1-size); line-height: var(--title-h1-lh); letter-spacing: var(--title-h1-tracking); }
+.title-h2 { font-size: var(--title-h2-size); line-height: var(--title-h2-lh); letter-spacing: var(--title-h2-tracking); }
+.title-h3 { font-size: var(--title-h3-size); line-height: var(--title-h3-lh); letter-spacing: var(--title-h3-tracking); }
+.title-h4 { font-size: var(--title-h4-size); line-height: var(--title-h4-lh); }
+.title-h5 { font-size: var(--title-h5-size); line-height: var(--title-h5-lh); }
+
+/* Body / heading scale — uses body family by default */
+.body-h1 { font-size: var(--body-h1-size); line-height: var(--body-h1-lh); letter-spacing: var(--body-h1-tracking); }
+.body-h2 { font-size: var(--body-h2-size); line-height: var(--body-h2-lh); letter-spacing: var(--body-h2-tracking); }
+.body-h3 { font-size: var(--body-h3-size); line-height: var(--body-h3-lh); }
+.body-h4 { font-size: var(--body-h4-size); line-height: var(--body-h4-lh); }
+.body-h5 { font-size: var(--body-h5-size); line-height: var(--body-h5-lh); }
+.body-l  { font-size: var(--body-l-size);  line-height: var(--body-l-lh); }
+.body-m  { font-size: var(--body-m-size);  line-height: var(--body-m-lh); }
+.body-s  { font-size: var(--body-s-size);  line-height: var(--body-s-lh); }
+.body-xs { font-size: var(--body-xs-size); line-height: var(--body-xs-lh); }
+
+.fw-regular { font-weight: 400; }
+.fw-medium  { font-weight: 500; }
+.fw-bold    { font-weight: 700; }
+
+/* Arabic-script text (use on Quran ayat) */
+.arabic {
+  font-family: var(--font-arabic);
+  direction: rtl;
+  font-size: 1.6em;
+  line-height: 1.9;
+  letter-spacing: 0;
+}
+
+/* ============================================================
+   Gradient schemes — mirrors GradientDefaults.light
+   Use as `background: var(--gradient-emerald);` on a container.
+   ============================================================ */
+:root {
+  /* Soft, off-center ellipse washes (natural "light source" feel) layered over
+     a faint diagonal undertone — replaces the earlier saturated circular blobs. */
+  --gradient-emerald: linear-gradient(155deg, rgba(0,150,137,0.10) 0%, rgba(250,250,250,0) 55%),
+      radial-gradient(120% 100% at 12% -10%,
+      rgba(0, 201, 80, 0.22) 0%,
+      rgba(0, 150, 137, 0.12) 35%,
+      rgba(0, 130, 54, 0.05) 60%,
+      transparent 82%); /* @kind color */
+  --gradient-brand: linear-gradient(155deg, rgba(254,154,0,0.08) 0%, rgba(250,250,250,0) 55%),
+      radial-gradient(120% 100% at 12% -10%,
+      rgba(201, 173, 123, 0.28) 0%,
+      rgba(255, 185, 0, 0.14) 35%,
+      rgba(254, 154, 0, 0.06) 60%,
+      transparent 82%); /* @kind color */
+  --gradient-sapphire: linear-gradient(155deg, rgba(0,150,137,0.09) 0%, rgba(250,250,250,0) 55%),
+      radial-gradient(120% 100% at 12% -10%,
+      rgba(20, 71, 230, 0.22) 0%,
+      rgba(0, 150, 137, 0.13) 35%,
+      rgba(16, 78, 100, 0.06) 60%,
+      transparent 82%); /* @kind color */
+  --gradient-coral: linear-gradient(155deg, rgba(254,154,0,0.08) 0%, rgba(250,250,250,0) 55%),
+      radial-gradient(120% 100% at 12% -10%,
+      rgba(231, 0, 11, 0.20) 0%,
+      rgba(245, 73, 0, 0.12) 35%,
+      rgba(254, 154, 0, 0.05) 60%,
+      transparent 82%); /* @kind color */
+  --gradient-amethyst: linear-gradient(155deg, rgba(20,71,230,0.08) 0%, rgba(250,250,250,0) 55%),
+      radial-gradient(120% 100% at 12% -10%,
+      rgba(173, 70, 255, 0.22) 0%,
+      rgba(20, 71, 230, 0.12) 35%,
+      rgba(0, 201, 80, 0.05) 60%,
+      transparent 82%); /* @kind color */
+  --gradient-tangerine: linear-gradient(155deg, rgba(255,185,0,0.09) 0%, rgba(250,250,250,0) 55%),
+      radial-gradient(120% 100% at 12% -10%,
+      rgba(254, 154, 0, 0.26) 0%,
+      rgba(255, 185, 0, 0.14) 35%,
+      rgba(201, 173, 123, 0.06) 60%,
+      transparent 82%); /* @kind color */
+}
+
+/* ============================================================
+   Shadows — buttons cast a soft tinted glow using their bg color.
+   Use --shadow-glow-* with currentColor for tint matching.
+   ============================================================ */
+:root {
+  --shadow-button: 0 8px 24px -8px color-mix(in oklab, var(--color-action-primary) 60%, transparent);
+  --shadow-card: 0 1px 2px rgba(9,9,11,0.04), 0 8px 24px -12px rgba(9,9,11,0.10);
+  --shadow-elevated: 0 4px 12px rgba(9,9,11,0.08), 0 16px 40px -16px rgba(9,9,11,0.18);
+  --shadow-dialog: 0 10px 30px -10px rgba(9,9,11,0.25), 0 30px 60px -20px rgba(9,9,11,0.20);
+}
+[data-theme="dark"] {
+  --shadow-button: 0 10px 28px -10px color-mix(in oklab, var(--color-action-primary) 70%, transparent);
+  --shadow-card: 0 1px 2px rgba(0,0,0,0.30), 0 8px 24px -12px rgba(0,0,0,0.50);
+  --shadow-elevated: 0 4px 12px rgba(0,0,0,0.35), 0 16px 40px -16px rgba(0,0,0,0.55);
+  --shadow-dialog: 0 10px 30px -10px rgba(0,0,0,0.65), 0 30px 60px -20px rgba(0,0,0,0.55);
+}
+
+/* ============================================================
+   Common interaction helpers
+   ============================================================ */
+.noor-haze {
+  /* Approximates the Haze ultraThin material used on bars/dialogs */
+  background: color-mix(in oklab, var(--color-surface-primary) 65%, transparent);
+  -webkit-backdrop-filter: blur(20px) saturate(180%);
+  backdrop-filter: blur(20px) saturate(180%);
+}
+
+::selection {
+  background: color-mix(in oklab, var(--color-action-primary) 30%, transparent);
+  color: var(--color-info-primary);
+}
