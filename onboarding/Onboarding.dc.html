@@ -480,7 +480,7 @@ class Component extends DCLogic {
       phoneMask: s.phone.length < 10 ? '00000 00000'.slice(this.fmt(s.phone).length) : '',
       phoneCursor: isPhone && !full,
       phoneInnerBorder: s.phoneError ? 'color-mix(in oklab, var(--color-input-border-error) 50%, transparent)' : 'var(--color-input-border-disabled)',
-      phoneHalo: !s.phoneError && s.phone.length > 0 && !full ? 'color-mix(in oklab, var(--color-input-border-focused) 50%, transparent)' : 'transparent',
+      phoneHalo: !s.phoneError && !full ? 'color-mix(in oklab, var(--color-input-border-focused) 50%, transparent)' : 'transparent',
       phoneAnim: s.phoneError ? 'lfshake .45s ease' : 'none',
       phoneError: s.phoneError,
       onContinue: this.onContinue,
