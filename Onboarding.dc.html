@@ -48,7 +48,8 @@
   <!-- Storyboard rows (static, one row per flow) -->
   <div class="poc-frames">
     <x-import component="IntroRow" from="./_poc/storyboards/intro-row.jsx" active="{{ introActive }}" hint-size="760px,560px"></x-import>
-    <x-import component="LoginRow" from="./_poc/storyboards/login-row.jsx" active="{{ loginActive }}" hint-size="1720px,600px"></x-import>
+    <x-import component="PhoneRow" from="./_poc/storyboards/phone-row.jsx" active="{{ phoneActive }}" hint-size="760px,600px"></x-import>
+    <x-import component="OtpRow" from="./_poc/storyboards/otp-row.jsx" active="{{ otpActive }}" hint-size="1000px,600px"></x-import>
   </div>
 
   <!-- Live device — one continuous prototype: intro → phone → OTP -->
@@ -447,16 +448,16 @@ class Component extends DCLogic {
 
     /* board rings */
     const introActive = isIntro ? cur : -1;
-    let loginActive = -1;
-    if (isPhone) loginActive = s.phoneError ? 2 : (full ? 1 : 0);
-    if (isOtp) loginActive = (s.success || s.verifying) ? 6 : (s.otpError ? 5 : (s.otp.length > 0 ? 4 : 3));
+    const phoneActive = isPhone ? (s.phoneError ? 2 : (full ? 1 : 0)) : -1;
+    const otpActive = isOtp ? ((s.success || s.verifying) ? 3 : (s.otpError ? 2 : (s.otp.length > 0 ? 1 : 0))) : -1;
 
     return {
       /* stages */
       isIntroStage: isIntro,
       isLoginStage: !isIntro,
       introActive,
-      loginActive,
+      phoneActive,
+      otpActive,
       restart: this.restart,
 
       /* intro */
