@@ -1,0 +1,13 @@
+{
+  "version": "0.2.0",
+  "configurations": [
+    {
+      "name": "Launch Noor POC Dev Server",
+      "type": "python",
+      "request": "launch",
+      "program": "${workspaceFolder}/_theme/devserver.py",
+      "console": "integratedTerminal",
+      "args": ["8474"]
+    }
+  ]
+}
