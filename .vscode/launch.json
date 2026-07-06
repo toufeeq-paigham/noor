@@ -7,7 +7,12 @@
       "request": "launch",
       "program": "${workspaceFolder}/_theme/devserver.py",
       "console": "integratedTerminal",
-      "args": ["8474"]
+      "args": ["8474"],
+      "serverReadyAction": {
+        "pattern": "Noor POC server \\(no-store\\) on (http://localhost:\\d+)",
+        "uriFormat": "%s/Index.dc.html",
+        "action": "openExternally"
+      }
     }
   ]
 }
