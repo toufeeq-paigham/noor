@@ -4,15 +4,15 @@
 // `active` = index 0-2 of the slide the live device shows (-1 = none).
 
 const INTRO_SLIDES = [
-  { name: 'Qaum', img: 'uploads/intro_qaum.webp', pos: 'center top',
+  { name: 'Qaum', img: '../uploads/intro_qaum.webp', pos: 'center top',
     gradient: 'linear-gradient(to bottom,rgba(0,0,0,0.04) 0%,rgba(0,0,0,0.1) 38%,rgba(0,0,0,0.45) 60%,rgba(0,0,0,0.72) 80%,rgba(0,0,0,0.82) 100%)',
     title: 'Your Qaum, connected',
     sub: 'Follow your local Masjid, get announcements, and stay connected to your community' },
-  { name: 'Salaah', img: 'uploads/intro_salaah.webp', pos: 'center',
+  { name: 'Salaah', img: '../uploads/intro_salaah.webp', pos: 'center',
     gradient: 'linear-gradient(to bottom,rgba(0,0,0,0.04) 0%,rgba(0,0,0,0.1) 38%,rgba(0,0,0,0.48) 62%,rgba(0,0,0,0.74) 80%,rgba(0,0,0,0.84) 100%)',
     title: 'Your Salah, on time',
     sub: 'Prayer times, Qibla direction, and reminders for all five daily prayers' },
-  { name: 'Ibadah', img: 'uploads/intro_ibadah.webp', pos: 'center',
+  { name: 'Ibadah', img: '../uploads/intro_ibadah.webp', pos: 'center',
     gradient: 'linear-gradient(to bottom,rgba(0,0,0,0.04) 0%,rgba(0,0,0,0.1) 38%,rgba(0,0,0,0.48) 62%,rgba(0,0,0,0.74) 80%,rgba(0,0,0,0.84) 100%)',
     title: 'Your Ibadah, all in one place',
     sub: "Qur'an, Duas & Dhikr, Asma ul Husna, Zakaat calculator and more" },
