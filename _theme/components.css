@@ -26,6 +26,8 @@
 .ib-filled{background:var(--color-action-primary);color:var(--color-action-primary-inverse);box-shadow:0 10px 24px -10px color-mix(in oklab,var(--color-action-primary) 65%,transparent)}
 .ib-tonal{background:color-mix(in oklab,var(--color-info-primary) 10%,transparent);color:var(--color-info-primary);border:1px solid color-mix(in oklab,var(--color-info-primary) 20%,transparent)}
 .ib-tonal.primary{background:color-mix(in oklab,var(--color-action-primary) 10%,transparent);color:var(--color-action-primary);border-color:color-mix(in oklab,var(--color-action-primary) 25%,transparent)}
+.ib-tonal.teal{background:color-mix(in oklab,var(--color-action-secondary) 12%,transparent);color:var(--color-action-secondary);border-color:color-mix(in oklab,var(--color-action-secondary) 25%,transparent)}
+.ib-tonal.contained{background:var(--color-action-secondary);color:#fff;border:none;box-shadow:0 8px 20px -8px color-mix(in oklab,var(--color-action-secondary) 50%,transparent)}
 .ib-link{background:transparent;color:var(--color-info-primary)}
 .ib .material-symbols-rounded{font-size:22px}
 .ib.sm .material-symbols-rounded{font-size:16px}
