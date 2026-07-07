@@ -1,6 +1,8 @@
 .DS_Store
 .idea/
-.claude/
+.claude/*
+!.claude/skills/
+.claude/skills/*-workspace/
 .thumbnail
 node_modules/
 dist/

@@ -4,6 +4,33 @@
   "graph": {},
   "nodes": [
     {
+      "label": "check_page.py",
+      "file_type": "code",
+      "source_file": ".claude/skills/add-screen/scripts/check_page.py",
+      "source_location": "L1",
+      "id": "scripts_check_page",
+      "community": 18,
+      "norm_label": "check_page.py"
+    },
+    {
+      "label": "main()",
+      "file_type": "code",
+      "source_file": ".claude/skills/add-screen/scripts/check_page.py",
+      "source_location": "L26",
+      "id": "scripts_check_page_main",
+      "community": 18,
+      "norm_label": "main()"
+    },
+    {
+      "label": "int",
+      "file_type": "code",
+      "source_file": ".claude/skills/add-screen/scripts/check_page.py",
+      "source_location": "L26",
+      "id": "int",
+      "community": 18,
+      "norm_label": "int"
+    },
+    {
       "label": "launch.json",
       "file_type": "code",
       "source_file": ".vscode/launch.json",
@@ -2680,6 +2707,141 @@
       "norm_label": "init()"
     },
     {
+      "label": "SKILL.md",
+      "file_type": "document",
+      "source_file": ".claude/skills/add-screen/SKILL.md",
+      "source_location": "L1",
+      "id": "add_screen_skill",
+      "community": 16,
+      "norm_label": "skill.md"
+    },
+    {
+      "label": "Add a section board to the Noor POC",
+      "file_type": "document",
+      "source_file": ".claude/skills/add-screen/SKILL.md",
+      "source_location": "L6",
+      "id": "add_screen_skill_add_a_section_board_to_the_noor_poc",
+      "community": 16,
+      "norm_label": "add a section board to the noor poc"
+    },
+    {
+      "label": "Anatomy",
+      "file_type": "document",
+      "source_file": ".claude/skills/add-screen/SKILL.md",
+      "source_location": "L20",
+      "id": "add_screen_skill_anatomy",
+      "community": 16,
+      "norm_label": "anatomy"
+    },
+    {
+      "label": "Step 1 \u2014 Inventory the source screens",
+      "file_type": "document",
+      "source_file": ".claude/skills/add-screen/SKILL.md",
+      "source_location": "L33",
+      "id": "add_screen_skill_step_1_inventory_the_source_screens",
+      "community": 16,
+      "norm_label": "step 1 \u2014 inventory the source screens"
+    },
+    {
+      "label": "Step 2 \u2014 Scaffold the board page",
+      "file_type": "document",
+      "source_file": ".claude/skills/add-screen/SKILL.md",
+      "source_location": "L45",
+      "id": "add_screen_skill_step_2_scaffold_the_board_page",
+      "community": 16,
+      "norm_label": "step 2 \u2014 scaffold the board page"
+    },
+    {
+      "label": "Step 3 \u2014 Storyboard rows",
+      "file_type": "document",
+      "source_file": ".claude/skills/add-screen/SKILL.md",
+      "source_location": "L78",
+      "id": "add_screen_skill_step_3_storyboard_rows",
+      "community": 16,
+      "norm_label": "step 3 \u2014 storyboard rows"
+    },
+    {
+      "label": "Step 4 \u2014 The live device: one stage machine",
+      "file_type": "document",
+      "source_file": ".claude/skills/add-screen/SKILL.md",
+      "source_location": "L94",
+      "id": "add_screen_skill_step_4_the_live_device_one_stage_machine",
+      "community": 16,
+      "norm_label": "step 4 \u2014 the live device: one stage machine"
+    },
+    {
+      "label": "Step 5 \u2014 Theming and DS fidelity",
+      "file_type": "document",
+      "source_file": ".claude/skills/add-screen/SKILL.md",
+      "source_location": "L111",
+      "id": "add_screen_skill_step_5_theming_and_ds_fidelity",
+      "community": 16,
+      "norm_label": "step 5 \u2014 theming and ds fidelity"
+    },
+    {
+      "label": "Step 6 \u2014 Rewire the rest of the repo",
+      "file_type": "document",
+      "source_file": ".claude/skills/add-screen/SKILL.md",
+      "source_location": "L124",
+      "id": "add_screen_skill_step_6_rewire_the_rest_of_the_repo",
+      "community": 16,
+      "norm_label": "step 6 \u2014 rewire the rest of the repo"
+    },
+    {
+      "label": "Step 7 \u2014 Verify before you're done",
+      "file_type": "document",
+      "source_file": ".claude/skills/add-screen/SKILL.md",
+      "source_location": "L134",
+      "id": "add_screen_skill_step_7_verify_before_you_re_done",
+      "community": 16,
+      "norm_label": "step 7 \u2014 verify before you're done"
+    },
+    {
+      "label": "board-anatomy.md",
+      "file_type": "document",
+      "source_file": ".claude/skills/add-screen/references/board-anatomy.md",
+      "source_location": "L1",
+      "id": "references_board_anatomy",
+      "community": 17,
+      "norm_label": "board-anatomy.md"
+    },
+    {
+      "label": "Section board \u2014 annotated skeletons",
+      "file_type": "document",
+      "source_file": ".claude/skills/add-screen/references/board-anatomy.md",
+      "source_location": "L1",
+      "id": "references_board_anatomy_section_board_annotated_skeletons",
+      "community": 17,
+      "norm_label": "section board \u2014 annotated skeletons"
+    },
+    {
+      "label": "1. The board page \u2014 `<section>/<Section>.dc.html`",
+      "file_type": "document",
+      "source_file": ".claude/skills/add-screen/references/board-anatomy.md",
+      "source_location": "L6",
+      "id": "references_board_anatomy_1_the_board_page_section_section_dc_html",
+      "community": 17,
+      "norm_label": "1. the board page \u2014 `<section>/<section>.dc.html`"
+    },
+    {
+      "label": "2. A storyboard row \u2014 `<section>/storyboards/<flow>-row.jsx`",
+      "file_type": "document",
+      "source_file": ".claude/skills/add-screen/references/board-anatomy.md",
+      "source_location": "L141",
+      "id": "references_board_anatomy_2_a_storyboard_row_section_storyboards_flow_row_jsx",
+      "community": 17,
+      "norm_label": "2. a storyboard row \u2014 `<section>/storyboards/<flow>-row.jsx`"
+    },
+    {
+      "label": "Index registration",
+      "file_type": "document",
+      "source_file": ".claude/skills/add-screen/references/board-anatomy.md",
+      "source_location": "L188",
+      "id": "references_board_anatomy_index_registration",
+      "community": 17,
+      "norm_label": "index registration"
+    },
+    {
       "label": "CLAUDE.md",
       "file_type": "document",
       "source_file": "CLAUDE.md",
@@ -3149,6 +3311,27 @@
     }
   ],
   "links": [
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": ".claude/skills/add-screen/scripts/check_page.py",
+      "source_location": "L26",
+      "weight": 1.0,
+      "source": "scripts_check_page",
+      "target": "scripts_check_page_main",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "references",
+      "context": "return_type",
+      "confidence": "EXTRACTED",
+      "source_file": ".claude/skills/add-screen/scripts/check_page.py",
+      "source_location": "L26",
+      "weight": 1.0,
+      "source": "scripts_check_page_main",
+      "target": "int",
+      "confidence_score": 1.0
+    },
     {
       "relation": "contains",
       "confidence": "EXTRACTED",
@@ -6729,12 +6912,142 @@
     {
       "relation": "contains",
       "confidence": "EXTRACTED",
+      "source_file": ".claude/skills/add-screen/SKILL.md",
+      "source_location": "L6",
+      "weight": 1.0,
+      "source": "add_screen_skill",
+      "target": "add_screen_skill_add_a_section_board_to_the_noor_poc",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": ".claude/skills/add-screen/SKILL.md",
+      "source_location": "L20",
+      "weight": 1.0,
+      "source": "add_screen_skill_add_a_section_board_to_the_noor_poc",
+      "target": "add_screen_skill_anatomy",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": ".claude/skills/add-screen/SKILL.md",
+      "source_location": "L33",
+      "weight": 1.0,
+      "source": "add_screen_skill_add_a_section_board_to_the_noor_poc",
+      "target": "add_screen_skill_step_1_inventory_the_source_screens",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": ".claude/skills/add-screen/SKILL.md",
+      "source_location": "L45",
+      "weight": 1.0,
+      "source": "add_screen_skill_add_a_section_board_to_the_noor_poc",
+      "target": "add_screen_skill_step_2_scaffold_the_board_page",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": ".claude/skills/add-screen/SKILL.md",
+      "source_location": "L78",
+      "weight": 1.0,
+      "source": "add_screen_skill_add_a_section_board_to_the_noor_poc",
+      "target": "add_screen_skill_step_3_storyboard_rows",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": ".claude/skills/add-screen/SKILL.md",
+      "source_location": "L94",
+      "weight": 1.0,
+      "source": "add_screen_skill_add_a_section_board_to_the_noor_poc",
+      "target": "add_screen_skill_step_4_the_live_device_one_stage_machine",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": ".claude/skills/add-screen/SKILL.md",
+      "source_location": "L111",
+      "weight": 1.0,
+      "source": "add_screen_skill_add_a_section_board_to_the_noor_poc",
+      "target": "add_screen_skill_step_5_theming_and_ds_fidelity",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": ".claude/skills/add-screen/SKILL.md",
+      "source_location": "L124",
+      "weight": 1.0,
+      "source": "add_screen_skill_add_a_section_board_to_the_noor_poc",
+      "target": "add_screen_skill_step_6_rewire_the_rest_of_the_repo",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": ".claude/skills/add-screen/SKILL.md",
+      "source_location": "L134",
+      "weight": 1.0,
+      "source": "add_screen_skill_add_a_section_board_to_the_noor_poc",
+      "target": "add_screen_skill_step_7_verify_before_you_re_done",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": ".claude/skills/add-screen/references/board-anatomy.md",
+      "source_location": "L1",
+      "weight": 1.0,
+      "source": "references_board_anatomy",
+      "target": "references_board_anatomy_section_board_annotated_skeletons",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": ".claude/skills/add-screen/references/board-anatomy.md",
+      "source_location": "L6",
+      "weight": 1.0,
+      "source": "references_board_anatomy_section_board_annotated_skeletons",
+      "target": "references_board_anatomy_1_the_board_page_section_section_dc_html",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": ".claude/skills/add-screen/references/board-anatomy.md",
+      "source_location": "L141",
+      "weight": 1.0,
+      "source": "references_board_anatomy_section_board_annotated_skeletons",
+      "target": "references_board_anatomy_2_a_storyboard_row_section_storyboards_flow_row_jsx",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": ".claude/skills/add-screen/references/board-anatomy.md",
+      "source_location": "L188",
+      "weight": 1.0,
+      "source": "references_board_anatomy_section_board_annotated_skeletons",
+      "target": "references_board_anatomy_index_registration",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
       "source_file": "CLAUDE.md",
       "source_location": "L17",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "claude",
-      "target": "claude_claude_md",
-      "confidence_score": 1.0
+      "target": "claude_claude_md"
     },
     {
       "relation": "contains",
@@ -6742,9 +7055,9 @@
       "source_file": "CLAUDE.md",
       "source_location": "L1",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "claude",
-      "target": "claude_graphify",
-      "confidence_score": 1.0
+      "target": "claude_graphify"
     },
     {
       "relation": "contains",
@@ -6752,9 +7065,9 @@
       "source_file": "CLAUDE.md",
       "source_location": "L22",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "claude_claude_md",
-      "target": "claude_agent_behavior",
-      "confidence_score": 1.0
+      "target": "claude_agent_behavior"
     },
     {
       "relation": "contains",
@@ -6762,9 +7075,9 @@
       "source_file": "CLAUDE.md",
       "source_location": "L139",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "claude_claude_md",
-      "target": "claude_commit_messages",
-      "confidence_score": 1.0
+      "target": "claude_commit_messages"
     },
     {
       "relation": "contains",
@@ -6772,9 +7085,9 @@
       "source_file": "CLAUDE.md",
       "source_location": "L122",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "claude_claude_md",
-      "target": "claude_design_system_rules",
-      "confidence_score": 1.0
+      "target": "claude_design_system_rules"
     },
     {
       "relation": "contains",
@@ -6782,9 +7095,9 @@
       "source_file": "CLAUDE.md",
       "source_location": "L104",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "claude_claude_md",
-      "target": "claude_project_structure",
-      "confidence_score": 1.0
+      "target": "claude_project_structure"
     },
     {
       "relation": "contains",
@@ -6792,9 +7105,9 @@
       "source_file": "CLAUDE.md",
       "source_location": "L90",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "claude_claude_md",
-      "target": "claude_run_commands",
-      "confidence_score": 1.0
+      "target": "claude_run_commands"
     },
     {
       "relation": "contains",
@@ -6802,9 +7115,9 @@
       "source_file": "CLAUDE.md",
       "source_location": "L74",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "claude_agent_behavior",
-      "target": "claude_rule_10_checkpoint_after_every_significant_step",
-      "confidence_score": 1.0
+      "target": "claude_rule_10_checkpoint_after_every_significant_step"
     },
     {
       "relation": "contains",
@@ -6812,9 +7125,9 @@
       "source_file": "CLAUDE.md",
       "source_location": "L79",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "claude_agent_behavior",
-      "target": "claude_rule_11_match_the_codebase_s_conventions_even_if_you_disagree",
-      "confidence_score": 1.0
+      "target": "claude_rule_11_match_the_codebase_s_conventions_even_if_you_disagree"
     },
     {
       "relation": "contains",
@@ -6822,9 +7135,9 @@
       "source_file": "CLAUDE.md",
       "source_location": "L84",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "claude_agent_behavior",
-      "target": "claude_rule_12_fail_loud",
-      "confidence_score": 1.0
+      "target": "claude_rule_12_fail_loud"
     },
     {
       "relation": "contains",
@@ -6832,9 +7145,9 @@
       "source_file": "CLAUDE.md",
       "source_location": "L27",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "claude_agent_behavior",
-      "target": "claude_rule_1_think_before_coding",
-      "confidence_score": 1.0
+      "target": "claude_rule_1_think_before_coding"
     },
     {
       "relation": "contains",
@@ -6842,9 +7155,9 @@
       "source_file": "CLAUDE.md",
       "source_location": "L32",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "claude_agent_behavior",
-      "target": "claude_rule_2_simplicity_first",
-      "confidence_score": 1.0
+      "target": "claude_rule_2_simplicity_first"
     },
     {
       "relation": "contains",
@@ -6852,9 +7165,9 @@
       "source_file": "CLAUDE.md",
       "source_location": "L37",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "claude_agent_behavior",
-      "target": "claude_rule_3_surgical_changes",
-      "confidence_score": 1.0
+      "target": "claude_rule_3_surgical_changes"
     },
     {
       "relation": "contains",
@@ -6862,9 +7175,9 @@
       "source_file": "CLAUDE.md",
       "source_location": "L42",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "claude_agent_behavior",
-      "target": "claude_rule_4_goal_driven_execution",
-      "confidence_score": 1.0
+      "target": "claude_rule_4_goal_driven_execution"
     },
     {
       "relation": "contains",
@@ -6872,9 +7185,9 @@
       "source_file": "CLAUDE.md",
       "source_location": "L47",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "claude_agent_behavior",
-      "target": "claude_rule_5_use_the_model_only_for_judgment_calls",
-      "confidence_score": 1.0
+      "target": "claude_rule_5_use_the_model_only_for_judgment_calls"
     },
     {
       "relation": "contains",
@@ -6882,9 +7195,9 @@
       "source_file": "CLAUDE.md",
       "source_location": "L53",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "claude_agent_behavior",
-      "target": "claude_rule_6_token_budgets_are_not_advisory",
-      "confidence_score": 1.0
+      "target": "claude_rule_6_token_budgets_are_not_advisory"
     },
     {
       "relation": "contains",
@@ -6892,9 +7205,9 @@
       "source_file": "CLAUDE.md",
       "source_location": "L59",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "claude_agent_behavior",
-      "target": "claude_rule_7_surface_conflicts_don_t_average_them",
-      "confidence_score": 1.0
+      "target": "claude_rule_7_surface_conflicts_don_t_average_them"
     },
     {
       "relation": "contains",
@@ -6902,9 +7215,9 @@
       "source_file": "CLAUDE.md",
       "source_location": "L64",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "claude_agent_behavior",
-      "target": "claude_rule_8_read_before_you_write",
-      "confidence_score": 1.0
+      "target": "claude_rule_8_read_before_you_write"
     },
     {
       "relation": "contains",
@@ -6912,9 +7225,9 @@
       "source_file": "CLAUDE.md",
       "source_location": "L69",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "claude_agent_behavior",
-      "target": "claude_rule_9_tests_verify_intent_not_just_behavior",
-      "confidence_score": 1.0
+      "target": "claude_rule_9_tests_verify_intent_not_just_behavior"
     },
     {
       "relation": "contains",
@@ -7218,5 +7531,5 @@
     }
   ],
   "hyperedges": [],
-  "built_at_commit": "4de88848384ba400a51e670a76df0e88eac9acce"
+  "built_at_commit": "aca46c2c3fb96eae472f6dc1b1a22d7b80ac7876"
 }

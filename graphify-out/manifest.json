@@ -528,5 +528,20 @@
     "mtime": 1783402221.6871066,
     "ast_hash": "02116f7d0ff0332739c80fe36c5fd946",
     "semantic_hash": ""
+  },
+  "/Users/toufeeqahamed/Paigham/noor/.claude/skills/add-screen/scripts/check_page.py": {
+    "mtime": 1783403060.218052,
+    "ast_hash": "a9113025ffde950235ba398d3a0289e4",
+    "semantic_hash": ""
+  },
+  "/Users/toufeeqahamed/Paigham/noor/.claude/skills/add-screen/SKILL.md": {
+    "mtime": 1783402936.318208,
+    "ast_hash": "adbb976366ddb1c46532643379273bf8",
+    "semantic_hash": ""
+  },
+  "/Users/toufeeqahamed/Paigham/noor/.claude/skills/add-screen/references/board-anatomy.md": {
+    "mtime": 1783402983.6235979,
+    "ast_hash": "ce159c5e0107ff3fbd2462ad5cfac9d2",
+    "semantic_hash": ""
   }
 }
