@@ -54,10 +54,10 @@
       <div class="noor-screen" style="display:flex;flex-direction:column;height:100%;position:relative;overflow:hidden">
         <div class="noor-island"></div>
 
-        {/* Screen Slot */}
-        <div style="flex:1;position:relative;overflow:hidden">
+        <!-- Screen Slot -->
+        <div style="flex:1;position:relative">
           
-          {/* TAB 0: HOME SCREEN */}
+          <!-- TAB 0: HOME SCREEN -->
           <sc-if value="{{ isHomeTab }}">
             <x-import component="HomeScreen" from="./storyboards/screens.jsx"
                       hero-sel="{{ homeHeroSel }}"
@@ -82,7 +82,7 @@
             </x-import>
           </sc-if>
 
-          {/* TAB 1: QAUM SCREEN */}
+          <!-- TAB 1: QAUM SCREEN -->
           <sc-if value="{{ isQaumTab }}">
             <x-import component="QaumScreen" from="./storyboards/screens.jsx"
                       active-filter="{{ qaumFilter }}"
@@ -98,7 +98,7 @@
             </x-import>
           </sc-if>
 
-          {/* TAB 2: QURAN SCREEN */}
+          <!-- TAB 2: QURAN SCREEN -->
           <sc-if value="{{ isQuranTab }}">
             <x-import component="QuranScreen" from="./storyboards/screens.jsx"
                       active-tab="{{ quranTab }}"
@@ -112,7 +112,7 @@
             </x-import>
           </sc-if>
 
-          {/* TAB 3: SALAAH SCREEN */}
+          <!-- TAB 3: SALAAH SCREEN -->
           <sc-if value="{{ isSalaahTab }}">
             <x-import component="SalaahScreen" from="./storyboards/screens.jsx"
                       masjid-letter="{{ salaahMasjidLetter }}"
@@ -131,7 +131,7 @@
             </x-import>
           </sc-if>
 
-          {/* TAB 4: PROFILE SCREEN */}
+          <!-- TAB 4: PROFILE SCREEN -->
           <sc-if value="{{ isProfileTab }}">
             <x-import component="ProfileScreen" from="./storyboards/screens.jsx"
                       user-name="Toufeeq Ahamed"
@@ -151,12 +151,12 @@
           
         </div>
 
-        {/* BOTTOM TAB BAR (Anchored Live Device Component) */}
-        <div class="nb-bar" style="position:absolute;bottom:0;left:0;right:0;padding-bottom:24px;z-index:50">
+        <!-- BOTTOM TAB BAR (Anchored Live Device Component) -->
+        <div class="nb-bar">
           <div class="nb-glow" style="left: {{ navGlowLeft }}"></div>
           <div class="nb-nav">
             <sc-for list="{{ tabs }}" as="t" hint-placeholder-count="5">
-              <div class={`nb-item ${t.cls}`} onClick="{{ t.onTap }}">
+              <div class="nb-item {{ t.cls }}" onClick="{{ t.onTap }}">
                 <span class="material-symbols-rounded">{{ t.icon }}</span>
                 <span>{{ t.label }}</span>
               </div>

@@ -1662,25 +1662,33 @@ function Switch({
 function Checkbox({
   checked,
   onChange,
-  indeterminate
+  indeterminate,
+  size = 'medium'
 }) {
+  const containerSize = size === 'large' ? 48 : size === 'small' ? 32 : 40;
+  const iconSize = size === 'large' ? 24 : size === 'small' ? 16 : 20;
+  const borderColor = checked ? NOOR.primary : A(NOOR.primary, 45);
+  const backgroundColor = checked ? NOOR.primary : A(NOOR.primary, 12);
   return /*#__PURE__*/React.createElement("button", {
     onClick: () => onChange?.(!checked),
     style: {
-      width: 24,
-      height: 24,
+      width: containerSize,
+      height: containerSize,
       borderRadius: 360,
-      background: checked ? NOOR.primary : A(NOOR.primary, 12),
-      border: checked ? 'none' : `2px solid ${NOOR.primary}`,
+      border: `1.5px solid ${borderColor}`,
+      background: backgroundColor,
+      backgroundClip: 'content-box',
+      padding: 3,
       display: 'inline-flex',
       alignItems: 'center',
       justifyContent: 'center',
       cursor: 'pointer',
-      padding: 0
+      boxSizing: 'border-box',
+      transition: 'background 180ms, border-color 180ms'
     }
   }, checked && /*#__PURE__*/React.createElement(MIcon, {
     name: "check",
-    size: 18,
+    size: iconSize,
     color: "#fff"
   }), indeterminate && !checked && /*#__PURE__*/React.createElement("span", {
     style: {
@@ -1929,35 +1937,42 @@ function NoorAppBar({
   dark,
   transparent
 }) {
+  const hazeSurfaceColor = transparent ? 'transparent' : dark ? 'rgba(9,9,11,0.4)' : 'rgba(255, 255, 255, 0.12)';
   return /*#__PURE__*/React.createElement("div", {
     style: {
-      padding: '12px 12px 10px',
+      padding: '12px 16px 10px',
       display: 'flex',
       alignItems: 'center',
-      gap: 8,
-      background: transparent ? 'transparent' : dark ? 'rgba(9,9,11,0.4)' : `color-mix(in oklab, ${NOOR.surface} 60%, transparent)`,
-      backdropFilter: transparent ? 'none' : 'blur(22px) saturate(180%)',
-      WebkitBackdropFilter: transparent ? 'none' : 'blur(22px) saturate(180%)',
-      borderBottom: transparent ? 'none' : `1px solid ${dark ? 'rgba(255,255,255,0.08)' : NOOR.border}`,
+      gap: 12,
+      background: hazeSurfaceColor,
+      backdropFilter: transparent ? 'none' : 'blur(24px) saturate(180%)',
+      WebkitBackdropFilter: transparent ? 'none' : 'blur(24px) saturate(180%)',
+      WebkitMaskImage: transparent ? 'none' : 'linear-gradient(180deg, #000 0%, #000 65%, transparent 100%)',
+      maskImage: transparent ? 'none' : 'linear-gradient(180deg, #000 0%, #000 65%, transparent 100%)',
       position: 'relative',
-      zIndex: 5
+      zIndex: 10,
+      height: 56,
+      boxSizing: 'border-box'
     }
   }, leading, /*#__PURE__*/React.createElement("div", {
     style: {
       flex: 1,
       minWidth: 0,
-      paddingLeft: 4
+      display: 'flex',
+      alignItems: 'center'
     }
   }, typeof title === 'string' ? /*#__PURE__*/React.createElement(TitleH3, {
     style: {
       color: dark ? '#fff' : NOOR.fg,
-      fontSize: 22,
-      lineHeight: '28px'
+      fontSize: 20,
+      fontWeight: 700,
+      lineHeight: '26px'
     }
   }, title) : title), trailing && /*#__PURE__*/React.createElement("div", {
     style: {
       display: 'flex',
-      gap: 8
+      gap: 8,
+      alignItems: 'center'
     }
   }, trailing));
 }

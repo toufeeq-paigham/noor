@@ -254,7 +254,11 @@ html.noor-canvas-mode .poc-frames {
 
 /* DC wraps {{ }} interpolations in .sc-interp spans that get the body font,
    which kills Material Symbols ligatures for dynamically-bound icon names.
-   Force interpolated text inside an icon span back to the icon font. */
+   Force interpolated text inside an icon span back to the icon font — and to
+   the icon span's own size, since sibling-span rules (e.g. .nb-item labels)
+   can otherwise shrink the glyph via a :not(.material-symbols-rounded) match. */
 .material-symbols-rounded .sc-interp {
   font-family: inherit !important;
+  font-size: inherit !important;
+  line-height: inherit !important;
 }

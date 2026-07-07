@@ -46,28 +46,33 @@ function HomeScreen({
   const iftaarBorder = heroSel === 'iftaar' ? '1.5px solid rgba(255,255,255,0.75)' : '1.5px solid rgba(255,255,255,0.35)';
 
   return (
-    <div style={{ width: '100%', height: '100%', display: 'flex', flexDirection: 'column', overflow: 'hidden', background: 'var(--color-surface-primary)' }}>
-      {/* App Bar (Translucent glass over hero) */}
-      <div style={{ flexShrink: 0, display: 'flex', alignItems: 'center', gap: 12, padding: '54px 18px 12px', background: 'rgba(255,255,255,0.18)', backdropFilter: 'blur(24px)', WebkitBackdropFilter: 'blur(24px)', zIndex: 10 }}>
-        <div style={{ width: 44, height: 44, borderRadius: '50%', background: 'rgba(120,115,130,0.55)', border: '1.5px solid rgba(255,255,255,0.25)', display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0 }}>
+    <div style={{ width: '100%', height: '100%', position: 'relative' }}>
+      {/* Full screen background image */}
+      <img src="../uploads/maghrib_background.webp" style={{ position: 'absolute', inset: 0, width: '100%', height: '100%', objectFit: 'cover', objectPosition: 'center 25%', zIndex: 0 }} />
+      
+      {/* App Bar — transparent + blur only, matching hazeSurfaceColor=Color.Transparent in HomeTab.kt */}
+      <div className="app-bar" style={{ padding: '54px 16px 10px', height: 98 }}>
+        {/* Avatar — Maghrib: EerieBlack border @72% */}
+        <div style={{ width: 44, height: 44, borderRadius: '50%', background: 'rgba(0,0,0,0.18)', border: '1.5px solid rgba(26,22,18,0.72)', display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0 }}>
           <span style={{ fontFamily: '"Nunito", sans-serif', fontSize: 18, fontWeight: 700, color: '#fff' }}>{userName.charAt(0)}</span>
         </div>
+        {/* Title: JetBlack, Subtitle: JetBlack @70% — matching appBarTitle/appBarSubtitle for Maghrib */}
         <div style={{ flex: 1, minWidth: 0 }}>
           <div style={{ fontFamily: '"Nunito", sans-serif', fontSize: 17, fontWeight: 700, color: '#1A1612' }}>Salaam, {userName}</div>
-          <div style={{ fontFamily: '"Nunito", sans-serif', fontSize: 12, color: 'rgba(30,20,10,0.55)', marginTop: 1 }}>{masjidName}</div>
+          <div style={{ fontFamily: '"Nunito", sans-serif', fontSize: 12, color: 'rgba(26,22,18,0.70)', marginTop: 1 }}>{masjidName}</div>
         </div>
-        <div onClick={onBellTap} style={{ position: 'relative', width: 40, height: 40, borderRadius: '50%', background: 'rgba(255,255,255,0.22)', border: '1.5px solid rgba(255,255,255,0.3)', display: 'flex', alignItems: 'center', justifyContent: 'center', cursor: 'pointer', flexShrink: 0 }}>
+        {/* Bell icon button */}
+        <div onClick={onBellTap} style={{ position: 'relative', width: 40, height: 40, borderRadius: '50%', background: 'rgba(0,0,0,0.12)', border: '1.5px solid rgba(26,22,18,0.20)', display: 'flex', alignItems: 'center', justifyContent: 'center', cursor: 'pointer', flexShrink: 0 }}>
           <span className="material-symbols-rounded" style={{ fontSize: 20, color: '#1A1612', opacity: bellOpacity, fontVariationSettings: `'FILL' ${bellFill}`, transition: 'opacity 160ms' }}>{bellIcon}</span>
           <div style={{ position: 'absolute', top: 8, right: 9, width: 8, height: 8, borderRadius: '50%', background: 'var(--color-action-primary)', border: '1.5px solid rgba(255,255,255,0.8)', opacity: bellDotOpacity, transition: 'opacity 160ms' }} />
         </div>
       </div>
 
-      {/* Scrollable Content */}
-      <div style={{ flex: 1, overflowY: 'auto', WebkitOverflowScrolling: 'touch', paddingBottom: 80 }}>
+      {/* Scrollable Content — paddingTop clears the absolute app bar */}
+      <div style={{ position: 'absolute', inset: 0, overflowY: 'auto', WebkitOverflowScrolling: 'touch', paddingTop: 98, paddingBottom: 80, zIndex: 1, boxSizing: 'border-box' }}>
         {/* Hero */}
-        <div style={{ position: 'relative', height: 320, overflow: 'hidden' }}>
-          <img src="../uploads/maghrib_background.webp" style={{ position: 'absolute', inset: 0, width: '100%', height: '100%', objectFit: 'cover', objectPosition: 'center 25%' }} />
-          <div style={{ position: 'absolute', inset: 0, background: 'linear-gradient(to bottom,transparent 40%,rgba(22,18,28,0.6) 100%)' }} />
+        <div style={{ position: 'relative', height: 320, overflow: 'hidden', background: 'transparent' }}>
+          <div style={{ position: 'absolute', inset: 0, background: 'linear-gradient(to bottom,transparent 40%,rgba(22,18,28,0.3) 100%)' }} />
           
           <div style={{ position: 'absolute', left: 0, right: 0, bottom: 24, padding: '0 20px' }}>
             <div style={{ textAlign: 'center', marginBottom: 16 }}>
@@ -102,7 +107,7 @@ function HomeScreen({
         </div>
 
         {/* Sheet card */}
-        <div style={{ background: 'var(--color-surface-card)', borderRadius: '24px 24px 0 0', marginTop: -12, paddingBottom: 32 }}>
+        <div style={{ background: 'color-mix(in oklab, var(--color-surface-card) 82%, transparent)', backdropFilter: 'blur(28px) saturate(180%)', WebkitBackdropFilter: 'blur(28px) saturate(180%)', borderRadius: '24px 24px 0 0', marginTop: -12, paddingBottom: 32 }}>
           {/* Drag handle */}
           <div style={{ display: 'flex', justifyContent: 'center', padding: '10px 0 6px' }}>
             <div style={{ width: 38, height: 4, background: 'var(--color-info-faint)', borderRadius: 2 }} />
@@ -147,46 +152,64 @@ function HomeScreen({
             </div>
           )}
 
-          {/* Feature cards grid */}
+          {/* For You Section */}
           <div style={{ padding: '0 20px 24px' }}>
-            <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 14 }}>
-              <div onClick={goQuran} className="surf elevated" style={{ padding: 16, borderRadius: 20, display: 'flex', flexDirection: 'column', gap: 18, cursor: 'pointer' }}>
-                <span className="material-symbols-rounded" style={{ fontSize: 26, color: 'var(--color-action-primary)' }}>menu_book</span>
-                <div>
-                  <div style={{ fontFamily: '"Nunito", sans-serif', fontSize: 17, fontWeight: 800, color: 'var(--color-info-primary)' }}>Quran</div>
-                  <div style={{ fontFamily: '"Nunito", sans-serif', fontSize: 12, color: 'var(--color-info-secondary)', marginTop: 2 }}>Recite and learn</div>
-                </div>
-              </div>
-              <div onClick={goDua} className="surf elevated" style={{ padding: 16, borderRadius: 20, display: 'flex', flexDirection: 'column', gap: 18, cursor: 'pointer' }}>
-                <span className="material-symbols-rounded" style={{ fontSize: 26, color: 'var(--color-action-primary)' }}>favorite</span>
-                <div>
-                  <div style={{ fontFamily: '"Nunito", sans-serif', fontSize: 17, fontWeight: 800, color: 'var(--color-info-primary)' }}>Dua &amp; Azkar</div>
-                  <div style={{ fontFamily: '"Nunito", sans-serif', fontSize: 12, color: 'var(--color-info-secondary)', marginTop: 2 }}>Daily supplications</div>
-                </div>
-              </div>
-            </div>
-
-            <div onClick={goMasjids} className="surf elevated" style={{ padding: '16px 20px', borderRadius: 20, display: 'flex', alignItems: 'center', gap: 14, marginTop: 14, cursor: 'pointer' }}>
-              <span className="material-symbols-rounded" style={{ fontSize: 26, color: 'var(--color-action-primary)' }}>mosque</span>
-              <div style={{ flex: 1 }}>
-                <div style={{ fontFamily: '"Nunito", sans-serif', fontSize: 17, fontWeight: 800, color: 'var(--color-info-primary)' }}>Explore Masjids</div>
-                <div style={{ fontFamily: '"Nunito", sans-serif', fontSize: 12, color: 'var(--color-info-secondary)', marginTop: 2 }}>Find prayer halls near you</div>
-              </div>
-              <span className="material-symbols-rounded" style={{ fontSize: 20, color: 'var(--color-info-faint)' }}>chevron_right</span>
-            </div>
-          </div>
-
-          {/* Sehri helper card */}
-          <div onClick={onSehriTap} style={{ position: 'relative', margin: '0 20px 24px', background: 'radial-gradient(ellipse at bottom left, rgba(0, 201, 80, 0.08) 0%, transparent 65%), var(--color-surface-secondary)', border: '1.5px solid var(--color-neutral-border)', borderRadius: 20, padding: 16, display: 'flex', alignItems: 'center', gap: 14, cursor: 'pointer' }}>
-            <span style={{ fontSize: 28, flexShrink: 0 }}>🍽️</span>
-            <div style={{ flex: 1 }}>
-              <div style={{ fontFamily: '"Nunito", sans-serif', fontSize: 15, fontWeight: 800, color: 'var(--color-info-primary)' }}>Sehri Locations &amp; more</div>
-              <div style={{ fontFamily: '"Nunito", sans-serif', fontSize: 12, color: 'var(--color-info-secondary)', marginTop: 2 }}>Find hotels open for Suhoor</div>
-            </div>
-            <span className="material-symbols-rounded" style={{ fontSize: 20, color: 'var(--color-info-faint)' }}>chevron_right</span>
+            <div style={{ fontFamily: '"Nunito", sans-serif', fontSize: 20, fontWeight: 700, color: 'var(--color-info-primary)', marginBottom: 14 }}>For you</div>
             
-            <div style={{ position: 'absolute', right: 16, top: -32, background: 'var(--color-info-primary)', color: 'var(--color-info-secondary-inverse)', fontFamily: '"Nunito", sans-serif', fontSize: 10, fontWeight: 700, padding: '6px 12px', borderRadius: '12px 12px 0 12px', border: '1px solid var(--color-info-faint)', opacity: sehriNoteVisible ? 1 : 0, pointerEvents: 'none', transition: 'opacity 160ms' }}>
-               hotels open till 4:15 AM
+            <div style={{ display: 'flex', gap: 14, height: 274 }}>
+              {/* Left Column (Quran + Sehri) */}
+              <div style={{ flex: 1, display: 'flex', flexDirection: 'column', gap: 14 }}>
+                {/* Quran Card */}
+                <div onClick={goQuran} style={{ position: 'relative', height: 130, borderRadius: 24, overflow: 'hidden', cursor: 'pointer' }}>
+                  <img src="../uploads/maghrib_quran.webp" style={{ position: 'absolute', inset: 0, width: '100%', height: '100%', objectFit: 'cover' }} />
+                  <div style={{ position: 'absolute', inset: 0, background: 'linear-gradient(90deg, rgba(0,0,0,0.6) 0%, transparent 65%)' }} />
+                  <div style={{ position: 'absolute', left: 16, bottom: 16, display: 'flex', flexDirection: 'column', gap: 2 }}>
+                    <span className="material-symbols-rounded" style={{ fontSize: 18, color: '#FFFFFF' }}>auto_stories</span>
+                    <div style={{ fontFamily: '"Nunito", sans-serif', fontSize: 15, fontWeight: 800, color: '#FFFFFF' }}>Quran</div>
+                    <div style={{ fontFamily: '"Nunito", sans-serif', fontSize: 11, fontWeight: 500, color: 'rgba(255,255,255,0.8)' }}>Recite</div>
+                  </div>
+                </div>
+                
+                {/* Sehri Card */}
+                <div onClick={onSehriTap} style={{ position: 'relative', height: 130, borderRadius: 24, overflow: 'hidden', cursor: 'pointer' }}>
+                  <img src="../uploads/maghrib_sehri.webp" style={{ position: 'absolute', inset: 0, width: '100%', height: '100%', objectFit: 'cover' }} />
+                  <div style={{ position: 'absolute', inset: 0, background: 'linear-gradient(90deg, rgba(0,0,0,0.6) 0%, transparent 65%)' }} />
+                  <div style={{ position: 'absolute', left: 16, bottom: 16, display: 'flex', flexDirection: 'column', gap: 2 }}>
+                    <span className="material-symbols-rounded" style={{ fontSize: 18, color: '#FFFFFF' }}>restaurant</span>
+                    <div style={{ fontFamily: '"Nunito", sans-serif', fontSize: 15, fontWeight: 800, color: '#FFFFFF' }}>Sehri</div>
+                    <div style={{ fontFamily: '"Nunito", sans-serif', fontSize: 11, fontWeight: 500, color: 'rgba(255,255,255,0.8)' }}>Locations &amp; more</div>
+                  </div>
+                  {sehriNoteVisible && (
+                    <div style={{ position: 'absolute', right: 12, top: 12, background: 'var(--color-info-primary)', color: 'var(--color-info-secondary-inverse)', fontFamily: '"Nunito", sans-serif', fontSize: 9, fontWeight: 700, padding: '4px 8px', borderRadius: 8, pointerEvents: 'none' }}>
+                      open till 4:15 AM
+                    </div>
+                  )}
+                </div>
+              </div>
+              
+              {/* Right Column (Dua Card) */}
+              <div style={{ flex: 1 }}>
+                <div onClick={goDua} style={{ position: 'relative', height: '100%', borderRadius: 24, overflow: 'hidden', cursor: 'pointer' }}>
+                  <img src="../uploads/maghrib_dua.webp" style={{ position: 'absolute', inset: 0, width: '100%', height: '100%', objectFit: 'cover' }} />
+                  <div style={{ position: 'absolute', inset: 0, background: 'linear-gradient(180deg, rgba(0,0,0,0.6) 0%, transparent 45%)' }} />
+                  <div style={{ position: 'absolute', left: 16, top: 16, display: 'flex', flexDirection: 'column', gap: 2 }}>
+                    <span className="material-symbols-rounded" style={{ fontSize: 18, color: '#FFFFFF' }}>tasbih</span>
+                    <div style={{ fontFamily: '"Nunito", sans-serif', fontSize: 15, fontWeight: 800, color: '#FFFFFF' }}>Dua &amp; Dikhr</div>
+                    <div style={{ fontFamily: '"Nunito", sans-serif', fontSize: 11, fontWeight: 500, color: 'rgba(255,255,255,0.8)' }}>Daily supplications</div>
+                  </div>
+                </div>
+              </div>
+            </div>
+            
+            {/* Explore Masjids Card (Wide) */}
+            <div onClick={goMasjids} style={{ position: 'relative', height: 168, borderRadius: 24, overflow: 'hidden', marginTop: 14, cursor: 'pointer' }}>
+              <img src="../uploads/maghrib_masjid.webp" style={{ position: 'absolute', inset: 0, width: '100%', height: '100%', objectFit: 'cover' }} />
+              <div style={{ position: 'absolute', inset: 0, background: 'linear-gradient(90deg, rgba(0,0,0,0.65) 0%, transparent 55%)' }} />
+              <div style={{ position: 'absolute', left: 20, bottom: 20, display: 'flex', flexDirection: 'column', gap: 2 }}>
+                <span className="material-symbols-rounded" style={{ fontSize: 20, color: '#FFFFFF' }}>mosque</span>
+                <div style={{ fontFamily: '"Nunito", sans-serif', fontSize: 18, fontWeight: 800, color: '#FFFFFF' }}>Masjids</div>
+                <div style={{ fontFamily: '"Nunito", sans-serif', fontSize: 12, fontWeight: 500, color: 'rgba(255,255,255,0.8)' }}>Explore masjids near you</div>
+              </div>
             </div>
           </div>
 
@@ -195,7 +218,7 @@ function HomeScreen({
             <div style={{ fontFamily: '"Nunito", sans-serif', fontSize: 20, fontWeight: 700, color: 'var(--color-info-primary)', marginBottom: 14 }}>Islamic tools</div>
             <div style={{ display: 'grid', gridTemplateColumns: 'repeat(4,1fr)', gap: 8 }}>
               {[{ emoji: '💰', label: 'Zakaat' }, { emoji: '🗓️', label: 'Hijri' }, { emoji: '🧭', label: 'Qibla' }, { emoji: '📗', label: '99 Names' }].map((t, idx) => (
-                <div key={idx} style={{ background: 'var(--color-surface-card)', border: '1px solid var(--color-neutral-border)', borderRadius: 16, padding: '12px 4px', display: 'flex', flexDirection: 'column', alignItems: 'center', gap: 6, cursor: 'pointer' }}>
+                <div key={idx} style={{ background: 'transparent', borderRadius: 16, padding: '12px 4px', display: 'flex', flexDirection: 'column', alignItems: 'center', gap: 6, cursor: 'pointer' }}>
                   <span style={{ fontSize: 24 }}>{t.emoji}</span>
                   <span style={{ fontFamily: '"Nunito", sans-serif', fontSize: 11, fontWeight: 700, color: 'var(--color-info-primary)', textWrap: 'nowrap' }}>{t.label}</span>
                 </div>

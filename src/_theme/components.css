@@ -87,10 +87,14 @@
 .sw::after{content:"";display:block;width:18px;height:18px;border-radius:360px;background:var(--color-info-primary);transition:transform 120ms}
 .sw.on{background:var(--color-action-primary);border-color:transparent}
 .sw.on::after{transform:translateX(20px);background:#fff}
-.cb{width:24px;height:24px;border-radius:360px;border:2px solid var(--color-action-primary);background:color-mix(in oklab,var(--color-action-primary) 12%,transparent);display:inline-flex;align-items:center;justify-content:center;cursor:pointer;box-sizing:border-box;flex-shrink:0}
-.cb.on{background:var(--color-action-primary);border:none;color:#fff}
+.cb{width:40px;height:40px;border-radius:360px;border:1.5px solid color-mix(in oklab,var(--color-action-primary) 45%,transparent);background:color-mix(in oklab,var(--color-action-primary) 12%,transparent);background-clip:content-box;padding:3px;display:inline-flex;align-items:center;justify-content:center;cursor:pointer;box-sizing:border-box;flex-shrink:0;transition:background 180ms,border-color 180ms,transform 100ms}
+.cb.on{background-color:var(--color-action-primary);border-color:var(--color-action-primary);color:var(--color-action-primary-inverse)}
 .cb.indeterminate::after{content:"";width:12px;height:12px;border-radius:4px;background:var(--color-action-primary)}
-.cb .material-symbols-rounded{font-size:18px}
+.cb .material-symbols-rounded{font-size:20px}
+.cb.large{width:48px;height:48px}
+.cb.large .material-symbols-rounded{font-size:24px}
+.cb.small{width:32px;height:32px}
+.cb.small .material-symbols-rounded{font-size:16px}
 
 /* ── TabBar segmented (preview/tabbar.html) ── */
 .tbar{padding:4px;background:var(--color-action-background);border-radius:16px;display:flex;gap:2px}
@@ -120,16 +124,26 @@
 .ab-title{font-family:var(--font-title);font-size:26px;line-height:1;color:var(--color-info-primary);letter-spacing:-.5px}
 .ab-haze{position:absolute;inset:0 0 auto 0;background:var(--gradient-emerald),var(--color-surface-primary);backdrop-filter:blur(26px) saturate(180%);-webkit-backdrop-filter:blur(26px) saturate(180%);-webkit-mask-image:linear-gradient(180deg,#000 0%,#000 55%,transparent 92%);mask-image:linear-gradient(180deg,#000 0%,#000 55%,transparent 92%)}
 
+/* ── App Bar — transparent haze variant (over media/hero) ──
+   Shared top app bar: transparent, blur-only, sits over a photo/hero. Screens
+   fill in their own leading/title/trailing content. The .ab-* pieces above are
+   the solid large-title header; use this when the bar floats over an image. */
+.app-bar{position:absolute;top:0;left:0;right:0;z-index:10;display:flex;align-items:center;gap:12px;box-sizing:border-box;background:transparent}
+/* Blur haze lives on a pseudo-layer behind the content so the fade mask only
+   softens the blur edge — masking .app-bar directly would fade the avatar,
+   title and bell along with it. */
+.app-bar::before{content:"";position:absolute;inset:0;z-index:-1;backdrop-filter:blur(20px);-webkit-backdrop-filter:blur(20px);-webkit-mask-image:linear-gradient(180deg,#000 0%,#000 60%,transparent 100%);mask-image:linear-gradient(180deg,#000 0%,#000 60%,transparent 100%)}
+
 /* ── Bottom NavBar (preview/navbar.html) ── */
-.nb-bar{position:absolute;left:0;right:0;bottom:0;border-top-left-radius:26px;border-top-right-radius:26px;background:color-mix(in oklab,var(--color-surface-primary) 55%,transparent);border:1px solid var(--color-neutral-border);border-bottom:none;backdrop-filter:blur(18px) saturate(160%);-webkit-backdrop-filter:blur(18px) saturate(160%);padding:14px 6px 12px}
-.nb-glow{position:absolute;top:-6px;width:20%;height:56px;pointer-events:none;transition:left 250ms}
-.nb-glow::before{content:"";position:absolute;left:20%;right:20%;top:0;height:50px;background:radial-gradient(ellipse at top,color-mix(in oklab,var(--color-action-primary) 38%,transparent),transparent 72%);filter:blur(6px)}
-.nb-nav{display:flex;align-items:flex-start;position:relative;z-index:1}
-.nb-item{flex:1;display:flex;flex-direction:column;align-items:center;gap:4px;cursor:pointer;text-decoration:none}
-.nb-item .material-symbols-rounded{font-size:22px;color:var(--color-status-disabled-alt)}
-.nb-item span:last-child{font-family:var(--font-body);font-size:12px;font-weight:500;color:var(--color-status-disabled-alt)}
+.nb-bar{position:absolute;left:0;right:0;bottom:0;border-top-left-radius:26px;border-top-right-radius:26px;background:color-mix(in oklab,var(--color-surface-primary) 88%,transparent);border-top:1px solid var(--color-neutral-border);backdrop-filter:blur(20px);-webkit-backdrop-filter:blur(20px);padding:12px 8px 28px;box-sizing:border-box;z-index:50}
+.nb-glow{position:absolute;top:-8px;width:20%;height:60px;pointer-events:none;transition:left 250ms}
+.nb-glow::before{content:"";position:absolute;left:10%;right:10%;top:0;height:48px;background:radial-gradient(ellipse at top,color-mix(in oklab,var(--color-action-primary) 28%,transparent),transparent 70%);filter:blur(8px)}
+.nb-nav{display:flex;width:100%;position:relative;z-index:1}
+.nb-item{flex:1;min-width:0;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:3px;padding:2px 4px;cursor:pointer;text-decoration:none}
+.nb-item .material-symbols-rounded{font-size:24px;line-height:1;color:var(--color-status-disabled-alt);transition:color 200ms,font-variation-settings 200ms;font-variation-settings:'FILL' 0}
+.nb-item span:not(.material-symbols-rounded){display:block;font-family:var(--font-body);font-size:10px;font-weight:500;color:var(--color-status-disabled-alt);transition:color 200ms;white-space:nowrap}
 .nb-item.active .material-symbols-rounded{color:var(--color-action-primary);font-variation-settings:'FILL' 1}
-.nb-item.active span:last-child{color:var(--color-action-primary);font-weight:700}
+.nb-item.active span:not(.material-symbols-rounded){color:var(--color-action-primary);font-weight:700}
 
 /* ── Pager indicator (preview/pager-indicator.html) ── */
 .ind{display:flex;gap:6px;align-items:center;height:6px}

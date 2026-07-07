@@ -145,6 +145,10 @@
     .ab-circle{width:36px;height:36px;border-radius:360px;background:color-mix(in oklab,var(--color-info-primary) 10%,transparent);display:flex;align-items:center;justify-content:center;color:var(--color-info-primary);flex-shrink:0;cursor:pointer}
     .ab-title{flex:1;font-family:var(--font-title);font-size:26px;line-height:1;color:var(--color-info-primary);letter-spacing:-.5px}
 
+    /* ── App Bar — transparent haze variant (mirrors .app-bar in components.css) ── */
+    .app-bar{position:absolute;top:0;left:0;right:0;z-index:10;display:flex;align-items:center;gap:12px;box-sizing:border-box;background:transparent}
+    .app-bar::before{content:"";position:absolute;inset:0;z-index:-1;backdrop-filter:blur(20px);-webkit-backdrop-filter:blur(20px);-webkit-mask-image:linear-gradient(180deg,#000 0%,#000 60%,transparent 100%);mask-image:linear-gradient(180deg,#000 0%,#000 60%,transparent 100%)}
+
     /* ── Bottom NavBar (canonical navbar.html) ── */
     .nb-scaffold{position:relative;height:170px;overflow:hidden;border-radius:18px;background:var(--color-surface-primary);border:1px solid var(--color-neutral-border)}
     .nb-wash{position:absolute;left:-10%;right:-10%;bottom:60px;height:70px;background:radial-gradient(ellipse at 20% 100%,color-mix(in oklab,var(--color-action-primary) 55%,transparent) 0%,transparent 70%)}
@@ -492,6 +496,20 @@
           <div class="ab-circle"><span class="material-symbols-rounded">search</span></div>
           <div class="ab-circle"><span class="material-symbols-rounded">more_horiz</span></div>
         </div>
+      </div>
+    </div>
+  </div>
+
+  <div style="margin-bottom:24px">
+    <div class="cp-head"><div class="cp-h">App Bar (transparent, over media)</div><div class="cp-sub">Blur-only bar floating over a hero — the haze fades out, but avatar, title &amp; icon stay fully sharp</div></div>
+    <div style="position:relative;height:150px;border-radius:18px;overflow:hidden;border:1px solid var(--color-neutral-border);background:linear-gradient(150deg,#f2b880,#c97a6d 52%,#4f4668)">
+      <div class="app-bar" style="padding:16px 16px 12px">
+        <div style="width:44px;height:44px;border-radius:50%;background:rgba(0,0,0,.18);border:1.5px solid rgba(26,22,18,.72);display:flex;align-items:center;justify-content:center;color:#fff;font-family:var(--font-body);font-weight:700;flex-shrink:0">T</div>
+        <div style="flex:1;min-width:0">
+          <div style="font-family:var(--font-body);font-weight:700;font-size:17px;color:#1A1612">Salaam, Toufeeq</div>
+          <div style="font-family:var(--font-body);font-size:12px;color:rgba(26,22,18,.7);margin-top:1px">Masjid E Bilal</div>
+        </div>
+        <div style="width:40px;height:40px;border-radius:50%;background:rgba(0,0,0,.12);border:1.5px solid rgba(26,22,18,.2);display:flex;align-items:center;justify-content:center;flex-shrink:0"><span class="material-symbols-rounded" style="font-size:20px;color:#1A1612">notifications</span></div>
       </div>
     </div>
   </div>
