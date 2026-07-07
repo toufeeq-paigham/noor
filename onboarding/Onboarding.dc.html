@@ -186,7 +186,7 @@
                                       </div>
                                     </sc-for>
                                   </div>
-                                  <div style="position:absolute;top:0;bottom:0;left:{{ haloLeft }};width:calc((100% - 4px)/6);border-radius:{{ haloRadius }};border:1px solid {{ haloColor }};pointer-events:none;transition:left 120ms"></div>
+                                  <div style="position:absolute;top:0;bottom:0;left:{{ haloLeft }};width:{{ haloWidth }};border-radius:{{ haloRadius }};border:1px solid {{ haloColor }};pointer-events:none;transition:left 120ms, width 120ms"></div>
                                 </div>
                               </div>
 
@@ -443,7 +443,18 @@ class Component extends DCLogic {
       showCursor: !s.otpError && !s.success && !s.verifying && i === s.otp.length,
     }));
     const haloVisible = !s.otpError && !s.success && s.otp.length < 6;
-    const haloLeft = 'calc(2px + ' + activeIdx + ' * (100% - 4px) / 6)';
+    let haloLeft = '0px';
+    let haloWidth = '0px';
+    if (activeIdx === 0) {
+      haloLeft = '0px';
+      haloWidth = 'calc(2px + (100% - 4px) / 6)';
+    } else if (activeIdx === 5) {
+      haloLeft = 'calc(2px + 5 * (100% - 4px) / 6)';
+      haloWidth = 'calc(2px + (100% - 4px) / 6)';
+    } else {
+      haloLeft = 'calc(2px + ' + activeIdx + ' * (100% - 4px) / 6)';
+      haloWidth = 'calc((100% - 4px) / 6)';
+    }
     const haloRadius = activeIdx === 0 ? '16px 0 0 16px' : (activeIdx === 5 ? '0 16px 16px 0' : '0');
 
     /* board rings */
@@ -493,6 +504,7 @@ class Component extends DCLogic {
       editPhone: this.editPhone,
       cells,
       haloLeft,
+      haloWidth,
       haloRadius,
       haloColor: haloVisible ? 'color-mix(in oklab, var(--color-input-border-focused) 50%, transparent)' : 'transparent',
       otpOuterBorder: s.otpError
