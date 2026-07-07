@@ -90,6 +90,9 @@
     .otp .cell{flex:1;height:46px;display:flex;align-items:center;justify-content:center;font-family:var(--font-body);font-size:18px;color:var(--color-input-text)}
     .otp .cell + .cell{border-left:1px solid var(--color-input-border-disabled)}
     .otp .halo{position:absolute;top:0;bottom:0;pointer-events:none;border:1px solid color-mix(in oklab,var(--color-input-border-focused) 50%,transparent)}
+    .otp.error{border:1px solid color-mix(in oklab,var(--color-input-border-error) 50%,transparent)}
+    .otp.success{border:1px solid color-mix(in oklab,var(--color-action-primary) 50%,transparent)}
+    .otp.error .halo,.otp.success .halo{display:none}
     .otp .cursor{width:1.5px;height:18px;background:var(--color-input-text);animation:otp-blink 1s steps(1) infinite}
     @keyframes otp-blink{50%{opacity:0}}
 

@@ -263,13 +263,6 @@ function OtpScreen({
     haloRadius = '0';
   }
 
-  const haloVisible = !success && !verifying;
-  const haloColor = haloVisible ? 'color-mix(in oklab, var(--color-input-border-focused) 50%, transparent)' : 'transparent';
-  
-  const outerBorder = otpError
-    ? 'color-mix(in oklab, var(--color-input-border-error) 50%, transparent)'
-    : (success ? 'color-mix(in oklab, var(--color-action-primary) 50%, transparent)' : 'transparent');
-
   const otpAnim = otpError ? 'lfshake .45s ease' : 'none';
 
   return (
@@ -310,7 +303,7 @@ function OtpScreen({
         </div>
 
         <div style={{ marginTop: 28, animation: otpAnim }}>
-          <div className="otp" style={{ border: `1px solid ${outerBorder}` }}>
+          <div className={`otp ${otpError ? 'error' : ''} ${success ? 'success' : ''}`}>
             <div className="cells">
               {cells.map((c, i) => (
                 <div key={i} className="cell" style={{ borderLeft: c.borderLeft }}>
@@ -319,7 +312,7 @@ function OtpScreen({
                 </div>
               ))}
             </div>
-            <div className="halo" style={{ left: haloLeft, width: haloWidth, borderRadius: haloRadius, borderColor: haloColor, transition: 'left 120ms, width 120ms' }} />
+            <div className="halo" style={{ left: haloLeft, width: haloWidth, borderRadius: haloRadius, transition: 'left 120ms, width 120ms' }} />
           </div>
         </div>
 

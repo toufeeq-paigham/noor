@@ -76,6 +76,9 @@
    mid cell i: left:calc(2px + i*(100% - 4px)/6);  width:calc((100% - 4px)/6);       radius 0
    last cell:  left:calc(2px + 5*(100% - 4px)/6);  width:calc(2px + (100% - 4px)/6); radius 0 16px 16px 0 */
 .otp .halo{position:absolute;top:0;bottom:0;pointer-events:none;border:1px solid color-mix(in oklab,var(--color-input-border-focused) 50%,transparent)}
+.otp.error{border:1px solid color-mix(in oklab,var(--color-input-border-error) 50%,transparent)}
+.otp.success{border:1px solid color-mix(in oklab,var(--color-action-primary) 50%,transparent)}
+.otp.error .halo,.otp.success .halo{display:none}
 .otp .cursor{width:1.5px;height:18px;background:var(--color-input-text);animation:noor-otp-blink 1s steps(1) infinite;display:inline-block;vertical-align:middle}
 @keyframes noor-otp-blink{50%{opacity:0}}
 
