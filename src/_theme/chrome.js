@@ -109,7 +109,7 @@
         var parts = path.split('/').filter(Boolean);
         var isFile = parts.length > 0 && parts[parts.length - 1].indexOf('.') !== -1;
         var folderCount = isFile ? parts.length - 1 : parts.length;
-        for (var d = 0; d < folderCount; d++) {
+        for (var d = 0; d < folderCount - 1; d++) {
           prefix += '../';
         }
       }
