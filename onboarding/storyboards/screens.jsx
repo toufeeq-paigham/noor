@@ -208,7 +208,6 @@ function PhoneScreen({
 
         <button
           className="btn btn-filled lg"
-          disabled={!isFilled}
           onClick={onContinue}
           style={{ width: '100%', marginTop: 20 }}
         >
