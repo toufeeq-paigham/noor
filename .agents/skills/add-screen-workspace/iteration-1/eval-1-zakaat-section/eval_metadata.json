@@ -1,0 +1,17 @@
+{
+  "eval_id": 1,
+  "eval_name": "zakaat-section",
+  "prompt": "Add a zakaat section \u2014 combine Zakaat Screen, Calculate Zakaat and Zakaat Summary into a single section board flow like the onboarding one",
+  "assertions": [
+    "section-directory-created: a new section subdirectory exists containing one board .dc.html page and a storyboards/ folder with >=2 row .jsx files",
+    "board-page-wiring: the board page loads ../support.js AND ../_theme/chrome.js in <head>, and ../_theme/poc.css in the helmet",
+    "board-layout-structure: page uses .poc-stage with .poc-frames (>=2 x-import rows each bound active=\"{{ ... }}\") and .poc-live wrapping IOSDevice from ../ios-frame.jsx",
+    "storyboard-row-contract: every row jsx defines function XRow({ active }) rendering .poc-board frames in .noor-screen shells with .poc-frame-caption captions, and registers via Object.assign(window, { XRow })",
+    "dc-script-valid: data-dc-script passes node --check and every {{ binding }} used in markup is returned from renderVals() (check_page.py syntax+bindings clean)",
+    "theme-aware: no dark=\"\" props, no hardcoded data-theme=\"dark\" outside CSS selectors, no banned palette hex outside photo/gradient contexts",
+    "hash-deep-links: the dc script derives the initial stage from location.hash, and Index.dc.html cards deep-link into the section with #anchors",
+    "index-repointed: Index.dc.html no longer links the replaced flat pages; their cards are replaced by section cards",
+    "interactivity-preserved: live device implements overview -> calculator -> summary flow with working calculator inputs that update computed zakaat, and back navigation",
+    "real-content-copied: zakaat fields, labels and amounts match the source pages (not invented)"
+  ]
+}

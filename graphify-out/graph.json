@@ -4,12 +4,156 @@
   "graph": {},
   "nodes": [
     {
+      "label": "eval_metadata.json",
+      "file_type": "code",
+      "source_file": ".agents/skills/add-screen-workspace/iteration-1/eval-0-dua-dikhr-section/eval_metadata.json",
+      "source_location": "L1",
+      "id": "eval_0_dua_dikhr_section_eval_metadata",
+      "community": 27,
+      "norm_label": "eval_metadata.json"
+    },
+    {
+      "label": "eval_id",
+      "file_type": "code",
+      "source_file": ".agents/skills/add-screen-workspace/iteration-1/eval-0-dua-dikhr-section/eval_metadata.json",
+      "source_location": "L2",
+      "id": "eval_0_dua_dikhr_section_eval_metadata_eval_id",
+      "community": 27,
+      "norm_label": "eval_id"
+    },
+    {
+      "label": "eval_name",
+      "file_type": "code",
+      "source_file": ".agents/skills/add-screen-workspace/iteration-1/eval-0-dua-dikhr-section/eval_metadata.json",
+      "source_location": "L3",
+      "id": "eval_0_dua_dikhr_section_eval_metadata_eval_name",
+      "community": 27,
+      "norm_label": "eval_name"
+    },
+    {
+      "label": "prompt",
+      "file_type": "code",
+      "source_file": ".agents/skills/add-screen-workspace/iteration-1/eval-0-dua-dikhr-section/eval_metadata.json",
+      "source_location": "L4",
+      "id": "eval_0_dua_dikhr_section_eval_metadata_prompt",
+      "community": 27,
+      "norm_label": "prompt"
+    },
+    {
+      "label": "assertions",
+      "file_type": "code",
+      "source_file": ".agents/skills/add-screen-workspace/iteration-1/eval-0-dua-dikhr-section/eval_metadata.json",
+      "source_location": "L5",
+      "id": "eval_0_dua_dikhr_section_eval_metadata_assertions",
+      "community": 27,
+      "norm_label": "assertions"
+    },
+    {
+      "label": "eval_metadata.json",
+      "file_type": "code",
+      "source_file": ".agents/skills/add-screen-workspace/iteration-1/eval-1-zakaat-section/eval_metadata.json",
+      "source_location": "L1",
+      "id": "eval_1_zakaat_section_eval_metadata",
+      "community": 28,
+      "norm_label": "eval_metadata.json"
+    },
+    {
+      "label": "eval_id",
+      "file_type": "code",
+      "source_file": ".agents/skills/add-screen-workspace/iteration-1/eval-1-zakaat-section/eval_metadata.json",
+      "source_location": "L2",
+      "id": "eval_1_zakaat_section_eval_metadata_eval_id",
+      "community": 28,
+      "norm_label": "eval_id"
+    },
+    {
+      "label": "eval_name",
+      "file_type": "code",
+      "source_file": ".agents/skills/add-screen-workspace/iteration-1/eval-1-zakaat-section/eval_metadata.json",
+      "source_location": "L3",
+      "id": "eval_1_zakaat_section_eval_metadata_eval_name",
+      "community": 28,
+      "norm_label": "eval_name"
+    },
+    {
+      "label": "prompt",
+      "file_type": "code",
+      "source_file": ".agents/skills/add-screen-workspace/iteration-1/eval-1-zakaat-section/eval_metadata.json",
+      "source_location": "L4",
+      "id": "eval_1_zakaat_section_eval_metadata_prompt",
+      "community": 28,
+      "norm_label": "prompt"
+    },
+    {
+      "label": "assertions",
+      "file_type": "code",
+      "source_file": ".agents/skills/add-screen-workspace/iteration-1/eval-1-zakaat-section/eval_metadata.json",
+      "source_location": "L5",
+      "id": "eval_1_zakaat_section_eval_metadata_assertions",
+      "community": 28,
+      "norm_label": "assertions"
+    },
+    {
+      "label": "evals.json",
+      "file_type": "code",
+      "source_file": ".agents/skills/add-screen/evals/evals.json",
+      "source_location": "L1",
+      "id": "agents_skills_add_screen_evals_evals_json_evals_evals",
+      "community": 29,
+      "norm_label": "evals.json"
+    },
+    {
+      "label": "skill_name",
+      "file_type": "code",
+      "source_file": ".agents/skills/add-screen/evals/evals.json",
+      "source_location": "L2",
+      "id": "agents_skills_add_screen_evals_evals_json_evals_evals_skill_name",
+      "community": 29,
+      "norm_label": "skill_name"
+    },
+    {
+      "label": "evals",
+      "file_type": "code",
+      "source_file": ".agents/skills/add-screen/evals/evals.json",
+      "source_location": "L3",
+      "id": "agents_skills_add_screen_evals_evals_json_evals_evals_evals",
+      "community": 29,
+      "norm_label": "evals"
+    },
+    {
+      "label": "check_page.py",
+      "file_type": "code",
+      "source_file": ".agents/skills/add-screen/scripts/check_page.py",
+      "source_location": "L1",
+      "id": "agents_skills_add_screen_scripts_check_page_py_scripts_check_page",
+      "community": 30,
+      "norm_label": "check_page.py"
+    },
+    {
+      "label": "main()",
+      "file_type": "code",
+      "source_file": ".agents/skills/add-screen/scripts/check_page.py",
+      "source_location": "L26",
+      "id": "agents_skills_add_screen_scripts_check_page_py_scripts_check_page_main",
+      "community": 30,
+      "norm_label": "main()"
+    },
+    {
+      "label": "int",
+      "file_type": "code",
+      "source_file": ".agents/skills/add-screen/scripts/check_page.py",
+      "source_location": "L26",
+      "id": "agents_skills_add_screen_scripts_check_page_py_int",
+      "community": 30,
+      "norm_label": "int"
+    },
+    {
       "label": "evals.json",
       "file_type": "code",
       "source_file": ".claude/skills/add-screen/evals/evals.json",
       "source_location": "L1",
-      "id": "evals_evals",
-      "community": 19,
+      "id": "claude_skills_add_screen_evals_evals_json_evals_evals",
+      "community": 31,
       "norm_label": "evals.json"
     },
     {
@@ -17,8 +161,8 @@
       "file_type": "code",
       "source_file": ".claude/skills/add-screen/evals/evals.json",
       "source_location": "L2",
-      "id": "evals_evals_skill_name",
-      "community": 19,
+      "id": "claude_skills_add_screen_evals_evals_json_evals_evals_skill_name",
+      "community": 31,
       "norm_label": "skill_name"
     },
     {
@@ -26,8 +170,8 @@
       "file_type": "code",
       "source_file": ".claude/skills/add-screen/evals/evals.json",
       "source_location": "L3",
-      "id": "evals_evals_evals",
-      "community": 19,
+      "id": "claude_skills_add_screen_evals_evals_json_evals_evals_evals",
+      "community": 31,
       "norm_label": "evals"
     },
     {
@@ -35,8 +179,8 @@
       "file_type": "code",
       "source_file": ".claude/skills/add-screen/scripts/check_page.py",
       "source_location": "L1",
-      "id": "scripts_check_page",
-      "community": 18,
+      "id": "claude_skills_add_screen_scripts_check_page_py_scripts_check_page",
+      "community": 32,
       "norm_label": "check_page.py"
     },
     {
@@ -44,8 +188,8 @@
       "file_type": "code",
       "source_file": ".claude/skills/add-screen/scripts/check_page.py",
       "source_location": "L26",
-      "id": "scripts_check_page_main",
-      "community": 18,
+      "id": "claude_skills_add_screen_scripts_check_page_py_scripts_check_page_main",
+      "community": 32,
       "norm_label": "main()"
     },
     {
@@ -53,8 +197,8 @@
       "file_type": "code",
       "source_file": ".claude/skills/add-screen/scripts/check_page.py",
       "source_location": "L26",
-      "id": "int",
-      "community": 18,
+      "id": "claude_skills_add_screen_scripts_check_page_py_int",
+      "community": 32,
       "norm_label": "int"
     },
     {
@@ -2824,12 +2968,336 @@
       "norm_label": "init()"
     },
     {
+      "label": "AGENTS.md",
+      "file_type": "document",
+      "source_file": ".agents/AGENTS.md",
+      "source_location": "L1",
+      "id": "agents_agents",
+      "community": 22,
+      "norm_label": "agents.md"
+    },
+    {
+      "label": "graphify",
+      "file_type": "document",
+      "source_file": ".agents/AGENTS.md",
+      "source_location": "L1",
+      "id": "agents_agents_graphify",
+      "community": 22,
+      "norm_label": "graphify"
+    },
+    {
+      "label": "AGENTS.md",
+      "file_type": "document",
+      "source_file": ".agents/AGENTS.md",
+      "source_location": "L17",
+      "id": "agents_agents_agents_md",
+      "community": 22,
+      "norm_label": "agents.md"
+    },
+    {
+      "label": "Agent Behavior",
+      "file_type": "document",
+      "source_file": ".agents/AGENTS.md",
+      "source_location": "L22",
+      "id": "agents_agents_agent_behavior",
+      "community": 22,
+      "norm_label": "agent behavior"
+    },
+    {
+      "label": "Rule 1 \u2014 Think Before Coding",
+      "file_type": "document",
+      "source_file": ".agents/AGENTS.md",
+      "source_location": "L27",
+      "id": "agents_agents_rule_1_think_before_coding",
+      "community": 22,
+      "norm_label": "rule 1 \u2014 think before coding"
+    },
+    {
+      "label": "Rule 2 \u2014 Simplicity First",
+      "file_type": "document",
+      "source_file": ".agents/AGENTS.md",
+      "source_location": "L32",
+      "id": "agents_agents_rule_2_simplicity_first",
+      "community": 22,
+      "norm_label": "rule 2 \u2014 simplicity first"
+    },
+    {
+      "label": "Rule 3 \u2014 Surgical Changes",
+      "file_type": "document",
+      "source_file": ".agents/AGENTS.md",
+      "source_location": "L37",
+      "id": "agents_agents_rule_3_surgical_changes",
+      "community": 22,
+      "norm_label": "rule 3 \u2014 surgical changes"
+    },
+    {
+      "label": "Rule 4 \u2014 Goal-Driven Execution",
+      "file_type": "document",
+      "source_file": ".agents/AGENTS.md",
+      "source_location": "L42",
+      "id": "agents_agents_rule_4_goal_driven_execution",
+      "community": 22,
+      "norm_label": "rule 4 \u2014 goal-driven execution"
+    },
+    {
+      "label": "Rule 5 \u2014 Use the model only for judgment calls",
+      "file_type": "document",
+      "source_file": ".agents/AGENTS.md",
+      "source_location": "L47",
+      "id": "agents_agents_rule_5_use_the_model_only_for_judgment_calls",
+      "community": 22,
+      "norm_label": "rule 5 \u2014 use the model only for judgment calls"
+    },
+    {
+      "label": "Rule 6 \u2014 Token budgets are not advisory",
+      "file_type": "document",
+      "source_file": ".agents/AGENTS.md",
+      "source_location": "L53",
+      "id": "agents_agents_rule_6_token_budgets_are_not_advisory",
+      "community": 22,
+      "norm_label": "rule 6 \u2014 token budgets are not advisory"
+    },
+    {
+      "label": "Rule 7 \u2014 Surface conflicts, don't average them",
+      "file_type": "document",
+      "source_file": ".agents/AGENTS.md",
+      "source_location": "L59",
+      "id": "agents_agents_rule_7_surface_conflicts_don_t_average_them",
+      "community": 22,
+      "norm_label": "rule 7 \u2014 surface conflicts, don't average them"
+    },
+    {
+      "label": "Rule 8 \u2014 Read before you write",
+      "file_type": "document",
+      "source_file": ".agents/AGENTS.md",
+      "source_location": "L64",
+      "id": "agents_agents_rule_8_read_before_you_write",
+      "community": 22,
+      "norm_label": "rule 8 \u2014 read before you write"
+    },
+    {
+      "label": "Rule 9 \u2014 Tests verify intent, not just behavior",
+      "file_type": "document",
+      "source_file": ".agents/AGENTS.md",
+      "source_location": "L69",
+      "id": "agents_agents_rule_9_tests_verify_intent_not_just_behavior",
+      "community": 22,
+      "norm_label": "rule 9 \u2014 tests verify intent, not just behavior"
+    },
+    {
+      "label": "Rule 10 \u2014 Checkpoint after every significant step",
+      "file_type": "document",
+      "source_file": ".agents/AGENTS.md",
+      "source_location": "L74",
+      "id": "agents_agents_rule_10_checkpoint_after_every_significant_step",
+      "community": 22,
+      "norm_label": "rule 10 \u2014 checkpoint after every significant step"
+    },
+    {
+      "label": "Rule 11 \u2014 Match the codebase's conventions, even if you disagree",
+      "file_type": "document",
+      "source_file": ".agents/AGENTS.md",
+      "source_location": "L79",
+      "id": "agents_agents_rule_11_match_the_codebase_s_conventions_even_if_you_disagree",
+      "community": 22,
+      "norm_label": "rule 11 \u2014 match the codebase's conventions, even if you disagree"
+    },
+    {
+      "label": "Rule 12 \u2014 Fail loud",
+      "file_type": "document",
+      "source_file": ".agents/AGENTS.md",
+      "source_location": "L84",
+      "id": "agents_agents_rule_12_fail_loud",
+      "community": 22,
+      "norm_label": "rule 12 \u2014 fail loud"
+    },
+    {
+      "label": "Run Commands",
+      "file_type": "document",
+      "source_file": ".agents/AGENTS.md",
+      "source_location": "L90",
+      "id": "agents_agents_run_commands",
+      "community": 22,
+      "norm_label": "run commands"
+    },
+    {
+      "label": "Project Structure",
+      "file_type": "document",
+      "source_file": ".agents/AGENTS.md",
+      "source_location": "L104",
+      "id": "agents_agents_project_structure",
+      "community": 22,
+      "norm_label": "project structure"
+    },
+    {
+      "label": "Design System Rules",
+      "file_type": "document",
+      "source_file": ".agents/AGENTS.md",
+      "source_location": "L122",
+      "id": "agents_agents_design_system_rules",
+      "community": 22,
+      "norm_label": "design system rules"
+    },
+    {
+      "label": "Commit Messages",
+      "file_type": "document",
+      "source_file": ".agents/AGENTS.md",
+      "source_location": "L139",
+      "id": "agents_agents_commit_messages",
+      "community": 22,
+      "norm_label": "commit messages"
+    },
+    {
+      "label": "SKILL.md",
+      "file_type": "document",
+      "source_file": ".agents/skills/add-screen/SKILL.md",
+      "source_location": "L1",
+      "id": "agents_skills_add_screen_skill_md_add_screen_skill",
+      "community": 23,
+      "norm_label": "skill.md"
+    },
+    {
+      "label": "Add a section board to the Noor POC",
+      "file_type": "document",
+      "source_file": ".agents/skills/add-screen/SKILL.md",
+      "source_location": "L6",
+      "id": "agents_skills_add_screen_skill_md_add_screen_skill_add_a_section_board_to_the_noor_poc",
+      "community": 23,
+      "norm_label": "add a section board to the noor poc"
+    },
+    {
+      "label": "Anatomy",
+      "file_type": "document",
+      "source_file": ".agents/skills/add-screen/SKILL.md",
+      "source_location": "L21",
+      "id": "agents_skills_add_screen_skill_md_add_screen_skill_anatomy",
+      "community": 23,
+      "norm_label": "anatomy"
+    },
+    {
+      "label": "Step 1 \u2014 Inventory the source screens",
+      "file_type": "document",
+      "source_file": ".agents/skills/add-screen/SKILL.md",
+      "source_location": "L35",
+      "id": "agents_skills_add_screen_skill_md_add_screen_skill_step_1_inventory_the_source_screens",
+      "community": 23,
+      "norm_label": "step 1 \u2014 inventory the source screens"
+    },
+    {
+      "label": "Step 2 \u2014 Scaffold the board page",
+      "file_type": "document",
+      "source_file": ".agents/skills/add-screen/SKILL.md",
+      "source_location": "L47",
+      "id": "agents_skills_add_screen_skill_md_add_screen_skill_step_2_scaffold_the_board_page",
+      "community": 23,
+      "norm_label": "step 2 \u2014 scaffold the board page"
+    },
+    {
+      "label": "Step 3 \u2014 Storyboard rows",
+      "file_type": "document",
+      "source_file": ".agents/skills/add-screen/SKILL.md",
+      "source_location": "L80",
+      "id": "agents_skills_add_screen_skill_md_add_screen_skill_step_3_storyboard_rows",
+      "community": 23,
+      "norm_label": "step 3 \u2014 storyboard rows"
+    },
+    {
+      "label": "Step 4 \u2014 The live device: one stage machine",
+      "file_type": "document",
+      "source_file": ".agents/skills/add-screen/SKILL.md",
+      "source_location": "L93",
+      "id": "agents_skills_add_screen_skill_md_add_screen_skill_step_4_the_live_device_one_stage_machine",
+      "community": 23,
+      "norm_label": "step 4 \u2014 the live device: one stage machine"
+    },
+    {
+      "label": "Step 5 \u2014 Theming and DS fidelity",
+      "file_type": "document",
+      "source_file": ".agents/skills/add-screen/SKILL.md",
+      "source_location": "L110",
+      "id": "agents_skills_add_screen_skill_md_add_screen_skill_step_5_theming_and_ds_fidelity",
+      "community": 23,
+      "norm_label": "step 5 \u2014 theming and ds fidelity"
+    },
+    {
+      "label": "Step 6 \u2014 Rewire the rest of the repo",
+      "file_type": "document",
+      "source_file": ".agents/skills/add-screen/SKILL.md",
+      "source_location": "L123",
+      "id": "agents_skills_add_screen_skill_md_add_screen_skill_step_6_rewire_the_rest_of_the_repo",
+      "community": 23,
+      "norm_label": "step 6 \u2014 rewire the rest of the repo"
+    },
+    {
+      "label": "Step 7 \u2014 Verify before you're done",
+      "file_type": "document",
+      "source_file": ".agents/skills/add-screen/SKILL.md",
+      "source_location": "L133",
+      "id": "agents_skills_add_screen_skill_md_add_screen_skill_step_7_verify_before_you_re_done",
+      "community": 23,
+      "norm_label": "step 7 \u2014 verify before you're done"
+    },
+    {
+      "label": "board-anatomy.md",
+      "file_type": "document",
+      "source_file": ".agents/skills/add-screen/references/board-anatomy.md",
+      "source_location": "L1",
+      "id": "agents_skills_add_screen_references_board_anatomy_md_references_board_anatomy",
+      "community": 25,
+      "norm_label": "board-anatomy.md"
+    },
+    {
+      "label": "Section board \u2014 annotated skeletons",
+      "file_type": "document",
+      "source_file": ".agents/skills/add-screen/references/board-anatomy.md",
+      "source_location": "L1",
+      "id": "agents_skills_add_screen_references_board_anatomy_md_references_board_anatomy_section_board_annotated_skeletons",
+      "community": 25,
+      "norm_label": "section board \u2014 annotated skeletons"
+    },
+    {
+      "label": "1. The board page \u2014 `<section>/<Section>.dc.html`",
+      "file_type": "document",
+      "source_file": ".agents/skills/add-screen/references/board-anatomy.md",
+      "source_location": "L6",
+      "id": "agents_skills_add_screen_references_board_anatomy_md_references_board_anatomy_1_the_board_page_section_section_dc_html",
+      "community": 25,
+      "norm_label": "1. the board page \u2014 `<section>/<section>.dc.html`"
+    },
+    {
+      "label": "2. A storyboard row \u2014 `<section>/storyboards/<flow>-row.jsx`",
+      "file_type": "document",
+      "source_file": ".agents/skills/add-screen/references/board-anatomy.md",
+      "source_location": "L137",
+      "id": "agents_skills_add_screen_references_board_anatomy_md_references_board_anatomy_2_a_storyboard_row_section_storyboards_flow_row_jsx",
+      "community": 25,
+      "norm_label": "2. a storyboard row \u2014 `<section>/storyboards/<flow>-row.jsx`"
+    },
+    {
+      "label": "3. Shared screen components \u2014 `<section>/storyboards/screens.jsx`",
+      "file_type": "document",
+      "source_file": ".agents/skills/add-screen/references/board-anatomy.md",
+      "source_location": "L187",
+      "id": "agents_skills_add_screen_references_board_anatomy_md_references_board_anatomy_3_shared_screen_components_section_storyboards_screens_jsx",
+      "community": 25,
+      "norm_label": "3. shared screen components \u2014 `<section>/storyboards/screens.jsx`"
+    },
+    {
+      "label": "Index registration",
+      "file_type": "document",
+      "source_file": ".agents/skills/add-screen/references/board-anatomy.md",
+      "source_location": "L219",
+      "id": "agents_skills_add_screen_references_board_anatomy_md_references_board_anatomy_index_registration",
+      "community": 25,
+      "norm_label": "index registration"
+    },
+    {
       "label": "SKILL.md",
       "file_type": "document",
       "source_file": ".claude/skills/add-screen/SKILL.md",
       "source_location": "L1",
-      "id": "add_screen_skill",
-      "community": 16,
+      "id": "claude_skills_add_screen_skill_md_add_screen_skill",
+      "community": 24,
       "norm_label": "skill.md"
     },
     {
@@ -2837,8 +3305,8 @@
       "file_type": "document",
       "source_file": ".claude/skills/add-screen/SKILL.md",
       "source_location": "L6",
-      "id": "add_screen_skill_add_a_section_board_to_the_noor_poc",
-      "community": 16,
+      "id": "claude_skills_add_screen_skill_md_add_screen_skill_add_a_section_board_to_the_noor_poc",
+      "community": 24,
       "norm_label": "add a section board to the noor poc"
     },
     {
@@ -2846,8 +3314,8 @@
       "file_type": "document",
       "source_file": ".claude/skills/add-screen/SKILL.md",
       "source_location": "L21",
-      "id": "add_screen_skill_anatomy",
-      "community": 16,
+      "id": "claude_skills_add_screen_skill_md_add_screen_skill_anatomy",
+      "community": 24,
       "norm_label": "anatomy"
     },
     {
@@ -2855,8 +3323,8 @@
       "file_type": "document",
       "source_file": ".claude/skills/add-screen/SKILL.md",
       "source_location": "L35",
-      "id": "add_screen_skill_step_1_inventory_the_source_screens",
-      "community": 16,
+      "id": "claude_skills_add_screen_skill_md_add_screen_skill_step_1_inventory_the_source_screens",
+      "community": 24,
       "norm_label": "step 1 \u2014 inventory the source screens"
     },
     {
@@ -2864,8 +3332,8 @@
       "file_type": "document",
       "source_file": ".claude/skills/add-screen/SKILL.md",
       "source_location": "L47",
-      "id": "add_screen_skill_step_2_scaffold_the_board_page",
-      "community": 16,
+      "id": "claude_skills_add_screen_skill_md_add_screen_skill_step_2_scaffold_the_board_page",
+      "community": 24,
       "norm_label": "step 2 \u2014 scaffold the board page"
     },
     {
@@ -2873,8 +3341,8 @@
       "file_type": "document",
       "source_file": ".claude/skills/add-screen/SKILL.md",
       "source_location": "L80",
-      "id": "add_screen_skill_step_3_storyboard_rows",
-      "community": 16,
+      "id": "claude_skills_add_screen_skill_md_add_screen_skill_step_3_storyboard_rows",
+      "community": 24,
       "norm_label": "step 3 \u2014 storyboard rows"
     },
     {
@@ -2882,8 +3350,8 @@
       "file_type": "document",
       "source_file": ".claude/skills/add-screen/SKILL.md",
       "source_location": "L93",
-      "id": "add_screen_skill_step_4_the_live_device_one_stage_machine",
-      "community": 16,
+      "id": "claude_skills_add_screen_skill_md_add_screen_skill_step_4_the_live_device_one_stage_machine",
+      "community": 24,
       "norm_label": "step 4 \u2014 the live device: one stage machine"
     },
     {
@@ -2891,8 +3359,8 @@
       "file_type": "document",
       "source_file": ".claude/skills/add-screen/SKILL.md",
       "source_location": "L110",
-      "id": "add_screen_skill_step_5_theming_and_ds_fidelity",
-      "community": 16,
+      "id": "claude_skills_add_screen_skill_md_add_screen_skill_step_5_theming_and_ds_fidelity",
+      "community": 24,
       "norm_label": "step 5 \u2014 theming and ds fidelity"
     },
     {
@@ -2900,8 +3368,8 @@
       "file_type": "document",
       "source_file": ".claude/skills/add-screen/SKILL.md",
       "source_location": "L123",
-      "id": "add_screen_skill_step_6_rewire_the_rest_of_the_repo",
-      "community": 16,
+      "id": "claude_skills_add_screen_skill_md_add_screen_skill_step_6_rewire_the_rest_of_the_repo",
+      "community": 24,
       "norm_label": "step 6 \u2014 rewire the rest of the repo"
     },
     {
@@ -2909,8 +3377,8 @@
       "file_type": "document",
       "source_file": ".claude/skills/add-screen/SKILL.md",
       "source_location": "L133",
-      "id": "add_screen_skill_step_7_verify_before_you_re_done",
-      "community": 16,
+      "id": "claude_skills_add_screen_skill_md_add_screen_skill_step_7_verify_before_you_re_done",
+      "community": 24,
       "norm_label": "step 7 \u2014 verify before you're done"
     },
     {
@@ -2918,8 +3386,8 @@
       "file_type": "document",
       "source_file": ".claude/skills/add-screen/references/board-anatomy.md",
       "source_location": "L1",
-      "id": "references_board_anatomy",
-      "community": 17,
+      "id": "claude_skills_add_screen_references_board_anatomy_md_references_board_anatomy",
+      "community": 26,
       "norm_label": "board-anatomy.md"
     },
     {
@@ -2927,8 +3395,8 @@
       "file_type": "document",
       "source_file": ".claude/skills/add-screen/references/board-anatomy.md",
       "source_location": "L1",
-      "id": "references_board_anatomy_section_board_annotated_skeletons",
-      "community": 17,
+      "id": "claude_skills_add_screen_references_board_anatomy_md_references_board_anatomy_section_board_annotated_skeletons",
+      "community": 26,
       "norm_label": "section board \u2014 annotated skeletons"
     },
     {
@@ -2936,8 +3404,8 @@
       "file_type": "document",
       "source_file": ".claude/skills/add-screen/references/board-anatomy.md",
       "source_location": "L6",
-      "id": "references_board_anatomy_1_the_board_page_section_section_dc_html",
-      "community": 17,
+      "id": "claude_skills_add_screen_references_board_anatomy_md_references_board_anatomy_1_the_board_page_section_section_dc_html",
+      "community": 26,
       "norm_label": "1. the board page \u2014 `<section>/<section>.dc.html`"
     },
     {
@@ -2945,8 +3413,8 @@
       "file_type": "document",
       "source_file": ".claude/skills/add-screen/references/board-anatomy.md",
       "source_location": "L137",
-      "id": "references_board_anatomy_2_a_storyboard_row_section_storyboards_flow_row_jsx",
-      "community": 17,
+      "id": "claude_skills_add_screen_references_board_anatomy_md_references_board_anatomy_2_a_storyboard_row_section_storyboards_flow_row_jsx",
+      "community": 26,
       "norm_label": "2. a storyboard row \u2014 `<section>/storyboards/<flow>-row.jsx`"
     },
     {
@@ -2954,8 +3422,8 @@
       "file_type": "document",
       "source_file": ".claude/skills/add-screen/references/board-anatomy.md",
       "source_location": "L187",
-      "id": "references_board_anatomy_3_shared_screen_components_section_storyboards_screens_jsx",
-      "community": 17,
+      "id": "claude_skills_add_screen_references_board_anatomy_md_references_board_anatomy_3_shared_screen_components_section_storyboards_screens_jsx",
+      "community": 26,
       "norm_label": "3. shared screen components \u2014 `<section>/storyboards/screens.jsx`"
     },
     {
@@ -2963,8 +3431,8 @@
       "file_type": "document",
       "source_file": ".claude/skills/add-screen/references/board-anatomy.md",
       "source_location": "L219",
-      "id": "references_board_anatomy_index_registration",
-      "community": 17,
+      "id": "claude_skills_add_screen_references_board_anatomy_md_references_board_anatomy_index_registration",
+      "community": 26,
       "norm_label": "index registration"
     },
     {
@@ -3436,6 +3904,204 @@
       "norm_label": "iconography"
     },
     {
+      "label": "evals.json",
+      "file_type": "code",
+      "source_file": ".claude/skills/add-screen/evals/evals.json",
+      "source_location": "L1",
+      "community": 19,
+      "norm_label": "evals.json",
+      "id": "evals_evals"
+    },
+    {
+      "label": "skill_name",
+      "file_type": "code",
+      "source_file": ".claude/skills/add-screen/evals/evals.json",
+      "source_location": "L2",
+      "community": 19,
+      "norm_label": "skill_name",
+      "id": "evals_evals_skill_name"
+    },
+    {
+      "label": "evals",
+      "file_type": "code",
+      "source_file": ".claude/skills/add-screen/evals/evals.json",
+      "source_location": "L3",
+      "community": 19,
+      "norm_label": "evals",
+      "id": "evals_evals_evals"
+    },
+    {
+      "label": "check_page.py",
+      "file_type": "code",
+      "source_file": ".claude/skills/add-screen/scripts/check_page.py",
+      "source_location": "L1",
+      "community": 18,
+      "norm_label": "check_page.py",
+      "id": "scripts_check_page"
+    },
+    {
+      "label": "main()",
+      "file_type": "code",
+      "source_file": ".claude/skills/add-screen/scripts/check_page.py",
+      "source_location": "L26",
+      "community": 18,
+      "norm_label": "main()",
+      "id": "scripts_check_page_main"
+    },
+    {
+      "label": "int",
+      "file_type": "code",
+      "source_file": ".claude/skills/add-screen/scripts/check_page.py",
+      "source_location": "L26",
+      "community": 18,
+      "norm_label": "int",
+      "id": "int"
+    },
+    {
+      "label": "SKILL.md",
+      "file_type": "document",
+      "source_file": ".claude/skills/add-screen/SKILL.md",
+      "source_location": "L1",
+      "community": 16,
+      "norm_label": "skill.md",
+      "id": "add_screen_skill"
+    },
+    {
+      "label": "Add a section board to the Noor POC",
+      "file_type": "document",
+      "source_file": ".claude/skills/add-screen/SKILL.md",
+      "source_location": "L6",
+      "community": 16,
+      "norm_label": "add a section board to the noor poc",
+      "id": "add_screen_skill_add_a_section_board_to_the_noor_poc"
+    },
+    {
+      "label": "Anatomy",
+      "file_type": "document",
+      "source_file": ".claude/skills/add-screen/SKILL.md",
+      "source_location": "L21",
+      "community": 16,
+      "norm_label": "anatomy",
+      "id": "add_screen_skill_anatomy"
+    },
+    {
+      "label": "Step 1 \u2014 Inventory the source screens",
+      "file_type": "document",
+      "source_file": ".claude/skills/add-screen/SKILL.md",
+      "source_location": "L35",
+      "community": 16,
+      "norm_label": "step 1 \u2014 inventory the source screens",
+      "id": "add_screen_skill_step_1_inventory_the_source_screens"
+    },
+    {
+      "label": "Step 2 \u2014 Scaffold the board page",
+      "file_type": "document",
+      "source_file": ".claude/skills/add-screen/SKILL.md",
+      "source_location": "L47",
+      "community": 16,
+      "norm_label": "step 2 \u2014 scaffold the board page",
+      "id": "add_screen_skill_step_2_scaffold_the_board_page"
+    },
+    {
+      "label": "Step 3 \u2014 Storyboard rows",
+      "file_type": "document",
+      "source_file": ".claude/skills/add-screen/SKILL.md",
+      "source_location": "L80",
+      "community": 16,
+      "norm_label": "step 3 \u2014 storyboard rows",
+      "id": "add_screen_skill_step_3_storyboard_rows"
+    },
+    {
+      "label": "Step 4 \u2014 The live device: one stage machine",
+      "file_type": "document",
+      "source_file": ".claude/skills/add-screen/SKILL.md",
+      "source_location": "L93",
+      "community": 16,
+      "norm_label": "step 4 \u2014 the live device: one stage machine",
+      "id": "add_screen_skill_step_4_the_live_device_one_stage_machine"
+    },
+    {
+      "label": "Step 5 \u2014 Theming and DS fidelity",
+      "file_type": "document",
+      "source_file": ".claude/skills/add-screen/SKILL.md",
+      "source_location": "L110",
+      "community": 16,
+      "norm_label": "step 5 \u2014 theming and ds fidelity",
+      "id": "add_screen_skill_step_5_theming_and_ds_fidelity"
+    },
+    {
+      "label": "Step 6 \u2014 Rewire the rest of the repo",
+      "file_type": "document",
+      "source_file": ".claude/skills/add-screen/SKILL.md",
+      "source_location": "L123",
+      "community": 16,
+      "norm_label": "step 6 \u2014 rewire the rest of the repo",
+      "id": "add_screen_skill_step_6_rewire_the_rest_of_the_repo"
+    },
+    {
+      "label": "Step 7 \u2014 Verify before you're done",
+      "file_type": "document",
+      "source_file": ".claude/skills/add-screen/SKILL.md",
+      "source_location": "L133",
+      "community": 16,
+      "norm_label": "step 7 \u2014 verify before you're done",
+      "id": "add_screen_skill_step_7_verify_before_you_re_done"
+    },
+    {
+      "label": "board-anatomy.md",
+      "file_type": "document",
+      "source_file": ".claude/skills/add-screen/references/board-anatomy.md",
+      "source_location": "L1",
+      "community": 17,
+      "norm_label": "board-anatomy.md",
+      "id": "references_board_anatomy"
+    },
+    {
+      "label": "Section board \u2014 annotated skeletons",
+      "file_type": "document",
+      "source_file": ".claude/skills/add-screen/references/board-anatomy.md",
+      "source_location": "L1",
+      "community": 17,
+      "norm_label": "section board \u2014 annotated skeletons",
+      "id": "references_board_anatomy_section_board_annotated_skeletons"
+    },
+    {
+      "label": "1. The board page \u2014 `<section>/<Section>.dc.html`",
+      "file_type": "document",
+      "source_file": ".claude/skills/add-screen/references/board-anatomy.md",
+      "source_location": "L6",
+      "community": 17,
+      "norm_label": "1. the board page \u2014 `<section>/<section>.dc.html`",
+      "id": "references_board_anatomy_1_the_board_page_section_section_dc_html"
+    },
+    {
+      "label": "2. A storyboard row \u2014 `<section>/storyboards/<flow>-row.jsx`",
+      "file_type": "document",
+      "source_file": ".claude/skills/add-screen/references/board-anatomy.md",
+      "source_location": "L137",
+      "community": 17,
+      "norm_label": "2. a storyboard row \u2014 `<section>/storyboards/<flow>-row.jsx`",
+      "id": "references_board_anatomy_2_a_storyboard_row_section_storyboards_flow_row_jsx"
+    },
+    {
+      "label": "3. Shared screen components \u2014 `<section>/storyboards/screens.jsx`",
+      "file_type": "document",
+      "source_file": ".claude/skills/add-screen/references/board-anatomy.md",
+      "source_location": "L187",
+      "community": 17,
+      "norm_label": "3. shared screen components \u2014 `<section>/storyboards/screens.jsx`",
+      "id": "references_board_anatomy_3_shared_screen_components_section_storyboards_screens_jsx"
+    },
+    {
+      "label": "Index registration",
+      "file_type": "document",
+      "source_file": ".claude/skills/add-screen/references/board-anatomy.md",
+      "source_location": "L219",
+      "community": 17,
+      "norm_label": "index registration",
+      "id": "references_board_anatomy_index_registration"
+    },
+    {
       "label": "introFrame()",
       "file_type": "code",
       "source_file": "onboarding/storyboards/intro-row.jsx",
@@ -3449,12 +4115,133 @@
     {
       "relation": "contains",
       "confidence": "EXTRACTED",
+      "source_file": ".agents/skills/add-screen-workspace/iteration-1/eval-0-dua-dikhr-section/eval_metadata.json",
+      "source_location": "L5",
+      "weight": 1.0,
+      "source": "eval_0_dua_dikhr_section_eval_metadata",
+      "target": "eval_0_dua_dikhr_section_eval_metadata_assertions",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": ".agents/skills/add-screen-workspace/iteration-1/eval-0-dua-dikhr-section/eval_metadata.json",
+      "source_location": "L2",
+      "weight": 1.0,
+      "source": "eval_0_dua_dikhr_section_eval_metadata",
+      "target": "eval_0_dua_dikhr_section_eval_metadata_eval_id",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": ".agents/skills/add-screen-workspace/iteration-1/eval-0-dua-dikhr-section/eval_metadata.json",
+      "source_location": "L3",
+      "weight": 1.0,
+      "source": "eval_0_dua_dikhr_section_eval_metadata",
+      "target": "eval_0_dua_dikhr_section_eval_metadata_eval_name",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": ".agents/skills/add-screen-workspace/iteration-1/eval-0-dua-dikhr-section/eval_metadata.json",
+      "source_location": "L4",
+      "weight": 1.0,
+      "source": "eval_0_dua_dikhr_section_eval_metadata",
+      "target": "eval_0_dua_dikhr_section_eval_metadata_prompt",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": ".agents/skills/add-screen-workspace/iteration-1/eval-1-zakaat-section/eval_metadata.json",
+      "source_location": "L5",
+      "weight": 1.0,
+      "source": "eval_1_zakaat_section_eval_metadata",
+      "target": "eval_1_zakaat_section_eval_metadata_assertions",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": ".agents/skills/add-screen-workspace/iteration-1/eval-1-zakaat-section/eval_metadata.json",
+      "source_location": "L2",
+      "weight": 1.0,
+      "source": "eval_1_zakaat_section_eval_metadata",
+      "target": "eval_1_zakaat_section_eval_metadata_eval_id",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": ".agents/skills/add-screen-workspace/iteration-1/eval-1-zakaat-section/eval_metadata.json",
+      "source_location": "L3",
+      "weight": 1.0,
+      "source": "eval_1_zakaat_section_eval_metadata",
+      "target": "eval_1_zakaat_section_eval_metadata_eval_name",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": ".agents/skills/add-screen-workspace/iteration-1/eval-1-zakaat-section/eval_metadata.json",
+      "source_location": "L4",
+      "weight": 1.0,
+      "source": "eval_1_zakaat_section_eval_metadata",
+      "target": "eval_1_zakaat_section_eval_metadata_prompt",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": ".agents/skills/add-screen/evals/evals.json",
+      "source_location": "L3",
+      "weight": 1.0,
+      "source": "agents_skills_add_screen_evals_evals_json_evals_evals",
+      "target": "agents_skills_add_screen_evals_evals_json_evals_evals_evals",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": ".agents/skills/add-screen/evals/evals.json",
+      "source_location": "L2",
+      "weight": 1.0,
+      "source": "agents_skills_add_screen_evals_evals_json_evals_evals",
+      "target": "agents_skills_add_screen_evals_evals_json_evals_evals_skill_name",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": ".agents/skills/add-screen/scripts/check_page.py",
+      "source_location": "L26",
+      "weight": 1.0,
+      "source": "agents_skills_add_screen_scripts_check_page_py_scripts_check_page",
+      "target": "agents_skills_add_screen_scripts_check_page_py_scripts_check_page_main",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "references",
+      "context": "return_type",
+      "confidence": "EXTRACTED",
+      "source_file": ".agents/skills/add-screen/scripts/check_page.py",
+      "source_location": "L26",
+      "weight": 1.0,
+      "source": "agents_skills_add_screen_scripts_check_page_py_scripts_check_page_main",
+      "target": "agents_skills_add_screen_scripts_check_page_py_int",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
       "source_file": ".claude/skills/add-screen/evals/evals.json",
       "source_location": "L3",
       "weight": 1.0,
-      "confidence_score": 1.0,
-      "source": "evals_evals",
-      "target": "evals_evals_evals"
+      "source": "claude_skills_add_screen_evals_evals_json_evals_evals",
+      "target": "claude_skills_add_screen_evals_evals_json_evals_evals_evals",
+      "confidence_score": 1.0
     },
     {
       "relation": "contains",
@@ -3462,9 +4249,9 @@
       "source_file": ".claude/skills/add-screen/evals/evals.json",
       "source_location": "L2",
       "weight": 1.0,
-      "confidence_score": 1.0,
-      "source": "evals_evals",
-      "target": "evals_evals_skill_name"
+      "source": "claude_skills_add_screen_evals_evals_json_evals_evals",
+      "target": "claude_skills_add_screen_evals_evals_json_evals_evals_skill_name",
+      "confidence_score": 1.0
     },
     {
       "relation": "contains",
@@ -3472,9 +4259,9 @@
       "source_file": ".claude/skills/add-screen/scripts/check_page.py",
       "source_location": "L26",
       "weight": 1.0,
-      "confidence_score": 1.0,
-      "source": "scripts_check_page",
-      "target": "scripts_check_page_main"
+      "source": "claude_skills_add_screen_scripts_check_page_py_scripts_check_page",
+      "target": "claude_skills_add_screen_scripts_check_page_py_scripts_check_page_main",
+      "confidence_score": 1.0
     },
     {
       "relation": "references",
@@ -3483,9 +4270,9 @@
       "source_file": ".claude/skills/add-screen/scripts/check_page.py",
       "source_location": "L26",
       "weight": 1.0,
-      "confidence_score": 1.0,
-      "source": "scripts_check_page_main",
-      "target": "int"
+      "source": "claude_skills_add_screen_scripts_check_page_py_scripts_check_page_main",
+      "target": "claude_skills_add_screen_scripts_check_page_py_int",
+      "confidence_score": 1.0
     },
     {
       "relation": "contains",
@@ -7157,92 +7944,422 @@
     {
       "relation": "contains",
       "confidence": "EXTRACTED",
+      "source_file": ".agents/AGENTS.md",
+      "source_location": "L17",
+      "weight": 1.0,
+      "source": "agents_agents",
+      "target": "agents_agents_agents_md",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": ".agents/AGENTS.md",
+      "source_location": "L1",
+      "weight": 1.0,
+      "source": "agents_agents",
+      "target": "agents_agents_graphify",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": ".agents/AGENTS.md",
+      "source_location": "L22",
+      "weight": 1.0,
+      "source": "agents_agents_agents_md",
+      "target": "agents_agents_agent_behavior",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": ".agents/AGENTS.md",
+      "source_location": "L139",
+      "weight": 1.0,
+      "source": "agents_agents_agents_md",
+      "target": "agents_agents_commit_messages",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": ".agents/AGENTS.md",
+      "source_location": "L122",
+      "weight": 1.0,
+      "source": "agents_agents_agents_md",
+      "target": "agents_agents_design_system_rules",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": ".agents/AGENTS.md",
+      "source_location": "L104",
+      "weight": 1.0,
+      "source": "agents_agents_agents_md",
+      "target": "agents_agents_project_structure",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": ".agents/AGENTS.md",
+      "source_location": "L90",
+      "weight": 1.0,
+      "source": "agents_agents_agents_md",
+      "target": "agents_agents_run_commands",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": ".agents/AGENTS.md",
+      "source_location": "L74",
+      "weight": 1.0,
+      "source": "agents_agents_agent_behavior",
+      "target": "agents_agents_rule_10_checkpoint_after_every_significant_step",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": ".agents/AGENTS.md",
+      "source_location": "L79",
+      "weight": 1.0,
+      "source": "agents_agents_agent_behavior",
+      "target": "agents_agents_rule_11_match_the_codebase_s_conventions_even_if_you_disagree",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": ".agents/AGENTS.md",
+      "source_location": "L84",
+      "weight": 1.0,
+      "source": "agents_agents_agent_behavior",
+      "target": "agents_agents_rule_12_fail_loud",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": ".agents/AGENTS.md",
+      "source_location": "L27",
+      "weight": 1.0,
+      "source": "agents_agents_agent_behavior",
+      "target": "agents_agents_rule_1_think_before_coding",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": ".agents/AGENTS.md",
+      "source_location": "L32",
+      "weight": 1.0,
+      "source": "agents_agents_agent_behavior",
+      "target": "agents_agents_rule_2_simplicity_first",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": ".agents/AGENTS.md",
+      "source_location": "L37",
+      "weight": 1.0,
+      "source": "agents_agents_agent_behavior",
+      "target": "agents_agents_rule_3_surgical_changes",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": ".agents/AGENTS.md",
+      "source_location": "L42",
+      "weight": 1.0,
+      "source": "agents_agents_agent_behavior",
+      "target": "agents_agents_rule_4_goal_driven_execution",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": ".agents/AGENTS.md",
+      "source_location": "L47",
+      "weight": 1.0,
+      "source": "agents_agents_agent_behavior",
+      "target": "agents_agents_rule_5_use_the_model_only_for_judgment_calls",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": ".agents/AGENTS.md",
+      "source_location": "L53",
+      "weight": 1.0,
+      "source": "agents_agents_agent_behavior",
+      "target": "agents_agents_rule_6_token_budgets_are_not_advisory",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": ".agents/AGENTS.md",
+      "source_location": "L59",
+      "weight": 1.0,
+      "source": "agents_agents_agent_behavior",
+      "target": "agents_agents_rule_7_surface_conflicts_don_t_average_them",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": ".agents/AGENTS.md",
+      "source_location": "L64",
+      "weight": 1.0,
+      "source": "agents_agents_agent_behavior",
+      "target": "agents_agents_rule_8_read_before_you_write",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": ".agents/AGENTS.md",
+      "source_location": "L69",
+      "weight": 1.0,
+      "source": "agents_agents_agent_behavior",
+      "target": "agents_agents_rule_9_tests_verify_intent_not_just_behavior",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": ".agents/skills/add-screen/SKILL.md",
+      "source_location": "L6",
+      "weight": 1.0,
+      "source": "agents_skills_add_screen_skill_md_add_screen_skill",
+      "target": "agents_skills_add_screen_skill_md_add_screen_skill_add_a_section_board_to_the_noor_poc",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": ".agents/skills/add-screen/SKILL.md",
+      "source_location": "L21",
+      "weight": 1.0,
+      "source": "agents_skills_add_screen_skill_md_add_screen_skill_add_a_section_board_to_the_noor_poc",
+      "target": "agents_skills_add_screen_skill_md_add_screen_skill_anatomy",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": ".agents/skills/add-screen/SKILL.md",
+      "source_location": "L35",
+      "weight": 1.0,
+      "source": "agents_skills_add_screen_skill_md_add_screen_skill_add_a_section_board_to_the_noor_poc",
+      "target": "agents_skills_add_screen_skill_md_add_screen_skill_step_1_inventory_the_source_screens",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": ".agents/skills/add-screen/SKILL.md",
+      "source_location": "L47",
+      "weight": 1.0,
+      "source": "agents_skills_add_screen_skill_md_add_screen_skill_add_a_section_board_to_the_noor_poc",
+      "target": "agents_skills_add_screen_skill_md_add_screen_skill_step_2_scaffold_the_board_page",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": ".agents/skills/add-screen/SKILL.md",
+      "source_location": "L80",
+      "weight": 1.0,
+      "source": "agents_skills_add_screen_skill_md_add_screen_skill_add_a_section_board_to_the_noor_poc",
+      "target": "agents_skills_add_screen_skill_md_add_screen_skill_step_3_storyboard_rows",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": ".agents/skills/add-screen/SKILL.md",
+      "source_location": "L93",
+      "weight": 1.0,
+      "source": "agents_skills_add_screen_skill_md_add_screen_skill_add_a_section_board_to_the_noor_poc",
+      "target": "agents_skills_add_screen_skill_md_add_screen_skill_step_4_the_live_device_one_stage_machine",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": ".agents/skills/add-screen/SKILL.md",
+      "source_location": "L110",
+      "weight": 1.0,
+      "source": "agents_skills_add_screen_skill_md_add_screen_skill_add_a_section_board_to_the_noor_poc",
+      "target": "agents_skills_add_screen_skill_md_add_screen_skill_step_5_theming_and_ds_fidelity",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": ".agents/skills/add-screen/SKILL.md",
+      "source_location": "L123",
+      "weight": 1.0,
+      "source": "agents_skills_add_screen_skill_md_add_screen_skill_add_a_section_board_to_the_noor_poc",
+      "target": "agents_skills_add_screen_skill_md_add_screen_skill_step_6_rewire_the_rest_of_the_repo",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": ".agents/skills/add-screen/SKILL.md",
+      "source_location": "L133",
+      "weight": 1.0,
+      "source": "agents_skills_add_screen_skill_md_add_screen_skill_add_a_section_board_to_the_noor_poc",
+      "target": "agents_skills_add_screen_skill_md_add_screen_skill_step_7_verify_before_you_re_done",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": ".agents/skills/add-screen/references/board-anatomy.md",
+      "source_location": "L1",
+      "weight": 1.0,
+      "source": "agents_skills_add_screen_references_board_anatomy_md_references_board_anatomy",
+      "target": "agents_skills_add_screen_references_board_anatomy_md_references_board_anatomy_section_board_annotated_skeletons",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": ".agents/skills/add-screen/references/board-anatomy.md",
+      "source_location": "L6",
+      "weight": 1.0,
+      "source": "agents_skills_add_screen_references_board_anatomy_md_references_board_anatomy_section_board_annotated_skeletons",
+      "target": "agents_skills_add_screen_references_board_anatomy_md_references_board_anatomy_1_the_board_page_section_section_dc_html",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": ".agents/skills/add-screen/references/board-anatomy.md",
+      "source_location": "L137",
+      "weight": 1.0,
+      "source": "agents_skills_add_screen_references_board_anatomy_md_references_board_anatomy_section_board_annotated_skeletons",
+      "target": "agents_skills_add_screen_references_board_anatomy_md_references_board_anatomy_2_a_storyboard_row_section_storyboards_flow_row_jsx",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": ".agents/skills/add-screen/references/board-anatomy.md",
+      "source_location": "L187",
+      "weight": 1.0,
+      "source": "agents_skills_add_screen_references_board_anatomy_md_references_board_anatomy_section_board_annotated_skeletons",
+      "target": "agents_skills_add_screen_references_board_anatomy_md_references_board_anatomy_3_shared_screen_components_section_storyboards_screens_jsx",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": ".agents/skills/add-screen/references/board-anatomy.md",
+      "source_location": "L219",
+      "weight": 1.0,
+      "source": "agents_skills_add_screen_references_board_anatomy_md_references_board_anatomy_section_board_annotated_skeletons",
+      "target": "agents_skills_add_screen_references_board_anatomy_md_references_board_anatomy_index_registration",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
       "source_file": ".claude/skills/add-screen/SKILL.md",
       "source_location": "L6",
       "weight": 1.0,
-      "confidence_score": 1.0,
-      "source": "add_screen_skill",
-      "target": "add_screen_skill_add_a_section_board_to_the_noor_poc"
+      "source": "claude_skills_add_screen_skill_md_add_screen_skill",
+      "target": "claude_skills_add_screen_skill_md_add_screen_skill_add_a_section_board_to_the_noor_poc",
+      "confidence_score": 1.0
     },
     {
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": ".claude/skills/add-screen/SKILL.md",
-      "source_location": "L20",
+      "source_location": "L21",
       "weight": 1.0,
-      "confidence_score": 1.0,
-      "source": "add_screen_skill_add_a_section_board_to_the_noor_poc",
-      "target": "add_screen_skill_anatomy"
+      "source": "claude_skills_add_screen_skill_md_add_screen_skill_add_a_section_board_to_the_noor_poc",
+      "target": "claude_skills_add_screen_skill_md_add_screen_skill_anatomy",
+      "confidence_score": 1.0
     },
     {
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": ".claude/skills/add-screen/SKILL.md",
-      "source_location": "L33",
+      "source_location": "L35",
       "weight": 1.0,
-      "confidence_score": 1.0,
-      "source": "add_screen_skill_add_a_section_board_to_the_noor_poc",
-      "target": "add_screen_skill_step_1_inventory_the_source_screens"
+      "source": "claude_skills_add_screen_skill_md_add_screen_skill_add_a_section_board_to_the_noor_poc",
+      "target": "claude_skills_add_screen_skill_md_add_screen_skill_step_1_inventory_the_source_screens",
+      "confidence_score": 1.0
     },
     {
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": ".claude/skills/add-screen/SKILL.md",
-      "source_location": "L45",
+      "source_location": "L47",
       "weight": 1.0,
-      "confidence_score": 1.0,
-      "source": "add_screen_skill_add_a_section_board_to_the_noor_poc",
-      "target": "add_screen_skill_step_2_scaffold_the_board_page"
+      "source": "claude_skills_add_screen_skill_md_add_screen_skill_add_a_section_board_to_the_noor_poc",
+      "target": "claude_skills_add_screen_skill_md_add_screen_skill_step_2_scaffold_the_board_page",
+      "confidence_score": 1.0
     },
     {
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": ".claude/skills/add-screen/SKILL.md",
-      "source_location": "L78",
+      "source_location": "L80",
       "weight": 1.0,
-      "confidence_score": 1.0,
-      "source": "add_screen_skill_add_a_section_board_to_the_noor_poc",
-      "target": "add_screen_skill_step_3_storyboard_rows"
+      "source": "claude_skills_add_screen_skill_md_add_screen_skill_add_a_section_board_to_the_noor_poc",
+      "target": "claude_skills_add_screen_skill_md_add_screen_skill_step_3_storyboard_rows",
+      "confidence_score": 1.0
     },
     {
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": ".claude/skills/add-screen/SKILL.md",
-      "source_location": "L94",
+      "source_location": "L93",
       "weight": 1.0,
-      "confidence_score": 1.0,
-      "source": "add_screen_skill_add_a_section_board_to_the_noor_poc",
-      "target": "add_screen_skill_step_4_the_live_device_one_stage_machine"
+      "source": "claude_skills_add_screen_skill_md_add_screen_skill_add_a_section_board_to_the_noor_poc",
+      "target": "claude_skills_add_screen_skill_md_add_screen_skill_step_4_the_live_device_one_stage_machine",
+      "confidence_score": 1.0
     },
     {
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": ".claude/skills/add-screen/SKILL.md",
-      "source_location": "L111",
+      "source_location": "L110",
       "weight": 1.0,
-      "confidence_score": 1.0,
-      "source": "add_screen_skill_add_a_section_board_to_the_noor_poc",
-      "target": "add_screen_skill_step_5_theming_and_ds_fidelity"
+      "source": "claude_skills_add_screen_skill_md_add_screen_skill_add_a_section_board_to_the_noor_poc",
+      "target": "claude_skills_add_screen_skill_md_add_screen_skill_step_5_theming_and_ds_fidelity",
+      "confidence_score": 1.0
     },
     {
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": ".claude/skills/add-screen/SKILL.md",
-      "source_location": "L124",
+      "source_location": "L123",
       "weight": 1.0,
-      "confidence_score": 1.0,
-      "source": "add_screen_skill_add_a_section_board_to_the_noor_poc",
-      "target": "add_screen_skill_step_6_rewire_the_rest_of_the_repo"
+      "source": "claude_skills_add_screen_skill_md_add_screen_skill_add_a_section_board_to_the_noor_poc",
+      "target": "claude_skills_add_screen_skill_md_add_screen_skill_step_6_rewire_the_rest_of_the_repo",
+      "confidence_score": 1.0
     },
     {
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": ".claude/skills/add-screen/SKILL.md",
-      "source_location": "L134",
+      "source_location": "L133",
       "weight": 1.0,
-      "confidence_score": 1.0,
-      "source": "add_screen_skill_add_a_section_board_to_the_noor_poc",
-      "target": "add_screen_skill_step_7_verify_before_you_re_done"
+      "source": "claude_skills_add_screen_skill_md_add_screen_skill_add_a_section_board_to_the_noor_poc",
+      "target": "claude_skills_add_screen_skill_md_add_screen_skill_step_7_verify_before_you_re_done",
+      "confidence_score": 1.0
     },
     {
       "relation": "contains",
@@ -7250,9 +8367,9 @@
       "source_file": ".claude/skills/add-screen/references/board-anatomy.md",
       "source_location": "L1",
       "weight": 1.0,
-      "confidence_score": 1.0,
-      "source": "references_board_anatomy",
-      "target": "references_board_anatomy_section_board_annotated_skeletons"
+      "source": "claude_skills_add_screen_references_board_anatomy_md_references_board_anatomy",
+      "target": "claude_skills_add_screen_references_board_anatomy_md_references_board_anatomy_section_board_annotated_skeletons",
+      "confidence_score": 1.0
     },
     {
       "relation": "contains",
@@ -7260,39 +8377,39 @@
       "source_file": ".claude/skills/add-screen/references/board-anatomy.md",
       "source_location": "L6",
       "weight": 1.0,
-      "confidence_score": 1.0,
-      "source": "references_board_anatomy_section_board_annotated_skeletons",
-      "target": "references_board_anatomy_1_the_board_page_section_section_dc_html"
+      "source": "claude_skills_add_screen_references_board_anatomy_md_references_board_anatomy_section_board_annotated_skeletons",
+      "target": "claude_skills_add_screen_references_board_anatomy_md_references_board_anatomy_1_the_board_page_section_section_dc_html",
+      "confidence_score": 1.0
     },
     {
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": ".claude/skills/add-screen/references/board-anatomy.md",
-      "source_location": "L141",
+      "source_location": "L137",
       "weight": 1.0,
-      "confidence_score": 1.0,
-      "source": "references_board_anatomy_section_board_annotated_skeletons",
-      "target": "references_board_anatomy_2_a_storyboard_row_section_storyboards_flow_row_jsx"
+      "source": "claude_skills_add_screen_references_board_anatomy_md_references_board_anatomy_section_board_annotated_skeletons",
+      "target": "claude_skills_add_screen_references_board_anatomy_md_references_board_anatomy_2_a_storyboard_row_section_storyboards_flow_row_jsx",
+      "confidence_score": 1.0
     },
     {
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": ".claude/skills/add-screen/references/board-anatomy.md",
-      "source_location": "L191",
+      "source_location": "L187",
       "weight": 1.0,
-      "confidence_score": 1.0,
-      "source": "references_board_anatomy_section_board_annotated_skeletons",
-      "target": "references_board_anatomy_3_shared_screen_components_section_storyboards_screens_jsx"
+      "source": "claude_skills_add_screen_references_board_anatomy_md_references_board_anatomy_section_board_annotated_skeletons",
+      "target": "claude_skills_add_screen_references_board_anatomy_md_references_board_anatomy_3_shared_screen_components_section_storyboards_screens_jsx",
+      "confidence_score": 1.0
     },
     {
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": ".claude/skills/add-screen/references/board-anatomy.md",
-      "source_location": "L188",
+      "source_location": "L219",
       "weight": 1.0,
-      "confidence_score": 1.0,
-      "source": "references_board_anatomy_section_board_annotated_skeletons",
-      "target": "references_board_anatomy_index_registration"
+      "source": "claude_skills_add_screen_references_board_anatomy_md_references_board_anatomy_section_board_annotated_skeletons",
+      "target": "claude_skills_add_screen_references_board_anatomy_md_references_board_anatomy_index_registration",
+      "confidence_score": 1.0
     },
     {
       "relation": "contains",
@@ -7783,8 +8900,189 @@
       "confidence_score": 1.0,
       "source": "noor_design_system_46f42e91_1858_412f_bdb6_560a6cc3df9f_readme_visual_foundations",
       "target": "noor_design_system_46f42e91_1858_412f_bdb6_560a6cc3df9f_readme_type"
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": ".claude/skills/add-screen/evals/evals.json",
+      "source_location": "L3",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "evals_evals",
+      "target": "evals_evals_evals"
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": ".claude/skills/add-screen/evals/evals.json",
+      "source_location": "L2",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "evals_evals",
+      "target": "evals_evals_skill_name"
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": ".claude/skills/add-screen/scripts/check_page.py",
+      "source_location": "L26",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "scripts_check_page",
+      "target": "scripts_check_page_main"
+    },
+    {
+      "relation": "references",
+      "context": "return_type",
+      "confidence": "EXTRACTED",
+      "source_file": ".claude/skills/add-screen/scripts/check_page.py",
+      "source_location": "L26",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "scripts_check_page_main",
+      "target": "int"
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": ".claude/skills/add-screen/SKILL.md",
+      "source_location": "L6",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "add_screen_skill",
+      "target": "add_screen_skill_add_a_section_board_to_the_noor_poc"
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": ".claude/skills/add-screen/SKILL.md",
+      "source_location": "L20",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "add_screen_skill_add_a_section_board_to_the_noor_poc",
+      "target": "add_screen_skill_anatomy"
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": ".claude/skills/add-screen/SKILL.md",
+      "source_location": "L33",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "add_screen_skill_add_a_section_board_to_the_noor_poc",
+      "target": "add_screen_skill_step_1_inventory_the_source_screens"
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": ".claude/skills/add-screen/SKILL.md",
+      "source_location": "L45",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "add_screen_skill_add_a_section_board_to_the_noor_poc",
+      "target": "add_screen_skill_step_2_scaffold_the_board_page"
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": ".claude/skills/add-screen/SKILL.md",
+      "source_location": "L78",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "add_screen_skill_add_a_section_board_to_the_noor_poc",
+      "target": "add_screen_skill_step_3_storyboard_rows"
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": ".claude/skills/add-screen/SKILL.md",
+      "source_location": "L94",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "add_screen_skill_add_a_section_board_to_the_noor_poc",
+      "target": "add_screen_skill_step_4_the_live_device_one_stage_machine"
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": ".claude/skills/add-screen/SKILL.md",
+      "source_location": "L111",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "add_screen_skill_add_a_section_board_to_the_noor_poc",
+      "target": "add_screen_skill_step_5_theming_and_ds_fidelity"
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": ".claude/skills/add-screen/SKILL.md",
+      "source_location": "L124",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "add_screen_skill_add_a_section_board_to_the_noor_poc",
+      "target": "add_screen_skill_step_6_rewire_the_rest_of_the_repo"
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": ".claude/skills/add-screen/SKILL.md",
+      "source_location": "L134",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "add_screen_skill_add_a_section_board_to_the_noor_poc",
+      "target": "add_screen_skill_step_7_verify_before_you_re_done"
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": ".claude/skills/add-screen/references/board-anatomy.md",
+      "source_location": "L1",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "references_board_anatomy",
+      "target": "references_board_anatomy_section_board_annotated_skeletons"
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": ".claude/skills/add-screen/references/board-anatomy.md",
+      "source_location": "L6",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "references_board_anatomy_section_board_annotated_skeletons",
+      "target": "references_board_anatomy_1_the_board_page_section_section_dc_html"
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": ".claude/skills/add-screen/references/board-anatomy.md",
+      "source_location": "L141",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "references_board_anatomy_section_board_annotated_skeletons",
+      "target": "references_board_anatomy_2_a_storyboard_row_section_storyboards_flow_row_jsx"
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": ".claude/skills/add-screen/references/board-anatomy.md",
+      "source_location": "L191",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "references_board_anatomy_section_board_annotated_skeletons",
+      "target": "references_board_anatomy_3_shared_screen_components_section_storyboards_screens_jsx"
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": ".claude/skills/add-screen/references/board-anatomy.md",
+      "source_location": "L188",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "references_board_anatomy_section_board_annotated_skeletons",
+      "target": "references_board_anatomy_index_registration"
     }
   ],
   "hyperedges": [],
-  "built_at_commit": "0794e9cb4b7f3dc5c3875b209166182587ac4125"
+  "built_at_commit": "e4625a2ff5812d1977d6879d3cf4110acca778f6"
 }

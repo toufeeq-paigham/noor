@@ -558,5 +558,40 @@
     "mtime": 1783405677.595042,
     "ast_hash": "df17296493d7fa839ed28c1877aeef23",
     "semantic_hash": ""
+  },
+  "/Users/toufeeqahamed/Paigham/noor/.agents/skills/add-screen-workspace/iteration-1/eval-0-dua-dikhr-section/eval_metadata.json": {
+    "mtime": 1783406578.8750656,
+    "ast_hash": "7dc8f2328a1aac5b0c9183d2fa04278c",
+    "semantic_hash": ""
+  },
+  "/Users/toufeeqahamed/Paigham/noor/.agents/skills/add-screen-workspace/iteration-1/eval-1-zakaat-section/eval_metadata.json": {
+    "mtime": 1783406578.876048,
+    "ast_hash": "052bc4f9d14bc1803bf2fd10345a703d",
+    "semantic_hash": ""
+  },
+  "/Users/toufeeqahamed/Paigham/noor/.agents/skills/add-screen/evals/evals.json": {
+    "mtime": 1783406578.8714132,
+    "ast_hash": "7814b5bbd1aeda0d406d3cbe3f3b142b",
+    "semantic_hash": ""
+  },
+  "/Users/toufeeqahamed/Paigham/noor/.agents/skills/add-screen/scripts/check_page.py": {
+    "mtime": 1783406578.8739533,
+    "ast_hash": "a9113025ffde950235ba398d3a0289e4",
+    "semantic_hash": ""
+  },
+  "/Users/toufeeqahamed/Paigham/noor/.agents/AGENTS.md": {
+    "mtime": 1783406586.9009583,
+    "ast_hash": "65e701cb74f35cb39db5b960f3c96bec",
+    "semantic_hash": ""
+  },
+  "/Users/toufeeqahamed/Paigham/noor/.agents/skills/add-screen/SKILL.md": {
+    "mtime": 1783406578.874321,
+    "ast_hash": "dd8263588951283f3acacac8f82b84d3",
+    "semantic_hash": ""
+  },
+  "/Users/toufeeqahamed/Paigham/noor/.agents/skills/add-screen/references/board-anatomy.md": {
+    "mtime": 1783406578.87291,
+    "ast_hash": "e0de159a73723f24c6764d0333c425fd",
+    "semantic_hash": ""
   }
 }

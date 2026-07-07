@@ -1,0 +1,41 @@
+{
+  "skill_name": "add-screen",
+  "evals": [
+    {
+      "id": 0,
+      "prompt": "Combine the Dua List, Dua Detail and Hisnul Muslim screens into one Dua & Dikhr section, like how we have onboarding. All screens in the same flow, keep it interactive.",
+      "expected_output": "A dua section subdirectory with a board .dc.html page (storyboard rows + one live interactive device running categories \u2192 chapters \u2192 dua detail), storyboards/*.jsx rows, theme-aware tokens, Index.dc.html cards repointed with #anchors, old flat pages removed/repointed.",
+      "files": [],
+      "assertions": [
+        "section-directory-created: a new section subdirectory exists containing one board .dc.html page and a storyboards/ folder with >=2 row .jsx files",
+        "board-page-wiring: the board page loads ../support.js AND ../_theme/chrome.js in <head>, and ../_theme/poc.css in the helmet",
+        "board-layout-structure: page uses .poc-stage with .poc-frames (>=2 x-import rows each bound active=\"{{ ... }}\") and .poc-live wrapping IOSDevice from ../ios-frame.jsx",
+        "storyboard-row-contract: every row jsx defines function XRow({ active }) rendering .poc-board frames in .noor-screen shells with .poc-frame-caption captions, and registers via Object.assign(window, { XRow })",
+        "dc-script-valid: data-dc-script passes node --check and every {{ binding }} used in markup is returned from renderVals() (check_page.py syntax+bindings clean)",
+        "theme-aware: no dark=\"\" props, no hardcoded data-theme=\"dark\" outside CSS selectors, no banned palette hex outside photo/gradient contexts",
+        "hash-deep-links: the dc script derives the initial stage from location.hash, and Index.dc.html cards deep-link into the section with #anchors",
+        "index-repointed: Index.dc.html no longer links the replaced flat pages; their cards are replaced by section cards",
+        "interactivity-preserved: live device implements category grid -> chapter list -> dua detail navigation with back, plus at least favorite toggle and audio-bar interactions from the source pages",
+        "real-content-copied: Arabic dua text, transliteration, translation and category names match the source pages (not invented)"
+      ]
+    },
+    {
+      "id": 1,
+      "prompt": "Add a zakaat section \u2014 combine Zakaat Screen, Calculate Zakaat and Zakaat Summary into a single section board flow like the onboarding one",
+      "expected_output": "A zakaat section subdirectory with board page (rows for overview/calculator/summary + live device running the 3-step flow), storyboard jsx rows, theme tokens, Index updated with deep-link cards, inbound links repointed.",
+      "files": [],
+      "assertions": [
+        "section-directory-created: a new section subdirectory exists containing one board .dc.html page and a storyboards/ folder with >=2 row .jsx files",
+        "board-page-wiring: the board page loads ../support.js AND ../_theme/chrome.js in <head>, and ../_theme/poc.css in the helmet",
+        "board-layout-structure: page uses .poc-stage with .poc-frames (>=2 x-import rows each bound active=\"{{ ... }}\") and .poc-live wrapping IOSDevice from ../ios-frame.jsx",
+        "storyboard-row-contract: every row jsx defines function XRow({ active }) rendering .poc-board frames in .noor-screen shells with .poc-frame-caption captions, and registers via Object.assign(window, { XRow })",
+        "dc-script-valid: data-dc-script passes node --check and every {{ binding }} used in markup is returned from renderVals() (check_page.py syntax+bindings clean)",
+        "theme-aware: no dark=\"\" props, no hardcoded data-theme=\"dark\" outside CSS selectors, no banned palette hex outside photo/gradient contexts",
+        "hash-deep-links: the dc script derives the initial stage from location.hash, and Index.dc.html cards deep-link into the section with #anchors",
+        "index-repointed: Index.dc.html no longer links the replaced flat pages; their cards are replaced by section cards",
+        "interactivity-preserved: live device implements overview -> calculator -> summary flow with working calculator inputs that update computed zakaat, and back navigation",
+        "real-content-copied: zakaat fields, labels and amounts match the source pages (not invented)"
+      ]
+    }
+  ]
+}
