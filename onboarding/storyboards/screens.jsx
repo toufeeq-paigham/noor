@@ -157,9 +157,7 @@ function PhoneScreen({
 }) {
   const isFilled = phoneDisplay.replace(/\s/g, '').length === 10;
   
-  const innerBorder = phoneError
-    ? 'color-mix(in oklab, var(--color-input-border-error) 50%, transparent)'
-    : 'var(--color-input-border-disabled)';
+  const innerBorder = 'var(--color-input-border-disabled)';
   
   const haloColor = phoneError
     ? 'color-mix(in oklab, var(--color-input-border-error) 50%, transparent)'
