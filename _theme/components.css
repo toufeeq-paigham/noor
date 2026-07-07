@@ -24,8 +24,8 @@
 .ib.sm{width:32px;height:32px}
 .ib.md{width:40px;height:40px}
 .ib-filled{background:var(--color-action-primary);color:var(--color-action-primary-inverse);box-shadow:0 10px 24px -10px color-mix(in oklab,var(--color-action-primary) 65%,transparent)}
-.ib-tonal{background:color-mix(in oklab,var(--color-action-primary) 10%,transparent);color:var(--color-action-primary);border:1px solid color-mix(in oklab,var(--color-action-primary) 25%,transparent)}
-.ib-tonal.neutral{background:color-mix(in oklab,var(--color-info-primary) 10%,transparent);color:var(--color-info-primary);border-color:color-mix(in oklab,var(--color-info-primary) 20%,transparent)}
+.ib-tonal{background:color-mix(in oklab,var(--color-info-primary) 10%,transparent);color:var(--color-info-primary);border:1px solid color-mix(in oklab,var(--color-info-primary) 20%,transparent)}
+.ib-tonal.primary{background:color-mix(in oklab,var(--color-action-primary) 10%,transparent);color:var(--color-action-primary);border-color:color-mix(in oklab,var(--color-action-primary) 25%,transparent)}
 .ib-link{background:transparent;color:var(--color-info-primary)}
 .ib .material-symbols-rounded{font-size:22px}
 .ib.sm .material-symbols-rounded{font-size:16px}
