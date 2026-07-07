@@ -103,9 +103,19 @@
       brand.textContent = 'Noor';
       left.appendChild(brand);
     } else {
+      var prefix = '';
+      var path = window.location.pathname;
+      if (path) {
+        var parts = path.split('/').filter(Boolean);
+        var isFile = parts.length > 0 && parts[parts.length - 1].indexOf('.') !== -1;
+        var folderCount = isFile ? parts.length - 1 : parts.length;
+        for (var d = 0; d < folderCount; d++) {
+          prefix += '../';
+        }
+      }
       var home = document.createElement('a');
       home.className = 'noor-chrome-home';
-      home.href = 'Index.dc.html';
+      home.href = prefix + 'Index.dc.html';
       home.innerHTML = '<span class="material-symbols-rounded">grid_view</span><span>Index</span>';
       left.appendChild(home);
     }
