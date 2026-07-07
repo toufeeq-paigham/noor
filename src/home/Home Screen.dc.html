@@ -1,0 +1,518 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="../support.js"></script>
+<script src="../_theme/chrome.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+  <link rel="stylesheet" href="../_ds/noor-design-system-46f42e91-1858-412f-bdb6-560a6cc3df9f/colors_and_type.css">
+  <link rel="stylesheet" href="../_theme/poc.css">
+  <link rel="stylesheet" href="../_theme/components.css">
+  <script src="../_ds/noor-design-system-46f42e91-1858-412f-bdb6-560a6cc3df9f/_ds_bundle.js"></script>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Rounded:opsz,wght,FILL,GRAD@24,400,0..1,0&amp;display=block">
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Noto+Nastaliq+Urdu:wght@700&amp;display=swap">
+  <style>
+    body{background:var(--canvas-bg);padding:36px 32px 90px;min-height:100vh;box-sizing:border-box}
+    ::-webkit-scrollbar{display:none}*{-ms-overflow-style:none;scrollbar-width:none}
+    
+    /* Profile Gradient Hero */
+    .p-hero{background:radial-gradient(ellipse at top right, color-mix(in oklab, var(--color-action-primary) 20%, transparent) 0%, transparent 60%),radial-gradient(ellipse at top left, color-mix(in oklab, var(--color-action-secondary) 12%, transparent) 0%, transparent 55%),var(--color-surface-primary)}
+    [data-theme="dark"] .p-hero{background:radial-gradient(ellipse at top right, rgba(0,80,50,0.6) 0%, rgba(9,9,11,0) 60%),radial-gradient(ellipse at top left, rgba(0,40,30,0.4) 0%, rgba(9,9,11,0) 55%),var(--color-surface-primary)}
+    
+    .prow{cursor:pointer;transition:background .15s ease}
+    .prow:active{background:color-mix(in oklab, var(--color-info-primary) 8%, transparent)}
+    .pbtn{cursor:pointer;transition:filter .15s ease}
+    .pbtn:active{filter:brightness(0.9)}
+  </style>
+</helmet>
+
+<!-- ── Board header (shared board chrome) ── -->
+<x-import component="BoardHeader" from="../_theme/board.jsx"
+          title="Home — Tabs &amp; Variations"
+          subtitle="Explore all primary app tabs (Home, Qaum, Quran, Salaah, Profile) and hero details variations inside the interactive mockup."
+          hint-size="1440px,92px"></x-import>
+
+<!-- ── Board Scaffold ── -->
+<div class="poc-stage">
+
+  <!-- Static Storyboard row (highlights frame corresponding to active live device state) -->
+  <div class="poc-frames">
+    <x-import component="TabsRow" from="./storyboards/tabs-row.jsx"
+              active="{{ activeFrameIndex }}"
+              on-select-frame="{{ syncLiveStateToFrame }}"
+              hint-size="1440px,580px">
+    </x-import>
+  </div>
+
+  <!-- Live interactive device -->
+  <x-import component="BoardLive" from="../_theme/board.jsx" restart="{{ resetToDefault }}" hint-size="400px,900px">
+    <x-import component="IOSDevice" from="../ios-frame.jsx" hint-size="402px,874px">
+      <div class="noor-screen" style="display:flex;flex-direction:column;height:100%;position:relative;overflow:hidden">
+        <div class="noor-island"></div>
+
+        {/* Screen Slot */}
+        <div style="flex:1;position:relative;overflow:hidden">
+          
+          {/* TAB 0: HOME SCREEN */}
+          <sc-if value="{{ isHomeTab }}">
+            <x-import component="HomeScreen" from="./storyboards/screens.jsx"
+                      hero-sel="{{ homeHeroSel }}"
+                      on-suhoor-tap="{{ toggleSuhoor }}"
+                      on-iftaar-tap="{{ toggleIftaar }}"
+                      prayers="{{ homePrayers }}"
+                      on-toggle-prayer="{{ toggleHomePrayer }}"
+                      salaah-count="{{ homeSalaahCount }}"
+                      sehri-note-visible="{{ homeSehriNote }}"
+                      on-sehri-tap="{{ triggerSehriNote }}"
+                      slide="{{ homeSlide }}"
+                      on-slide-dot-tap="{{ changeSlide }}"
+                      likes="{{ homeLikes }}"
+                      on-haj-like="{{ toggleHajLike }}"
+                      on-eid-like="{{ toggleEidLike }}"
+                      on-bell-tap="{{ toggleNotif }}"
+                      notif-on="{{ homeNotifOn }}"
+                      go-quran="{{ switchToTab2 }}"
+                      go-dua="{{ switchToTab2 }}"
+                      go-masjids="{{ switchToTab3 }}"
+                      hint-size="100%,100%">
+            </x-import>
+          </sc-if>
+
+          {/* TAB 1: QAUM SCREEN */}
+          <sc-if value="{{ isQaumTab }}">
+            <x-import component="QaumScreen" from="./storyboards/screens.jsx"
+                      active-filter="{{ qaumFilter }}"
+                      on-select-filter="{{ setQaumFilter }}"
+                      likes="{{ qaumLikes }}"
+                      on-like="{{ toggleQaumLike }}"
+                      follows="{{ qaumFollows }}"
+                      on-toggle-follow="{{ toggleQaumFollow }}"
+                      audio-playing="{{ qaumAudioPlaying }}"
+                      audio-progress="{{ qaumAudioProgress }}"
+                      on-toggle-audio="{{ toggleQaumAudio }}"
+                      hint-size="100%,100%">
+            </x-import>
+          </sc-if>
+
+          {/* TAB 2: QURAN SCREEN */}
+          <sc-if value="{{ isQuranTab }}">
+            <x-import component="QuranScreen" from="./storyboards/screens.jsx"
+                      active-tab="{{ quranTab }}"
+                      on-select-tab="{{ setQuranTab }}"
+                      on-open-reader="{{ noop }}"
+                      on-select-surah="{{ selectQuranSurah }}"
+                      on-select-juz="{{ selectQuranJuz }}"
+                      selected-surah-idx="{{ quranSelectedSurah }}"
+                      selected-juz-idx="{{ quranSelectedJuz }}"
+                      hint-size="100%,100%">
+            </x-import>
+          </sc-if>
+
+          {/* TAB 3: SALAAH SCREEN */}
+          <sc-if value="{{ isSalaahTab }}">
+            <x-import component="SalaahScreen" from="./storyboards/screens.jsx"
+                      masjid-letter="{{ salaahMasjidLetter }}"
+                      masjid-name="{{ salaahMasjidName }}"
+                      masjid-sub="{{ salaahMasjidSub }}"
+                      on-masjid-sheet-toggle="{{ toggleSalaahMasjidSheet }}"
+                      show-masjid-sheet="{{ salaahShowMasjidSheet }}"
+                      on-select-masjid="{{ selectSalaahMasjid }}"
+                      date-offset="{{ salaahDateOffset }}"
+                      on-date-change="{{ changeSalaahDate }}"
+                      prayers-alert="{{ salaahPrayersAlert }}"
+                      prayers-checked="{{ salaahPrayersChecked }}"
+                      on-toggle-check="{{ toggleSalaahCheck }}"
+                      on-toggle-alert="{{ toggleSalaahAlert }}"
+                      hint-size="100%,100%">
+            </x-import>
+          </sc-if>
+
+          {/* TAB 4: PROFILE SCREEN */}
+          <sc-if value="{{ isProfileTab }}">
+            <x-import component="ProfileScreen" from="./storyboards/screens.jsx"
+                      user-name="Toufeeq Ahamed"
+                      invite-copied="{{ profileInviteCopied }}"
+                      on-copy-invite="{{ copyProfileInvite }}"
+                      pending-approve-list="{{ profilePendingFriends }}"
+                      on-approve-friend="{{ approveProfileFriend }}"
+                      logout-open="{{ profileLogoutOpen }}"
+                      on-toggle-logout-sheet="{{ toggleProfileLogoutSheet }}"
+                      on-confirm-logout="{{ resetToDefault }}"
+                      go-masjids="{{ switchToTab3 }}"
+                      go-register="{{ noop }}"
+                      go-following="{{ noop }}"
+                      hint-size="100%,100%">
+            </x-import>
+          </sc-if>
+          
+        </div>
+
+        {/* BOTTOM TAB BAR (Anchored Live Device Component) */}
+        <div class="nb-bar" style="position:absolute;bottom:0;left:0;right:0;padding-bottom:24px;z-index:50">
+          <div class="nb-glow" style="left: {{ navGlowLeft }}"></div>
+          <div class="nb-nav">
+            <sc-for list="{{ tabs }}" as="t" hint-placeholder-count="5">
+              <div class={`nb-item ${t.cls}`} onClick="{{ t.onTap }}">
+                <span class="material-symbols-rounded">{{ t.icon }}</span>
+                <span>{{ t.label }}</span>
+              </div>
+            </sc-for>
+          </div>
+        </div>
+
+        <div class="noor-home"></div>
+      </div>
+    </x-import>
+  </x-import>
+
+</div>
+</x-dc>
+
+<script type="text/x-dc" data-dc-script>
+class Component extends DCLogic {
+  state = {
+    activeTab: 0,
+    activeFrameIndex: 0,
+    
+    // Home tab state
+    homeHeroSel: null,
+    homePrayers: { Fajr: true, Zohar: true, Asr: true, Maghrib: true, Isha: false },
+    homeSehriNote: false,
+    homeSlide: 0,
+    homeLikes: { haj: { liked: true, count: 4 }, eid: { liked: true, count: 12 } },
+    homeNotifOn: true,
+    
+    // Qaum tab state
+    qaumFilter: 0,
+    qaumLikes: { post1: { liked: true, count: 4 }, post2: { liked: false, count: 2 }, post3: { liked: true, count: 8 } },
+    qaumFollows: { paigham: true, dargah: false },
+    qaumAudioPlaying: false,
+    qaumAudioProgress: 4,
+
+    // Quran tab state
+    quranTab: 0,
+    quranSelectedSurah: 0,
+    quranSelectedJuz: 0,
+
+    // Salaah tab state
+    salaahShowMasjidSheet: false,
+    salaahMasjidLetter: "B",
+    salaahMasjidName: "Masjid E Bilal",
+    salaahMasjidSub: "Bannerghatta Road, Bengaluru",
+    salaahDateOffset: 0,
+    salaahPrayersAlert: { Fajr: false, Zohar: true, Asr: false, Maghrib: true, Isha: false },
+    salaahPrayersChecked: { Fajr: true, Zohar: true, Asr: true, Maghrib: false, Isha: false },
+
+    // Profile tab state
+    profileInviteCopied: false,
+    profilePendingFriends: [{ name: 'Suhail Ahmed', letter: 'S' }, { name: 'Syed Imran', letter: 'S' }],
+    profileLogoutOpen: false
+  };
+
+  tabDefs = [
+    { label: 'Home', icon: 'home', index: 0 },
+    { label: 'Qaum', icon: 'group', index: 1 },
+    { label: 'Quran', icon: 'menu_book', index: 2 },
+    { label: 'Salaah', icon: 'mosque', index: 3 },
+    { label: 'Profile', icon: 'person', index: 4 }
+  ];
+
+  componentDidMount() {
+    const hash = window.location.hash;
+    if (hash) {
+      if (hash === '#home') this.syncLiveStateToFrame(0);
+      else if (hash === '#home-suhoor') this.syncLiveStateToFrame(1);
+      else if (hash === '#home-iftaar') this.syncLiveStateToFrame(2);
+      else if (hash === '#qaum') this.syncLiveStateToFrame(3);
+      else if (hash === '#quran') this.syncLiveStateToFrame(4);
+      else if (hash === '#salaah') this.syncLiveStateToFrame(5);
+      else if (hash === '#profile') this.syncLiveStateToFrame(6);
+    }
+  }
+
+  // Sync Live Device state when static frame clicked on canvas
+  syncLiveStateToFrame = (idx) => {
+    const states = [
+      { activeTab: 0, homeHeroSel: null },
+      { activeTab: 0, homeHeroSel: 'suhoor' },
+      { activeTab: 0, homeHeroSel: 'iftaar' },
+      { activeTab: 1 },
+      { activeTab: 2 },
+      { activeTab: 3 },
+      { activeTab: 4 }
+    ];
+    this.setState({
+      ...states[idx],
+      activeFrameIndex: idx
+    });
+  };
+
+  // Sync canvas active highlight ring based on current live state
+  syncFrameIndexFromTab(tabIndex, heroSel = null) {
+    if (tabIndex === 0) {
+      if (heroSel === 'suhoor') return 1;
+      if (heroSel === 'iftaar') return 2;
+      return 0;
+    }
+    return tabIndex + 2;
+  }
+
+  // Switch tab handlers
+  setTab = (idx) => () => {
+    this.setState(s => ({
+      activeTab: idx,
+      activeFrameIndex: this.syncFrameIndexFromTab(idx, idx === 0 ? s.homeHeroSel : null)
+    }));
+  };
+
+  switchToTab2 = () => this.setTab(2)();
+  switchToTab3 = () => this.setTab(3)();
+
+  // Reset to default settings
+  resetToDefault = () => {
+    this.setState({
+      activeTab: 0,
+      activeFrameIndex: 0,
+      homeHeroSel: null,
+      homePrayers: { Fajr: true, Zohar: true, Asr: true, Maghrib: true, Isha: false },
+      homeSehriNote: false,
+      homeSlide: 0,
+      qaumFilter: 0,
+      quranTab: 0,
+      salaahShowMasjidSheet: false,
+      salaahDateOffset: 0,
+      profileInviteCopied: false,
+      profileLogoutOpen: false,
+      profilePendingFriends: [{ name: 'Suhail Ahmed', letter: 'S' }, { name: 'Syed Imran', letter: 'S' }]
+    });
+  };
+
+  // Home handlers
+  toggleSuhoor = () => this.setState(s => {
+    const nextSel = s.homeHeroSel === 'suhoor' ? null : 'suhoor';
+    return {
+      homeHeroSel: nextSel,
+      activeFrameIndex: this.syncFrameIndexFromTab(0, nextSel)
+    };
+  });
+
+  toggleIftaar = () => this.setState(s => {
+    const nextSel = s.homeHeroSel === 'iftaar' ? null : 'iftaar';
+    return {
+      homeHeroSel: nextSel,
+      activeFrameIndex: this.syncFrameIndexFromTab(0, nextSel)
+    };
+  });
+
+  toggleHomePrayer = (name) => this.setState(s => ({
+    homePrayers: { ...s.homePrayers, [name]: !s.homePrayers[name] }
+  }));
+
+  triggerSehriNote = () => {
+    this.setState({ homeSehriNote: true });
+    clearTimeout(this._sehriTimer);
+    this._sehriTimer = setTimeout(() => this.setState({ homeSehriNote: false }), 1500);
+  };
+
+  changeSlide = (dotIdx) => {
+    this.setState({ homeSlide: dotIdx });
+    const el = document.getElementById('qaum-carousel');
+    if (el) el.scrollTo({ left: dotIdx * 250, behavior: 'smooth' });
+  };
+
+  toggleHajLike = () => this.setState(s => {
+    const cur = s.homeLikes.haj;
+    return { homeLikes: { ...s.homeLikes, haj: { liked: !cur.liked, count: cur.count + (cur.liked ? -1 : 1) } } };
+  });
+
+  toggleEidLike = () => this.setState(s => {
+    const cur = s.homeLikes.eid;
+    return { homeLikes: { ...s.homeLikes, eid: { liked: !cur.liked, count: cur.count + (cur.liked ? -1 : 1) } } };
+  });
+
+  toggleNotif = () => this.setState(s => ({ homeNotifOn: !s.homeNotifOn }));
+
+  // Qaum handlers
+  setQaumFilter = (idx) => this.setState({ qaumFilter: idx });
+  
+  toggleQaumLike = (key) => this.setState(s => {
+    const cur = s.qaumLikes[key];
+    return { qaumLikes: { ...s.qaumLikes, [key]: { liked: !cur.liked, count: cur.count + (cur.liked ? -1 : 1) } } };
+  });
+
+  toggleQaumFollow = (key) => this.setState(s => ({
+    qaumFollows: { ...s.qaumFollows, [key]: !s.qaumFollows[key] }
+  }));
+
+  toggleQaumAudio = () => {
+    this.setState(s => {
+      const playing = !s.qaumAudioPlaying;
+      if (playing) {
+        clearInterval(this._audioTimer);
+        this._audioTimer = setInterval(() => {
+          this.setState(st => {
+            const nextProg = (st.qaumAudioProgress + 1) % 23;
+            if (nextProg === 0) {
+              clearInterval(this._audioTimer);
+              return { qaumAudioPlaying: false, qaumAudioProgress: 4 };
+            }
+            return { qaumAudioProgress: nextProg };
+          });
+        }, 300);
+      } else {
+        clearInterval(this._audioTimer);
+      }
+      return { qaumAudioPlaying: playing };
+    });
+  };
+
+  // Quran handlers
+  setQuranTab = (idx) => this.setState({ quranTab: idx });
+  selectQuranSurah = (idx) => this.setState({ quranSelectedSurah: idx });
+  selectQuranJuz = (idx) => this.setState({ quranSelectedJuz: idx });
+
+  // Salaah handlers
+  toggleSalaahMasjidSheet = () => this.setState(s => ({ salaahShowMasjidSheet: !s.salaahShowMasjidSheet }));
+  
+  selectSalaahMasjid = (name) => {
+    const letter = name.includes('Bilal') ? 'B' : 'Q';
+    const sub = name.includes('Bilal') ? 'Bannerghatta Road, Bengaluru' : 'Jayanagar, Bengaluru';
+    this.setState({
+      salaahMasjidLetter: letter,
+      salaahMasjidName: name,
+      salaahMasjidSub: sub,
+      salaahShowMasjidSheet: false
+    });
+  };
+
+  changeSalaahDate = (offset) => this.setState(s => {
+    const nextOffset = Math.min(Math.max(0, s.salaahDateOffset + offset), 2);
+    return { salaahDateOffset: nextOffset };
+  });
+
+  toggleSalaahCheck = (name) => this.setState(s => ({
+    salaahPrayersChecked: { ...s.salaahPrayersChecked, [name]: !s.salaahPrayersChecked[name] }
+  }));
+
+  toggleSalaahAlert = (name) => this.setState(s => ({
+    salaahPrayersAlert: { ...s.salaahPrayersAlert, [name]: !s.salaahPrayersAlert[name] }
+  }));
+
+  // Profile handlers
+  copyProfileInvite = () => {
+    this.setState({ profileInviteCopied: true });
+    clearTimeout(this._inviteTimer);
+    this._inviteTimer = setTimeout(() => this.setState({ profileInviteCopied: false }), 2000);
+  };
+
+  approveProfileFriend = (name) => this.setState(s => ({
+    profilePendingFriends: s.profilePendingFriends.filter(fr => fr.name !== name)
+  }));
+
+  toggleProfileLogoutSheet = () => this.setState(s => ({ profileLogoutOpen: !s.profileLogoutOpen }));
+
+  noop = () => {};
+
+  renderVals() {
+    const s = this.state;
+
+    // Home counts
+    const homePrayersDone = Object.keys(s.homePrayers).filter(k => s.homePrayers[k]).length;
+
+    // Build bottom nav tabs array
+    const tabs = this.tabDefs.map(t => {
+      const active = s.activeTab === t.index;
+      return {
+        label: t.label,
+        icon: t.icon,
+        cls: active ? 'active' : '',
+        onTap: this.setTab(t.index)
+      };
+    });
+
+    return {
+      activeFrameIndex: s.activeFrameIndex,
+      syncLiveStateToFrame: this.syncLiveStateToFrame,
+      resetToDefault: this.resetToDefault,
+      noop: this.noop,
+      
+      // Active tab selectors
+      isHomeTab: s.activeTab === 0,
+      isQaumTab: s.activeTab === 1,
+      isQuranTab: s.activeTab === 2,
+      isSalaahTab: s.activeTab === 3,
+      isProfileTab: s.activeTab === 4,
+      navGlowLeft: s.activeTab * 20 + '%',
+
+      // Home Screen props
+      homeHeroSel: s.homeHeroSel,
+      homePrayers: s.homePrayers,
+      homeSalaahCount: homePrayersDone + ' of 5 today',
+      homeSehriNote: s.homeSehriNote,
+      homeSlide: s.homeSlide,
+      homeLikes: s.homeLikes,
+      homeNotifOn: s.homeNotifOn,
+      toggleSuhoor: this.toggleSuhoor,
+      toggleIftaar: this.toggleIftaar,
+      toggleHomePrayer: this.toggleHomePrayer,
+      triggerSehriNote: this.triggerSehriNote,
+      changeSlide: this.changeSlide,
+      toggleHajLike: this.toggleHajLike,
+      toggleEidLike: this.toggleEidLike,
+      toggleNotif: this.toggleNotif,
+      switchToTab2: this.switchToTab2,
+      switchToTab3: this.switchToTab3,
+
+      // Qaum Screen props
+      qaumFilter: s.qaumFilter,
+      setQaumFilter: this.setQaumFilter,
+      qaumLikes: s.qaumLikes,
+      toggleQaumLike: this.toggleQaumLike,
+      qaumFollows: s.qaumFollows,
+      toggleQaumFollow: this.toggleQaumFollow,
+      qaumAudioPlaying: s.qaumAudioPlaying,
+      qaumAudioProgress: s.qaumAudioProgress,
+      toggleQaumAudio: this.toggleQaumAudio,
+
+      // Quran Screen props
+      quranTab: s.quranTab,
+      setQuranTab: this.setQuranTab,
+      quranSelectedSurah: s.quranSelectedSurah,
+      selectQuranSurah: this.selectQuranSurah,
+      quranSelectedJuz: s.quranSelectedJuz,
+      selectQuranJuz: this.selectQuranJuz,
+
+      // Salaah Screen props
+      salaahMasjidLetter: s.salaahMasjidLetter,
+      salaahMasjidName: s.salaahMasjidName,
+      salaahMasjidSub: s.salaahMasjidSub,
+      toggleSalaahMasjidSheet: this.toggleSalaahMasjidSheet,
+      salaahShowMasjidSheet: s.salaahShowMasjidSheet,
+      selectSalaahMasjid: this.selectSalaahMasjid,
+      salaahDateOffset: s.salaahDateOffset,
+      changeSalaahDate: this.changeSalaahDate,
+      salaahPrayersAlert: s.salaahPrayersAlert,
+      salaahPrayersChecked: s.salaahPrayersChecked,
+      toggleSalaahCheck: this.toggleSalaahCheck,
+      toggleSalaahAlert: this.toggleSalaahAlert,
+
+      // Profile Screen props
+      profileInviteCopied: s.profileInviteCopied,
+      copyProfileInvite: this.copyProfileInvite,
+      profilePendingFriends: s.profilePendingFriends,
+      approveProfileFriend: this.approveProfileFriend,
+      profileLogoutOpen: s.profileLogoutOpen,
+      toggleProfileLogoutSheet: this.toggleProfileLogoutSheet,
+
+      // Bottom Nav tabs
+      tabs
+    };
+  }
+}
+</script>
+</body>
+</html>

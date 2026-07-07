@@ -1,16 +1,16 @@
 # Graph Report - noor  (2026-07-07)
 
 ## Corpus Check
-- 28 files · ~2,670,747 words
+- 30 files · ~4,937,829 words
 - Verdict: corpus is large enough that graph structure adds value.
 
 ## Summary
-- 454 nodes · 488 edges · 33 communities (20 shown, 13 thin omitted)
+- 464 nodes · 500 edges · 35 communities (22 shown, 13 thin omitted)
 - Extraction: 100% EXTRACTED · 0% INFERRED · 0% AMBIGUOUS
 - Token cost: 0 input · 0 output
 
 ## Graph Freshness
-- Built from commit: `83b59be5`
+- Built from commit: `859e64f1`
 - Run `git rev-parse HEAD` and compare to check if the graph is stale.
 - Run `graphify update .` after code changes (no API cost).
 
@@ -46,6 +46,7 @@
 - [[_COMMUNITY_Community 30|Community 30]]
 - [[_COMMUNITY_Community 31|Community 31]]
 - [[_COMMUNITY_Community 32|Community 32]]
+- [[_COMMUNITY_Community 34|Community 34]]
 
 ## God Nodes (most connected - your core abstractions)
 1. `tokenKinds` - 141 edges
@@ -65,7 +66,7 @@
 ## Import Cycles
 - None detected.
 
-## Communities (33 total, 13 thin omitted)
+## Communities (35 total, 13 thin omitted)
 
 ### Community 0 - "Community 0"
 Cohesion: 0.01
@@ -111,6 +112,10 @@ Nodes (9): Add a section board to the Noor POC, Anatomy, Step 1 — Inventory th
 Cohesion: 0.33
 Nodes (5): 1. The board page — `<section>/<Section>.dc.html`, 2. A storyboard row — `<section>/storyboards/<flow>-row.jsx`, 3. Shared screen components — `<section>/storyboards/screens.jsx`, Index registration, Section board — annotated skeletons
 
+### Community 21 - "Community 21"
+Cohesion: 0.48
+Nodes (5): IntroScreen(), Keypad(), KEYPAD_KEYS, OtpScreen(), PhoneScreen()
+
 ### Community 22 - "Community 22"
 Cohesion: 0.10
 Nodes (18): Agent Behavior, Commit Messages, Design System Rules, graphify, Project Structure, Rule 10 — Checkpoint after every significant step, Rule 11 — Match the codebase's conventions, even if you disagree, Rule 12 — Fail loud (+10 more)
@@ -148,9 +153,9 @@ Nodes (4): assertions, eval_id, eval_name, prompt
 _Questions this graph is uniquely positioned to answer:_
 
 - **Why does `tokenKinds` connect `Community 0` to `Community 5`?**
-  _High betweenness centrality (0.110) - this node is a cross-community bridge._
+  _High betweenness centrality (0.105) - this node is a cross-community bridge._
 - **Why does `x-omelette` connect `Community 5` to `Community 0`?**
-  _High betweenness centrality (0.014) - this node is a cross-community bridge._
+  _High betweenness centrality (0.013) - this node is a cross-community bridge._
 - **What connects `eval_id`, `eval_name`, `prompt` to the rest of the system?**
   _280 weakly-connected nodes found - possible documentation gaps or missing edges._
 - **Should `Community 0` be split into smaller, more focused modules?**
