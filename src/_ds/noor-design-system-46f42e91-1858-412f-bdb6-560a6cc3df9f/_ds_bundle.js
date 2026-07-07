@@ -454,7 +454,9 @@ function HomeScreen({
   }))));
 }
 Object.assign(window, {
-  HomeScreen
+  // Exposed under a namespaced key so this DS demo screen does not collide with
+  // the POC's own window.HomeScreen (storyboards/screens.jsx), which every board renders.
+  DemoHomeScreen: HomeScreen
 });
 })(); } catch (e) { __ds_ns.__errors.push({ path: "ui_kits/mobile/HomeScreen.jsx", error: String((e && e.message) || e) }); }
 

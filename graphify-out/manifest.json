@@ -80,8 +80,8 @@
     "semantic_hash": ""
   },
   "/Users/toufeeqahamed/Paigham/noor/src/_ds/noor-design-system-46f42e91-1858-412f-bdb6-560a6cc3df9f/_ds_bundle.js": {
-    "mtime": 1783409224.0216007,
-    "ast_hash": "0a844848ef78ee2e024f552850076e74",
+    "mtime": 1783422004.183392,
+    "ast_hash": "287e9f93e69163ec7ce050e855134230",
     "semantic_hash": ""
   },
   "/Users/toufeeqahamed/Paigham/noor/src/_ds/noor-design-system-46f42e91-1858-412f-bdb6-560a6cc3df9f/_ds_manifest.json": {
@@ -145,8 +145,8 @@
     "semantic_hash": ""
   },
   "/Users/toufeeqahamed/Paigham/noor/src/Components.dc.html": {
-    "mtime": 1783420233.0874934,
-    "ast_hash": "22b50b98158f73c175906da042ad8f49",
+    "mtime": 1783428798.2720423,
+    "ast_hash": "f8eaa210f0426c1e154f2462173ee0b8",
     "semantic_hash": ""
   },
   "/Users/toufeeqahamed/Paigham/noor/src/Dua Detail.dc.html": {
@@ -175,8 +175,8 @@
     "semantic_hash": ""
   },
   "/Users/toufeeqahamed/Paigham/noor/src/Index.dc.html": {
-    "mtime": 1783408166.4146245,
-    "ast_hash": "405fc18ff31457a698765926ca19c917",
+    "mtime": 1783428816.8840988,
+    "ast_hash": "b0f880cfed7a5dfb779f02aa358422bd",
     "semantic_hash": ""
   },
   "/Users/toufeeqahamed/Paigham/noor/src/Islamic Calendar.dc.html": {
@@ -815,18 +815,18 @@
     "semantic_hash": ""
   },
   "/Users/toufeeqahamed/Paigham/noor/src/home/storyboards/screens.jsx": {
-    "mtime": 1783420184.4851913,
-    "ast_hash": "6bad8b9b4386e8b6a72243bd23ff542b",
+    "mtime": 1783428117.2935066,
+    "ast_hash": "8c53ad196b52cbb1150f072ceb89ac0e",
     "semantic_hash": ""
   },
   "/Users/toufeeqahamed/Paigham/noor/src/home/storyboards/tabs-row.jsx": {
-    "mtime": 1783408018.5360923,
-    "ast_hash": "531d9e4be0200ec6edb57523ce1ff94b",
+    "mtime": 1783427689.2199504,
+    "ast_hash": "4e54eeb7ea110983b3a9ac5e478f9272",
     "semantic_hash": ""
   },
   "/Users/toufeeqahamed/Paigham/noor/src/home/Home Screen.dc.html": {
-    "mtime": 1783413766.4088638,
-    "ast_hash": "145be1be58c40f2691e038e9ce72672e",
+    "mtime": 1783428062.4686224,
+    "ast_hash": "98dc5c8eecf3ba5f13c6c364e6829d7d",
     "semantic_hash": ""
   },
   "/Users/toufeeqahamed/Paigham/noor/images/maghrib_background.webp": {
@@ -852,6 +852,141 @@
   "/Users/toufeeqahamed/Paigham/noor/images/maghrib_sehri.webp": {
     "mtime": 1783408980.0765347,
     "ast_hash": "fc9f18fcdc4ab89de83da6fe9dd05d91",
+    "semantic_hash": ""
+  },
+  "/Users/toufeeqahamed/Paigham/noor/src/_theme/components.jsx": {
+    "mtime": 1783428042.4338546,
+    "ast_hash": "486d873b28224d01caa832b9e3acd768",
+    "semantic_hash": ""
+  },
+  "/Users/toufeeqahamed/Paigham/noor/src/home/storyboards/nav-bar.jsx": {
+    "mtime": 1783424183.6017451,
+    "ast_hash": "d5fd4705e9ae0e3aa813790b6b7af43a",
+    "semantic_hash": ""
+  },
+  "/Users/toufeeqahamed/Paigham/noor/src/Primitives.dc.html": {
+    "mtime": 1783428764.8654857,
+    "ast_hash": "ee00fe0d59ca391b6a977ddcf8c2b650",
+    "semantic_hash": ""
+  },
+  "/Users/toufeeqahamed/Paigham/noor/images/99Names.webp": {
+    "mtime": 1783423535.899466,
+    "ast_hash": "6001b0f25ba5ffaa7148dd62d0992fad",
+    "semantic_hash": ""
+  },
+  "/Users/toufeeqahamed/Paigham/noor/images/asr_background.webp": {
+    "mtime": 1783422316.3790264,
+    "ast_hash": "c61aa75330e32d7c803daa33bef13721",
+    "semantic_hash": ""
+  },
+  "/Users/toufeeqahamed/Paigham/noor/images/asr_dua.webp": {
+    "mtime": 1783422316.381978,
+    "ast_hash": "c98c38a72bbafb96e795f520565ef975",
+    "semantic_hash": ""
+  },
+  "/Users/toufeeqahamed/Paigham/noor/images/asr_masjid.webp": {
+    "mtime": 1783422316.383476,
+    "ast_hash": "cd6fab0f07defa561616b96f6cb0f291",
+    "semantic_hash": ""
+  },
+  "/Users/toufeeqahamed/Paigham/noor/images/asr_quran.webp": {
+    "mtime": 1783422316.385277,
+    "ast_hash": "287d35aae1d998af8302fc5db0d3e426",
+    "semantic_hash": ""
+  },
+  "/Users/toufeeqahamed/Paigham/noor/images/asr_sehri.webp": {
+    "mtime": 1783422316.38732,
+    "ast_hash": "17af9709d31e978b1c0945ea57e87a71",
+    "semantic_hash": ""
+  },
+  "/Users/toufeeqahamed/Paigham/noor/images/fajr_background.webp": {
+    "mtime": 1783422308.0308025,
+    "ast_hash": "f0989a3f499d3deb33745299ee3a8d5d",
+    "semantic_hash": ""
+  },
+  "/Users/toufeeqahamed/Paigham/noor/images/fajr_dua.webp": {
+    "mtime": 1783422308.0429852,
+    "ast_hash": "66e8df799cbb71abe4b571ee40b4d22a",
+    "semantic_hash": ""
+  },
+  "/Users/toufeeqahamed/Paigham/noor/images/fajr_masjid.webp": {
+    "mtime": 1783422308.0517714,
+    "ast_hash": "1872d78b802b62b5b8299185734d40b2",
+    "semantic_hash": ""
+  },
+  "/Users/toufeeqahamed/Paigham/noor/images/fajr_quran.webp": {
+    "mtime": 1783422308.0605996,
+    "ast_hash": "39cd95890502acc91b4d1cc8a3b7ea49",
+    "semantic_hash": ""
+  },
+  "/Users/toufeeqahamed/Paigham/noor/images/fajr_sehri.webp": {
+    "mtime": 1783422308.0699112,
+    "ast_hash": "ce39b1bfd08ffef6ff8a5128ce00708d",
+    "semantic_hash": ""
+  },
+  "/Users/toufeeqahamed/Paigham/noor/images/hijri.webp": {
+    "mtime": 1783423491.580147,
+    "ast_hash": "45d863e0d95623040abc20be980a5c39",
+    "semantic_hash": ""
+  },
+  "/Users/toufeeqahamed/Paigham/noor/images/isha_background.webp": {
+    "mtime": 1783422328.0866854,
+    "ast_hash": "57406336b1bc91254c8a55147b731569",
+    "semantic_hash": ""
+  },
+  "/Users/toufeeqahamed/Paigham/noor/images/isha_dua.webp": {
+    "mtime": 1783422328.0940552,
+    "ast_hash": "583ac48ddd8fb96db52e9663945e7085",
+    "semantic_hash": ""
+  },
+  "/Users/toufeeqahamed/Paigham/noor/images/isha_masjid.webp": {
+    "mtime": 1783422328.0957499,
+    "ast_hash": "fd68259a3a049b29262cf91c4544aecc",
+    "semantic_hash": ""
+  },
+  "/Users/toufeeqahamed/Paigham/noor/images/isha_quran.webp": {
+    "mtime": 1783422328.097454,
+    "ast_hash": "63dd5f0fcd5b7fd91592af435db6cb1e",
+    "semantic_hash": ""
+  },
+  "/Users/toufeeqahamed/Paigham/noor/images/isha_sehri.webp": {
+    "mtime": 1783422328.0988781,
+    "ast_hash": "1a2caadbca1a88f4e5dda2af765a0338",
+    "semantic_hash": ""
+  },
+  "/Users/toufeeqahamed/Paigham/noor/images/qibla.png": {
+    "mtime": 1783423498.9000735,
+    "ast_hash": "b2c38aa7954a0fc0cabebded7fede711",
+    "semantic_hash": ""
+  },
+  "/Users/toufeeqahamed/Paigham/noor/images/zakaat.webp": {
+    "mtime": 1783423477.0478613,
+    "ast_hash": "c9947712656c6b0c6e11b3a2afaf4f00",
+    "semantic_hash": ""
+  },
+  "/Users/toufeeqahamed/Paigham/noor/images/zohar_background.webp": {
+    "mtime": 1783422297.6193192,
+    "ast_hash": "d5b25c70081f0a1e6a06ff77a2d916b8",
+    "semantic_hash": ""
+  },
+  "/Users/toufeeqahamed/Paigham/noor/images/zohar_dua.webp": {
+    "mtime": 1783422297.6233487,
+    "ast_hash": "ec2472434b8909fbb6410416ec590ce7",
+    "semantic_hash": ""
+  },
+  "/Users/toufeeqahamed/Paigham/noor/images/zohar_masjid.webp": {
+    "mtime": 1783422297.6257849,
+    "ast_hash": "87670feeaea0816a7ec9b3e9f4f21ebe",
+    "semantic_hash": ""
+  },
+  "/Users/toufeeqahamed/Paigham/noor/images/zohar_quran.webp": {
+    "mtime": 1783422297.62813,
+    "ast_hash": "f1068c5d85bb7c713afe05d7ddefe15c",
+    "semantic_hash": ""
+  },
+  "/Users/toufeeqahamed/Paigham/noor/images/zohar_sehri.webp": {
+    "mtime": 1783422297.6319342,
+    "ast_hash": "ba3e16b297901867f4f450a87ae48e7c",
     "semantic_hash": ""
   }
 }

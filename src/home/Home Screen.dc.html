@@ -39,12 +39,37 @@
 <!-- ── Board Scaffold ── -->
 <div class="poc-stage">
 
-  <!-- Static Storyboard row (highlights frame corresponding to active live device state) -->
+  <!-- Static Storyboard rows (separated by tab/row) -->
   <div class="poc-frames">
-    <x-import component="TabsRow" from="./storyboards/tabs-row.jsx"
+    <x-import component="HomePrayerRow" from="./storyboards/tabs-row.jsx"
               active="{{ activeFrameIndex }}"
               on-select-frame="{{ syncLiveStateToFrame }}"
-              hint-size="1440px,580px">
+              hint-size="1200px,580px">
+    </x-import>
+    <x-import component="HomeRow" from="./storyboards/tabs-row.jsx"
+              active="{{ activeFrameIndex }}"
+              on-select-frame="{{ syncLiveStateToFrame }}"
+              hint-size="760px,580px">
+    </x-import>
+    <x-import component="QaumRow" from="./storyboards/tabs-row.jsx"
+              active="{{ activeFrameIndex }}"
+              on-select-frame="{{ syncLiveStateToFrame }}"
+              hint-size="300px,580px">
+    </x-import>
+    <x-import component="QuranRow" from="./storyboards/tabs-row.jsx"
+              active="{{ activeFrameIndex }}"
+              on-select-frame="{{ syncLiveStateToFrame }}"
+              hint-size="300px,580px">
+    </x-import>
+    <x-import component="SalaahRow" from="./storyboards/tabs-row.jsx"
+              active="{{ activeFrameIndex }}"
+              on-select-frame="{{ syncLiveStateToFrame }}"
+              hint-size="300px,580px">
+    </x-import>
+    <x-import component="ProfileRow" from="./storyboards/tabs-row.jsx"
+              active="{{ activeFrameIndex }}"
+              on-select-frame="{{ syncLiveStateToFrame }}"
+              hint-size="300px,580px">
     </x-import>
   </div>
 
@@ -55,7 +80,7 @@
         <div class="noor-island"></div>
 
         <!-- Screen Slot -->
-        <div style="flex:1;position:relative">
+        <div style="position:absolute;inset:0;z-index:1">
           
           <!-- TAB 0: HOME SCREEN -->
           <sc-if value="{{ isHomeTab }}">
@@ -78,6 +103,7 @@
                       go-quran="{{ switchToTab2 }}"
                       go-dua="{{ switchToTab2 }}"
                       go-masjids="{{ switchToTab3 }}"
+                      prayer="{{ homeActivePrayer }}"
                       hint-size="100%,100%">
             </x-import>
           </sc-if>
@@ -151,18 +177,12 @@
           
         </div>
 
-        <!-- BOTTOM TAB BAR (Anchored Live Device Component) -->
-        <div class="nb-bar">
-          <div class="nb-glow" style="left: {{ navGlowLeft }}"></div>
-          <div class="nb-nav">
-            <sc-for list="{{ tabs }}" as="t" hint-placeholder-count="5">
-              <div class="nb-item {{ t.cls }}" onClick="{{ t.onTap }}">
-                <span class="material-symbols-rounded">{{ t.icon }}</span>
-                <span>{{ t.label }}</span>
-              </div>
-            </sc-for>
-          </div>
-        </div>
+        <!-- BOTTOM TAB BAR (shared component — same one the storyboard frames use) -->
+        <x-import component="BottomNav" from="./storyboards/nav-bar.jsx"
+                  active-index="{{ activeTab }}"
+                  on-select="{{ onNavSelect }}"
+                  hint-size="100%,84px">
+        </x-import>
 
         <div class="noor-home"></div>
       </div>
@@ -180,6 +200,7 @@ class Component extends DCLogic {
     
     // Home tab state
     homeHeroSel: null,
+    homeActivePrayer: 'Maghrib',
     homePrayers: { Fajr: true, Zohar: true, Asr: true, Maghrib: true, Isha: false },
     homeSehriNote: false,
     homeSlide: 0,
@@ -213,14 +234,6 @@ class Component extends DCLogic {
     profileLogoutOpen: false
   };
 
-  tabDefs = [
-    { label: 'Home', icon: 'home', index: 0 },
-    { label: 'Qaum', icon: 'group', index: 1 },
-    { label: 'Quran', icon: 'menu_book', index: 2 },
-    { label: 'Salaah', icon: 'mosque', index: 3 },
-    { label: 'Profile', icon: 'person', index: 4 }
-  ];
-
   componentDidMount() {
     const hash = window.location.hash;
     if (hash) {
@@ -237,13 +250,18 @@ class Component extends DCLogic {
   // Sync Live Device state when static frame clicked on canvas
   syncLiveStateToFrame = (idx) => {
     const states = [
-      { activeTab: 0, homeHeroSel: null },
-      { activeTab: 0, homeHeroSel: 'suhoor' },
-      { activeTab: 0, homeHeroSel: 'iftaar' },
+      { activeTab: 0, homeHeroSel: null, homeActivePrayer: 'Maghrib' },
+      { activeTab: 0, homeHeroSel: 'suhoor', homeActivePrayer: 'Maghrib' },
+      { activeTab: 0, homeHeroSel: 'iftaar', homeActivePrayer: 'Maghrib' },
       { activeTab: 1 },
       { activeTab: 2 },
       { activeTab: 3 },
-      { activeTab: 4 }
+      { activeTab: 4 },
+      { activeTab: 0, homeHeroSel: null, homeActivePrayer: 'Fajr' },
+      { activeTab: 0, homeHeroSel: null, homeActivePrayer: 'Zohar' },
+      { activeTab: 0, homeHeroSel: null, homeActivePrayer: 'Asr' },
+      { activeTab: 0, homeHeroSel: null, homeActivePrayer: 'Maghrib' },
+      { activeTab: 0, homeHeroSel: null, homeActivePrayer: 'Isha' }
     ];
     this.setState({
       ...states[idx],
@@ -252,8 +270,13 @@ class Component extends DCLogic {
   };
 
   // Sync canvas active highlight ring based on current live state
-  syncFrameIndexFromTab(tabIndex, heroSel = null) {
+  syncFrameIndexFromTab(tabIndex, heroSel = null, prayer = 'Maghrib') {
     if (tabIndex === 0) {
+      const p = (prayer || 'Maghrib').toLowerCase();
+      if (p === 'fajr') return 7;
+      if (p === 'zohar') return 8;
+      if (p === 'asr') return 9;
+      if (p === 'isha') return 11;
       if (heroSel === 'suhoor') return 1;
       if (heroSel === 'iftaar') return 2;
       return 0;
@@ -265,12 +288,15 @@ class Component extends DCLogic {
   setTab = (idx) => () => {
     this.setState(s => ({
       activeTab: idx,
-      activeFrameIndex: this.syncFrameIndexFromTab(idx, idx === 0 ? s.homeHeroSel : null)
+      activeFrameIndex: this.syncFrameIndexFromTab(idx, idx === 0 ? s.homeHeroSel : null, idx === 0 ? s.homeActivePrayer : 'Maghrib')
     }));
   };
 
   switchToTab2 = () => this.setTab(2)();
   switchToTab3 = () => this.setTab(3)();
+
+  // BottomNav onSelect — receives the tapped tab index
+  onNavSelect = (idx) => this.setTab(idx)();
 
   // Reset to default settings
   resetToDefault = () => {
@@ -278,6 +304,7 @@ class Component extends DCLogic {
       activeTab: 0,
       activeFrameIndex: 0,
       homeHeroSel: null,
+      homeActivePrayer: 'Maghrib',
       homePrayers: { Fajr: true, Zohar: true, Asr: true, Maghrib: true, Isha: false },
       homeSehriNote: false,
       homeSlide: 0,
@@ -296,7 +323,7 @@ class Component extends DCLogic {
     const nextSel = s.homeHeroSel === 'suhoor' ? null : 'suhoor';
     return {
       homeHeroSel: nextSel,
-      activeFrameIndex: this.syncFrameIndexFromTab(0, nextSel)
+      activeFrameIndex: this.syncFrameIndexFromTab(0, nextSel, s.homeActivePrayer)
     };
   });
 
@@ -304,7 +331,7 @@ class Component extends DCLogic {
     const nextSel = s.homeHeroSel === 'iftaar' ? null : 'iftaar';
     return {
       homeHeroSel: nextSel,
-      activeFrameIndex: this.syncFrameIndexFromTab(0, nextSel)
+      activeFrameIndex: this.syncFrameIndexFromTab(0, nextSel, s.homeActivePrayer)
     };
   });
 
@@ -423,34 +450,27 @@ class Component extends DCLogic {
     // Home counts
     const homePrayersDone = Object.keys(s.homePrayers).filter(k => s.homePrayers[k]).length;
 
-    // Build bottom nav tabs array
-    const tabs = this.tabDefs.map(t => {
-      const active = s.activeTab === t.index;
-      return {
-        label: t.label,
-        icon: t.icon,
-        cls: active ? 'active' : '',
-        onTap: this.setTab(t.index)
-      };
-    });
-
     return {
       activeFrameIndex: s.activeFrameIndex,
       syncLiveStateToFrame: this.syncLiveStateToFrame,
       resetToDefault: this.resetToDefault,
       noop: this.noop,
-      
+
+      // Bottom nav (shared BottomNav component)
+      activeTab: s.activeTab,
+      onNavSelect: this.onNavSelect,
+
       // Active tab selectors
       isHomeTab: s.activeTab === 0,
       isQaumTab: s.activeTab === 1,
       isQuranTab: s.activeTab === 2,
       isSalaahTab: s.activeTab === 3,
       isProfileTab: s.activeTab === 4,
-      navGlowLeft: s.activeTab * 20 + '%',
 
       // Home Screen props
       homeHeroSel: s.homeHeroSel,
       homePrayers: s.homePrayers,
+      homeActivePrayer: s.homeActivePrayer,
       homeSalaahCount: homePrayersDone + ' of 5 today',
       homeSehriNote: s.homeSehriNote,
       homeSlide: s.homeSlide,
@@ -506,10 +526,7 @@ class Component extends DCLogic {
       profilePendingFriends: s.profilePendingFriends,
       approveProfileFriend: this.approveProfileFriend,
       profileLogoutOpen: s.profileLogoutOpen,
-      toggleProfileLogoutSheet: this.toggleProfileLogoutSheet,
-
-      // Bottom Nav tabs
-      tabs
+      toggleProfileLogoutSheet: this.toggleProfileLogoutSheet
     };
   }
 }

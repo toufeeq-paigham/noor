@@ -101,10 +101,10 @@
     .sw::after{content:"";display:block;width:18px;height:18px;border-radius:360px;background:var(--color-info-primary);transition:transform 120ms}
     .sw.on{background:var(--color-action-primary);border-color:transparent}
     .sw.on::after{transform:translateX(20px);background:#fff}
-    .cb{width:24px;height:24px;border-radius:360px;border:2px solid var(--color-action-primary);background:color-mix(in oklab,var(--color-action-primary) 12%,transparent);display:inline-flex;align-items:center;justify-content:center;cursor:pointer;box-sizing:border-box;flex-shrink:0}
-    .cb.on{background:var(--color-action-primary);border:none;color:#fff}
+    .cb{width:40px;height:40px;border-radius:360px;border:1.5px solid color-mix(in oklab,var(--color-action-primary) 45%,transparent);background:color-mix(in oklab,var(--color-action-primary) 12%,transparent);background-clip:content-box;padding:3px;display:inline-flex;align-items:center;justify-content:center;cursor:pointer;box-sizing:border-box;flex-shrink:0;transition:background 180ms,border-color 180ms}
+    .cb.on{background-color:var(--color-action-primary);border-color:var(--color-action-primary);color:var(--color-action-primary-inverse)}
     .cb.indeterminate::after{content:"";width:12px;height:12px;border-radius:4px;background:var(--color-action-primary)}
-    .cb .material-symbols-rounded{font-size:18px}
+    .cb .material-symbols-rounded{font-size:20px}
     .tglbl{font-family:var(--font-body);font-size:13px;color:var(--color-info-primary)}
 
     /* ── TabBar (canonical tabbar.html) ── */

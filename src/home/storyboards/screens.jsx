@@ -22,19 +22,66 @@ function HomeScreen({
   notifOn = true,
   goQuran,
   goDua,
-  goMasjids
+  goMasjids,
+  prayer = 'Maghrib'
 }) {
   const bellIcon = notifOn ? 'notifications' : 'notifications_off';
   const bellFill = notifOn ? 1 : 0;
   const bellOpacity = notifOn ? 0.9 : 0.5;
   const bellDotOpacity = notifOn ? 1 : 0;
 
+  const pName = (prayer || 'Maghrib').toLowerCase();
+  const bgImg = `../../images/${pName}_background.webp`;
+  const quranImg = `../../images/${pName}_quran.webp`;
+  const sehriImg = `../../images/${pName}_sehri.webp`;
+  const duaImg = `../../images/${pName}_dua.webp`;
+  const masjidImg = `../../images/${pName}_masjid.webp`;
+
+  const prayerTimes = {
+    fajr: { name: 'Fajr', azan: '4:36 AM', iqama: '5:00 AM', range: 'From 4:36 AM To 6:00 AM' },
+    zohar: { name: 'Zohar', azan: '12:35 PM', iqama: '1:00 PM', range: 'From 12:35 PM To 4:30 PM' },
+    asr: { name: 'Asr', azan: '4:52 PM', iqama: '5:15 PM', range: 'From 4:52 PM To 6:30 PM' },
+    maghrib: { name: 'Maghrib', azan: '6:49 PM', iqama: '6:52 PM', range: 'From 6:49 PM To 8:00 PM' },
+    isha: { name: 'Isha', azan: '8:05 PM', iqama: '8:30 PM', range: 'From 8:05 PM To 11:30 PM' }
+  };
+  const activePrayer = prayerTimes[pName] || prayerTimes.maghrib;
+
+  // Theme definition for bright vs dark prayer backgrounds
+  const theme = pName === 'isha' ? {
+    textColorPrimary: 'rgba(255,255,255,0.95)',
+    textColorSecondary: 'rgba(255,255,255,0.70)',
+    textColorTertiary: 'rgba(255,255,255,0.55)',
+    appBarTitle: '#FFFFFF',
+    appBarSubtitle: 'rgba(255,255,255,0.75)',
+    bellIconColor: '#FFFFFF',
+    bellBtnBg: 'rgba(255,255,255,0.15)',
+    bellBtnBorder: 'rgba(255,255,255,0.30)',
+    avatarBorder: 'rgba(255,255,255,0.6)',
+    flankerIconColor: 'rgba(255,255,255,0.85)',
+    flankerTextColor: 'rgba(255,255,255,0.65)',
+    flankerTimeColor: 'rgba(255,255,255,0.85)',
+  } : {
+    textColorPrimary: 'rgba(10,6,2,0.9)',
+    textColorSecondary: 'rgba(15,10,5,0.55)',
+    textColorTertiary: 'rgba(15,10,5,0.5)',
+    appBarTitle: '#1A1612',
+    appBarSubtitle: 'rgba(26,22,18,0.70)',
+    bellIconColor: '#1A1612',
+    bellBtnBg: 'rgba(0,0,0,0.12)',
+    bellBtnBorder: 'rgba(26,22,18,0.20)',
+    avatarBorder: 'rgba(26,22,18,0.72)',
+    flankerIconColor: 'rgba(20,15,8,0.7)',
+    flankerTextColor: 'rgba(20,15,8,0.6)',
+    flankerTimeColor: 'rgba(20,15,8,0.75)',
+  };
+
   const prayerList = ['Fajr', 'Zohar', 'Asr', 'Maghrib', 'Isha'].map(name => {
     const checked = prayers[name];
     return {
       name,
-      bg: checked ? 'var(--color-action-primary)' : 'transparent',
-      border: checked ? '2px solid transparent' : '2px solid var(--color-info-faint)',
+      // Match DS Checkbox.kt: fill + border in BOTH states (unchecked = soft green tint + 45% border)
+      bg: checked ? 'var(--color-action-primary)' : 'color-mix(in oklab, var(--color-action-primary) 12%, transparent)',
+      border: checked ? '1.5px solid var(--color-action-primary)' : '1.5px solid color-mix(in oklab, var(--color-action-primary) 45%, transparent)',
       checkOpacity: checked ? 1 : 0,
       labelColor: checked ? 'var(--color-info-secondary)' : 'var(--color-info-faint)'
     };
@@ -48,66 +95,70 @@ function HomeScreen({
   return (
     <div style={{ width: '100%', height: '100%', position: 'relative' }}>
       {/* Full screen background image */}
-      <img src="../uploads/maghrib_background.webp" style={{ position: 'absolute', inset: 0, width: '100%', height: '100%', objectFit: 'cover', objectPosition: 'center 25%', zIndex: 0 }} />
+      <img src={bgImg} style={{ position: 'absolute', inset: 0, width: '100%', height: '100%', objectFit: 'cover', objectPosition: 'center 25%', zIndex: 0 }} />
       
       {/* App Bar — transparent + blur only, matching hazeSurfaceColor=Color.Transparent in HomeTab.kt */}
       <div className="app-bar" style={{ padding: '54px 16px 10px', height: 98 }}>
-        {/* Avatar — Maghrib: EerieBlack border @72% */}
-        <div style={{ width: 44, height: 44, borderRadius: '50%', background: 'rgba(0,0,0,0.18)', border: '1.5px solid rgba(26,22,18,0.72)', display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0 }}>
+        {/* Avatar */}
+        <div style={{ width: 44, height: 44, borderRadius: '50%', background: 'rgba(0,0,0,0.18)', border: `1.5px solid ${theme.avatarBorder}`, display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0 }}>
           <span style={{ fontFamily: '"Nunito", sans-serif', fontSize: 18, fontWeight: 700, color: '#fff' }}>{userName.charAt(0)}</span>
         </div>
-        {/* Title: JetBlack, Subtitle: JetBlack @70% — matching appBarTitle/appBarSubtitle for Maghrib */}
+        {/* Title & Subtitle */}
         <div style={{ flex: 1, minWidth: 0 }}>
-          <div style={{ fontFamily: '"Nunito", sans-serif', fontSize: 17, fontWeight: 700, color: '#1A1612' }}>Salaam, {userName}</div>
-          <div style={{ fontFamily: '"Nunito", sans-serif', fontSize: 12, color: 'rgba(26,22,18,0.70)', marginTop: 1 }}>{masjidName}</div>
+          <div style={{ fontFamily: '"Nunito", sans-serif', fontSize: 17, fontWeight: 700, color: theme.appBarTitle }}>Salaam, {userName}</div>
+          <div style={{ fontFamily: '"Nunito", sans-serif', fontSize: 12, color: theme.appBarSubtitle, marginTop: 1 }}>{masjidName}</div>
         </div>
         {/* Bell icon button */}
-        <div onClick={onBellTap} style={{ position: 'relative', width: 40, height: 40, borderRadius: '50%', background: 'rgba(0,0,0,0.12)', border: '1.5px solid rgba(26,22,18,0.20)', display: 'flex', alignItems: 'center', justifyContent: 'center', cursor: 'pointer', flexShrink: 0 }}>
-          <span className="material-symbols-rounded" style={{ fontSize: 20, color: '#1A1612', opacity: bellOpacity, fontVariationSettings: `'FILL' ${bellFill}`, transition: 'opacity 160ms' }}>{bellIcon}</span>
+        <div onClick={onBellTap} style={{ position: 'relative', width: 40, height: 40, borderRadius: '50%', background: theme.bellBtnBg, border: `1.5px solid ${theme.bellBtnBorder}`, display: 'flex', alignItems: 'center', justifyContent: 'center', cursor: 'pointer', flexShrink: 0 }}>
+          <span className="material-symbols-rounded" style={{ fontSize: 20, color: theme.bellIconColor, opacity: bellOpacity, fontVariationSettings: `'FILL' ${bellFill}`, transition: 'opacity 160ms' }}>{bellIcon}</span>
           <div style={{ position: 'absolute', top: 8, right: 9, width: 8, height: 8, borderRadius: '50%', background: 'var(--color-action-primary)', border: '1.5px solid rgba(255,255,255,0.8)', opacity: bellDotOpacity, transition: 'opacity 160ms' }} />
         </div>
       </div>
 
-      {/* Scrollable Content — paddingTop clears the absolute app bar */}
-      <div style={{ position: 'absolute', inset: 0, overflowY: 'auto', WebkitOverflowScrolling: 'touch', paddingTop: 98, paddingBottom: 80, zIndex: 1, boxSizing: 'border-box' }}>
-        {/* Hero */}
-        <div style={{ position: 'relative', height: 320, overflow: 'hidden', background: 'transparent' }}>
-          <div style={{ position: 'absolute', inset: 0, background: 'linear-gradient(to bottom,transparent 40%,rgba(22,18,28,0.3) 100%)' }} />
-          
-          <div style={{ position: 'absolute', left: 0, right: 0, bottom: 24, padding: '0 20px' }}>
-            <div style={{ textAlign: 'center', marginBottom: 16 }}>
-              <div style={{ fontFamily: '"Nunito", sans-serif', fontSize: 11, fontWeight: 600, color: 'rgba(15,10,5,0.55)', letterSpacing: '.08em', textTransform: 'uppercase', marginBottom: 4 }}>Azan: 6:49 PM</div>
-              <div style={{ fontFamily: '"DM Serif Display", Georgia, serif', fontSize: 42, color: 'rgba(10,6,2,0.9)', lineHeight: 1, letterSpacing: '-0.5px' }}>Maghrib</div>
-              <div style={{ fontFamily: '"Nunito", sans-serif', fontSize: 34, fontWeight: 800, color: 'rgba(10,6,2,0.88)', lineHeight: 1.05, letterSpacing: '-1px', marginTop: 2 }}>6:52 PM</div>
-              <div style={{ fontFamily: '"Nunito", sans-serif', fontSize: 12, color: 'rgba(15,10,5,0.5)', marginTop: 5 }}>From 6:49 PM To 8:00 PM</div>
+      {/* Fixed hero — time + Suhoor/Iftaar flank it. Stays put; only the sheet scrolls over it. */}
+      <div style={{ position: 'absolute', top: 98, left: 0, right: 0, height: 200, zIndex: 1, pointerEvents: 'none' }}>
+        <div style={{ position: 'absolute', inset: 0, background: 'linear-gradient(to bottom,transparent 40%,rgba(22,18,28,0.3) 100%)' }} />
+
+        <div style={{ position: 'absolute', left: 0, right: 0, top: 24, padding: '0 16px', display: 'flex', alignItems: 'center', justifyContent: 'space-between', gap: 8, pointerEvents: 'auto' }}>
+          {/* Suhoor — beside the time */}
+          <div onClick={onSuhoorTap} style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: 5, cursor: 'pointer', flexShrink: 0 }}>
+            <div style={{ width: 46, height: 46, borderRadius: '50%', background: suhoorBg, backdropFilter: 'blur(10px)', border: suhoorBorder, display: 'flex', alignItems: 'center', justifyContent: 'center', transition: 'background 200ms, border 200ms' }}>
+              <span className="material-symbols-rounded" style={{ fontSize: 20, color: theme.flankerIconColor }}>wb_sunny</span>
             </div>
-            
-            <div style={{ display: 'flex', justifyContent: 'space-between' }}>
-              <div onClick={onSuhoorTap} style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: 5, cursor: 'pointer' }}>
-                <div style={{ width: 46, height: 46, borderRadius: '50%', background: suhoorBg, backdropFilter: 'blur(10px)', border: suhoorBorder, display: 'flex', alignItems: 'center', justifyContent: 'center', transition: 'background 200ms, border 200ms' }}>
-                  <span className="material-symbols-rounded" style={{ fontSize: 20, color: 'rgba(20,15,8,0.7)' }}>wb_sunny</span>
-                </div>
-                <div style={{ textAlign: 'center' }}>
-                  <div style={{ fontFamily: '"Nunito", sans-serif', fontSize: 11, fontWeight: 600, color: 'rgba(20,15,8,0.6)' }}>Suhoor</div>
-                  <div style={{ fontFamily: '"Nunito", sans-serif', fontSize: 12, fontWeight: 700, color: 'rgba(20,15,8,0.75)' }}>4:31 AM</div>
-                </div>
-              </div>
-              
-              <div onClick={onIftaarTap} style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: 5, cursor: 'pointer' }}>
-                <div style={{ width: 46, height: 46, borderRadius: '50%', background: iftaarBg, backdropFilter: 'blur(10px)', border: iftaarBorder, display: 'flex', alignItems: 'center', justifyContent: 'center', transition: 'background 200ms, border 200ms' }}>
-                  <span className="material-symbols-rounded" style={{ fontSize: 20, color: 'rgba(20,15,8,0.7)' }}>bedtime</span>
-                </div>
-                <div style={{ textAlign: 'center' }}>
-                  <div style={{ fontFamily: '"Nunito", sans-serif', fontSize: 11, fontWeight: 600, color: 'rgba(20,15,8,0.6)' }}>Iftaar</div>
-                  <div style={{ fontFamily: '"Nunito", sans-serif', fontSize: 12, fontWeight: 700, color: 'rgba(20,15,8,0.75)' }}>6:49 PM</div>
-                </div>
-              </div>
+            <div style={{ textAlign: 'center' }}>
+              <div style={{ fontFamily: '"Nunito", sans-serif', fontSize: 11, fontWeight: 600, color: theme.flankerTextColor }}>Suhoor</div>
+              <div style={{ fontFamily: '"Nunito", sans-serif', fontSize: 12, fontWeight: 700, color: theme.flankerTimeColor }}>4:31 AM</div>
+            </div>
+          </div>
+
+          {/* Time (center) */}
+          <div style={{ textAlign: 'center', flex: 1, minWidth: 0 }}>
+            <div style={{ fontFamily: '"Nunito", sans-serif', fontSize: 11, fontWeight: 600, color: theme.textColorSecondary, letterSpacing: '.08em', textTransform: 'uppercase', marginBottom: 4 }}>Azan: {activePrayer.azan}</div>
+            <div style={{ fontFamily: '"DM Serif Display", Georgia, serif', fontSize: 42, color: theme.textColorPrimary, lineHeight: 1, letterSpacing: '-0.5px' }}>{activePrayer.name}</div>
+            <div style={{ fontFamily: '"Nunito", sans-serif', fontSize: 34, fontWeight: 800, color: theme.textColorPrimary, lineHeight: 1.05, letterSpacing: '-1px', marginTop: 2 }}>{activePrayer.iqama}</div>
+            <div style={{ fontFamily: '"Nunito", sans-serif', fontSize: 12, color: theme.textColorTertiary, marginTop: 5 }}>{activePrayer.range}</div>
+          </div>
+
+          {/* Iftaar — beside the time */}
+          <div onClick={onIftaarTap} style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: 5, cursor: 'pointer', flexShrink: 0 }}>
+            <div style={{ width: 46, height: 46, borderRadius: '50%', background: iftaarBg, backdropFilter: 'blur(10px)', border: iftaarBorder, display: 'flex', alignItems: 'center', justifyContent: 'center', transition: 'background 200ms, border 200ms' }}>
+              <span className="material-symbols-rounded" style={{ fontSize: 20, color: theme.flankerIconColor }}>bedtime</span>
+            </div>
+            <div style={{ textAlign: 'center' }}>
+              <div style={{ fontFamily: '"Nunito", sans-serif', fontSize: 11, fontWeight: 600, color: theme.flankerTextColor }}>Iftaar</div>
+              <div style={{ fontFamily: '"Nunito", sans-serif', fontSize: 12, fontWeight: 700, color: theme.flankerTimeColor }}>6:49 PM</div>
             </div>
           </div>
         </div>
+      </div>
 
-        {/* Sheet card */}
-        <div style={{ background: 'color-mix(in oklab, var(--color-surface-card) 82%, transparent)', backdropFilter: 'blur(28px) saturate(180%)', WebkitBackdropFilter: 'blur(28px) saturate(180%)', borderRadius: '24px 24px 0 0', marginTop: -12, paddingBottom: 32 }}>
+      {/* Scroll layer — only the sheet scrolls; it rises over the fixed hero */}
+      <div style={{ position: 'absolute', inset: 0, overflowY: 'auto', WebkitOverflowScrolling: 'touch', paddingBottom: 80, zIndex: 2, boxSizing: 'border-box' }}>
+        {/* Transparent spacer keeps the sheet below the hero at rest (clicks pass through to Suhoor/Iftaar) */}
+        <div style={{ height: 272, flexShrink: 0, pointerEvents: 'none' }} />
+
+        {/* Sheet card — scrolls up over the fixed hero */}
+        <div style={{ position: 'relative', pointerEvents: 'auto', background: 'color-mix(in oklab, var(--color-surface-card) 82%, transparent)', backdropFilter: 'blur(28px) saturate(180%)', WebkitBackdropFilter: 'blur(28px) saturate(180%)', borderRadius: '24px 24px 0 0', paddingBottom: 32 }}>
           {/* Drag handle */}
           <div style={{ display: 'flex', justifyContent: 'center', padding: '10px 0 6px' }}>
             <div style={{ width: 38, height: 4, background: 'var(--color-info-faint)', borderRadius: 2 }} />
@@ -122,7 +173,7 @@ function HomeScreen({
             <div style={{ display: 'flex', justifyContent: 'space-between' }}>
               {prayerList.map((p, idx) => (
                 <div key={idx} onClick={() => onTogglePrayer && onTogglePrayer(p.name)} style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: 8, cursor: 'pointer' }}>
-                  <div style={{ width: 44, height: 44, borderRadius: '50%', background: p.bg, border: p.border, display: 'flex', alignItems: 'center', justifyContent: 'center', transition: 'background 150ms, border 150ms' }}>
+                  <div style={{ width: 44, height: 44, borderRadius: '50%', background: p.bg, backgroundClip: 'content-box', padding: 3, boxSizing: 'border-box', border: p.border, display: 'flex', alignItems: 'center', justifyContent: 'center', transition: 'background 150ms, border 150ms' }}>
                     <span className="material-symbols-rounded" style={{ fontSize: 20, color: 'var(--color-action-primary-inverse)', opacity: p.checkOpacity, fontVariationSettings: `'FILL' 1`, transition: 'opacity 150ms' }}>check</span>
                   </div>
                   <span style={{ fontFamily: '"Nunito", sans-serif', fontSize: 12, fontWeight: 600, color: p.labelColor }}>{p.name}</span>
@@ -161,7 +212,7 @@ function HomeScreen({
               <div style={{ flex: 1, display: 'flex', flexDirection: 'column', gap: 14 }}>
                 {/* Quran Card */}
                 <div onClick={goQuran} style={{ position: 'relative', height: 130, borderRadius: 24, overflow: 'hidden', cursor: 'pointer' }}>
-                  <img src="../uploads/maghrib_quran.webp" style={{ position: 'absolute', inset: 0, width: '100%', height: '100%', objectFit: 'cover' }} />
+                  <img src={quranImg} style={{ position: 'absolute', inset: 0, width: '100%', height: '100%', objectFit: 'cover' }} />
                   <div style={{ position: 'absolute', inset: 0, background: 'linear-gradient(90deg, rgba(0,0,0,0.6) 0%, transparent 65%)' }} />
                   <div style={{ position: 'absolute', left: 16, bottom: 16, display: 'flex', flexDirection: 'column', gap: 2 }}>
                     <span className="material-symbols-rounded" style={{ fontSize: 18, color: '#FFFFFF' }}>auto_stories</span>
@@ -172,7 +223,7 @@ function HomeScreen({
                 
                 {/* Sehri Card */}
                 <div onClick={onSehriTap} style={{ position: 'relative', height: 130, borderRadius: 24, overflow: 'hidden', cursor: 'pointer' }}>
-                  <img src="../uploads/maghrib_sehri.webp" style={{ position: 'absolute', inset: 0, width: '100%', height: '100%', objectFit: 'cover' }} />
+                  <img src={sehriImg} style={{ position: 'absolute', inset: 0, width: '100%', height: '100%', objectFit: 'cover' }} />
                   <div style={{ position: 'absolute', inset: 0, background: 'linear-gradient(90deg, rgba(0,0,0,0.6) 0%, transparent 65%)' }} />
                   <div style={{ position: 'absolute', left: 16, bottom: 16, display: 'flex', flexDirection: 'column', gap: 2 }}>
                     <span className="material-symbols-rounded" style={{ fontSize: 18, color: '#FFFFFF' }}>restaurant</span>
@@ -190,7 +241,7 @@ function HomeScreen({
               {/* Right Column (Dua Card) */}
               <div style={{ flex: 1 }}>
                 <div onClick={goDua} style={{ position: 'relative', height: '100%', borderRadius: 24, overflow: 'hidden', cursor: 'pointer' }}>
-                  <img src="../uploads/maghrib_dua.webp" style={{ position: 'absolute', inset: 0, width: '100%', height: '100%', objectFit: 'cover' }} />
+                  <img src={duaImg} style={{ position: 'absolute', inset: 0, width: '100%', height: '100%', objectFit: 'cover' }} />
                   <div style={{ position: 'absolute', inset: 0, background: 'linear-gradient(180deg, rgba(0,0,0,0.6) 0%, transparent 45%)' }} />
                   <div style={{ position: 'absolute', left: 16, top: 16, display: 'flex', flexDirection: 'column', gap: 2 }}>
                     <span className="material-symbols-rounded" style={{ fontSize: 18, color: '#FFFFFF' }}>tasbih</span>
@@ -203,7 +254,7 @@ function HomeScreen({
             
             {/* Explore Masjids Card (Wide) */}
             <div onClick={goMasjids} style={{ position: 'relative', height: 168, borderRadius: 24, overflow: 'hidden', marginTop: 14, cursor: 'pointer' }}>
-              <img src="../uploads/maghrib_masjid.webp" style={{ position: 'absolute', inset: 0, width: '100%', height: '100%', objectFit: 'cover' }} />
+              <img src={masjidImg} style={{ position: 'absolute', inset: 0, width: '100%', height: '100%', objectFit: 'cover' }} />
               <div style={{ position: 'absolute', inset: 0, background: 'linear-gradient(90deg, rgba(0,0,0,0.65) 0%, transparent 55%)' }} />
               <div style={{ position: 'absolute', left: 20, bottom: 20, display: 'flex', flexDirection: 'column', gap: 2 }}>
                 <span className="material-symbols-rounded" style={{ fontSize: 20, color: '#FFFFFF' }}>mosque</span>
@@ -217,9 +268,14 @@ function HomeScreen({
           <div style={{ padding: '0 20px 24px' }}>
             <div style={{ fontFamily: '"Nunito", sans-serif', fontSize: 20, fontWeight: 700, color: 'var(--color-info-primary)', marginBottom: 14 }}>Islamic tools</div>
             <div style={{ display: 'grid', gridTemplateColumns: 'repeat(4,1fr)', gap: 8 }}>
-              {[{ emoji: '💰', label: 'Zakaat' }, { emoji: '🗓️', label: 'Hijri' }, { emoji: '🧭', label: 'Qibla' }, { emoji: '📗', label: '99 Names' }].map((t, idx) => (
-                <div key={idx} style={{ background: 'transparent', borderRadius: 16, padding: '12px 4px', display: 'flex', flexDirection: 'column', alignItems: 'center', gap: 6, cursor: 'pointer' }}>
-                  <span style={{ fontSize: 24 }}>{t.emoji}</span>
+              {[
+                { img: '../../images/zakaat.webp', label: 'Zakaat' },
+                { img: '../../images/hijri.webp', label: 'Hijri' },
+                { img: '../../images/qibla.png', label: 'Qibla' },
+                { img: '../../images/99Names.webp', label: '99 Names' }
+              ].map((t, idx) => (
+                <div key={idx} style={{ background: 'transparent', borderRadius: 16, padding: '8px 4px', display: 'flex', flexDirection: 'column', alignItems: 'center', gap: 8, cursor: 'pointer' }}>
+                  <img src={t.img} style={{ width: 48, height: 48, objectFit: 'contain' }} />
                   <span style={{ fontFamily: '"Nunito", sans-serif', fontSize: 11, fontWeight: 700, color: 'var(--color-info-primary)', textWrap: 'nowrap' }}>{t.label}</span>
                 </div>
               ))}
@@ -287,6 +343,65 @@ function HomeScreen({
               </div>
             </div>
           </div>
+
+          {/* Home Footer (Replicated from HomeFooter.kt) */}
+          <div style={{ height: 48 }} />
+          <div style={{
+            background: 'linear-gradient(to bottom, transparent 0%, color-mix(in oklab, var(--color-surface-secondary) 70%, transparent) 55%, color-mix(in oklab, var(--color-surface-secondary) 90%, transparent) 100%)',
+            paddingTop: 32,
+            display: 'flex',
+            flexDirection: 'column',
+            alignItems: 'center'
+          }}>
+            {/* Large Arabic branding "پیغام" in RTL */}
+            <div style={{
+              fontFamily: '"Noto Nastaliq Urdu", serif',
+              fontSize: 72,
+              lineHeight: 1.1,
+              color: 'var(--color-action-primary)',
+              width: '100%',
+              textAlign: 'center',
+              direction: 'rtl',
+              marginBottom: 2
+            }}>پیغام</div>
+            
+            {/* Tagline */}
+            <div style={{
+              fontFamily: '"Nunito", sans-serif',
+              fontSize: 15,
+              fontWeight: 500,
+              color: 'color-mix(in oklab, var(--color-info-secondary) 40%, transparent)',
+              textAlign: 'center',
+              letterSpacing: '0.02em',
+              marginBottom: 24
+            }}>a message that connects</div>
+            
+            {/* Made with ❤️ in Bengaluru, India */}
+            <div style={{
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'center',
+              gap: 4,
+              fontFamily: '"Nunito", sans-serif',
+              fontSize: 13,
+              color: 'color-mix(in oklab, var(--color-info-secondary) 40%, transparent)',
+              marginBottom: 16
+            }}>
+              <span>Made with</span>
+              <span style={{ color: 'var(--color-info-primary)' }}>❤️</span>
+              <span>in Bengaluru, India</span>
+            </div>
+            
+            {/* © 2025 Paigham */}
+            <div style={{
+              fontFamily: '"Nunito", sans-serif',
+              fontSize: 10,
+              color: 'color-mix(in oklab, var(--color-info-secondary) 20%, transparent)',
+              textAlign: 'center',
+              paddingBottom: 40
+            }}>© 2025 Paigham</div>
+          </div>
+
         </div>
       </div>
     </div>
