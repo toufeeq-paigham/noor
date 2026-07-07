@@ -68,6 +68,11 @@
 .otp .cells{display:flex;flex:1;border-radius:14px;border:1px solid var(--color-input-border-disabled);overflow:hidden}
 .otp .cell{flex:1;height:46px;display:flex;align-items:center;justify-content:center;font-family:var(--font-body);font-size:18px;color:var(--color-input-text)}
 .otp .cell + .cell{border-left:1px solid var(--color-input-border-disabled)}
+/* .otp .halo left/width per active cell (set inline): the halo is flush with the
+   capsule's outer edge so its corner curve overlays the capsule's own —
+   first cell: left:0;                             width:calc(2px + (100% - 4px)/6); radius 16px 0 0 16px
+   mid cell i: left:calc(2px + i*(100% - 4px)/6);  width:calc((100% - 4px)/6);       radius 0
+   last cell:  left:calc(2px + 5*(100% - 4px)/6);  width:calc(2px + (100% - 4px)/6); radius 0 16px 16px 0 */
 .otp .halo{position:absolute;top:0;bottom:0;pointer-events:none;border:1px solid color-mix(in oklab,var(--color-input-border-focused) 50%,transparent)}
 .otp .cursor{width:1.5px;height:18px;background:var(--color-input-text);animation:noor-otp-blink 1s steps(1) infinite;display:inline-block;vertical-align:middle}
 @keyframes noor-otp-blink{50%{opacity:0}}
