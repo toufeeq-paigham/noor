@@ -1,16 +1,16 @@
 # Graph Report - noor  (2026-07-07)
 
 ## Corpus Check
-- 21 files · ~2,666,199 words
+- 21 files · ~2,666,338 words
 - Verdict: corpus is large enough that graph structure adds value.
 
 ## Summary
-- 380 nodes · 426 edges · 22 communities (14 shown, 8 thin omitted)
+- 381 nodes · 427 edges · 22 communities (14 shown, 8 thin omitted)
 - Extraction: 100% EXTRACTED · 0% INFERRED · 0% AMBIGUOUS
 - Token cost: 0 input · 0 output
 
 ## Graph Freshness
-- Built from commit: `6807326c`
+- Built from commit: `07d08df8`
 - Run `git rev-parse HEAD` and compare to check if the graph is stale.
 - Run `graphify update .` after code changes (no API cost).
 
@@ -101,11 +101,11 @@ Cohesion: 0.20
 Nodes (9): Add a section board to the Noor POC, Anatomy, Step 1 — Inventory the source screens, Step 2 — Scaffold the board page, Step 3 — Storyboard rows, Step 4 — The live device: one stage machine, Step 5 — Theming and DS fidelity, Step 6 — Rewire the rest of the repo (+1 more)
 
 ### Community 17 - "Community 17"
-Cohesion: 0.40
-Nodes (4): 1. The board page — `<section>/<Section>.dc.html`, 2. A storyboard row — `<section>/storyboards/<flow>-row.jsx`, Index registration, Section board — annotated skeletons
+Cohesion: 0.33
+Nodes (5): 1. The board page — `<section>/<Section>.dc.html`, 2. A storyboard row — `<section>/storyboards/<flow>-row.jsx`, 3. Shared screen components — `<section>/storyboards/screens.jsx`, Index registration, Section board — annotated skeletons
 
 ## Knowledge Gaps
-- **224 isolated node(s):** `skill_name`, `evals`, `int`, `version`, `configurations` (+219 more)
+- **225 isolated node(s):** `skill_name`, `evals`, `int`, `version`, `configurations` (+220 more)
   These have ≤1 connection - possible missing edges or undocumented components.
 - **8 thin communities (<3 nodes) omitted from report** — run `graphify query` to explore isolated nodes.
 
@@ -117,7 +117,7 @@ _Questions this graph is uniquely positioned to answer:_
 - **Why does `x-omelette` connect `Community 5` to `Community 0`?**
   _High betweenness centrality (0.020) - this node is a cross-community bridge._
 - **What connects `skill_name`, `evals`, `int` to the rest of the system?**
-  _224 weakly-connected nodes found - possible documentation gaps or missing edges._
+  _225 weakly-connected nodes found - possible documentation gaps or missing edges._
 - **Should `Community 0` be split into smaller, more focused modules?**
   _Cohesion score 0.014184397163120567 - nodes in this community are weakly interconnected._
 - **Should `Community 1` be split into smaller, more focused modules?**

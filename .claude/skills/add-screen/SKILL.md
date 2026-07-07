@@ -14,7 +14,8 @@ device: whichever state the live prototype is in, the matching storyboard frame 
 they are the pattern, and everything below is just a map of them:
 
 - `onboarding/Onboarding.dc.html` — the board page (header, storyboard rows, live device, stage machine)
-- `onboarding/storyboards/intro-row.jsx` — a storyboard row (static frames from a data array)
+- `onboarding/storyboards/screens.jsx` — the unified screen components library (IntroScreen, PhoneScreen, OtpScreen)
+- `onboarding/storyboards/intro-row.jsx` — a storyboard row (imports and renders IntroScreen from screens.jsx)
 - `_theme/poc.css` — the board CSS (`.poc-stage`, `.poc-board`, `.noor-frame`, `.noor-screen`, …); do not redefine these
 
 ## Anatomy
@@ -23,7 +24,8 @@ they are the pattern, and everything below is just a map of them:
 <section>/                      e.g. dua-dikhr/  (kebab-case directory)
 ├── <Section>.dc.html           e.g. Dua & Dikhr.dc.html — the one page users open
 └── storyboards/
-    ├── <flow-a>-row.jsx        one row per flow, one frame per state
+    ├── screens.jsx             holds the shared, unified screen React components
+    ├── <flow-a>-row.jsx        one row per flow, rendering screens from screens.jsx
     └── <flow-b>-row.jsx
 ```
 
@@ -81,15 +83,12 @@ Each row is a small JSX file that renders every state of one flow as static fram
 (see `intro-row.jsx`):
 
 - A data array at the top holding per-frame content (reuse the source page's real data).
-- Frame builders return HTML **strings** using `.noor-frame` (`--s:0.46`) → `.noor-frame-inner` →
-  `.noor-screen` (+ `.noor-island`, `.noor-home`) — the static shell, NOT the React IOSDevice.
-- `function XRow({ active = -1 })` maps frames, gives the active one the `is-active` class,
-  renders `.poc-row-label` (numbered: `01 · Dua list — categories · 4 states`) above a
-  `.poc-board` filled via `dangerouslySetInnerHTML`, and registers with
-  `Object.assign(window, { XRow })`.
-
-Frames are snapshots: no handlers, no bindings — just each state's markup with real content.
-Caption every frame (`.poc-frame-caption`, `1 · Category grid`).
+- The row renders `.poc-row-label` (numbered: `01 · Dua list — categories · 4 states`) above a `.poc-board`.
+- It maps over the state array to render a list of `.poc-board-item` blocks containing the static frame container:
+  `.noor-frame` (`--s:0.46`) → `.noor-frame-inner` → `.noor-screen` (with `.noor-island` and `.noor-home` decorators).
+- It retrieves the shared React screen components from the `window` scope (e.g. `const { CategoriesScreen } = window;`) and renders them as standard React child nodes inside the `.noor-screen` container.
+- Highlighting follows the live device: the active frame index gets the `is-active` class on `.noor-frame`.
+- Caption every frame (`.poc-frame-caption`, `1 · Category grid`).
 
 ## Step 4 — The live device: one stage machine
 

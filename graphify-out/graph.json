@@ -2845,7 +2845,7 @@
       "label": "Anatomy",
       "file_type": "document",
       "source_file": ".claude/skills/add-screen/SKILL.md",
-      "source_location": "L20",
+      "source_location": "L21",
       "id": "add_screen_skill_anatomy",
       "community": 16,
       "norm_label": "anatomy"
@@ -2854,7 +2854,7 @@
       "label": "Step 1 \u2014 Inventory the source screens",
       "file_type": "document",
       "source_file": ".claude/skills/add-screen/SKILL.md",
-      "source_location": "L33",
+      "source_location": "L35",
       "id": "add_screen_skill_step_1_inventory_the_source_screens",
       "community": 16,
       "norm_label": "step 1 \u2014 inventory the source screens"
@@ -2863,7 +2863,7 @@
       "label": "Step 2 \u2014 Scaffold the board page",
       "file_type": "document",
       "source_file": ".claude/skills/add-screen/SKILL.md",
-      "source_location": "L45",
+      "source_location": "L47",
       "id": "add_screen_skill_step_2_scaffold_the_board_page",
       "community": 16,
       "norm_label": "step 2 \u2014 scaffold the board page"
@@ -2872,7 +2872,7 @@
       "label": "Step 3 \u2014 Storyboard rows",
       "file_type": "document",
       "source_file": ".claude/skills/add-screen/SKILL.md",
-      "source_location": "L78",
+      "source_location": "L80",
       "id": "add_screen_skill_step_3_storyboard_rows",
       "community": 16,
       "norm_label": "step 3 \u2014 storyboard rows"
@@ -2881,7 +2881,7 @@
       "label": "Step 4 \u2014 The live device: one stage machine",
       "file_type": "document",
       "source_file": ".claude/skills/add-screen/SKILL.md",
-      "source_location": "L94",
+      "source_location": "L93",
       "id": "add_screen_skill_step_4_the_live_device_one_stage_machine",
       "community": 16,
       "norm_label": "step 4 \u2014 the live device: one stage machine"
@@ -2890,7 +2890,7 @@
       "label": "Step 5 \u2014 Theming and DS fidelity",
       "file_type": "document",
       "source_file": ".claude/skills/add-screen/SKILL.md",
-      "source_location": "L111",
+      "source_location": "L110",
       "id": "add_screen_skill_step_5_theming_and_ds_fidelity",
       "community": 16,
       "norm_label": "step 5 \u2014 theming and ds fidelity"
@@ -2899,7 +2899,7 @@
       "label": "Step 6 \u2014 Rewire the rest of the repo",
       "file_type": "document",
       "source_file": ".claude/skills/add-screen/SKILL.md",
-      "source_location": "L124",
+      "source_location": "L123",
       "id": "add_screen_skill_step_6_rewire_the_rest_of_the_repo",
       "community": 16,
       "norm_label": "step 6 \u2014 rewire the rest of the repo"
@@ -2908,7 +2908,7 @@
       "label": "Step 7 \u2014 Verify before you're done",
       "file_type": "document",
       "source_file": ".claude/skills/add-screen/SKILL.md",
-      "source_location": "L134",
+      "source_location": "L133",
       "id": "add_screen_skill_step_7_verify_before_you_re_done",
       "community": 16,
       "norm_label": "step 7 \u2014 verify before you're done"
@@ -2950,10 +2950,19 @@
       "norm_label": "2. a storyboard row \u2014 `<section>/storyboards/<flow>-row.jsx`"
     },
     {
+      "label": "3. Shared screen components \u2014 `<section>/storyboards/screens.jsx`",
+      "file_type": "document",
+      "source_file": ".claude/skills/add-screen/references/board-anatomy.md",
+      "source_location": "L191",
+      "id": "references_board_anatomy_3_shared_screen_components_section_storyboards_screens_jsx",
+      "community": 17,
+      "norm_label": "3. shared screen components \u2014 `<section>/storyboards/screens.jsx`"
+    },
+    {
       "label": "Index registration",
       "file_type": "document",
       "source_file": ".claude/skills/add-screen/references/board-anatomy.md",
-      "source_location": "L188",
+      "source_location": "L223",
       "id": "references_board_anatomy_index_registration",
       "community": 17,
       "norm_label": "index registration"
@@ -7269,6 +7278,16 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": ".claude/skills/add-screen/references/board-anatomy.md",
+      "source_location": "L191",
+      "weight": 1.0,
+      "source": "references_board_anatomy_section_board_annotated_skeletons",
+      "target": "references_board_anatomy_3_shared_screen_components_section_storyboards_screens_jsx",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": ".claude/skills/add-screen/references/board-anatomy.md",
       "source_location": "L188",
       "weight": 1.0,
       "confidence_score": 1.0,
@@ -7767,5 +7786,5 @@
     }
   ],
   "hyperedges": [],
-  "built_at_commit": "6807326cc73b02cedd6b70df0798b475415d6c9a"
+  "built_at_commit": "07d08df825ddf953de5268ccf56719412d111a71"
 }

@@ -147,34 +147,37 @@ class Component extends DCLogic {
 // `active` = index of the frame the live device currently shows (-1 = none).
 
 const FRAMES = [
-  { name: 'Category grid', /* per-frame content — real data from the source page */ },
+  { name: 'Category grid', /* per-frame data */ },
   { name: 'Favourites tab', /* … */ },
 ];
 
-function frame(f, i, ringClass) {
-  // Frames are STRINGS of static markup inside the CSS device shell —
-  // .noor-screen, not the React IOSDevice. No handlers, no {{ }} bindings.
-  return `
-  <div class="poc-board-item">
-    <div class="noor-frame ${ringClass}" style="--s:0.46">
-      <div class="noor-frame-inner">
-        <div class="noor-screen">
-          <div class="noor-island"></div>
-          <!-- this state's markup, tokens only -->
-          <div class="noor-home"></div>
-        </div>
-      </div>
-    </div>
-    <div class="poc-frame-caption">${i + 1} · ${f.name}</div>
-  </div>`;
-}
-
 function CategoriesRow({ active = -1 }) {
-  const html = FRAMES.map((f, i) => frame(f, i, active === i ? 'is-active' : '')).join('');
+  const { CategoriesScreen } = window;
   return (
     <div>
-      <div className="poc-row-label"><span className="material-symbols-rounded">grid_view</span> 01 · Categories — Hisnul Muslim hub · {FRAMES.length} states</div>
-      <div className="poc-board" dangerouslySetInnerHTML={{ __html: html }} />
+      <div className="poc-row-label">
+        <span className="material-symbols-rounded">grid_view</span> 
+        01 · Categories — Hisnul Muslim hub · {FRAMES.length} states
+      </div>
+      <div className="poc-board">
+        {FRAMES.map((f, i) => {
+          const isActive = active === i;
+          return (
+            <div key={i} className="poc-board-item">
+              <div className={`noor-frame ${isActive ? 'is-active' : ''}`} style={{ '--s': '0.46' }}>
+                <div className="noor-frame-inner">
+                  <div className="noor-screen">
+                    <div className="noor-island"></div>
+                    <CategoriesScreen activeTab={i === 1 ? 'fav' : 'all'} />
+                    <div className="noor-home"></div>
+                  </div>
+                </div>
+              </div>
+              <div className="poc-frame-caption">{i + 1} · {f.name}</div>
+            </div>
+          );
+        })}
+      </div>
     </div>
   );
 }
@@ -184,6 +187,38 @@ Object.assign(window, { CategoriesRow });
 
 Row labels are numbered in board order (`01 ·`, `02 ·`, …) and state the flow + frame count.
 Asset paths inside rows are relative to the BOARD page (`../uploads/…`).
+
+## 3. Shared screen components — `<section>/storyboards/screens.jsx`
+
+The shared component library declares React view components for every screen in the flow. They are mounted directly by both the interactive live device (`<Section>.dc.html`) and the static storyboard rows:
+
+```jsx
+// Shared section screen components.
+
+function CategoriesScreen({ activeTab = 'all', onSelectTab }) {
+  return (
+    <div style={{ display: 'flex', flexDirection: 'column', height: '100%' }}>
+      {/* 
+        CRITICAL DESIGN SYSTEM RULES:
+        - NEVER write custom border-radii, backgrounds, or status color borders inline.
+        - Use design system CSS components from _theme/components.css (.btn, .input, .sw, etc.).
+        - Toggle classes like .error, .focused, or .success on inputs, and let CSS handle styling:
+          e.g., <div className={`input ${error ? 'error' : ''}`}>
+      */}
+      <div className="tbar">
+        <button className="btn" onClick={() => onSelectTab?.('all')}>All</button>
+        <button className="btn" onClick={() => onSelectTab?.('fav')}>Favorites</button>
+      </div>
+      <div className="list">
+        {/* Render categories here */}
+      </div>
+    </div>
+  );
+}
+
+// Register all components on window scope for dynamic imports
+Object.assign(window, { CategoriesScreen });
+```
 
 ## Index registration
 
