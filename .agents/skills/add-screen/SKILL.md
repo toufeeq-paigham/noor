@@ -10,18 +10,18 @@ A **section board** is how this repo presents a feature flow: one subdirectory h
 frames) alongside ONE live interactive device that runs the entire flow. The board follows the
 device: whichever state the live prototype is in, the matching storyboard frame gets a green ring.
 
-`onboarding/` is the reference implementation. Read these three files before writing anything —
+`src/onboarding/` is the reference implementation. Read these three files before writing anything —
 they are the pattern, and everything below is just a map of them:
 
-- `onboarding/Onboarding.dc.html` — the board page (header, storyboard rows, live device, stage machine)
-- `onboarding/storyboards/screens.jsx` — the unified screen components library (IntroScreen, PhoneScreen, OtpScreen)
-- `onboarding/storyboards/intro-row.jsx` — a storyboard row (imports and renders IntroScreen from screens.jsx)
-- `_theme/poc.css` — the board CSS (`.poc-stage`, `.poc-board`, `.noor-frame`, `.noor-screen`, …); do not redefine these
+- `src/onboarding/Onboarding.dc.html` — the board page (header, storyboard rows, live device, stage machine)
+- `src/onboarding/storyboards/screens.jsx` — the unified screen components library (IntroScreen, PhoneScreen, OtpScreen)
+- `src/onboarding/storyboards/intro-row.jsx` — a storyboard row (imports and renders IntroScreen from screens.jsx)
+- `src/_theme/poc.css` — the board CSS (`.poc-stage`, `.poc-board`, `.noor-frame`, `.noor-screen`, …); do not redefine these
 
 ## Anatomy
 
 ```
-<section>/                      e.g. dua-dikhr/  (kebab-case directory)
+src/<section>/                  e.g. src/dua-dikhr/  (kebab-case directory)
 ├── <Section>.dc.html           e.g. Dua & Dikhr.dc.html — the one page users open
 └── storyboards/
     ├── screens.jsx             holds the shared, unified screen React components
@@ -122,11 +122,11 @@ One `DCLogic` component drives the whole flow:
 
 ## Step 6 — Rewire the rest of the repo
 
-1. **Index.dc.html** — in the `data` array, replace the old flat-page cards with one card per
-   flow row pointing at anchors: `{ name: 'Dua List', file: 'dua-dikhr/Dua & Dikhr.dc.html#list', … }`.
+1. **src/Index.dc.html** — in the `data` array, replace the old flat-page cards with one card per
+   flow row pointing at anchors: `{ name: 'Dua List', file: 'src/dua-dikhr/Dua & Dikhr.dc.html#list', … }`.
    Keep or add the section's chip if it warrants its own filter.
 2. **Inbound links** — every page found in Step 1's grep gets repointed to the new file
-   (root-level pages link WITHOUT `../`: `dua-dikhr/Dua & Dikhr.dc.html`).
+   (root-level pages link WITHOUT `../`: `src/dua-dikhr/Dua & Dikhr.dc.html`).
 3. **Delete the replaced flat pages** — the board supersedes them (Onboarding replaced the
    Intro/Phone Login/OTP pages the same way).
 
@@ -136,10 +136,10 @@ Run the bundled checker on the new page (script syntax, bindings vs `renderVals(
 targets, theming leftovers):
 
 ```bash
-python3 .claude/skills/add-screen/scripts/check_page.py "<section>/<Section>.dc.html"
+python3 .claude/skills/add-screen/scripts/check_page.py "src/<section>/<Section>.dc.html"
 ```
 
-Then prove it in the browser (serve with `python3 _theme/devserver.py 8474` — the plain
+Then prove it in the browser (serve with `python3 src/_theme/devserver.py 8474` — the plain
 http.server serves stale files): walk every stage of the live flow, click at least one
 storyboard deep-link anchor from Index, and flip light/dark with the chrome switcher. Fix and
 re-check until clean. The graphify pre-commit hook updates the knowledge graph on commit —
