@@ -150,6 +150,7 @@ function PhoneScreen({
   phoneMask = "00000 00000",
   phoneError = false,
   phoneFocused = false,
+  phoneAnim = "none",
   onContinue,
   onBack,
   onKeyPress
@@ -180,7 +181,7 @@ function PhoneScreen({
           </div>
         </div>
 
-        <div style={{ marginTop: 28 }}>
+        <div style={{ marginTop: 28, animation: phoneAnim }}>
           <div className={`input phone ${phoneFocused ? 'focused' : ''} ${phoneError ? 'error' : ''}`}>
             <div className="inner" style={{ borderColor: innerBorder }}>
               <div className="prefix">

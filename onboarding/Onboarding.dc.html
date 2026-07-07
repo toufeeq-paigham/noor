@@ -78,6 +78,7 @@
                             phone-mask="{{ phoneMask }}"
                             phone-error="{{ phoneError }}"
                             phone-focused="{{ phoneCursor }}"
+                            phone-anim="{{ phoneAnim }}"
                             on-continue="{{ onContinue }}"
                             on-back="{{ goBack }}"
                             on-key-press="{{ pressKeyFromComponent }}"
@@ -312,6 +313,7 @@ class Component extends DCLogic {
       phoneMask: s.phone.length < 10 ? '00000 00000'.slice(this.fmt(s.phone).length) : '',
       phoneCursor: isPhone && !full,
       phoneError: s.phoneError,
+      phoneAnim: s.phoneError ? 'lfshake .45s ease' : 'none',
       onContinue: this.onContinue,
 
       /* otp step */
