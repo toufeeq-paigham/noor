@@ -29,6 +29,9 @@ function introDots(activeIdx) {
 function introFrame(s, i, ringClass) {
   const last = i === INTRO_SLIDES.length - 1;
   const cta = last ? 'Get started!' : 'Next';
+  const skipHtml = !last ? `
+          <button class="btn btn-tonal sm" style="position:absolute;top:70px;right:20px;z-index:6">Skip</button>
+  ` : '';
   return `
   <div class="poc-board-item">
     <div class="noor-frame ${ringClass}" style="--s:0.46">
@@ -37,6 +40,7 @@ function introFrame(s, i, ringClass) {
           <div class="noor-island"></div>
           <img src="${s.img}" style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;object-position:${s.pos}">
           <div style="position:absolute;inset:0;background:${s.gradient}"></div>
+          ${skipHtml}
           <div style="position:absolute;left:28px;right:28px;top:50%;transform:translateY(-58%);text-align:center">
             <div style="font-family:'DM Serif Display',Georgia,serif;font-size:40px;line-height:1.12;color:#FFFFFF;letter-spacing:-0.5px;margin-bottom:14px;text-wrap:balance">${s.title}</div>
             <div style="font-family:'Nunito',sans-serif;font-size:16px;line-height:1.6;color:rgba(255,255,255,0.88);text-wrap:balance">${s.sub}</div>
