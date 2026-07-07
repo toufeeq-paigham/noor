@@ -2944,7 +2944,7 @@
       "label": "2. A storyboard row \u2014 `<section>/storyboards/<flow>-row.jsx`",
       "file_type": "document",
       "source_file": ".claude/skills/add-screen/references/board-anatomy.md",
-      "source_location": "L141",
+      "source_location": "L137",
       "id": "references_board_anatomy_2_a_storyboard_row_section_storyboards_flow_row_jsx",
       "community": 17,
       "norm_label": "2. a storyboard row \u2014 `<section>/storyboards/<flow>-row.jsx`"
@@ -2953,7 +2953,7 @@
       "label": "3. Shared screen components \u2014 `<section>/storyboards/screens.jsx`",
       "file_type": "document",
       "source_file": ".claude/skills/add-screen/references/board-anatomy.md",
-      "source_location": "L191",
+      "source_location": "L187",
       "id": "references_board_anatomy_3_shared_screen_components_section_storyboards_screens_jsx",
       "community": 17,
       "norm_label": "3. shared screen components \u2014 `<section>/storyboards/screens.jsx`"
@@ -2962,7 +2962,7 @@
       "label": "Index registration",
       "file_type": "document",
       "source_file": ".claude/skills/add-screen/references/board-anatomy.md",
-      "source_location": "L223",
+      "source_location": "L219",
       "id": "references_board_anatomy_index_registration",
       "community": 17,
       "norm_label": "index registration"
@@ -7280,9 +7280,9 @@
       "source_file": ".claude/skills/add-screen/references/board-anatomy.md",
       "source_location": "L191",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "references_board_anatomy_section_board_annotated_skeletons",
-      "target": "references_board_anatomy_3_shared_screen_components_section_storyboards_screens_jsx",
-      "confidence_score": 1.0
+      "target": "references_board_anatomy_3_shared_screen_components_section_storyboards_screens_jsx"
     },
     {
       "relation": "contains",
@@ -7786,5 +7786,5 @@
     }
   ],
   "hyperedges": [],
-  "built_at_commit": "07d08df825ddf953de5268ccf56719412d111a71"
+  "built_at_commit": "0794e9cb4b7f3dc5c3875b209166182587ac4125"
 }

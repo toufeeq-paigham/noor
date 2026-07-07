@@ -70,9 +70,9 @@ Body layout, in order:
 2. **`.poc-stage`** containing:
    - **`.poc-frames`** — one `<x-import>` per storyboard row:
      `<x-import component="DuaListRow" from="./storyboards/dua-list-row.jsx" active="{{ duaListActive }}" hint-size="760px,560px">`
-   - **`.poc-live`** — the floating live device:
-     `.noor-frame` with `--s:0.82` → `.noor-frame-inner` → `<x-import component="IOSDevice" from="../ios-frame.jsx" hint-size="402px,874px">`
-     with the whole flow inside as `<sc-if>` stages.
+    - **Live Device Prototype**: Wrapped in `BoardLive` to establish the floating layout:
+      `<x-import component="BoardLive" from="../_theme/board.jsx" restart="{{ restart }}" hint-size="400px,900px">`
+      which nests `<x-import component="IOSDevice" from="../ios-frame.jsx" hint-size="402px,874px">` holding the `<sc-if>` stages.
 
 The full annotated skeleton (board page AND row jsx) is in `references/board-anatomy.md` —
 read it when writing the files rather than improvising structure.

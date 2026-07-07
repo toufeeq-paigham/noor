@@ -53,9 +53,7 @@ flow-specific parts, keep the structure.
   </div>
 
   <!-- Live device — ONE continuous prototype across all stages -->
-  <div class="poc-live">
-    <div class="noor-frame" style="--s:0.82">
-      <div class="noor-frame-inner">
+  <x-import component="BoardLive" from="../_theme/board.jsx" restart="{{ restart }}" hint-size="400px,900px">
         <x-import component="IOSDevice" from="../ios-frame.jsx" hint-size="402px,874px">
           <div style="width:100%;height:100%;position:relative;overflow:hidden;background:var(--color-surface-primary)">
 
@@ -82,9 +80,7 @@ flow-specific parts, keep the structure.
 
           </div>
         </x-import>
-      </div>
-    </div>
-  </div>
+  </x-import>
 
 </div>
 </x-dc>
