@@ -136,20 +136,20 @@
 
                               <!-- phone input (DS construction: capsule + inner border + entry halo) -->
                               <div style="margin-top:28px;animation:{{ phoneAnim }}">
-                                <div style="position:relative;background:var(--color-input-background);border-radius:16px;padding:2px;min-height:46px;box-sizing:border-box;border:1px solid {{ phoneOuterBorder }};border-left-color:transparent">
+                                <div style="position:relative;background:var(--color-input-background);border-radius:16px;padding:2px;min-height:46px;box-sizing:border-box">
                                   <div style="display:flex;align-items:center;border-radius:14px;border:1px solid {{ phoneInnerBorder }};box-sizing:border-box">
-                                    <div style="display:flex;align-items:center;gap:7px;padding:0 12px 0 14px;white-space:nowrap;flex-shrink:0">
-                                      <span style="font-size:18px;line-height:1">🇮🇳</span>
-                                      <span style="color:var(--color-input-text);font-family:'Nunito',sans-serif;font-size:16px;font-weight:600">+91</span>
-                                    </div>
-                                    <div style="width:1px;align-self:stretch;margin:11px 0;background:var(--color-input-border-disabled);flex-shrink:0"></div>
-                                    <div style="flex:1;padding:11px 14px;font-family:'Nunito',sans-serif;font-size:17px;letter-spacing:.5px;color:var(--color-input-text);min-width:0">
-                                      <span>{{ phoneDisplay }}</span><sc-if value="{{ phoneCursor }}"><span class="lf-cursor"></span></sc-if><span style="color:var(--color-input-placeholder)">{{ phoneMask }}</span>
-                                    </div>
+                                  <div style="display:flex;align-items:center;gap:7px;padding:0 12px 0 14px;white-space:nowrap;flex-shrink:0">
+                                    <span style="font-size:18px;line-height:1">🇮🇳</span>
+                                    <span style="color:var(--color-input-text);font-family:'Nunito',sans-serif;font-size:16px;font-weight:600">+91</span>
                                   </div>
-                                  <!-- vertical divider halo line -->
-                                  <div style="position:absolute;top:0;bottom:0;left:81px;width:1px;background:{{ phoneHalo }};pointer-events:none"></div>
+                                  <div style="width:1px;align-self:stretch;margin:11px 0;background:var(--color-input-border-disabled);flex-shrink:0"></div>
+                                  <div style="flex:1;padding:11px 14px;font-family:'Nunito',sans-serif;font-size:17px;letter-spacing:.5px;color:var(--color-input-text);min-width:0">
+                                    <span>{{ phoneDisplay }}</span><sc-if value="{{ phoneCursor }}"><span class="lf-cursor"></span></sc-if><span style="color:var(--color-input-placeholder)">{{ phoneMask }}</span>
+                                  </div>
                                 </div>
+                                <!-- halo around entry portion only -->
+                                <div style="position:absolute;top:0;bottom:0;right:0;left:81px;border-radius:0 16px 16px 0;border:1px solid {{ phoneHalo }};pointer-events:none"></div>
+                              </div>
                                 <div style="height:20px;margin-top:6px">
                                   <sc-if value="{{ phoneError }}">
                                     <span style="font-family:'Nunito',sans-serif;font-size:13px;color:var(--color-input-text-error);font-weight:600">Please enter a valid 10-digit number</span>
@@ -481,7 +481,6 @@ class Component extends DCLogic {
       phoneCursor: isPhone && !full,
       phoneInnerBorder: s.phoneError ? 'color-mix(in oklab, var(--color-input-border-error) 50%, transparent)' : 'var(--color-input-border-disabled)',
       phoneHalo: !s.phoneError && !full ? 'color-mix(in oklab, var(--color-input-border-focused) 50%, transparent)' : 'transparent',
-      phoneOuterBorder: s.phoneError ? 'color-mix(in oklab, var(--color-input-border-error) 50%, transparent)' : (!full ? 'color-mix(in oklab, var(--color-input-border-focused) 50%, transparent)' : 'transparent'),
       phoneAnim: s.phoneError ? 'lfshake .45s ease' : 'none',
       phoneError: s.phoneError,
       onContinue: this.onContinue,
