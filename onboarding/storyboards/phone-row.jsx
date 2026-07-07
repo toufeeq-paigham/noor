@@ -14,11 +14,9 @@ function PhoneRow({ active = -1 }) {
               <div style="width:100%;height:100%;background:var(--color-surface-primary);display:flex;flex-direction:column;padding:62px 24px 0;box-sizing:border-box;position:relative;overflow:hidden">
 
                 <!-- back button -->
-                <div style="margin-top:8px">
-                  <div style="width:40px;height:40px;border-radius:50%;background:var(--color-action-background);display:flex;align-items:center;justify-content:center">
-                    <span class="material-symbols-rounded" style="font-size:20px;color:var(--color-info-primary)">arrow_back</span>
-                  </div>
-                </div>
+                <button class="ib ib-tonal md" style="margin-top:8px; align-self:flex-start">
+                  <span class="material-symbols-rounded">arrow_back</span>
+                </button>
 
                 <div style="display:flex;flex-direction:column;flex:1;min-height:0">
                   <div style="margin-top:38px">
@@ -78,11 +76,9 @@ function PhoneRow({ active = -1 }) {
               <div style="width:100%;height:100%;background:var(--color-surface-primary);display:flex;flex-direction:column;padding:62px 24px 0;box-sizing:border-box;position:relative;overflow:hidden">
 
                 <!-- back button -->
-                <div style="margin-top:8px">
-                  <div style="width:40px;height:40px;border-radius:50%;background:var(--color-action-background);display:flex;align-items:center;justify-content:center">
-                    <span class="material-symbols-rounded" style="font-size:20px;color:var(--color-info-primary)">arrow_back</span>
-                  </div>
-                </div>
+                <button class="ib ib-tonal md" style="margin-top:8px; align-self:flex-start">
+                  <span class="material-symbols-rounded">arrow_back</span>
+                </button>
 
                 <div style="display:flex;flex-direction:column;flex:1;min-height:0">
                   <div style="margin-top:38px">
@@ -142,11 +138,9 @@ function PhoneRow({ active = -1 }) {
               <div style="width:100%;height:100%;background:var(--color-surface-primary);display:flex;flex-direction:column;padding:62px 24px 0;box-sizing:border-box;position:relative;overflow:hidden">
 
                 <!-- back button -->
-                <div style="margin-top:8px">
-                  <div style="width:40px;height:40px;border-radius:50%;background:var(--color-action-background);display:flex;align-items:center;justify-content:center">
-                    <span class="material-symbols-rounded" style="font-size:20px;color:var(--color-info-primary)">arrow_back</span>
-                  </div>
-                </div>
+                <button class="ib ib-tonal md" style="margin-top:8px; align-self:flex-start">
+                  <span class="material-symbols-rounded">arrow_back</span>
+                </button>
 
                 <div style="display:flex;flex-direction:column;flex:1;min-height:0">
                   <div style="margin-top:38px">
