@@ -36,7 +36,7 @@ function introFrame(s, i, ringClass) {
   <div class="poc-board-item">
     <div class="noor-frame ${ringClass}" style="--s:0.46">
       <div class="noor-frame-inner">
-        <div class="noor-screen">
+        <div class="noor-screen" data-theme="dark">
           <div class="noor-island"></div>
           <img src="${s.img}" style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;object-position:${s.pos}">
           <div style="position:absolute;inset:0;background:${s.gradient}"></div>

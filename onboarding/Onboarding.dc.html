@@ -57,7 +57,7 @@
 
             <!-- ════ STAGE · INTRO ════ -->
             <sc-if value="{{ isIntroStage }}">
-              <div style="position:absolute;inset:0">
+              <div style="position:absolute;inset:0" data-theme="dark">
                 <sc-for list="{{ slides }}" as="s" hint-placeholder-count="3">
                   <div style="position:absolute;inset:0;opacity:{{ s.opacity }};transition:opacity 500ms ease;pointer-events:none">
                     <img src="{{ s.img }}" style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;object-position:{{ s.pos }}">
