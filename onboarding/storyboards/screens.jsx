@@ -157,14 +157,6 @@ function PhoneScreen({
 }) {
   const isFilled = phoneDisplay.replace(/\s/g, '').length === 10;
   
-  const innerBorder = 'var(--color-input-border-disabled)';
-  
-  const haloColor = phoneError
-    ? 'color-mix(in oklab, var(--color-input-border-error) 50%, transparent)'
-    : (phoneFocused
-        ? 'color-mix(in oklab, var(--color-input-border-focused) 50%, transparent)'
-        : 'transparent');
-
   return (
     <div style={{ width: '100%', height: '100%', background: 'var(--color-surface-primary)', display: 'flex', flexDirection: 'column', padding: '62px 24px 0', boxSizing: 'border-box', position: 'relative', overflow: 'hidden' }}>
       <button className="ib ib-tonal md" onClick={onBack} style={{ marginTop: 8, alignSelf: 'flex-start' }}>
@@ -183,7 +175,7 @@ function PhoneScreen({
 
         <div style={{ marginTop: 28, animation: phoneAnim }}>
           <div className={`input phone ${phoneFocused ? 'focused' : ''} ${phoneError ? 'error' : ''}`}>
-            <div className="inner" style={{ borderColor: innerBorder }}>
+            <div className="inner">
               <div className="prefix">
                 <span style={{ fontSize: 18, lineHeight: 1 }}>🇮🇳</span>
                 <span>+91</span>
@@ -195,7 +187,7 @@ function PhoneScreen({
                 <span style={{ color: 'var(--color-input-placeholder)' }}>{phoneMask}</span>
               </div>
             </div>
-            <div className="halo" style={{ borderColor: haloColor }} />
+            <div className="halo" />
           </div>
           
           <div style={{ height: 20, marginTop: 6 }}>
