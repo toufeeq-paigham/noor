@@ -5,12 +5,12 @@
 - Verdict: corpus is large enough that graph structure adds value.
 
 ## Summary
-- 455 nodes · 490 edges · 33 communities (21 shown, 12 thin omitted)
+- 454 nodes · 488 edges · 33 communities (20 shown, 13 thin omitted)
 - Extraction: 100% EXTRACTED · 0% INFERRED · 0% AMBIGUOUS
 - Token cost: 0 input · 0 output
 
 ## Graph Freshness
-- Built from commit: `e4625a2f`
+- Built from commit: `83b59be5`
 - Run `git rev-parse HEAD` and compare to check if the graph is stale.
 - Run `graphify update .` after code changes (no API cost).
 
@@ -65,7 +65,7 @@
 ## Import Cycles
 - None detected.
 
-## Communities (33 total, 12 thin omitted)
+## Communities (33 total, 13 thin omitted)
 
 ### Community 0 - "Community 0"
 Cohesion: 0.01
@@ -98,10 +98,6 @@ Nodes (8): IOSDevice(), IOSGlassPill(), IOSKeyboard(), IOSList(), IOSListRow(), 
 ### Community 8 - "Community 8"
 Cohesion: 0.22
 Nodes (8): 1. Framework cheatsheet (`.dc.html` pages), 2. Required page wiring, 3. Color token mapping (hex → var), 4. Interactivity requirements, 5. Navigation, 6. Do not touch, 7. Self-verification (before you finish), Noor POC conversion spec
-
-### Community 9 - "Community 9"
-Cohesion: 0.50
-Nodes (3): INTRO_SLIDES, introDots(), introFrame()
 
 ### Community 15 - "Community 15"
 Cohesion: 0.10
@@ -146,7 +142,7 @@ Nodes (4): assertions, eval_id, eval_name, prompt
 ## Knowledge Gaps
 - **280 isolated node(s):** `eval_id`, `eval_name`, `prompt`, `assertions`, `eval_id` (+275 more)
   These have ≤1 connection - possible missing edges or undocumented components.
-- **12 thin communities (<3 nodes) omitted from report** — run `graphify query` to explore isolated nodes.
+- **13 thin communities (<3 nodes) omitted from report** — run `graphify query` to explore isolated nodes.
 
 ## Suggested Questions
 _Questions this graph is uniquely positioned to answer:_

@@ -93,13 +93,13 @@ Static site — no build step. Serve the repo root and open pages in a browser:
 
 ```bash
 # Dev server with caching disabled (preferred — stock http.server serves stale files)
-python3 _theme/devserver.py 8474
+python3 src/_theme/devserver.py 8474
 
 # Plain static server (ports 8471–8473 configured in .claude/launch.json)
 python3 -m http.server 8471
 ```
 
-Entry point: `Index.dc.html` (Figma-style cover linking every page).
+Entry point: `src/Index.dc.html` (Figma-style cover linking every page).
 
 ## Project Structure
 

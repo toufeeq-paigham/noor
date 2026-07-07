@@ -4,184 +4,14 @@
     "ast_hash": "012cdfcfe203712eb722f7e388d1e211",
     "semantic_hash": ""
   },
-  "/Users/toufeeqahamed/Paigham/noor/_ds/noor-design-system-46f42e91-1858-412f-bdb6-560a6cc3df9f/_adherence.oxlintrc.json": {
-    "mtime": 1783248283.0,
-    "ast_hash": "5699333251c93822f4d20c90ce23004c",
-    "semantic_hash": ""
-  },
-  "/Users/toufeeqahamed/Paigham/noor/_ds/noor-design-system-46f42e91-1858-412f-bdb6-560a6cc3df9f/_ds_bundle.js": {
-    "mtime": 1783334509.7779615,
-    "ast_hash": "499c6ecf995ae009aa5407f10dfcc18f",
-    "semantic_hash": ""
-  },
-  "/Users/toufeeqahamed/Paigham/noor/_ds/noor-design-system-46f42e91-1858-412f-bdb6-560a6cc3df9f/_ds_manifest.json": {
-    "mtime": 1783359844.8379405,
-    "ast_hash": "b0f87d4873277a678ffcc11daf219ff6",
-    "semantic_hash": ""
-  },
-  "/Users/toufeeqahamed/Paigham/noor/_theme/chrome.js": {
-    "mtime": 1783400588.1753404,
-    "ast_hash": "8e29646d4389463cedb9934eb0a1690b",
-    "semantic_hash": ""
-  },
-  "/Users/toufeeqahamed/Paigham/noor/_theme/devserver.py": {
-    "mtime": 1783349850.717409,
-    "ast_hash": "ce95d785630d1ee226fec92e52ed1c4b",
-    "semantic_hash": ""
-  },
-  "/Users/toufeeqahamed/Paigham/noor/ios-frame.jsx": {
-    "mtime": 1783331119.7885427,
-    "ast_hash": "b025f3cd19f69223728fab8579c3dc7c",
-    "semantic_hash": ""
-  },
-  "/Users/toufeeqahamed/Paigham/noor/onboarding/storyboards/intro-row.jsx": {
-    "mtime": 1783404614.5177221,
-    "ast_hash": "d79284f4684ba8eadbc189eefe2342c8",
-    "semantic_hash": ""
-  },
-  "/Users/toufeeqahamed/Paigham/noor/onboarding/storyboards/otp-row.jsx": {
-    "mtime": 1783404632.4022586,
-    "ast_hash": "9f2fb0953cfb9f7ddb618d80c2786f92",
-    "semantic_hash": ""
-  },
-  "/Users/toufeeqahamed/Paigham/noor/onboarding/storyboards/phone-row.jsx": {
-    "mtime": 1783404625.0706542,
-    "ast_hash": "93516e2098ec08c60b4767877555c547",
-    "semantic_hash": ""
-  },
   "/Users/toufeeqahamed/Paigham/noor/start.sh": {
-    "mtime": 1783359471.2364323,
-    "ast_hash": "d8e6a2ebe68295ec268531b61f2516b7",
-    "semantic_hash": ""
-  },
-  "/Users/toufeeqahamed/Paigham/noor/support.js": {
-    "mtime": 1783248285.0,
-    "ast_hash": "c03ff3f74c6625a9256db31b1ee33fa9",
-    "semantic_hash": ""
-  },
-  "/Users/toufeeqahamed/Paigham/noor/Asma ul Husna.dc.html": {
-    "mtime": 1783248283.0,
-    "ast_hash": "3869c1d3c8663fb03b731118ed98db1f",
-    "semantic_hash": ""
-  },
-  "/Users/toufeeqahamed/Paigham/noor/Calculate Zakaat.dc.html": {
-    "mtime": 1783248283.0,
-    "ast_hash": "bb278df6444e440d18ff36e5d28bfcc9",
-    "semantic_hash": ""
-  },
-  "/Users/toufeeqahamed/Paigham/noor/Components.dc.html": {
-    "mtime": 1783405700.923295,
-    "ast_hash": "6b9bac5abfcdc9bd570849439867944b",
-    "semantic_hash": ""
-  },
-  "/Users/toufeeqahamed/Paigham/noor/Dua Detail.dc.html": {
-    "mtime": 1783248283.0,
-    "ast_hash": "eadf2afa0cce150081286a451131b60d",
-    "semantic_hash": ""
-  },
-  "/Users/toufeeqahamed/Paigham/noor/Dua List.dc.html": {
-    "mtime": 1783248283.0,
-    "ast_hash": "95bb09988ce985c8a700aa6ad9e3a8f8",
-    "semantic_hash": ""
-  },
-  "/Users/toufeeqahamed/Paigham/noor/Explore Masjids.dc.html": {
-    "mtime": 1783248283.0,
-    "ast_hash": "bd11140c6c7e9a522db287ce433782d5",
-    "semantic_hash": ""
-  },
-  "/Users/toufeeqahamed/Paigham/noor/Following Masjids.dc.html": {
-    "mtime": 1783248283.0,
-    "ast_hash": "7d9fffb95118ad7a77253e3f85377b6a",
-    "semantic_hash": ""
-  },
-  "/Users/toufeeqahamed/Paigham/noor/Hisnul Muslim.dc.html": {
-    "mtime": 1783248283.0,
-    "ast_hash": "d835a91560f3fcf4ea0ee4dcd8fd1de5",
-    "semantic_hash": ""
-  },
-  "/Users/toufeeqahamed/Paigham/noor/Home Screen.dc.html": {
-    "mtime": 1783331811.5294774,
-    "ast_hash": "0df12fadc2f79571aba7451907a7fdd6",
-    "semantic_hash": ""
-  },
-  "/Users/toufeeqahamed/Paigham/noor/Index.dc.html": {
-    "mtime": 1783360159.7989159,
-    "ast_hash": "e62ca0f4c0c226dc947d144b14cfc680",
-    "semantic_hash": ""
-  },
-  "/Users/toufeeqahamed/Paigham/noor/Islamic Calendar.dc.html": {
-    "mtime": 1783248283.0,
-    "ast_hash": "cc88d2587e3fa19f36c3c9136b6ed4b2",
-    "semantic_hash": ""
-  },
-  "/Users/toufeeqahamed/Paigham/noor/Masjid Onboarding.dc.html": {
-    "mtime": 1783251239.180698,
-    "ast_hash": "cc2643c2fa07b167d9897aeeeb016089",
-    "semantic_hash": ""
-  },
-  "/Users/toufeeqahamed/Paigham/noor/Profile Screen.dc.html": {
-    "mtime": 1783331641.6034694,
-    "ast_hash": "38e8aa95f091307193338e27d3754132",
-    "semantic_hash": ""
-  },
-  "/Users/toufeeqahamed/Paigham/noor/Qaum Screen.dc.html": {
-    "mtime": 1783331821.3719213,
-    "ast_hash": "ea2094954bf3c43991183430309e46da",
-    "semantic_hash": ""
-  },
-  "/Users/toufeeqahamed/Paigham/noor/Qibla Screen.dc.html": {
-    "mtime": 1783248283.0,
-    "ast_hash": "3f824829d26d96b05d9922d8f0d20fab",
-    "semantic_hash": ""
-  },
-  "/Users/toufeeqahamed/Paigham/noor/Quran Reader.dc.html": {
-    "mtime": 1783331679.7045758,
-    "ast_hash": "bd9f4184c8e28c52f89f48725064cc99",
-    "semantic_hash": ""
-  },
-  "/Users/toufeeqahamed/Paigham/noor/Quran Screen.dc.html": {
-    "mtime": 1783331753.080369,
-    "ast_hash": "40def221d86470c71a3b9b1a187c0947",
+    "mtime": 1783406667.3472462,
+    "ast_hash": "cf9b15da17488a2d7c18271d6f5dea08",
     "semantic_hash": ""
   },
   "/Users/toufeeqahamed/Paigham/noor/SPEC.md": {
     "mtime": 1783358795.60629,
     "ast_hash": "d7bcdc8736900035ae971e5b31e25e54",
-    "semantic_hash": ""
-  },
-  "/Users/toufeeqahamed/Paigham/noor/Salaah Screen.dc.html": {
-    "mtime": 1783331740.7766457,
-    "ast_hash": "cdaa4c3b1181698efca8a71b798698a9",
-    "semantic_hash": ""
-  },
-  "/Users/toufeeqahamed/Paigham/noor/Scan QR.dc.html": {
-    "mtime": 1783248283.0,
-    "ast_hash": "3cf6a22a077dd64eaed46048186a1619",
-    "semantic_hash": ""
-  },
-  "/Users/toufeeqahamed/Paigham/noor/Search Masjids.dc.html": {
-    "mtime": 1783248283.0,
-    "ast_hash": "99a56fb4d007de259954b3ac6971f9ad",
-    "semantic_hash": ""
-  },
-  "/Users/toufeeqahamed/Paigham/noor/Zakaat Screen.dc.html": {
-    "mtime": 1783248283.0,
-    "ast_hash": "7f6bc9bc594eb0b9850253cb8b8d4438",
-    "semantic_hash": ""
-  },
-  "/Users/toufeeqahamed/Paigham/noor/Zakaat Summary.dc.html": {
-    "mtime": 1783248283.0,
-    "ast_hash": "54790fa5dd709cef3f98231037c394c3",
-    "semantic_hash": ""
-  },
-  "/Users/toufeeqahamed/Paigham/noor/_ds/noor-design-system-46f42e91-1858-412f-bdb6-560a6cc3df9f/README.md": {
-    "mtime": 1783248283.0,
-    "ast_hash": "023c4141c6b981c198b05120a8dd0a8a",
-    "semantic_hash": ""
-  },
-  "/Users/toufeeqahamed/Paigham/noor/onboarding/Onboarding.dc.html": {
-    "mtime": 1783405052.7646234,
-    "ast_hash": "f50036801e8790e85f29a8afe923da76",
     "semantic_hash": ""
   },
   "/Users/toufeeqahamed/Paigham/noor/uploads/IMG_7542.PNG": {
@@ -525,8 +355,8 @@
     "semantic_hash": ""
   },
   "/Users/toufeeqahamed/Paigham/noor/CLAUDE.md": {
-    "mtime": 1783402221.6871066,
-    "ast_hash": "02116f7d0ff0332739c80fe36c5fd946",
+    "mtime": 1783406676.8702083,
+    "ast_hash": "3ebffe12228154c55eb321a415a18372",
     "semantic_hash": ""
   },
   "/Users/toufeeqahamed/Paigham/noor/.claude/skills/add-screen/scripts/check_page.py": {
@@ -547,16 +377,6 @@
   "/Users/toufeeqahamed/Paigham/noor/.claude/skills/add-screen/evals/evals.json": {
     "mtime": 1783403235.2781384,
     "ast_hash": "7814b5bbd1aeda0d406d3cbe3f3b142b",
-    "semantic_hash": ""
-  },
-  "/Users/toufeeqahamed/Paigham/noor/_theme/board.jsx": {
-    "mtime": 1783403399.5163128,
-    "ast_hash": "7c6f3c7b9d5c1ad62c54bd4824a8f70a",
-    "semantic_hash": ""
-  },
-  "/Users/toufeeqahamed/Paigham/noor/onboarding/storyboards/screens.jsx": {
-    "mtime": 1783405677.595042,
-    "ast_hash": "df17296493d7fa839ed28c1877aeef23",
     "semantic_hash": ""
   },
   "/Users/toufeeqahamed/Paigham/noor/.agents/skills/add-screen-workspace/iteration-1/eval-0-dua-dikhr-section/eval_metadata.json": {
@@ -580,8 +400,8 @@
     "semantic_hash": ""
   },
   "/Users/toufeeqahamed/Paigham/noor/.agents/AGENTS.md": {
-    "mtime": 1783406586.9009583,
-    "ast_hash": "65e701cb74f35cb39db5b960f3c96bec",
+    "mtime": 1783406684.471398,
+    "ast_hash": "c3ec049fce68af3028cd9bded8c10742",
     "semantic_hash": ""
   },
   "/Users/toufeeqahamed/Paigham/noor/.agents/skills/add-screen/SKILL.md": {
@@ -592,6 +412,186 @@
   "/Users/toufeeqahamed/Paigham/noor/.agents/skills/add-screen/references/board-anatomy.md": {
     "mtime": 1783406578.87291,
     "ast_hash": "e0de159a73723f24c6764d0333c425fd",
+    "semantic_hash": ""
+  },
+  "/Users/toufeeqahamed/Paigham/noor/src/_ds/noor-design-system-46f42e91-1858-412f-bdb6-560a6cc3df9f/_adherence.oxlintrc.json": {
+    "mtime": 1783248283.0,
+    "ast_hash": "5699333251c93822f4d20c90ce23004c",
+    "semantic_hash": ""
+  },
+  "/Users/toufeeqahamed/Paigham/noor/src/_ds/noor-design-system-46f42e91-1858-412f-bdb6-560a6cc3df9f/_ds_bundle.js": {
+    "mtime": 1783334509.7779615,
+    "ast_hash": "499c6ecf995ae009aa5407f10dfcc18f",
+    "semantic_hash": ""
+  },
+  "/Users/toufeeqahamed/Paigham/noor/src/_ds/noor-design-system-46f42e91-1858-412f-bdb6-560a6cc3df9f/_ds_manifest.json": {
+    "mtime": 1783359844.8379405,
+    "ast_hash": "b0f87d4873277a678ffcc11daf219ff6",
+    "semantic_hash": ""
+  },
+  "/Users/toufeeqahamed/Paigham/noor/src/_theme/board.jsx": {
+    "mtime": 1783403399.5163128,
+    "ast_hash": "7c6f3c7b9d5c1ad62c54bd4824a8f70a",
+    "semantic_hash": ""
+  },
+  "/Users/toufeeqahamed/Paigham/noor/src/_theme/chrome.js": {
+    "mtime": 1783400588.1753404,
+    "ast_hash": "8e29646d4389463cedb9934eb0a1690b",
+    "semantic_hash": ""
+  },
+  "/Users/toufeeqahamed/Paigham/noor/src/_theme/devserver.py": {
+    "mtime": 1783349850.717409,
+    "ast_hash": "ce95d785630d1ee226fec92e52ed1c4b",
+    "semantic_hash": ""
+  },
+  "/Users/toufeeqahamed/Paigham/noor/src/ios-frame.jsx": {
+    "mtime": 1783331119.7885427,
+    "ast_hash": "b025f3cd19f69223728fab8579c3dc7c",
+    "semantic_hash": ""
+  },
+  "/Users/toufeeqahamed/Paigham/noor/src/onboarding/storyboards/intro-row.jsx": {
+    "mtime": 1783404614.5177221,
+    "ast_hash": "d79284f4684ba8eadbc189eefe2342c8",
+    "semantic_hash": ""
+  },
+  "/Users/toufeeqahamed/Paigham/noor/src/onboarding/storyboards/otp-row.jsx": {
+    "mtime": 1783404632.4022586,
+    "ast_hash": "9f2fb0953cfb9f7ddb618d80c2786f92",
+    "semantic_hash": ""
+  },
+  "/Users/toufeeqahamed/Paigham/noor/src/onboarding/storyboards/phone-row.jsx": {
+    "mtime": 1783404625.0706542,
+    "ast_hash": "93516e2098ec08c60b4767877555c547",
+    "semantic_hash": ""
+  },
+  "/Users/toufeeqahamed/Paigham/noor/src/onboarding/storyboards/screens.jsx": {
+    "mtime": 1783405677.595042,
+    "ast_hash": "df17296493d7fa839ed28c1877aeef23",
+    "semantic_hash": ""
+  },
+  "/Users/toufeeqahamed/Paigham/noor/src/support.js": {
+    "mtime": 1783248285.0,
+    "ast_hash": "c03ff3f74c6625a9256db31b1ee33fa9",
+    "semantic_hash": ""
+  },
+  "/Users/toufeeqahamed/Paigham/noor/src/Asma ul Husna.dc.html": {
+    "mtime": 1783248283.0,
+    "ast_hash": "3869c1d3c8663fb03b731118ed98db1f",
+    "semantic_hash": ""
+  },
+  "/Users/toufeeqahamed/Paigham/noor/src/Calculate Zakaat.dc.html": {
+    "mtime": 1783248283.0,
+    "ast_hash": "bb278df6444e440d18ff36e5d28bfcc9",
+    "semantic_hash": ""
+  },
+  "/Users/toufeeqahamed/Paigham/noor/src/Components.dc.html": {
+    "mtime": 1783405700.923295,
+    "ast_hash": "6b9bac5abfcdc9bd570849439867944b",
+    "semantic_hash": ""
+  },
+  "/Users/toufeeqahamed/Paigham/noor/src/Dua Detail.dc.html": {
+    "mtime": 1783248283.0,
+    "ast_hash": "eadf2afa0cce150081286a451131b60d",
+    "semantic_hash": ""
+  },
+  "/Users/toufeeqahamed/Paigham/noor/src/Dua List.dc.html": {
+    "mtime": 1783248283.0,
+    "ast_hash": "95bb09988ce985c8a700aa6ad9e3a8f8",
+    "semantic_hash": ""
+  },
+  "/Users/toufeeqahamed/Paigham/noor/src/Explore Masjids.dc.html": {
+    "mtime": 1783248283.0,
+    "ast_hash": "bd11140c6c7e9a522db287ce433782d5",
+    "semantic_hash": ""
+  },
+  "/Users/toufeeqahamed/Paigham/noor/src/Following Masjids.dc.html": {
+    "mtime": 1783248283.0,
+    "ast_hash": "7d9fffb95118ad7a77253e3f85377b6a",
+    "semantic_hash": ""
+  },
+  "/Users/toufeeqahamed/Paigham/noor/src/Hisnul Muslim.dc.html": {
+    "mtime": 1783248283.0,
+    "ast_hash": "d835a91560f3fcf4ea0ee4dcd8fd1de5",
+    "semantic_hash": ""
+  },
+  "/Users/toufeeqahamed/Paigham/noor/src/Home Screen.dc.html": {
+    "mtime": 1783331811.5294774,
+    "ast_hash": "0df12fadc2f79571aba7451907a7fdd6",
+    "semantic_hash": ""
+  },
+  "/Users/toufeeqahamed/Paigham/noor/src/Index.dc.html": {
+    "mtime": 1783360159.7989159,
+    "ast_hash": "e62ca0f4c0c226dc947d144b14cfc680",
+    "semantic_hash": ""
+  },
+  "/Users/toufeeqahamed/Paigham/noor/src/Islamic Calendar.dc.html": {
+    "mtime": 1783248283.0,
+    "ast_hash": "cc88d2587e3fa19f36c3c9136b6ed4b2",
+    "semantic_hash": ""
+  },
+  "/Users/toufeeqahamed/Paigham/noor/src/Masjid Onboarding.dc.html": {
+    "mtime": 1783251239.180698,
+    "ast_hash": "cc2643c2fa07b167d9897aeeeb016089",
+    "semantic_hash": ""
+  },
+  "/Users/toufeeqahamed/Paigham/noor/src/Profile Screen.dc.html": {
+    "mtime": 1783331641.6034694,
+    "ast_hash": "38e8aa95f091307193338e27d3754132",
+    "semantic_hash": ""
+  },
+  "/Users/toufeeqahamed/Paigham/noor/src/Qaum Screen.dc.html": {
+    "mtime": 1783331821.3719213,
+    "ast_hash": "ea2094954bf3c43991183430309e46da",
+    "semantic_hash": ""
+  },
+  "/Users/toufeeqahamed/Paigham/noor/src/Qibla Screen.dc.html": {
+    "mtime": 1783248283.0,
+    "ast_hash": "3f824829d26d96b05d9922d8f0d20fab",
+    "semantic_hash": ""
+  },
+  "/Users/toufeeqahamed/Paigham/noor/src/Quran Reader.dc.html": {
+    "mtime": 1783331679.7045758,
+    "ast_hash": "bd9f4184c8e28c52f89f48725064cc99",
+    "semantic_hash": ""
+  },
+  "/Users/toufeeqahamed/Paigham/noor/src/Quran Screen.dc.html": {
+    "mtime": 1783331753.080369,
+    "ast_hash": "40def221d86470c71a3b9b1a187c0947",
+    "semantic_hash": ""
+  },
+  "/Users/toufeeqahamed/Paigham/noor/src/Salaah Screen.dc.html": {
+    "mtime": 1783331740.7766457,
+    "ast_hash": "cdaa4c3b1181698efca8a71b798698a9",
+    "semantic_hash": ""
+  },
+  "/Users/toufeeqahamed/Paigham/noor/src/Scan QR.dc.html": {
+    "mtime": 1783248283.0,
+    "ast_hash": "3cf6a22a077dd64eaed46048186a1619",
+    "semantic_hash": ""
+  },
+  "/Users/toufeeqahamed/Paigham/noor/src/Search Masjids.dc.html": {
+    "mtime": 1783248283.0,
+    "ast_hash": "99a56fb4d007de259954b3ac6971f9ad",
+    "semantic_hash": ""
+  },
+  "/Users/toufeeqahamed/Paigham/noor/src/Zakaat Screen.dc.html": {
+    "mtime": 1783248283.0,
+    "ast_hash": "7f6bc9bc594eb0b9850253cb8b8d4438",
+    "semantic_hash": ""
+  },
+  "/Users/toufeeqahamed/Paigham/noor/src/Zakaat Summary.dc.html": {
+    "mtime": 1783248283.0,
+    "ast_hash": "54790fa5dd709cef3f98231037c394c3",
+    "semantic_hash": ""
+  },
+  "/Users/toufeeqahamed/Paigham/noor/src/_ds/noor-design-system-46f42e91-1858-412f-bdb6-560a6cc3df9f/README.md": {
+    "mtime": 1783248283.0,
+    "ast_hash": "023c4141c6b981c198b05120a8dd0a8a",
+    "semantic_hash": ""
+  },
+  "/Users/toufeeqahamed/Paigham/noor/src/onboarding/Onboarding.dc.html": {
+    "mtime": 1783405052.7646234,
+    "ast_hash": "f50036801e8790e85f29a8afe923da76",
     "semantic_hash": ""
   }
 }

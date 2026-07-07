@@ -2,10 +2,10 @@
 # Start the Noor POC dev server and open it in the default browser.
 
 PORT=8474
-URL="http://localhost:$PORT/Index.dc.html"
+URL="http://localhost:$PORT/src/Index.dc.html"
 
 # Run the Python dev server in the background
-python3 _theme/devserver.py $PORT &
+python3 src/_theme/devserver.py $PORT &
 SERVER_PID=$!
 
 echo "Starting Noor POC server on port $PORT (PID: $SERVER_PID)..."
