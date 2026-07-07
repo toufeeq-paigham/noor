@@ -23,8 +23,15 @@ function HomeScreen({
   goQuran,
   goDua,
   goMasjids,
-  prayer = 'Maghrib'
+  prayer = 'Maghrib',
+  loginNudge = false,
+  onCloseLoginNudge,
+  onSignInTap,
+  privacyConsent = false,
+  attPrompt = false,
+  onClosePrivacy
 }) {
+  const { PromptCard, BottomSheet } = window;
   const bellIcon = notifOn ? 'notifications' : 'notifications_off';
   const bellFill = notifOn ? 1 : 0;
   const bellOpacity = notifOn ? 0.9 : 0.5;
@@ -182,6 +189,19 @@ function HomeScreen({
             </div>
           </div>
 
+          {/* Guest Login Nudge (PromptCard.error variant from NudgeInline.kt) */}
+          {loginNudge && (
+            <PromptCard
+              variant="error"
+              title="Sign in for your masjid & reminders"
+              description="Pick a masjid, see iqama times, and sync reminders across all your devices"
+              primaryActionText="Sign In"
+              onPrimaryAction={onSignInTap}
+              onDismiss={onCloseLoginNudge}
+              style={{ margin: '0 20px 24px' }}
+            />
+          )}
+
           {/* Hero details popup sheets (Absolute overlay within card context) */}
           {heroSel === 'suhoor' && (
             <div style={{ margin: '0 20px 24px', background: 'var(--color-surface-primary)', border: '1.5px solid var(--color-action-primary)', borderRadius: 16, padding: '16px 18px', display: 'flex', alignItems: 'flex-start', gap: 14 }}>
@@ -244,7 +264,9 @@ function HomeScreen({
                   <img src={duaImg} style={{ position: 'absolute', inset: 0, width: '100%', height: '100%', objectFit: 'cover' }} />
                   <div style={{ position: 'absolute', inset: 0, background: 'linear-gradient(180deg, rgba(0,0,0,0.6) 0%, transparent 45%)' }} />
                   <div style={{ position: 'absolute', left: 16, top: 16, display: 'flex', flexDirection: 'column', gap: 2 }}>
-                    <span className="material-symbols-rounded" style={{ fontSize: 18, color: '#FFFFFF' }}>tasbih</span>
+                    <svg viewBox="0 0 24 24" style={{ width: 18, height: 18, fill: '#FFFFFF' }}>
+                      <path d="M15.40,10.00 a1.1,1.1 0 1,0 2.2,0 a1.1,1.1 0 1,0 -2.2,0 M15.01,12.22 a1.1,1.1 0 1,0 2.2,0 a1.1,1.1 0 1,0 -2.2,0 M13.88,14.18 a1.1,1.1 0 1,0 2.2,0 a1.1,1.1 0 1,0 -2.2,0 M7.77,16.40 a1.1,1.1 0 1,0 2.2,0 a1.1,1.1 0 1,0 -2.2,0 M5.65,15.63 a1.1,1.1 0 1,0 2.2,0 a1.1,1.1 0 1,0 -2.2,0 M3.92,14.18 a1.1,1.1 0 1,0 2.2,0 a1.1,1.1 0 1,0 -2.2,0 M2.79,12.22 a1.1,1.1 0 1,0 2.2,0 a1.1,1.1 0 1,0 -2.2,0 M2.40,10.00 a1.1,1.1 0 1,0 2.2,0 a1.1,1.1 0 1,0 -2.2,0 M2.79,7.78 a1.1,1.1 0 1,0 2.2,0 a1.1,1.1 0 1,0 -2.2,0 M3.92,5.82 a1.1,1.1 0 1,0 2.2,0 a1.1,1.1 0 1,0 -2.2,0 M5.65,4.37 a1.1,1.1 0 1,0 2.2,0 a1.1,1.1 0 1,0 -2.2,0 M7.77,3.60 a1.1,1.1 0 1,0 2.2,0 a1.1,1.1 0 1,0 -2.2,0 M10.03,3.60 a1.1,1.1 0 1,0 2.2,0 a1.1,1.1 0 1,0 -2.2,0 M12.15,4.37 a1.1,1.1 0 1,0 2.2,0 a1.1,1.1 0 1,0 -2.2,0 M13.88,5.82 a1.1,1.1 0 1,0 2.2,0 a1.1,1.1 0 1,0 -2.2,0 M15.01,7.78 a1.1,1.1 0 1,0 2.2,0 a1.1,1.1 0 1,0 -2.2,0 M11.85,15.63 a1.4,1.4 0 1,0 2.8,0 a1.4,1.4 0 1,0 -2.8,0 M14.15,17.63 a1.1,1.1 0 1,0 2.2,0 a1.1,1.1 0 1,0 -2.2,0 M16.15,19.63 a1.1,1.1 0 1,0 2.2,0 a1.1,1.1 0 1,0 -2.2,0 M18.15,21.63 a1.1,1.1 0 1,0 2.2,0 a1.1,1.1 0 1,0 -2.2,0" />
+                    </svg>
                     <div style={{ fontFamily: '"Nunito", sans-serif', fontSize: 15, fontWeight: 800, color: '#FFFFFF' }}>Dua &amp; Dikhr</div>
                     <div style={{ fontFamily: '"Nunito", sans-serif', fontSize: 11, fontWeight: 500, color: 'rgba(255,255,255,0.8)' }}>Daily supplications</div>
                   </div>
@@ -403,6 +425,236 @@ function HomeScreen({
           </div>
 
         </div>
+
+        {/* Privacy Consent Bottom Sheet */}
+        <BottomSheet isOpen={privacyConsent} onClose={onClosePrivacy}>
+          {/* Shield Icon Circle */}
+          <div style={{
+            width: 72,
+            height: 72,
+            background: 'color-mix(in oklab, var(--color-action-primary) 12%, transparent)',
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'center',
+            borderRadius: '50%',
+            margin: '0 auto 20px',
+            flexShrink: 0
+          }}>
+            <span className="material-symbols-rounded" style={{ fontSize: 36, color: 'var(--color-action-primary)' }}>security</span>
+          </div>
+          
+          {/* Title */}
+          <div style={{
+            fontFamily: '"DM Serif Display", Georgia, serif',
+            fontSize: 24,
+            color: '#F4D090', // gold header
+            textAlign: 'center',
+            padding: '0 24px',
+            lineHeight: 1.25,
+            flexShrink: 0
+          }}>Your privacy, your choice</div>
+          
+          {/* Description */}
+          <div style={{
+            fontFamily: '"Nunito", sans-serif',
+            fontSize: 13,
+            color: 'var(--color-info-secondary)',
+            textAlign: 'center',
+            margin: '8px 24px 24px',
+            lineHeight: 1.45,
+            flexShrink: 0
+          }}>We use anonymised data to personalise your experience and show relevant Islamic content.</div>
+          
+          {/* What you get Header */}
+          <div style={{
+            fontFamily: '"DM Serif Display", Georgia, serif',
+            fontSize: 20,
+            color: 'var(--color-info-primary)',
+            margin: '0 24px 16px',
+            flexShrink: 0
+          }}>What you get</div>
+          
+          {/* Benefit Items */}
+          <div style={{ display: 'flex', flexDirection: 'column', gap: 18, padding: '0 24px', marginBottom: 24 }}>
+            {/* Item 1 */}
+            <div style={{ display: 'flex', gap: 16, alignItems: 'flex-start' }}>
+              <div style={{
+                width: 36,
+                height: 36,
+                borderRadius: '50%',
+                background: 'rgba(255, 255, 255, 0.06)',
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'center',
+                flexShrink: 0
+              }}>
+                <span className="material-symbols-rounded" style={{ fontSize: 20, color: 'var(--color-action-primary)' }}>security</span>
+              </div>
+              <div>
+                <div style={{ fontFamily: '"Nunito", sans-serif', fontSize: 16, fontWeight: 700, color: 'var(--color-info-primary)' }}>Private by design.</div>
+                <div style={{ fontFamily: '"Nunito", sans-serif', fontSize: 13, color: 'var(--color-info-secondary)', marginTop: 2, lineHeight: 1.4 }}>All data is anonymised before use. No personal identifiers are stored.</div>
+              </div>
+            </div>
+            
+            {/* Item 2 */}
+            <div style={{ display: 'flex', gap: 16, alignItems: 'flex-start' }}>
+              <div style={{
+                width: 36,
+                height: 36,
+                borderRadius: '50%',
+                background: 'rgba(255, 255, 255, 0.06)',
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'center',
+                flexShrink: 0
+              }}>
+                <span className="material-symbols-rounded" style={{ fontSize: 20, color: 'var(--color-action-primary)' }}>person</span>
+              </div>
+              <div>
+                <div style={{ fontFamily: '"Nunito", sans-serif', fontSize: 16, fontWeight: 700, color: 'var(--color-info-primary)' }}>Tailored to you.</div>
+                <div style={{ fontFamily: '"Nunito", sans-serif', fontSize: 13, color: 'var(--color-info-secondary)', marginTop: 2, lineHeight: 1.4 }}>Quran, duas, and community content matched to your interests.</div>
+              </div>
+            </div>
+            
+            {/* Item 3 */}
+            <div style={{ display: 'flex', gap: 16, alignItems: 'flex-start' }}>
+              <div style={{
+                width: 36,
+                height: 36,
+                borderRadius: '50%',
+                background: 'rgba(255, 255, 255, 0.06)',
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'center',
+                flexShrink: 0
+              }}>
+                <span className="material-symbols-rounded" style={{ fontSize: 20, color: 'var(--color-action-primary)' }}>campaign</span>
+              </div>
+              <div>
+                <div style={{ fontFamily: '"Nunito", sans-serif', fontSize: 16, fontWeight: 700, color: 'var(--color-info-primary)' }}>Help us grow.</div>
+                <div style={{ fontFamily: '"Nunito", sans-serif', fontSize: 13, color: 'var(--color-info-secondary)', marginTop: 2, lineHeight: 1.4 }}>Your choice helps us make Paigham better for the whole ummah.</div>
+              </div>
+            </div>
+          </div>
+          
+          {/* Action Button */}
+          <div style={{ padding: '0 24px 32px' }}>
+            <button className="btn btn-filled lg" onClick={onClosePrivacy} style={{ width: '100%' }}>Continue</button>
+          </div>
+        </BottomSheet>
+
+        {/* iOS App Tracking Transparency (ATT) Prompt Dialog */}
+        {attPrompt && (
+          <div style={{
+            position: 'absolute',
+            inset: 0,
+            background: 'rgba(0, 0, 0, 0.4)',
+            zIndex: 150,
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'center'
+          }}>
+            <div style={{
+              width: 270,
+              background: 'rgba(33, 33, 33, 0.85)',
+              backdropFilter: 'blur(20px)',
+              WebkitBackdropFilter: 'blur(20px)',
+              borderRadius: 14,
+              boxShadow: '0 10px 30px rgba(0, 0, 0, 0.5)',
+              border: '0.5px solid rgba(255, 255, 255, 0.15)',
+              textAlign: 'center',
+              display: 'flex',
+              flexDirection: 'column',
+              overflow: 'hidden'
+            }}>
+              {/* Orange Tracking Card Icon */}
+              <div style={{
+                width: 60,
+                height: 60,
+                background: 'linear-gradient(135deg, #FF9500, #FF5E3A)',
+                borderRadius: 14,
+                margin: '16px auto 12px',
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'center',
+                position: 'relative'
+              }}>
+                {/* Main signal/antenna icon */}
+                <span className="material-symbols-rounded" style={{ fontSize: 32, color: '#FFFFFF' }}>sensors</span>
+                
+                {/* Blue hand stop badge */}
+                <div style={{
+                  width: 20,
+                  height: 20,
+                  borderRadius: '50%',
+                  background: '#007AFF',
+                  position: 'absolute',
+                  bottom: -4,
+                  right: -4,
+                  border: '2px solid #202020',
+                  display: 'flex',
+                  alignItems: 'center',
+                  justifyContent: 'center'
+                }}>
+                  <span className="material-symbols-rounded" style={{ fontSize: 11, color: '#FFFFFF' }}>front_hand</span>
+                </div>
+              </div>
+              
+              {/* Title */}
+              <div style={{
+                fontFamily: '-apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif',
+                fontSize: 15,
+                fontWeight: 600,
+                color: '#FFFFFF',
+                padding: '0 16px',
+                lineHeight: 1.3
+              }}>Allow “Paigham” to track your activity across other companies’ apps and websites?</div>
+              
+              {/* Description */}
+              <div style={{
+                fontFamily: '-apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif',
+                fontSize: 12,
+                color: '#EBEBF5',
+                opacity: 0.8,
+                padding: '6px 16px 16px',
+                lineHeight: 1.3
+              }}>Paigham uses this identifier to personalise your experience</div>
+              
+              {/* Button 1: Ask App Not to Track */}
+              <div style={{ borderTop: '0.5px solid rgba(255, 255, 255, 0.15)' }}>
+                <button style={{
+                  background: 'transparent',
+                  border: 'none',
+                  color: '#0A84FF',
+                  fontSize: 16,
+                  fontFamily: '-apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif',
+                  padding: '11px 8px',
+                  width: '100%',
+                  fontWeight: 400,
+                  cursor: 'pointer',
+                  outline: 'none'
+                }}>Ask App Not to Track</button>
+              </div>
+              
+              {/* Button 2: Allow */}
+              <div style={{ borderTop: '0.5px solid rgba(255, 255, 255, 0.15)' }}>
+                <button style={{
+                  background: 'transparent',
+                  border: 'none',
+                  color: '#0A84FF',
+                  fontSize: 16,
+                  fontFamily: '-apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif',
+                  padding: '11px 8px',
+                  width: '100%',
+                  fontWeight: 600,
+                  cursor: 'pointer',
+                  outline: 'none'
+                }}>Allow</button>
+              </div>
+            </div>
+          </div>
+        )}
+
       </div>
     </div>
   );

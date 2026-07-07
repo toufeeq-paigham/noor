@@ -30,6 +30,9 @@
   </style>
 </helmet>
 
+<!-- Reusable components layer -->
+<x-import component="PromptCard" from="../_theme/components.jsx" hint-size="0,0"></x-import>
+
 <!-- ── Board header (shared board chrome) ── -->
 <x-import component="BoardHeader" from="../_theme/board.jsx"
           title="Home — Tabs &amp; Variations"
@@ -49,7 +52,7 @@
     <x-import component="HomeRow" from="./storyboards/tabs-row.jsx"
               active="{{ activeFrameIndex }}"
               on-select-frame="{{ syncLiveStateToFrame }}"
-              hint-size="760px,580px">
+              hint-size="1000px,580px">
     </x-import>
     <x-import component="QaumRow" from="./storyboards/tabs-row.jsx"
               active="{{ activeFrameIndex }}"
@@ -104,6 +107,14 @@
                       go-dua="{{ switchToTab2 }}"
                       go-masjids="{{ switchToTab3 }}"
                       prayer="{{ homeActivePrayer }}"
+                      user-name="{{ homeGuest ? 'Guest' : 'Toufeeq Ahamed' }}"
+                      masjid-name="{{ homeGuest ? 'Bangalore (Approx.)' : 'Masjid E Bilal' }}"
+                      login-nudge="{{ homeLoginNudge }}"
+                      on-close-login-nudge="{{ closeLoginNudge }}"
+                      on-sign-in-tap="{{ triggerSignIn }}"
+                      privacy-consent="{{ homePrivacyConsent }}"
+                      on-close-privacy="{{ closePrivacyConsent }}"
+                      att-prompt="{{ homeAttPrompt }}"
                       hint-size="100%,100%">
             </x-import>
           </sc-if>
@@ -201,6 +212,10 @@ class Component extends DCLogic {
     // Home tab state
     homeHeroSel: null,
     homeActivePrayer: 'Maghrib',
+    homeGuest: false,
+    homeLoginNudge: false,
+    homePrivacyConsent: false,
+    homeAttPrompt: false,
     homePrayers: { Fajr: true, Zohar: true, Asr: true, Maghrib: true, Isha: false },
     homeSehriNote: false,
     homeSlide: 0,
@@ -238,30 +253,32 @@ class Component extends DCLogic {
     const hash = window.location.hash;
     if (hash) {
       if (hash === '#home') this.syncLiveStateToFrame(0);
-      else if (hash === '#home-suhoor') this.syncLiveStateToFrame(1);
-      else if (hash === '#home-iftaar') this.syncLiveStateToFrame(2);
-      else if (hash === '#qaum') this.syncLiveStateToFrame(3);
-      else if (hash === '#quran') this.syncLiveStateToFrame(4);
-      else if (hash === '#salaah') this.syncLiveStateToFrame(5);
-      else if (hash === '#profile') this.syncLiveStateToFrame(6);
+      else if (hash === '#home-login-nudge') this.syncLiveStateToFrame(1);
+      else if (hash === '#home-privacy-consent') this.syncLiveStateToFrame(2);
+      else if (hash === '#home-att-prompt') this.syncLiveStateToFrame(3);
+      else if (hash === '#qaum') this.syncLiveStateToFrame(4);
+      else if (hash === '#quran') this.syncLiveStateToFrame(5);
+      else if (hash === '#salaah') this.syncLiveStateToFrame(6);
+      else if (hash === '#profile') this.syncLiveStateToFrame(7);
     }
   }
 
   // Sync Live Device state when static frame clicked on canvas
   syncLiveStateToFrame = (idx) => {
     const states = [
-      { activeTab: 0, homeHeroSel: null, homeActivePrayer: 'Maghrib' },
-      { activeTab: 0, homeHeroSel: 'suhoor', homeActivePrayer: 'Maghrib' },
-      { activeTab: 0, homeHeroSel: 'iftaar', homeActivePrayer: 'Maghrib' },
+      { activeTab: 0, homeHeroSel: null, homeActivePrayer: 'Maghrib', homeGuest: false, homeLoginNudge: false, homePrivacyConsent: false, homeAttPrompt: false },
+      { activeTab: 0, homeHeroSel: null, homeActivePrayer: 'Asr', homeGuest: true, homeLoginNudge: true, homePrivacyConsent: false, homeAttPrompt: false },
+      { activeTab: 0, homeHeroSel: null, homeActivePrayer: 'Asr', homeGuest: true, homeLoginNudge: false, homePrivacyConsent: true, homeAttPrompt: false },
+      { activeTab: 0, homeHeroSel: null, homeActivePrayer: 'Asr', homeGuest: true, homeLoginNudge: true, homePrivacyConsent: false, homeAttPrompt: true },
       { activeTab: 1 },
       { activeTab: 2 },
       { activeTab: 3 },
       { activeTab: 4 },
-      { activeTab: 0, homeHeroSel: null, homeActivePrayer: 'Fajr' },
-      { activeTab: 0, homeHeroSel: null, homeActivePrayer: 'Zohar' },
-      { activeTab: 0, homeHeroSel: null, homeActivePrayer: 'Asr' },
-      { activeTab: 0, homeHeroSel: null, homeActivePrayer: 'Maghrib' },
-      { activeTab: 0, homeHeroSel: null, homeActivePrayer: 'Isha' }
+      { activeTab: 0, homeHeroSel: null, homeActivePrayer: 'Fajr', homeGuest: false, homeLoginNudge: false, homePrivacyConsent: false, homeAttPrompt: false },
+      { activeTab: 0, homeHeroSel: null, homeActivePrayer: 'Zohar', homeGuest: false, homeLoginNudge: false, homePrivacyConsent: false, homeAttPrompt: false },
+      { activeTab: 0, homeHeroSel: null, homeActivePrayer: 'Asr', homeGuest: false, homeLoginNudge: false, homePrivacyConsent: false, homeAttPrompt: false },
+      { activeTab: 0, homeHeroSel: null, homeActivePrayer: 'Maghrib', homeGuest: false, homeLoginNudge: false, homePrivacyConsent: false, homeAttPrompt: false },
+      { activeTab: 0, homeHeroSel: null, homeActivePrayer: 'Isha', homeGuest: false, homeLoginNudge: false, homePrivacyConsent: false, homeAttPrompt: false }
     ];
     this.setState({
       ...states[idx],
@@ -270,25 +287,26 @@ class Component extends DCLogic {
   };
 
   // Sync canvas active highlight ring based on current live state
-  syncFrameIndexFromTab(tabIndex, heroSel = null, prayer = 'Maghrib') {
+  syncFrameIndexFromTab(tabIndex, heroSel = null, prayer = 'Maghrib', loginNudge = false, privacyConsent = false, attPrompt = false) {
     if (tabIndex === 0) {
+      if (attPrompt) return 3;
+      if (privacyConsent) return 2;
+      if (loginNudge) return 1;
       const p = (prayer || 'Maghrib').toLowerCase();
-      if (p === 'fajr') return 7;
-      if (p === 'zohar') return 8;
-      if (p === 'asr') return 9;
-      if (p === 'isha') return 11;
-      if (heroSel === 'suhoor') return 1;
-      if (heroSel === 'iftaar') return 2;
+      if (p === 'fajr') return 8;
+      if (p === 'zohar') return 9;
+      if (p === 'asr') return 10;
+      if (p === 'isha') return 12;
       return 0;
     }
-    return tabIndex + 2;
+    return tabIndex + 3;
   }
 
   // Switch tab handlers
   setTab = (idx) => () => {
     this.setState(s => ({
       activeTab: idx,
-      activeFrameIndex: this.syncFrameIndexFromTab(idx, idx === 0 ? s.homeHeroSel : null, idx === 0 ? s.homeActivePrayer : 'Maghrib')
+      activeFrameIndex: this.syncFrameIndexFromTab(idx, idx === 0 ? s.homeHeroSel : null, idx === 0 ? s.homeActivePrayer : 'Maghrib', idx === 0 ? s.homeLoginNudge : false)
     }));
   };
 
@@ -298,6 +316,10 @@ class Component extends DCLogic {
   // BottomNav onSelect — receives the tapped tab index
   onNavSelect = (idx) => this.setTab(idx)();
 
+  closeLoginNudge = () => this.setState({ homeLoginNudge: false });
+  closePrivacyConsent = () => this.setState({ homePrivacyConsent: false });
+  triggerSignIn = () => alert("Redirecting to login flow...");
+
   // Reset to default settings
   resetToDefault = () => {
     this.setState({
@@ -305,6 +327,8 @@ class Component extends DCLogic {
       activeFrameIndex: 0,
       homeHeroSel: null,
       homeActivePrayer: 'Maghrib',
+      homeGuest: false,
+      homeLoginNudge: false,
       homePrayers: { Fajr: true, Zohar: true, Asr: true, Maghrib: true, Isha: false },
       homeSehriNote: false,
       homeSlide: 0,
@@ -323,7 +347,7 @@ class Component extends DCLogic {
     const nextSel = s.homeHeroSel === 'suhoor' ? null : 'suhoor';
     return {
       homeHeroSel: nextSel,
-      activeFrameIndex: this.syncFrameIndexFromTab(0, nextSel, s.homeActivePrayer)
+      activeFrameIndex: this.syncFrameIndexFromTab(0, nextSel, s.homeActivePrayer, s.homeLoginNudge)
     };
   });
 
@@ -331,7 +355,7 @@ class Component extends DCLogic {
     const nextSel = s.homeHeroSel === 'iftaar' ? null : 'iftaar';
     return {
       homeHeroSel: nextSel,
-      activeFrameIndex: this.syncFrameIndexFromTab(0, nextSel, s.homeActivePrayer)
+      activeFrameIndex: this.syncFrameIndexFromTab(0, nextSel, s.homeActivePrayer, s.homeLoginNudge)
     };
   });
 
@@ -526,7 +550,16 @@ class Component extends DCLogic {
       profilePendingFriends: s.profilePendingFriends,
       approveProfileFriend: this.approveProfileFriend,
       profileLogoutOpen: s.profileLogoutOpen,
-      toggleProfileLogoutSheet: this.toggleProfileLogoutSheet
+      toggleProfileLogoutSheet: this.toggleProfileLogoutSheet,
+
+      // Guest and Login Nudge state
+      homeGuest: s.homeGuest,
+      homeLoginNudge: s.homeLoginNudge,
+      closeLoginNudge: this.closeLoginNudge,
+      triggerSignIn: this.triggerSignIn,
+      homePrivacyConsent: s.homePrivacyConsent,
+      closePrivacyConsent: this.closePrivacyConsent,
+      homeAttPrompt: s.homeAttPrompt
     };
   }
 }

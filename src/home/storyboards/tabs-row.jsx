@@ -5,8 +5,9 @@
 
 const STORYBOARD_FRAMES = [
   { id: 'home', name: 'Home — Maghrib Default', tab: 0, component: 'HomeScreen', props: { heroSel: null } },
-  { id: 'home-suhoor', name: 'Home — Suhoor Info Card', tab: 0, component: 'HomeScreen', props: { heroSel: 'suhoor' } },
-  { id: 'home-iftaar', name: 'Home — Iftaar Info Card', tab: 0, component: 'HomeScreen', props: { heroSel: 'iftaar' } },
+  { id: 'home-login-nudge', name: 'Home — Guest Login Nudge', tab: 0, component: 'HomeScreen', props: { heroSel: null, userName: 'Guest', masjidName: 'Bangalore (Approx.)', prayer: 'Asr', loginNudge: true } },
+  { id: 'home-privacy-consent', name: 'Home — Privacy Consent', tab: 0, component: 'HomeScreen', props: { heroSel: null, userName: 'Guest', masjidName: 'Bangalore (Approx.)', prayer: 'Asr', privacyConsent: true } },
+  { id: 'home-att-prompt', name: 'Home — ATT Tracking Prompt', tab: 0, component: 'HomeScreen', props: { heroSel: null, userName: 'Guest', masjidName: 'Bangalore (Approx.)', prayer: 'Asr', loginNudge: true, attPrompt: true } },
   { id: 'qaum', name: 'Qaum — community Feed', tab: 1, component: 'QaumScreen', props: {} },
   { id: 'quran', name: 'Quran — Surah Listing', tab: 2, component: 'QuranScreen', props: {} },
   { id: 'salaah', name: 'Salaah — Bilal Timings', tab: 3, component: 'SalaahScreen', props: {} },
@@ -62,10 +63,10 @@ function HomeRow({ active = 0, onSelectFrame }) {
   return (
     <div>
       <div className="poc-row-label">
-        <span className="material-symbols-rounded">home</span> 02 · Home Tab — Maghrib &amp; Variations · 3 Screens
+        <span className="material-symbols-rounded">home</span> 02 · Home Tab — Maghrib &amp; Variations · 4 Screens
       </div>
       <div className="poc-board">
-        {STORYBOARD_FRAMES.slice(0, 3).map((f, i) => renderFrame(f, i, active, onSelectFrame))}
+        {STORYBOARD_FRAMES.slice(0, 4).map((f, i) => renderFrame(f, i, active, onSelectFrame))}
       </div>
     </div>
   );
@@ -78,7 +79,7 @@ function QaumRow({ active = 0, onSelectFrame }) {
         <span className="material-symbols-rounded">group</span> 03 · Qaum Tab — Community Feed · 1 Screen
       </div>
       <div className="poc-board">
-        {STORYBOARD_FRAMES.slice(3, 4).map((f, i) => renderFrame(f, 3 + i, active, onSelectFrame))}
+        {STORYBOARD_FRAMES.slice(4, 5).map((f, i) => renderFrame(f, 4 + i, active, onSelectFrame))}
       </div>
     </div>
   );
@@ -91,7 +92,7 @@ function QuranRow({ active = 0, onSelectFrame }) {
         <span className="material-symbols-rounded">menu_book</span> 04 · Quran Tab — Surah Listing · 1 Screen
       </div>
       <div className="poc-board">
-        {STORYBOARD_FRAMES.slice(4, 5).map((f, i) => renderFrame(f, 4 + i, active, onSelectFrame))}
+        {STORYBOARD_FRAMES.slice(5, 6).map((f, i) => renderFrame(f, 5 + i, active, onSelectFrame))}
       </div>
     </div>
   );
@@ -104,7 +105,7 @@ function SalaahRow({ active = 0, onSelectFrame }) {
         <span className="material-symbols-rounded">mosque</span> 05 · Salaah Tab — Bilal Timings · 1 Screen
       </div>
       <div className="poc-board">
-        {STORYBOARD_FRAMES.slice(5, 6).map((f, i) => renderFrame(f, 5 + i, active, onSelectFrame))}
+        {STORYBOARD_FRAMES.slice(6, 7).map((f, i) => renderFrame(f, 6 + i, active, onSelectFrame))}
       </div>
     </div>
   );
@@ -117,7 +118,7 @@ function ProfileRow({ active = 0, onSelectFrame }) {
         <span className="material-symbols-rounded">person</span> 06 · Profile Tab — User Settings · 1 Screen
       </div>
       <div className="poc-board">
-        {STORYBOARD_FRAMES.slice(6, 7).map((f, i) => renderFrame(f, 6 + i, active, onSelectFrame))}
+        {STORYBOARD_FRAMES.slice(7, 8).map((f, i) => renderFrame(f, 7 + i, active, onSelectFrame))}
       </div>
     </div>
   );
@@ -130,7 +131,7 @@ function HomePrayerRow({ active = 0, onSelectFrame }) {
         <span className="material-symbols-rounded">schedule</span> 01 · Home Tab — Prayer Variations · 5 Screens
       </div>
       <div className="poc-board">
-        {PRAYER_FRAMES.map((f, i) => renderFrame(f, 7 + i, active, onSelectFrame))}
+        {PRAYER_FRAMES.map((f, i) => renderFrame(f, 8 + i, active, onSelectFrame))}
       </div>
     </div>
   );

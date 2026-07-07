@@ -11,6 +11,7 @@
 <helmet>
   <link rel="stylesheet" href="_ds/noor-design-system-46f42e91-1858-412f-bdb6-560a6cc3df9f/colors_and_type.css">
   <link rel="stylesheet" href="_theme/poc.css">
+  <link rel="stylesheet" href="_theme/components.css">
   <script src="_ds/noor-design-system-46f42e91-1858-412f-bdb6-560a6cc3df9f/_ds_bundle.js"></script>
   <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Rounded:opsz,wght,FILL,GRAD@24,400,0..1,0&amp;display=block">
   <style>
@@ -21,654 +22,142 @@
     .cp-h{font-family:var(--font-title);font-size:21px;color:var(--color-info-primary)}
     .cp-sub{font-family:var(--font-body);font-size:12px;color:var(--color-info-secondary);margin-top:2px}
     .cp-head{margin:0 0 12px}
-    .cp-grid2{display:grid;grid-template-columns:1fr 1fr;gap:20px}
+    .cp-grid{display:grid;grid-template-columns:repeat(auto-fit, minmax(320px, 1fr));gap:20px}
     .lbl{font-family:var(--font-body);font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:.08em;color:var(--color-info-secondary)}
-    .row{display:flex;align-items:center;gap:10px;flex-wrap:wrap}
-    .rowlbl{width:96px;flex-shrink:0}
-
-    /* ── Buttons (canonical buttons.html) ── */
-    .btn{display:inline-flex;align-items:center;justify-content:center;gap:8px;font-family:var(--font-body);font-weight:700;border:none;cursor:pointer;border-radius:16px;padding:12px 16px;min-height:40px;font-size:14px;box-sizing:border-box}
-    .btn.lg{padding:14px 24px;min-height:48px;font-size:16px}
-    .btn.sm{padding:6px 12px;min-height:32px;font-size:13px;border-radius:12px}
-    .btn-filled{background:var(--color-action-primary);color:var(--color-action-primary-inverse);box-shadow:0 8px 20px -8px color-mix(in oklab,var(--color-action-primary) 60%,transparent)}
-    .btn-tonal{background:color-mix(in oklab,var(--color-info-primary) 10%,transparent);color:var(--color-info-primary);border:1px solid color-mix(in oklab,var(--color-info-primary) 20%,transparent)}
-    .btn-tonal.teal{background:color-mix(in oklab,var(--color-action-secondary) 12%,transparent);color:var(--color-action-secondary);border-color:color-mix(in oklab,var(--color-action-secondary) 25%,transparent)}
-    .btn-tonal.contained{background:var(--color-action-secondary);color:#fff;border:none;box-shadow:0 8px 20px -8px color-mix(in oklab,var(--color-action-secondary) 50%,transparent)}
-    .btn-link{background:transparent;color:var(--color-action-primary);border:none;box-shadow:none;padding:4px 0;min-height:auto;position:relative}
-    .btn-link::after{content:"";position:absolute;left:0;right:0;bottom:0;height:1px;background:currentColor}
-    .btn-destructive{background:var(--color-action-destructive);color:#fff;box-shadow:0 8px 20px -8px color-mix(in oklab,var(--color-action-destructive) 50%,transparent)}
-    .btn[disabled]{background:var(--color-status-disabled);color:var(--color-status-disabled-alt);box-shadow:none;cursor:not-allowed}
-
-    /* ── Icon buttons (canonical icon-buttons.html) ── */
-    .ib{width:48px;height:48px;border-radius:360px;display:inline-flex;align-items:center;justify-content:center;border:none;cursor:pointer}
-    .ib.sm{width:32px;height:32px}.ib.md{width:40px;height:40px}
-    .ib-filled{background:var(--color-action-primary);color:var(--color-action-primary-inverse);box-shadow:0 10px 24px -10px color-mix(in oklab,var(--color-action-primary) 65%,transparent)}
-    .ib-tonal{background:color-mix(in oklab,var(--color-info-primary) 10%,transparent);color:var(--color-info-primary);border:1px solid color-mix(in oklab,var(--color-info-primary) 20%,transparent)}
-    .ib-tonal.primary{background:color-mix(in oklab,var(--color-action-primary) 10%,transparent);color:var(--color-action-primary);border-color:color-mix(in oklab,var(--color-action-primary) 25%,transparent)}
-    .ib-tonal.teal{background:color-mix(in oklab,var(--color-action-secondary) 12%,transparent);color:var(--color-action-secondary);border-color:color-mix(in oklab,var(--color-action-secondary) 25%,transparent)}
-    .ib-tonal.contained{background:var(--color-action-secondary);color:#fff;border:none;box-shadow:0 8px 20px -8px color-mix(in oklab,var(--color-action-secondary) 50%,transparent)}
-    .ib-link{background:transparent;color:var(--color-info-primary)}
-    .ib .material-symbols-rounded{font-size:22px}
-    .ib.sm .material-symbols-rounded{font-size:16px}
-    .ib.md .material-symbols-rounded{font-size:20px}
-
-    /* ── Badges (canonical badges.html — accents are data colors, kept literal) ── */
-    .badge{display:inline-flex;align-items:center;gap:6px;padding:4px 10px;border-radius:360px;font-family:var(--font-body);font-size:14px;font-weight:500;border:1px solid}
-    .badge.sm{padding:3px 8px;font-size:12px}
-    .badge .material-symbols-rounded{font-size:14px}
-    .badge.teal{background:color-mix(in oklab,#009689 15%,transparent);color:#009689;border-color:#009689}
-    .badge.jade{background:color-mix(in oklab,#00C950 15%,transparent);color:#00C950;border-color:#00C950}
-    .badge.gold{background:color-mix(in oklab,#C9AD7B 18%,transparent);color:var(--color-neutral-brand);border-color:#C9AD7B}
-    .badge.amber{background:color-mix(in oklab,#FE9A00 15%,transparent);color:#FE9A00;border-color:#FE9A00}
-    .badge.coral{background:color-mix(in oklab,#E7000B 15%,transparent);color:var(--color-status-error);border-color:#E7000B}
-    .badge.purple{background:color-mix(in oklab,#AD46FF 15%,transparent);color:#AD46FF;border-color:#AD46FF}
-
-    /* ── Text inputs (canonical inputs.html) ── */
-    .field{margin-bottom:12px;position:relative}
-    .flabel{font-family:var(--font-body);font-size:13px;font-weight:500;color:var(--color-info-primary);margin-bottom:4px}
-    .input{position:relative;background:var(--color-input-background);border-radius:16px;min-height:46px;padding:2px;box-sizing:border-box}
-    .input .inner{display:flex;align-items:center;gap:8px;padding:11px 16px;border-radius:14px;border:1px solid var(--color-input-border-disabled);box-sizing:border-box}
-    .input .val{flex:1;font-family:var(--font-body);font-size:16px;color:var(--color-input-text);min-width:0;white-space:nowrap;overflow:hidden}
-    .input .ph{color:var(--color-input-placeholder)}
-    .input .material-symbols-rounded{color:var(--color-input-placeholder);font-size:20px}
-    .input.focused{border:1px solid color-mix(in oklab,var(--color-input-border-focused) 50%,transparent)}
-    .input.error{border:1px solid color-mix(in oklab,var(--color-input-border-error) 50%,transparent)}
-    .input.disabled{opacity:.6}
-    .helper{font-family:var(--font-body);font-size:13px;line-height:20px;color:var(--color-info-tertiary);margin-top:4px}
-    .helper.err{color:var(--color-input-text-error)}
-    .phone .inner{padding:0;gap:0;min-height:42px;box-sizing:border-box}
-    .phone.focused{border:none}
-    .phone.error{border:none}
-    .phone .prefix{display:flex;align-items:center;gap:6px;flex-shrink:0;padding:0 12px 0 14px;font-size:16px;color:var(--color-input-text);font-family:var(--font-body)}
-    .phone .divider{width:1px;align-self:stretch;margin:8px 0;background:var(--color-input-border-disabled)}
-    .phone .entry{flex:1;padding:0 14px;display:flex;align-items:center;font-family:var(--font-body);font-size:16px;color:var(--color-input-text)}
-    .phone .halo{position:absolute;top:0;bottom:0;right:0;left:81px;border-radius:0 16px 16px 0;border:1px solid transparent;pointer-events:none}
-    .phone.focused .halo{border-color:color-mix(in oklab,var(--color-input-border-focused) 50%,transparent)}
-    .phone.error .halo{border-color:color-mix(in oklab,var(--color-input-border-error) 50%,transparent)}
-    .otp{position:relative;background:var(--color-input-background);border-radius:16px;padding:2px;display:flex;box-sizing:border-box}
-    .otp .cells{display:flex;flex:1;border-radius:14px;border:1px solid var(--color-input-border-disabled);overflow:hidden}
-    .otp .cell{flex:1;height:46px;display:flex;align-items:center;justify-content:center;font-family:var(--font-body);font-size:18px;color:var(--color-input-text)}
-    .otp .cell + .cell{border-left:1px solid var(--color-input-border-disabled)}
-    .otp .halo{position:absolute;top:0;bottom:0;pointer-events:none;border:1px solid color-mix(in oklab,var(--color-input-border-focused) 50%,transparent)}
-    .otp.error{border:1px solid color-mix(in oklab,var(--color-input-border-error) 50%,transparent)}
-    .otp.success{border:1px solid color-mix(in oklab,var(--color-action-primary) 50%,transparent)}
-    .otp.error .halo,.otp.success .halo{display:none}
-    .otp .cursor{width:1.5px;height:18px;background:var(--color-input-text);animation:otp-blink 1s steps(1) infinite}
-    @keyframes otp-blink{50%{opacity:0}}
-
-    /* ── Toggles (canonical toggles.html) ── */
-    .sw{position:relative;box-sizing:border-box;width:44px;height:24px;border-radius:360px;background:var(--color-input-background);border:1px solid var(--color-input-border);padding:2px;display:inline-flex;align-items:center;cursor:pointer;flex-shrink:0}
-    .sw::after{content:"";display:block;width:18px;height:18px;border-radius:360px;background:var(--color-info-primary);transition:transform 120ms}
-    .sw.on{background:var(--color-action-primary);border-color:transparent}
-    .sw.on::after{transform:translateX(20px);background:#fff}
-    .cb{width:40px;height:40px;border-radius:360px;border:1.5px solid color-mix(in oklab,var(--color-action-primary) 45%,transparent);background:color-mix(in oklab,var(--color-action-primary) 12%,transparent);background-clip:content-box;padding:3px;display:inline-flex;align-items:center;justify-content:center;cursor:pointer;box-sizing:border-box;flex-shrink:0;transition:background 180ms,border-color 180ms}
-    .cb.on{background-color:var(--color-action-primary);border-color:var(--color-action-primary);color:var(--color-action-primary-inverse)}
-    .cb.indeterminate::after{content:"";width:12px;height:12px;border-radius:4px;background:var(--color-action-primary)}
-    .cb .material-symbols-rounded{font-size:20px}
-    .tglbl{font-family:var(--font-body);font-size:13px;color:var(--color-info-primary)}
-
-    /* ── TabBar (canonical tabbar.html) ── */
-    .tbar{padding:4px;background:var(--color-action-background);border-radius:16px;display:flex;gap:2px}
-    .tab{flex:1;padding:10px 12px;border-radius:12px;text-align:center;font-family:var(--font-body);font-size:14px;font-weight:700;color:var(--color-status-disabled-alt);cursor:pointer;transition:240ms}
-    .tab.active{background:var(--color-action-primary);color:var(--color-action-primary-inverse)}
-
-    /* ── Dropdown (canonical dropdown.html) ── */
-    .dd-menu{position:absolute;left:0;right:0;top:calc(100% + 6px);z-index:5;background:color-mix(in oklab,var(--color-surface-card) 96%,transparent);backdrop-filter:blur(20px) saturate(180%);-webkit-backdrop-filter:blur(20px) saturate(180%);border-radius:16px;box-shadow:0 1px 2px rgba(9,9,11,.04),0 16px 32px -14px rgba(9,9,11,.2);padding:6px}
-    .dd-item{display:flex;align-items:center;gap:10px;padding:10px 12px;border-radius:12px;font-family:var(--font-body);font-size:15px;color:var(--color-info-primary);cursor:pointer}
-    .dd-item:hover{background:var(--color-input-background)}
-    .dd-item .material-symbols-rounded{font-size:18px;color:var(--color-info-secondary)}
-    .dd-item.selected{color:var(--color-action-primary);background:color-mix(in oklab,var(--color-action-primary) 10%,transparent)}
-    .dd-item.selected .material-symbols-rounded{color:var(--color-action-primary)}
-    .chev{transition:transform 160ms}
-    .chev.open{transform:rotate(180deg)}
-
-    /* ── Cards & surfaces (canonical cards.html) ── */
-    .surf{padding:16px;border-radius:16px;background:var(--color-surface-primary);border:1px solid color-mix(in oklab,var(--color-action-primary) 30%,transparent);min-height:110px;box-sizing:border-box}
-    .surf.elev{box-shadow:0 12px 32px -14px color-mix(in oklab,var(--color-action-primary) 60%,transparent),0 4px 12px -4px rgba(9,9,11,.06)}
-    .surf.subtle{background:var(--color-surface-secondary);border:none;box-shadow:0 4px 12px -8px rgba(9,9,11,.1)}
-    .surf.flat{background:var(--color-surface-secondary);border:none;box-shadow:none}
-    .surf.grad-emerald{background:var(--gradient-emerald),var(--color-surface-card);border:1px solid color-mix(in oklab,#00C950 30%,transparent);box-shadow:0 1px 2px rgba(9,9,11,.04),0 10px 22px -16px rgba(0,150,137,.35)}
-    .surf.grad-brand{background:var(--gradient-brand),var(--color-surface-card);border:1px solid color-mix(in oklab,#C9AD7B 35%,transparent);box-shadow:0 1px 2px rgba(9,9,11,.04),0 10px 22px -16px rgba(201,173,123,.4)}
-    .surf .tag{display:inline-block;font-family:var(--font-body);font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:.08em;color:var(--color-info-secondary);margin-bottom:6px}
-    .surf .name{font-family:var(--font-title);font-size:18px;line-height:1.1;color:var(--color-info-primary);margin:0 0 4px}
-    .surf .sub{font-family:var(--font-body);font-size:12px;color:var(--color-info-secondary)}
-
-    /* ── AppBar (canonical appbar.html) ── */
-    .ab-demo{position:relative;height:210px;border-radius:18px;overflow:hidden;border:1px solid var(--color-neutral-border);background:var(--color-surface-primary)}
-    .ab-content{position:absolute;left:0;right:0;top:104px;bottom:0;padding:10px 14px 0}
-    .ab-row{display:flex;align-items:center;gap:12px;padding:10px 0}
-    .ab-num{width:28px;height:28px;border-radius:360px;background:var(--color-action-primary);color:var(--color-action-primary-inverse);display:flex;align-items:center;justify-content:center;font-family:var(--font-body);font-weight:700;font-size:13px;flex-shrink:0}
-    .ab-rowtext{font-family:var(--font-body);font-size:15px;color:var(--color-info-primary);font-weight:500}
-    .ab-haze{position:absolute;inset:0;height:126px;background:var(--gradient-emerald),var(--color-surface-primary);backdrop-filter:blur(26px) saturate(180%);-webkit-backdrop-filter:blur(26px) saturate(180%);-webkit-mask-image:linear-gradient(180deg,#000 0%,#000 55%,transparent 92%);mask-image:linear-gradient(180deg,#000 0%,#000 55%,transparent 92%)}
-    .ab-status{position:relative;z-index:2;display:flex;align-items:center;justify-content:space-between;padding:10px 16px 0;font-family:var(--font-body);font-size:13px;color:var(--color-info-primary);font-weight:600}
-    .ab-bar{position:relative;z-index:2;display:flex;align-items:center;gap:10px;padding:10px 12px 14px}
-    .ab-circle{width:36px;height:36px;border-radius:360px;background:color-mix(in oklab,var(--color-info-primary) 10%,transparent);display:flex;align-items:center;justify-content:center;color:var(--color-info-primary);flex-shrink:0;cursor:pointer}
-    .ab-title{flex:1;font-family:var(--font-title);font-size:26px;line-height:1;color:var(--color-info-primary);letter-spacing:-.5px}
-
-    /* ── App Bar — transparent haze variant (mirrors .app-bar in components.css) ── */
-    .app-bar{position:absolute;top:0;left:0;right:0;z-index:10;display:flex;align-items:center;gap:12px;box-sizing:border-box;background:transparent}
-    .app-bar::before{content:"";position:absolute;inset:0;z-index:-1;backdrop-filter:blur(20px);-webkit-backdrop-filter:blur(20px);-webkit-mask-image:linear-gradient(180deg,#000 0%,#000 60%,transparent 100%);mask-image:linear-gradient(180deg,#000 0%,#000 60%,transparent 100%)}
-
-    /* ── Bottom NavBar (canonical navbar.html) ── */
-    .nb-scaffold{position:relative;height:170px;overflow:hidden;border-radius:18px;background:var(--color-surface-primary);border:1px solid var(--color-neutral-border)}
-    .nb-wash{position:absolute;left:-10%;right:-10%;bottom:60px;height:70px;background:radial-gradient(ellipse at 20% 100%,color-mix(in oklab,var(--color-action-primary) 55%,transparent) 0%,transparent 70%)}
-    .nb-bar{position:absolute;left:0;right:0;bottom:0;border-top-left-radius:26px;border-top-right-radius:26px;background:color-mix(in oklab,var(--color-surface-primary) 55%,transparent);border:1px solid var(--color-neutral-border);border-bottom:none;backdrop-filter:blur(18px) saturate(160%);-webkit-backdrop-filter:blur(18px) saturate(160%);padding:14px 6px 12px}
-    .nb-glow{position:absolute;top:-6px;width:20%;height:56px;pointer-events:none;transition:left 250ms}
-    .nb-glow::before{content:"";position:absolute;left:20%;right:20%;top:0;height:50px;background:radial-gradient(ellipse at top,color-mix(in oklab,var(--color-action-primary) 38%,transparent),transparent 72%);filter:blur(6px)}
-    .nb-nav{display:flex;align-items:flex-start;position:relative;z-index:1}
-    .nb-item{flex:1;display:flex;flex-direction:column;align-items:center;gap:4px;color:var(--color-info-primary);cursor:pointer}
-    .nb-item .material-symbols-rounded{font-size:22px;color:var(--color-status-disabled-alt)}
-    .nb-item span:last-child{font-family:var(--font-body);font-size:12px;font-weight:500;color:var(--color-status-disabled-alt)}
-    .nb-item.active .material-symbols-rounded{color:var(--color-action-primary);font-variation-settings:'FILL' 1}
-    .nb-item.active span:last-child{color:var(--color-action-primary);font-weight:700}
-
-    /* ── Pager (canonical pager-indicator.html) ── */
-    .ind{display:flex;gap:6px;align-items:center;height:6px}
-    .dot{height:6px;width:6px;border-radius:360px;background:var(--color-info-secondary)}
-    .dot.active{width:28px;background:var(--color-info-primary)}
-    .dot.progress{width:28px;background:var(--color-info-secondary);position:relative;overflow:hidden}
-    .dot.progress::after{content:"";position:absolute;inset:0;width:60%;background:var(--color-info-primary);border-radius:360px}
-
-    /* ── Reactions (canonical reactions.html) ── */
-    .rx-empty{display:flex;align-items:center;gap:8px;padding:4px 8px}
-    .rx-empty .material-symbols-rounded{color:var(--color-action-primary);font-size:22px;font-variation-settings:'FILL' 1}
-    .rx-count{font-family:var(--font-body);font-size:14px;font-weight:500}
-    .rx-count.you{color:var(--color-action-primary)}
-    .em{display:inline-flex;align-items:center;justify-content:center;width:24px;height:24px;border-radius:360px;background:var(--color-surface-primary);border:1.5px solid var(--color-surface-secondary);margin-left:-8px;font-size:14px}
-    .em:first-child{margin-left:0}
-    .em.mine{background:var(--color-action-primary);border-color:var(--color-action-primary)}
-    .rx-popup{display:inline-flex;gap:4px;padding:6px;border-radius:360px;background:color-mix(in oklab,var(--color-surface-primary) 85%,transparent);backdrop-filter:blur(20px);-webkit-backdrop-filter:blur(20px);border:1px solid var(--color-neutral-border);box-shadow:0 12px 28px -10px rgba(9,9,11,.18)}
-    .rx-popup .em{width:32px;height:32px;font-size:20px;border:none;background:transparent;margin:0;cursor:pointer;transition:transform 200ms cubic-bezier(.34,1.56,.64,1);transform-origin:bottom}
-    .rx-popup .em:hover{transform:scale(1.4)}
   </style>
 </helmet>
+
+<!-- Import Reusable components layer -->
+<x-import component="PromptCard" from="_theme/components.jsx" hint-size="0,0"></x-import>
 
 <div class="cp-wrap">
 
   <!-- Header -->
   <div style="display:flex;align-items:flex-end;justify-content:space-between;gap:24px;flex-wrap:wrap;margin-bottom:8px">
     <div>
-      <div style="font-family:var(--font-body);font-size:12px;font-weight:800;letter-spacing:.1em;text-transform:uppercase;color:var(--color-neutral-brand);margin-bottom:8px">Foundations · Page 02</div>
-      <div style="font-family:var(--font-title);font-size:40px;letter-spacing:-0.5px;color:var(--color-info-primary);line-height:1.1">Components</div>
+      <div style="font-family:var(--font-body);font-size:12px;font-weight:800;letter-spacing:.1em;text-transform:uppercase;color:var(--color-neutral-brand);margin-bottom:8px">Foundations · Page 03</div>
+      <div style="font-family:var(--font-title);font-size:40px;letter-spacing:-0.5px;color:var(--color-info-primary);line-height:1.1">Components (React)</div>
       <div style="font-family:var(--font-body);font-size:15px;color:var(--color-info-secondary);margin-top:6px;max-width:640px">
-        The complete Noor component library — one card per component, mirroring the design-system previews.
-        Everything resolves from the shared tokens; flip the theme (bottom-right) to see both modes.
+        High-level modular React/JSX component library. These wrap the design tokens and low-level CSS primitives into reusable functional elements.
       </div>
     </div>
-    <a href="Tokens.dc.html" style="display:inline-flex;align-items:center;gap:8px;text-decoration:none;background:var(--color-surface-primary);border:1px solid var(--color-neutral-border);border-radius:999px;padding:10px 16px;box-shadow:var(--shadow-card)">
-      <span class="material-symbols-rounded" style="font-size:18px;color:var(--color-action-primary)">palette</span>
-      <span style="font-family:var(--font-body);font-size:13px;font-weight:700;color:var(--color-info-primary)">← Tokens</span>
-    </a>
-  </div>
-
-  <!-- Category filter -->
-  <div style="display:inline-flex;background:var(--color-action-background);border-radius:16px;padding:4px;gap:2px;margin:22px 0 34px;flex-wrap:wrap">
-    <sc-for list="{{ chips }}" as="c" hint-placeholder-count="5">
-      <div onClick="{{ c.onSelect }}" style="border-radius:12px;padding:8px 16px;cursor:pointer;background:{{ c.bg }};transition:background 200ms">
-        <span style="font-family:var(--font-body);font-size:13px;font-weight:700;color:{{ c.color }}">{{ c.label }}</span>
-      </div>
-    </sc-for>
-  </div>
-
-  <!-- ═══ BUTTONS ═══ -->
-  <sc-if value="{{ showButtons }}">
-  <div style="margin-bottom:24px">
-    <div class="cp-head"><div class="cp-h">Buttons</div><div class="cp-sub">Filled · Tonal · Link · Destructive — 3 sizes (sm/md/lg)</div></div>
-    <div class="cp-card" style="display:flex;flex-direction:column;gap:12px">
-      <div class="row"><div class="lbl rowlbl">Filled</div>
-        <button class="btn btn-filled sm">Save</button>
-        <button class="btn btn-filled">Continue</button>
-        <button class="btn btn-filled lg"><span class="material-symbols-rounded" style="font-size:18px">play_arrow</span>Start reading</button>
-        <button class="btn btn-filled" disabled="disabled">Disabled</button>
-      </div>
-      <div class="row"><div class="lbl rowlbl">Tonal</div>
-        <button class="btn btn-tonal sm">Cancel</button>
-        <button class="btn btn-tonal">Skip for now</button>
-        <button class="btn btn-tonal teal">Add bookmark</button>
-        <button class="btn btn-tonal contained">Share verse</button>
-      </div>
-      <div class="row"><div class="lbl rowlbl">Link</div>
-        <button class="btn btn-link">Read more</button>
-        <button class="btn btn-link">Forgot password</button>
-        <button class="btn btn-link">Choose reciter <span class="material-symbols-rounded" style="font-size:14px">arrow_forward</span></button>
-      </div>
-      <div class="row"><div class="lbl rowlbl">Destructive</div>
-        <button class="btn btn-destructive">Delete bookmark</button>
-        <button class="btn btn-destructive sm">Remove</button>
-      </div>
+    <div style="display:flex;gap:10px">
+      <a href="Primitives.dc.html" style="display:inline-flex;align-items:center;gap:8px;text-decoration:none;background:var(--color-surface-primary);border:1px solid var(--color-neutral-border);border-radius:999px;padding:10px 16px;box-shadow:var(--shadow-card)">
+        <span class="material-symbols-rounded" style="font-size:18px;color:var(--color-action-primary)">widgets</span>
+        <span style="font-family:var(--font-body);font-size:13px;font-weight:700;color:var(--color-info-primary)">← Primitives</span>
+      </a>
+      <a href="Index.dc.html" style="display:inline-flex;align-items:center;gap:8px;text-decoration:none;background:var(--color-surface-primary);border:1px solid var(--color-neutral-border);border-radius:999px;padding:10px 16px;box-shadow:var(--shadow-card)">
+        <span class="material-symbols-rounded" style="font-size:18px;color:var(--color-action-primary)">home</span>
+        <span style="font-family:var(--font-body);font-size:13px;font-weight:700;color:var(--color-info-primary)">Index</span>
+      </a>
     </div>
   </div>
 
-  <div style="margin-bottom:24px">
-    <div class="cp-head"><div class="cp-h">Icon buttons</div><div class="cp-sub">Circular, 3 sizes (32/40/48), filled / tonal / link</div></div>
-    <div class="cp-card" style="display:flex;flex-direction:column;gap:14px">
-      <div class="row"><div class="lbl" style="width:90px">Filled</div>
-        <button class="ib ib-filled sm"><span class="material-symbols-rounded">add</span></button>
-        <button class="ib ib-filled md"><span class="material-symbols-rounded">bookmark</span></button>
-        <button class="ib ib-filled"><span class="material-symbols-rounded">play_arrow</span></button>
-        <button class="ib ib-filled"><span class="material-symbols-rounded">share</span></button>
+  <div style="height:32px"></div>
+
+  <!-- Prompt Cards Preview -->
+  <div style="margin-bottom:32px">
+    <div class="cp-head">
+      <div class="cp-h">PromptCard</div>
+      <div class="cp-sub">Replicates Compose PromptCard.kt with error, warning, and success color schemes.</div>
+    </div>
+    
+    <div class="cp-card cp-grid">
+      <div>
+        <div class="lbl" style="margin-bottom:8px">Error Variant (Coral Gradient)</div>
+        <x-import component="PromptCard" from="_theme/components.jsx"
+                  variant="error"
+                  title="Sign in for your masjid & reminders"
+                  description="Pick a masjid, see iqama times, and sync reminders across all your devices"
+                  primary-action-text="Sign In"
+                  on-primary-action="{{ logAction }}"
+                  on-dismiss="{{ logDismiss }}"
+                  hint-size="100%,auto">
+        </x-import>
       </div>
-      <div class="row"><div class="lbl" style="width:90px">Tonal</div>
-        <button class="ib ib-tonal sm"><span class="material-symbols-rounded">close</span></button>
-        <button class="ib ib-tonal md"><span class="material-symbols-rounded">search</span></button>
-        <button class="ib ib-tonal"><span class="material-symbols-rounded">notifications</span></button>
-        <button class="ib ib-tonal"><span class="material-symbols-rounded">tune</span></button>
+
+      <div>
+        <div class="lbl" style="margin-bottom:8px">Warning Variant (Tangerine Gradient)</div>
+        <x-import component="PromptCard" from="_theme/components.jsx"
+                  variant="warning"
+                  title="Follow a Masjid"
+                  description="Follow a masjid you trust for iqama times and community updates"
+                  primary-action-text="Find a Masjid"
+                  on-primary-action="{{ logAction }}"
+                  on-dismiss="{{ logDismiss }}"
+                  hint-size="100%,auto">
+        </x-import>
       </div>
-      <div class="row"><div class="lbl" style="width:90px">Tonal Tints</div>
-        <button class="ib ib-tonal primary"><span class="material-symbols-rounded">notifications</span></button>
-        <button class="ib ib-tonal teal"><span class="material-symbols-rounded">bookmark</span></button>
-        <button class="ib ib-tonal contained"><span class="material-symbols-rounded">share</span></button>
-      </div>
-      <div class="row"><div class="lbl" style="width:90px">Link</div>
-        <button class="ib ib-link sm"><span class="material-symbols-rounded">arrow_back</span></button>
-        <button class="ib ib-link md"><span class="material-symbols-rounded">more_vert</span></button>
-        <button class="ib ib-link"><span class="material-symbols-rounded">favorite</span></button>
-        <button class="ib ib-link"><span class="material-symbols-rounded">menu_book</span></button>
+
+      <div>
+        <div class="lbl" style="margin-bottom:8px">Success Variant (Emerald Gradient)</div>
+        <x-import component="PromptCard" from="_theme/components.jsx"
+                  variant="success"
+                  title="Enable Notifications"
+                  description="Never miss prayer time updates, announcements, and direct messages"
+                  primary-action-text="Allow Notifications"
+                  on-primary-action="{{ logAction }}"
+                  on-dismiss="{{ logDismiss }}"
+                  hint-size="100%,auto">
+        </x-import>
       </div>
     </div>
   </div>
 
-  <div style="margin-bottom:24px">
-    <div class="cp-head"><div class="cp-h">Reaction button</div><div class="cp-sub">Empty / summary (stacked emoji) / long-press popup — hover the popup emoji</div></div>
-    <div class="cp-card" style="display:flex;flex-direction:column;gap:14px">
-      <div class="row"><div class="lbl" style="width:92px">Empty</div>
-        <div class="rx-empty"><span class="material-symbols-rounded">favorite</span><span class="rx-count you">0</span></div>
-      </div>
-      <div class="row"><div class="lbl" style="width:92px">Summary</div>
-        <div style="display:flex;align-items:center;gap:8px;padding:4px 8px">
-          <div style="display:inline-flex"><span class="em mine">❤️</span><span class="em">🤲</span><span class="em">👏</span></div>
-          <span class="rx-count you">142</span>
-        </div>
-      </div>
-      <div class="row"><div class="lbl" style="width:92px">Long-press</div>
-        <div class="rx-popup"><span class="em">❤️</span><span class="em">🤲</span><span class="em">👏</span><span class="em">😮</span><span class="em">😔</span></div>
-      </div>
+  <!-- Bottom Sheet Preview -->
+  <div style="margin-bottom:32px">
+    <div class="cp-head">
+      <div class="cp-h">BottomSheet</div>
+      <div class="cp-sub">Interactive modal bottom sheet raised above the bottom bar with scroll locking.</div>
     </div>
-  </div>
-  </sc-if>
-
-  <!-- ═══ INPUTS ═══ -->
-  <sc-if value="{{ showInputs }}">
-  <div style="margin-bottom:24px">
-    <div class="cp-head"><div class="cp-h">Text inputs</div><div class="cp-sub">Text · phone · OTP — default / focused / error / disabled</div></div>
-    <div class="cp-card">
-      <div class="cp-grid2">
-        <div class="field">
-          <div class="flabel">Email</div>
-          <div class="input focused"><div class="inner"><span class="material-symbols-rounded">mail</span><span class="val">aisha@noor.app</span></div></div>
-          <div class="helper">Focused — accent halo at 50%.</div>
-        </div>
-        <div class="field">
-          <div class="flabel">Reciter</div>
-          <div class="input"><div class="inner"><span class="val ph">Search reciters</span><span class="material-symbols-rounded">expand_more</span></div></div>
-          <div class="helper">Default: Mishary Rashid Alafasy.</div>
-        </div>
-        <div class="field">
-          <div class="flabel">OTP</div>
-          <div class="input error"><div class="inner"><span class="val">12</span></div></div>
-          <div class="helper err">Enter all 6 digits.</div>
-        </div>
-        <div class="field">
-          <div class="flabel">Masjid ID</div>
-          <div class="input disabled"><div class="inner"><span class="val ph">MSJ-04421</span></div></div>
-          <div class="helper">Disabled.</div>
-        </div>
-        <div class="field">
-          <div class="flabel">Phone number — default</div>
-          <div class="input phone"><div class="inner"><div class="prefix">🇮🇳 +91</div><div class="divider"></div><div class="entry"></div></div><div class="halo"></div></div>
-          <div class="helper">Identical construction to a normal field.</div>
-        </div>
-        <div class="field">
-          <div class="flabel">Phone number — focused</div>
-          <div class="input phone focused"><div class="inner"><div class="prefix">🇮🇳 +91</div><div class="divider"></div><div class="entry"></div></div><div class="halo"></div></div>
-          <div class="helper">Halo wraps only the entry portion.</div>
-        </div>
-      </div>
-      <div class="field" style="margin-top:4px">
-        <div class="flabel">Verification code — empty, first cell focused</div>
-        <div class="otp">
-          <div class="cells"><div class="cell"><span class="cursor"></span></div><div class="cell"></div><div class="cell"></div><div class="cell"></div><div class="cell"></div><div class="cell"></div></div>
-          <div class="halo" style="left:0;width:calc(2px + (100% - 4px)/6);border-radius:16px 0 0 16px"></div>
-        </div>
-      </div>
-      <div class="field" style="margin-bottom:0">
-        <div class="flabel">Verification code — mid-entry, second cell focused</div>
-        <div class="otp">
-          <div class="cells"><div class="cell">1</div><div class="cell"><span class="cursor"></span></div><div class="cell"></div><div class="cell"></div><div class="cell"></div><div class="cell"></div></div>
-          <div class="halo" style="left:calc(2px + (100% - 4px)/6);width:calc((100% - 4px)/6);border-radius:0"></div>
-        </div>
-      </div>
-    </div>
-  </div>
-
-  <div style="margin-bottom:24px">
-    <div class="cp-head"><div class="cp-h">Dropdown menu</div><div class="cp-sub">Select-style field paired with an open dropdown — blurred surface, rounded items. Click to try.</div></div>
-    <div class="cp-card" style="overflow:visible;min-height:120px">
-      <div class="cp-grid2">
-        <div class="field" style="margin-bottom:0">
-          <div class="flabel">Reciter</div>
-          <div class="input {{ dd1OpenCls }}" onClick="{{ toggleDd1 }}" style="cursor:pointer;user-select:none">
-            <div class="inner">
-              <span class="material-symbols-rounded" style="color:var(--color-input-text)">record_voice_over</span>
-              <span class="val">{{ dd1Value }}</span>
-              <span class="material-symbols-rounded chev {{ dd1OpenCls }}">expand_more</span>
-            </div>
+    
+    <div class="cp-card" style="position:relative;height:240px;overflow:hidden;border:1.5px dashed var(--color-neutral-border);display:flex;align-items:center;justify-content:center">
+      <button class="btn btn-filled" onClick="{{ openSheet }}">Open Bottom Sheet Preview</button>
+      
+      {/* Embedded Bottom Sheet Preview inside context */}
+      <x-import component="BottomSheet" from="_theme/components.jsx"
+                is-open="{{ sheetOpen }}"
+                on-close="{{ closeSheet }}"
+                bottom-offset="0"
+                hint-size="100%,100%">
+        <div style="padding: 24px">
+          <div style="font-family:var(--font-title);font-size:24px;color:#F4D090;margin-bottom:8px">Interactive Bottom Sheet</div>
+          <div style="font-family:var(--font-body);font-size:14px;color:var(--color-info-secondary);line-height:1.45;margin-bottom:24px">
+            This component renders inside a translucent blurred backdrop and blocks scroll events. Click outside to dismiss.
           </div>
-          <sc-if value="{{ dd1Open }}">
-            <div class="dd-menu">
-              <sc-for list="{{ dd1Items }}" as="it" hint-placeholder-count="4">
-                <div class="dd-item {{ it.selCls }}" onClick="{{ it.onSelect }}">
-                  <span class="material-symbols-rounded">person</span>{{ it.label }}
-                  <sc-if value="{{ it.sel }}"><span class="material-symbols-rounded" style="margin-left:auto;color:var(--color-action-primary)">check</span></sc-if>
-                </div>
-              </sc-for>
-            </div>
-          </sc-if>
-          <div class="helper">Click to open · click a row to select.</div>
+          <button class="btn btn-tonal lg" onClick="{{ closeSheet }}" style="width:100%">Close Sheet</button>
         </div>
-        <div class="field" style="margin-bottom:0">
-          <div class="flabel">Translation</div>
-          <div class="input {{ dd2OpenCls }}" onClick="{{ toggleDd2 }}" style="cursor:pointer;user-select:none">
-            <div class="inner">
-              <span class="val">{{ dd2Value }}</span>
-              <span class="material-symbols-rounded chev {{ dd2OpenCls }}">expand_more</span>
-            </div>
-          </div>
-          <sc-if value="{{ dd2Open }}">
-            <div class="dd-menu">
-              <sc-for list="{{ dd2Items }}" as="it" hint-placeholder-count="4">
-                <div class="dd-item {{ it.selCls }}" onClick="{{ it.onSelect }}">{{ it.label }}
-                  <sc-if value="{{ it.sel }}"><span class="material-symbols-rounded" style="margin-left:auto;color:var(--color-action-primary)">check</span></sc-if>
-                </div>
-              </sc-for>
-            </div>
-          </sc-if>
-          <div class="helper">A second, independent dropdown.</div>
-        </div>
-      </div>
-    </div>
-  </div>
-  </sc-if>
-
-  <!-- ═══ SELECTION ═══ -->
-  <sc-if value="{{ showSelection }}">
-  <div style="margin-bottom:24px">
-    <div class="cp-head"><div class="cp-h">Switches &amp; checkboxes</div><div class="cp-sub">Switch (track + thumb) and circular checkbox with 3 states — click to toggle</div></div>
-    <div class="cp-card">
-      <div class="cp-grid2" style="row-gap:16px">
-        <div class="lbl" style="grid-column:1/-1">Switch</div>
-        <sc-for list="{{ switches }}" as="s" hint-placeholder-count="4">
-          <div class="row"><span class="sw {{ s.cls }}" onClick="{{ s.onToggle }}"></span><span class="tglbl">{{ s.label }}</span></div>
-        </sc-for>
-        <div class="lbl" style="grid-column:1/-1;margin-top:8px">Checkbox</div>
-        <sc-for list="{{ checks }}" as="c" hint-placeholder-count="4">
-          <div class="row">
-            <span class="cb {{ c.cls }}" onClick="{{ c.onToggle }}"><sc-if value="{{ c.on }}"><span class="material-symbols-rounded">check</span></sc-if></span>
-            <span class="tglbl">{{ c.label }}</span>
-          </div>
-        </sc-for>
-      </div>
+      </x-import>
     </div>
   </div>
 
-  <div style="margin-bottom:24px">
-    <div class="cp-head"><div class="cp-h">Badges</div><div class="cp-sub">Pill badges, tonal (15% bg + 100% border) — large &amp; small</div></div>
-    <div class="cp-card">
-      <div class="lbl" style="margin-bottom:10px">Large (default)</div>
-      <div class="row">
-        <span class="badge teal">Verse of the day</span>
-        <span class="badge jade"><span class="material-symbols-rounded">check_circle</span>Goal met</span>
-        <span class="badge gold">Surah Yāsīn</span>
-        <span class="badge amber"><span class="material-symbols-rounded">schedule</span>Maghrib in 12m</span>
-        <span class="badge coral"><span class="material-symbols-rounded">error</span>Offline</span>
-        <span class="badge purple">Ramadan special</span>
-      </div>
-      <div class="lbl" style="margin:14px 0 10px">Small</div>
-      <div class="row">
-        <span class="badge teal sm">Tafsir</span>
-        <span class="badge jade sm">New</span>
-        <span class="badge gold sm">Juz 1</span>
-        <span class="badge amber sm">Beta</span>
-        <span class="badge coral sm">3 unread</span>
-      </div>
-    </div>
-  </div>
-
-  <div style="margin-bottom:24px">
-    <div class="cp-head"><div class="cp-h">Pager indicator</div><div class="cp-sub">Discrete dots + animated pill, plus auto-progress variant</div></div>
-    <div class="cp-card" style="display:flex;flex-direction:column;gap:18px">
-      <div><div class="lbl" style="margin-bottom:6px">Discrete — click a dot</div>
-        <div class="ind">
-          <sc-for list="{{ pagerDots }}" as="d" hint-placeholder-count="5">
-            <span class="dot {{ d.cls }}" onClick="{{ d.onSelect }}" style="cursor:pointer;transition:width 300ms"></span>
-          </sc-for>
-        </div>
-      </div>
-      <div><div class="lbl" style="margin-bottom:6px">Auto-progress (60%)</div>
-        <div class="ind"><span class="dot"></span><span class="dot progress"></span><span class="dot"></span><span class="dot"></span></div>
-      </div>
-    </div>
-  </div>
-  </sc-if>
-
-  <!-- ═══ NAVIGATION ═══ -->
-  <sc-if value="{{ showNav }}">
-  <div style="margin-bottom:24px">
-    <div class="cp-head"><div class="cp-h">TabBar (segmented)</div><div class="cp-sub">Pill-rounded segmented control with sliding indicator — click the tabs</div></div>
-    <div class="cp-card" style="display:flex;flex-direction:column;gap:16px">
-      <div><div class="lbl" style="margin-bottom:6px">3-tab segmented</div>
-        <div class="tbar">
-          <sc-for list="{{ tabs3 }}" as="t" hint-placeholder-count="3">
-            <div class="tab {{ t.cls }}" onClick="{{ t.onSelect }}">{{ t.label }}</div>
-          </sc-for>
-        </div>
-      </div>
-      <div><div class="lbl" style="margin-bottom:6px">2-tab</div>
-        <div class="tbar">
-          <sc-for list="{{ tabs2 }}" as="t" hint-placeholder-count="2">
-            <div class="tab {{ t.cls }}" onClick="{{ t.onSelect }}">{{ t.label }}</div>
-          </sc-for>
-        </div>
-      </div>
-    </div>
-  </div>
-
-  <div style="margin-bottom:24px">
-    <div class="cp-head"><div class="cp-h">AppBar (frosted)</div><div class="cp-sub">Progressive blur: intense at top, fades to fully sharp by the content</div></div>
-    <div class="ab-demo">
-      <div class="ab-content">
-        <div class="ab-row"><div class="ab-num">4</div><div class="ab-rowtext">To someone wearing a new garment</div></div>
-        <div class="ab-row" style="border-top:1px solid var(--color-neutral-border)"><div class="ab-num">5</div><div class="ab-rowtext">Before entering the bathroom</div></div>
-      </div>
-      <div class="ab-haze"></div>
-      <div class="ab-status">
-        <span>12:33</span>
-        <span style="display:flex;align-items:center;gap:5px">
-          <span class="material-symbols-rounded" style="font-size:15px">wifi</span>
-          <span class="material-symbols-rounded" style="font-size:15px">signal_cellular_alt</span>
-          <span class="material-symbols-rounded" style="font-size:15px">battery_full</span>
-        </span>
-      </div>
-      <div class="ab-bar">
-        <div class="ab-circle"><span class="material-symbols-rounded">arrow_back</span></div>
-        <div class="ab-title">All</div>
-        <div style="display:flex;gap:6px">
-          <div class="ab-circle"><span class="material-symbols-rounded">search</span></div>
-          <div class="ab-circle"><span class="material-symbols-rounded">more_horiz</span></div>
-        </div>
-      </div>
-    </div>
-  </div>
-
-  <div style="margin-bottom:24px">
-    <div class="cp-head"><div class="cp-h">App Bar (transparent, over media)</div><div class="cp-sub">Blur-only bar floating over a hero — the haze fades out, but avatar, title &amp; icon stay fully sharp</div></div>
-    <div style="position:relative;height:150px;border-radius:18px;overflow:hidden;border:1px solid var(--color-neutral-border);background:linear-gradient(150deg,#f2b880,#c97a6d 52%,#4f4668)">
-      <div class="app-bar" style="padding:16px 16px 12px">
-        <div style="width:44px;height:44px;border-radius:50%;background:rgba(0,0,0,.18);border:1.5px solid rgba(26,22,18,.72);display:flex;align-items:center;justify-content:center;color:#fff;font-family:var(--font-body);font-weight:700;flex-shrink:0">T</div>
-        <div style="flex:1;min-width:0">
-          <div style="font-family:var(--font-body);font-weight:700;font-size:17px;color:#1A1612">Salaam, Toufeeq</div>
-          <div style="font-family:var(--font-body);font-size:12px;color:rgba(26,22,18,.7);margin-top:1px">Masjid E Bilal</div>
-        </div>
-        <div style="width:40px;height:40px;border-radius:50%;background:rgba(0,0,0,.12);border:1.5px solid rgba(26,22,18,.2);display:flex;align-items:center;justify-content:center;flex-shrink:0"><span class="material-symbols-rounded" style="font-size:20px;color:#1A1612">notifications</span></div>
-      </div>
-    </div>
-  </div>
-
-  <div style="margin-bottom:24px">
-    <div class="cp-head"><div class="cp-h">Bottom NavBar</div><div class="cp-sub">5-tab bar over content, glow behind the active icon, rounded top only — click the tabs</div></div>
-    <div class="nb-scaffold">
-      <div class="nb-wash"></div>
-      <div class="nb-bar">
-        <div class="nb-glow" style="left:{{ navGlowLeft }}"></div>
-        <div class="nb-nav">
-          <sc-for list="{{ navItems }}" as="n" hint-placeholder-count="5">
-            <div class="nb-item {{ n.cls }}" onClick="{{ n.onSelect }}">
-              <span class="material-symbols-rounded">{{ n.icon }}</span>
-              <span>{{ n.label }}</span>
-            </div>
-          </sc-for>
-        </div>
-      </div>
-    </div>
-  </div>
-  </sc-if>
-
-  <!-- ═══ SURFACES ═══ -->
-  <sc-if value="{{ showSurfaces }}">
-  <div style="margin-bottom:24px">
-    <div class="cp-head"><div class="cp-h">Cards &amp; surfaces</div><div class="cp-sub">PlainSurface flavours + gradient surfaces — emerald &amp; brand</div></div>
-    <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:14px">
-      <div class="surf"><div class="tag">PlainSurface</div><div class="name">Today's ayah</div><div class="sub">Hairline border, no shadow.</div></div>
-      <div class="surf elev"><div class="tag">.elevated</div><div class="name">Reading streak</div><div class="sub">Accent-tinted shadow.</div></div>
-      <div class="surf subtle"><div class="tag">.subtle</div><div class="name">Continue Surah</div><div class="sub">Secondary bg, soft shadow.</div></div>
-      <div class="surf flat"><div class="tag">.flat</div><div class="name">List row</div><div class="sub">No shadow, secondary bg.</div></div>
-      <div class="surf grad-emerald"><div class="tag">Gradient · emerald</div><div class="name">Daily goal met</div><div class="sub">Soft off-center radial wash.</div></div>
-      <div class="surf grad-brand"><div class="tag">Gradient · brand</div><div class="name">Juz 1 complete</div><div class="sub">Brand gold accent surface.</div></div>
-    </div>
-  </div>
-  </sc-if>
-
+  <!-- Page Footer -->
   <div style="text-align:center;font-family:var(--font-body);font-size:12px;color:var(--canvas-label);margin-top:40px">
-    Noor Design System · <a href="Tokens.dc.html" style="color:var(--color-action-primary);text-decoration:none;font-weight:700">← Tokens</a> · <a href="Index.dc.html" style="color:var(--color-action-primary);text-decoration:none;font-weight:700">Index</a>
+    Noor Design System · <a href="Primitives.dc.html" style="color:var(--color-action-primary);text-decoration:none;font-weight:700">← Primitives</a> · <a href="Index.dc.html" style="color:var(--color-action-primary);text-decoration:none;font-weight:700">Index</a>
   </div>
+
 </div>
 
 </x-dc>
 <script type="text/x-dc" data-dc-script>
 class Component extends DCLogic {
   state = {
-    cat: 'all',
-    dd1Open: false, dd1Sel: 1,
-    dd2Open: false, dd2Sel: 0,
-    switches: [true, false, true, false],
-    checks: [true, false, 'ind', true],
-    tab3: 0, tab2: 1,
-    nav: 3,
-    page: 2,
+    sheetOpen: false
   };
 
-  catDefs = [
-    { id: 'all', label: 'All' },
-    { id: 'buttons', label: 'Buttons' },
-    { id: 'inputs', label: 'Inputs' },
-    { id: 'selection', label: 'Selection' },
-    { id: 'nav', label: 'Navigation' },
-  ];
+  openSheet = () => this.setState({ sheetOpen: true });
+  closeSheet = () => this.setState({ sheetOpen: false });
 
-  dd1Options = ['Abdul Rahman Al-Sudais', 'Mishary Rashid Alafasy', 'Saad Al-Ghamdi', 'Yasser Al-Dosari'];
-  dd2Options = ['English · Sahih International', 'English · Yusuf Ali', 'Urdu · Fateh Muhammad Jalandhri', 'Arabic only'];
-  switchLabels = ['Notifications', 'Auto-play next ayah', 'Show transliteration', 'Dark mode follows system'];
-  checkLabels = ['Daily ayah email', 'Weekly summary', 'Select all surahs', 'Include translation'];
-  tab3Labels = ['Arabic', 'Translation', 'Tafsir'];
-  tab2Labels = ['Surahs', 'Juz'];
-  navDefs = [
-    { icon: 'home', label: 'Home' },
-    { icon: 'groups', label: 'Qaum' },
-    { icon: 'auto_stories', label: "Qur'an" },
-    { icon: 'mosque', label: 'Salaah' },
-    { icon: 'person', label: 'Profile' },
-  ];
-
-  setCat = (id) => this.setState({ cat: id });
-  toggleDd1 = () => this.setState(s => ({ dd1Open: !s.dd1Open, dd2Open: false }));
-  toggleDd2 = () => this.setState(s => ({ dd2Open: !s.dd2Open, dd1Open: false }));
-  pickDd1 = (i) => this.setState({ dd1Sel: i, dd1Open: false });
-  pickDd2 = (i) => this.setState({ dd2Sel: i, dd2Open: false });
-  flipSwitch = (i) => this.setState(s => {
-    const next = s.switches.slice(); next[i] = !next[i];
-    return { switches: next };
-  });
-  flipCheck = (i) => this.setState(s => {
-    const next = s.checks.slice(); next[i] = next[i] === true ? false : true;
-    return { checks: next };
-  });
-  setTab3 = (i) => this.setState({ tab3: i });
-  setTab2 = (i) => this.setState({ tab2: i });
-  setNav = (i) => this.setState({ nav: i });
-  setPage = (i) => this.setState({ page: i });
+  logAction = () => alert("Primary action clicked!");
+  logDismiss = () => alert("Dismiss clicked!");
 
   renderVals() {
-    const s = this.state;
-    const chips = this.catDefs.map(c => ({
-      label: c.label,
-      bg: s.cat === c.id ? 'var(--color-action-primary)' : 'transparent',
-      color: s.cat === c.id ? 'var(--color-action-primary-inverse)' : 'var(--color-info-secondary)',
-      onSelect: () => this.setCat(c.id),
-    }));
-
-    const dd1Items = this.dd1Options.map((label, i) => ({
-      label, sel: i === s.dd1Sel,
-      selCls: i === s.dd1Sel ? 'selected' : '',
-      onSelect: () => this.pickDd1(i),
-    }));
-    const dd2Items = this.dd2Options.map((label, i) => ({
-      label, sel: i === s.dd2Sel,
-      selCls: i === s.dd2Sel ? 'selected' : '',
-      onSelect: () => this.pickDd2(i),
-    }));
-
-    const switches = this.switchLabels.map((label, i) => ({
-      label, cls: s.switches[i] ? 'on' : '',
-      onToggle: () => this.flipSwitch(i),
-    }));
-    const checks = this.checkLabels.map((label, i) => ({
-      label,
-      on: s.checks[i] === true,
-      cls: s.checks[i] === true ? 'on' : (s.checks[i] === 'ind' ? 'indeterminate' : ''),
-      onToggle: () => this.flipCheck(i),
-    }));
-
-    const tabs3 = this.tab3Labels.map((label, i) => ({
-      label, cls: i === s.tab3 ? 'active' : '', onSelect: () => this.setTab3(i),
-    }));
-    const tabs2 = this.tab2Labels.map((label, i) => ({
-      label, cls: i === s.tab2 ? 'active' : '', onSelect: () => this.setTab2(i),
-    }));
-
-    const navItems = this.navDefs.map((n, i) => ({
-      ...n, cls: i === s.nav ? 'active' : '', onSelect: () => this.setNav(i),
-    }));
-
-    const pagerDots = Array.from({ length: 5 }, (_, i) => ({
-      cls: i === s.page ? 'active' : '',
-      onSelect: () => this.setPage(i),
-    }));
-
     return {
-      chips,
-      showButtons: s.cat === 'all' || s.cat === 'buttons',
-      showInputs: s.cat === 'all' || s.cat === 'inputs',
-      showSelection: s.cat === 'all' || s.cat === 'selection',
-      showNav: s.cat === 'all' || s.cat === 'nav',
-      showSurfaces: s.cat === 'all',
-      dd1Open: s.dd1Open, dd1OpenCls: s.dd1Open ? 'open' : '', dd1Value: this.dd1Options[s.dd1Sel], dd1Items,
-      dd2Open: s.dd2Open, dd2OpenCls: s.dd2Open ? 'open' : '', dd2Value: this.dd2Options[s.dd2Sel], dd2Items,
-      toggleDd1: this.toggleDd1, toggleDd2: this.toggleDd2,
-      switches, checks,
-      tabs3, tabs2,
-      navItems,
-      navGlowLeft: (s.nav * 20) + '%',
-      pagerDots,
+      sheetOpen: this.state.sheetOpen,
+      openSheet: this.openSheet,
+      closeSheet: this.closeSheet,
+      logAction: this.logAction,
+      logDismiss: this.logDismiss
     };
   }
 }
