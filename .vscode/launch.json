@@ -5,12 +5,12 @@
       "name": "Launch Noor POC Dev Server",
       "type": "python",
       "request": "launch",
-      "program": "${workspaceFolder}/_theme/devserver.py",
+      "program": "${workspaceFolder}/src/_theme/devserver.py",
       "console": "integratedTerminal",
       "args": ["8474"],
       "serverReadyAction": {
         "pattern": "Noor POC server \\(no-store\\) on (http://localhost:\\d+)",
-        "uriFormat": "%s/Index.dc.html",
+        "uriFormat": "%s/src/Index.dc.html",
         "action": "openExternally"
       }
     }
