@@ -26,47 +26,38 @@ function introDots(activeIdx) {
   }).join('');
 }
 
-function introFrame(s, i, ringClass) {
-  const last = i === INTRO_SLIDES.length - 1;
-  const cta = last ? 'Get started!' : 'Next';
-  const skipHtml = !last ? `
-          <button class="btn btn-tonal sm" style="position:absolute;top:70px;right:20px;z-index:6">Skip</button>
-  ` : '';
-  return `
-  <div class="poc-board-item">
-    <div class="noor-frame ${ringClass}" style="--s:0.46">
-      <div class="noor-frame-inner">
-        <div class="noor-screen" data-theme="dark">
-          <div class="noor-island"></div>
-          <img src="${s.img}" style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;object-position:${s.pos}">
-          <div style="position:absolute;inset:0;background:${s.gradient}"></div>
-          ${skipHtml}
-          <div style="position:absolute;left:28px;right:28px;top:50%;transform:translateY(-58%);text-align:center">
-            <div style="font-family:'DM Serif Display',Georgia,serif;font-size:40px;line-height:1.12;color:#FFFFFF;letter-spacing:-0.5px;margin-bottom:14px;text-wrap:balance">${s.title}</div>
-            <div style="font-family:'Nunito',sans-serif;font-size:16px;line-height:1.6;color:rgba(255,255,255,0.88);text-wrap:balance">${s.sub}</div>
-          </div>
-          <div style="position:absolute;bottom:46px;left:16px;right:16px">
-            <div style="height:48px;border-radius:16px;background:var(--color-action-primary);box-shadow:var(--shadow-button);display:flex;align-items:center;justify-content:center">
-              <span style="font-family:'Nunito',sans-serif;font-size:16px;font-weight:700;color:var(--color-action-primary-inverse)">${cta}</span>
-            </div>
-            <div style="display:flex;justify-content:center;align-items:center;gap:4px;margin-top:14px">${introDots(i)}</div>
-          </div>
-          <div class="noor-home"></div>
-        </div>
-      </div>
-    </div>
-    <div class="poc-frame-caption">${i + 1} · ${s.name}</div>
-  </div>`;
-}
-
 function IntroRow({ active = -1 }) {
-  const html = INTRO_SLIDES
-    .map((s, i) => introFrame(s, i, active === i ? 'is-active' : ''))
-    .join('');
+  const { IntroScreen } = window;
   return (
     <div>
       <div className="poc-row-label"><span className="material-symbols-rounded">waving_hand</span> 01 · Intro — onboarding carousel · 3 slides</div>
-      <div className="poc-board" dangerouslySetInnerHTML={{ __html: html }} />
+      <div className="poc-board">
+        {INTRO_SLIDES.map((s, i) => {
+          const isActive = active === i;
+          const ringClass = isActive ? 'is-active' : '';
+          const last = i === INTRO_SLIDES.length - 1;
+          const cta = last ? 'Get started!' : 'Next';
+          return (
+            <div key={i} className="poc-board-item">
+              <div className={`noor-frame ${ringClass}`} style={{ '--s': '0.46' }}>
+                <div className="noor-frame-inner">
+                  <div className="noor-screen" data-theme="dark">
+                    <div className="noor-island"></div>
+                    <IntroScreen
+                      slide={s}
+                      showSkip={!last}
+                      ctaLabel={cta}
+                      activeDotIdx={i}
+                    />
+                    <div className="noor-home"></div>
+                  </div>
+                </div>
+              </div>
+              <div className="poc-frame-caption">{i + 1} · {s.name}</div>
+            </div>
+          );
+        })}
+      </div>
     </div>
   );
 }
