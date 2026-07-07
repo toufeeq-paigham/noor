@@ -64,6 +64,7 @@
 .phone .entry{flex:1;padding:0 14px;display:flex;align-items:center;font-family:var(--font-body);font-size:16px;color:var(--color-input-text)}
 .phone .halo{position:absolute;top:0;bottom:0;right:0;left:81px;border-radius:0 16px 16px 0;border:1px solid transparent;pointer-events:none}
 .phone.focused .halo{border-color:color-mix(in oklab,var(--color-input-border-focused) 50%,transparent)}
+.phone.error .halo{border-color:color-mix(in oklab,var(--color-input-border-error) 50%,transparent)}
 .otp{position:relative;background:var(--color-input-background);border-radius:16px;padding:2px;display:flex;box-sizing:border-box}
 .otp .cells{display:flex;flex:1;border-radius:14px;border:1px solid var(--color-input-border-disabled);overflow:hidden}
 .otp .cell{flex:1;height:46px;display:flex;align-items:center;justify-content:center;font-family:var(--font-body);font-size:18px;color:var(--color-input-text)}

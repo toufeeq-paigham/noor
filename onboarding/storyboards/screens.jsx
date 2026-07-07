@@ -161,9 +161,11 @@ function PhoneScreen({
     ? 'color-mix(in oklab, var(--color-input-border-error) 50%, transparent)'
     : 'var(--color-input-border-disabled)';
   
-  const haloColor = phoneFocused
-    ? 'color-mix(in oklab, var(--color-input-border-focused) 50%, transparent)'
-    : 'transparent';
+  const haloColor = phoneError
+    ? 'color-mix(in oklab, var(--color-input-border-error) 50%, transparent)'
+    : (phoneFocused
+        ? 'color-mix(in oklab, var(--color-input-border-focused) 50%, transparent)'
+        : 'transparent');
 
   return (
     <div style={{ width: '100%', height: '100%', background: 'var(--color-surface-primary)', display: 'flex', flexDirection: 'column', padding: '62px 24px 0', boxSizing: 'border-box', position: 'relative', overflow: 'hidden' }}>
