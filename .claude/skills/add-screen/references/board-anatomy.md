@@ -21,7 +21,9 @@ flow-specific parts, keep the structure.
   <link rel="stylesheet" href="../_theme/poc.css">
   <link rel="stylesheet" href="../_theme/components.css">
   <script src="../_ds/noor-design-system-46f42e91-1858-412f-bdb6-560a6cc3df9f/_ds_bundle.js"></script>
+  <!-- Material Symbols font is retained ONLY for the vendored _ds_bundle.js; author icons with .mi -->
   <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Rounded:opsz,wght,FILL,GRAD@24,400,0..1,0&amp;display=block">
+  <link rel="stylesheet" href="../_theme/icons.css">
   <style>
     body{background:var(--canvas-bg);padding:36px 32px 90px;min-height:100vh;box-sizing:border-box}
     ::-webkit-scrollbar{display:none}*{-ms-overflow-style:none;scrollbar-width:none}
@@ -152,7 +154,7 @@ function CategoriesRow({ active = -1 }) {
   return (
     <div>
       <div className="poc-row-label">
-        <span className="material-symbols-rounded">grid_view</span> 
+        <span className="mi" data-i="dashboard"></span>
         01 · Categories — Hisnul Muslim hub · {FRAMES.length} states
       </div>
       <div className="poc-board">
@@ -222,10 +224,13 @@ In `Index.dc.html`'s `data` array, the section's flows become cards deep-linking
 
 ```js
 { id: 'content', num: '04', title: 'Content & tools', items: [
-  { name: 'Dua Categories', file: 'dua-dikhr/Dua & Dikhr.dc.html',           icon: 'grid_view',  meta: 'Board row · 2 states' },
-  { name: 'Dua Chapters',   file: 'dua-dikhr/Dua & Dikhr.dc.html#chapters',  icon: 'list',       meta: 'Board row · chapter list' },
-  { name: 'Dua Detail',     file: 'dua-dikhr/Dua & Dikhr.dc.html#detail',    icon: 'menu_book',  meta: 'Board row · reader + audio' },
+  { name: 'Dua Categories', file: 'dua-dikhr/Dua & Dikhr.dc.html',           icon: 'dashboard',              meta: 'Board row · 2 states' },
+  { name: 'Dua Chapters',   file: 'dua-dikhr/Dua & Dikhr.dc.html#chapters',  icon: 'format_list_bulleted',  meta: 'Board row · chapter list' },
+  { name: 'Dua Detail',     file: 'dua-dikhr/Dua & Dikhr.dc.html#detail',    icon: 'menu_book',             meta: 'Board row · reader + audio' },
 ]},
 ```
+
+Card `icon` values are rendered via `data-i`, so they must exist in `src/_ds/icons/` (add the SVG +
+an `icons.css` rule first if not).
 
 Remove the replaced flat-page cards from the same array.

@@ -16,7 +16,17 @@ they are the pattern, and everything below is just a map of them:
 - `src/onboarding/Onboarding.dc.html` — the board page (header, storyboard rows, live device, stage machine)
 - `src/onboarding/storyboards/screens.jsx` — the unified screen components library (IntroScreen, PhoneScreen, OtpScreen)
 - `src/onboarding/storyboards/intro-row.jsx` — a storyboard row (imports and renders IntroScreen from screens.jsx)
-- `src/_theme/poc.css` — the board CSS (`.poc-stage`, `.poc-board`, `.noor-frame`, `.noor-screen`, …); do not redefine these
+- `src/_theme/board.jsx` — the shared board scaffolding: `BoardLive` (the floating live-device pane +
+  Restart) and `BoardHeader`; wrap the `IOSDevice` in `BoardLive`, don't rebuild the pane
+- `src/_theme/poc.css` — the storyboard CSS (`.poc-stage`, `.poc-frames`, `.poc-board`, `.poc-board-item`,
+  `.noor-frame` [`--s` scale] → `.noor-frame-inner` → `.noor-screen` + `.noor-island`/`.noor-home`,
+  `.is-active` ring); do not redefine these
+- `src/_theme/icons.css` — the local icon kit; icons are `<span class="mi" data-i="home"></span>`
+  (add class `fill` for the filled variant), NEVER `material-symbols-rounded`
+
+Also obey `CLAUDE.md` → **Layer Architecture (hard rules)** and **Design System Rules**: composition is
+one-directional (foundation → components → screens), and a screen needing a component that isn't in
+`components.css` gets that class ADDED to the kit + its reference page — never inline-forked.
 
 ## Anatomy
 
@@ -59,7 +69,9 @@ The page lives one level deep, so every shared asset needs a `../` prefix. Head 
   <link rel="stylesheet" href="../_theme/poc.css">
   <link rel="stylesheet" href="../_theme/components.css">
   <script src="../_ds/noor-design-system-46f42e91-1858-412f-bdb6-560a6cc3df9f/_ds_bundle.js"></script>
+  <!-- Material Symbols font is retained ONLY for the vendored _ds_bundle.js; do not author with it. -->
   <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Rounded:opsz,wght,FILL,GRAD@24,400,0..1,0&amp;display=block">
+  <link rel="stylesheet" href="../_theme/icons.css">
 ```
 
 Body layout, in order:
@@ -116,8 +128,14 @@ One `DCLogic` component drives the whole flow:
   Leave literal only: colors composited over photos/imagery and data colors (chart accents).
 - Remove every `dark=""` prop and hardcoded `data-theme` — the frame and tokens follow the
   global theme via chrome.js.
-- Use `_theme/components.css` classes (`.btn`, `.ib`, `.tbar`, `.input`, `.sw`, `.cb`, …) instead
-  of re-implementing components inline; `Components.dc.html` is the visual reference.
+- Use `_theme/components.css` classes (`.btn`, `.ib`, `.chip`, `.tbar`, `.input`, `.sw`, `.cb`, …)
+  instead of re-implementing components inline. The visual references are the atomic-design pages:
+  `components/atoms/Atoms.dc.html`, `.../molecules/Molecules.dc.html`, `.../organisms/Organisms.dc.html`.
+- Icons: `<span class="mi" data-i="mosque"></span>` (add class `fill` for the filled variant) —
+  `font-size` sizes it, `color`/`currentColor` tints it. Dynamic names bind through the attribute:
+  `data-i="{{ icon }}"` (dc) or `data-i={icon}` (jsx). Only use names that exist in `src/_ds/icons/`;
+  to add one, drop `NAME.svg` there and add a `[data-i="NAME"]` rule to `_theme/icons.css`. Never
+  author new `material-symbols-rounded` ligatures.
 - Arabic text uses `var(--font-arabic)` (or the AlQuranIndoPak @font-face like Dua Detail).
 
 ## Step 6 — Rewire the rest of the repo
