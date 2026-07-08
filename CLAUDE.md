@@ -104,7 +104,9 @@ Entry point: `src/Index.dc.html` (Figma-style cover linking every page).
 ## Project Structure
 
 Interactive design POC for the Paigham "Noor" app. Every screen is a self-contained `*.dc.html`
-page at the repo root (plus `onboarding/Onboarding.dc.html`), rendered by a custom runtime:
+page under `src/` (screens at the `src/` root, plus flow boards in `onboarding/` and `home/`),
+rendered by a custom runtime. The design system itself is segregated into an atomic-design tree:
+`src/foundation/` (Primitives, Tokens, Theme) and `src/components/{atoms,molecules,organisms}/`.
 
 - `support.js` — the "dc" framework: `<x-dc>` root, `<helmet>` for page styles, `{{ }}` bindings,
   `<sc-if>` / `<sc-for list as>` (single root child per iteration), and one
@@ -117,19 +119,61 @@ page at the repo root (plus `onboarding/Onboarding.dc.html`), rendered by a cust
   localStorage, sets `data-theme` on `<html>`, injects the Index link + theme chrome on every
   page), `poc.css` (canvas tokens), `components.css` (the DS component CSS kit — see below).
 - `ios-frame.jsx` — the iOS device frame; follows the global theme automatically.
-- `Tokens.dc.html` / `Components.dc.html` — living previews of the token set and component kit.
+- `foundation/Tokens.dc.html` + `components/{atoms,molecules,organisms}/*.dc.html` — living
+  previews of the token set and the component kit, organised by atomic-design tier.
+
+## Layer Architecture — HARD RULES (do not violate)
+
+Composition is strictly **one-directional**: each layer may only reach *down* to the layer below
+it; nothing ever depends upward. This was audited clean on 2026-07-08 — keep it that way. Before
+adding UI, identify which layer you are in and only pull from the layers beneath it.
+
+```
+FOUNDATION      Primitives ──▶ Tokens ──▶ Theme
+                (--noor-*)     (--color-* --font-* --size-* --radius-* --shadow-*)
+COMPONENTS      Atoms ──▶ Molecules ──▶ Organisms      (consume Tokens/Theme; NEVER Primitives)
+SCREENS/BOARDS  consume Components; only rarely Foundation tokens directly
+```
+
+1. **Primitives are foundation-only.** Raw `--noor-*` variables may appear ONLY in
+   `_ds/…/colors_and_type.css` (where tokens are defined) and the `foundation/*.dc.html` preview
+   pages. They must NEVER appear in `components.css`, any `components/**`, screens, or boards. Style
+   everything else with semantic `--color-*` / `--font-*` / `--size-*` / `--radius-*` / `--shadow-*`.
+2. **Components compose downward only.** Molecules are built from Atom classes; Organisms from
+   Molecule/Atom classes. A lower tier never references a higher one, and no page redefines a
+   component class it didn't originate.
+3. **Screens/boards consume the Components layer.** Use the `components.css` classes (`.btn`,
+   `.chip`, `.input`, `.otp`, `.app-bar`, `.nb-bar`, …). Do not rebuild a component inline and do not
+   define a page-local fork of one (e.g. an `.atom-chip` shadowing `.chip`).
+4. **Missing component → add it to the kit, don't inline-fork.** If a screen needs a component that
+   isn't in `components.css`, add the class there PLUS a variant on its Atoms/Molecules/Organisms
+   reference page, then use it. Never leave a reusable construct inline on tokens.
+5. **No hardcoded hex** except the whitelist: data/chart colors, badge accent hues, and on-color
+   text/icons composited over a solid fill, photo, or gradient (e.g. `#fff` on an accent button).
+   Inverse surfaces (snackbars, tooltips) use `--color-info-primary` + `--color-info-primary-inverse`,
+   never a literal dark.
+
+Self-check before finishing any DS/screen change — the first must be empty; the second may only
+return whitelisted hits:
+
+```bash
+grep -rnE '\-\-noor-' src/components src/_theme/components.css src/*.dc.html src/home src/onboarding
+grep -rnE '#[0-9a-fA-F]{3,8}' src/components src/_theme/components.css
+```
 
 ## Design System Rules
 
-- **Canonical source:** the exported DS in `~/Downloads/Noor Design System (1)/preview/*.html`
-  (also mirrored beside older copies) is ground truth for component construction. When a local
-  style drifts from it, sync FROM canonical — do not fork.
+- **Source of truth:** this repo *is* the design system of record. `_theme/components.css` plus the
+  Atoms / Molecules / Organisms pages define component construction, and `_ds/…/colors_and_type.css`
+  defines the tokens. There is no external DS to sync from; when you add or change a component, update
+  `components.css` and its reference page together.
 - **Tokens only:** style with `var(--color-*)` semantic tokens. No hardcoded palette hex except
   data colors (chart accents, badge accent hues) and text composited over photos/gradients.
 - **Reference, don't rebuild:** shared component constructions live in `_theme/components.css`
   (`.btn`, `.ib`, `.badge`, `.input`/`.phone`/`.otp`, `.sw`, `.cb`, `.tbar`, `.dd-menu`, `.surf`,
-  `.nb-bar`, …). Screens must use these classes instead of re-implementing components inline.
-  `Components.dc.html` is the visual reference for all of them.
+  `.nb-bar`, …). Screens and DS pages must use these classes instead of re-implementing components
+  inline — `components.css` is the sole home for component styling; pages keep only page-chrome
+  (layout) styles inline. The Atoms / Molecules / Organisms pages are the visual reference.
 - **Theme-aware always:** every page loads `chrome.js` in `<head>` (after `support.js`) and
   `poc.css` + `components.css` in the helmet; body background is `var(--canvas-bg)`. Never set a
   hardcoded `data-theme` or a `dark` prop on the device frame.

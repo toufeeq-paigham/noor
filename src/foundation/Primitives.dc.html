@@ -1,0 +1,310 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="../support.js"></script>
+<script src="../_theme/chrome.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+  <link rel="stylesheet" href="../_ds/noor-design-system-46f42e91-1858-412f-bdb6-560a6cc3df9f/colors_and_type.css">
+  <link rel="stylesheet" href="../_theme/poc.css">
+  <link rel="stylesheet" href="../_theme/components.css">
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Rounded:opsz,wght,FILL,GRAD@24,400,0..1,0&amp;display=block">
+  <style>
+    body{background:var(--canvas-bg);padding:56px 40px 120px;min-height:100vh;box-sizing:border-box}
+    ::-webkit-scrollbar{display:none}*{-ms-overflow-style:none;scrollbar-width:none}
+    .tk-wrap{max-width:1120px;margin:0 auto}
+    .tk-card{background:var(--color-surface-primary);border:1px solid var(--color-neutral-border);border-radius:18px;box-shadow:var(--shadow-card)}
+    .tk-h{font-family:var(--font-title);font-size:22px;color:var(--color-info-primary)}
+    .tk-role{font-family:var(--font-body);font-size:11px;color:var(--color-info-secondary);line-height:1.3}
+    .grp-lbl{font-family:var(--font-body);font-size:13px;font-weight:800;letter-spacing:.04em;text-transform:uppercase;color:var(--color-info-secondary);margin-bottom:14px}
+    /* raw colour swatch */
+    .sw-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(150px,1fr));gap:16px}
+    .sw-item{display:flex;flex-direction:column;gap:8px}
+    .sw-chip{height:64px;border-radius:12px;border:1px solid var(--color-neutral-border);box-shadow:inset 0 0 0 1px rgba(127,127,127,.06)}
+    .sw-name{font-family:ui-monospace,SFMono-Regular,Menlo,monospace;font-size:11px;font-weight:700;color:var(--color-info-primary);line-height:1.3;word-break:break-word}
+    .sw-hex{font-family:ui-monospace,SFMono-Regular,Menlo,monospace;font-size:11px;color:var(--color-info-secondary)}
+  </style>
+</helmet>
+
+<div class="tk-wrap">
+
+  <!-- Header -->
+  <div style="display:flex;align-items:flex-end;justify-content:space-between;gap:24px;flex-wrap:wrap;margin-bottom:8px">
+    <div>
+      <div style="font-family:var(--font-body);font-size:12px;font-weight:800;letter-spacing:.1em;text-transform:uppercase;color:var(--color-neutral-brand);margin-bottom:8px">Foundation · Page 01</div>
+      <div style="font-family:var(--font-title);font-size:40px;letter-spacing:-0.5px;color:var(--color-info-primary);line-height:1.1">Primitives</div>
+      <div style="font-family:var(--font-body);font-size:15px;color:var(--color-info-secondary);margin-top:6px;max-width:660px">
+        The raw values Noor owns — the literal palette, spacing ladder, radii, type sizes and gradient recipes.
+        These have <b>no meaning</b> on their own (they don't know what a "button" or "surface" is); they are the
+        <code>--noor-*</code> and scale variables that
+        <a href="Tokens.dc.html" style="color:var(--color-action-primary);text-decoration:none;font-weight:700">Tokens</a>
+        give roles to. They are theme-independent: <code>--noor-jade-green</code> is always <code>#00C950</code>.
+      </div>
+    </div>
+    <a href="Tokens.dc.html" style="display:inline-flex;align-items:center;gap:8px;text-decoration:none;background:var(--color-surface-primary);border:1px solid var(--color-neutral-border);border-radius:999px;padding:10px 16px;box-shadow:var(--shadow-card)">
+      <span class="material-symbols-rounded" style="font-size:18px;color:var(--color-action-primary)">palette</span>
+      <span style="font-family:var(--font-body);font-size:13px;font-weight:700;color:var(--color-info-primary)">Tokens →</span>
+    </a>
+  </div>
+
+  <!-- Category filter -->
+  <div style="display:inline-flex;background:var(--color-action-background);border-radius:16px;padding:4px;gap:2px;margin:22px 0 34px;flex-wrap:wrap">
+    <sc-for list="{{ chips }}" as="c" hint-placeholder-count="5">
+      <div onClick="{{ c.onSelect }}" style="border-radius:12px;padding:8px 16px;cursor:pointer;background:{{ c.bg }};transition:background 200ms">
+        <span style="font-family:var(--font-body);font-size:13px;font-weight:700;color:{{ c.color }}">{{ c.label }}</span>
+      </div>
+    </sc-for>
+  </div>
+
+  <!-- ── COLOUR RAMP ── -->
+  <sc-if value="{{ showColor }}">
+  <div style="margin-bottom:44px">
+    <div class="tk-h" style="margin-bottom:6px">Colour ramp</div>
+    <div class="tk-role" style="margin-bottom:22px">Every named colour in <code>NoorColors.kt</code>. Raw hex — <b>not</b> theme-bound. Tokens decide which of these becomes "primary", "surface", etc.</div>
+    <sc-for list="{{ colorGroups }}" as="g" hint-placeholder-count="6">
+      <div style="margin-bottom:26px">
+        <div class="grp-lbl">{{ g.title }}</div>
+        <div class="sw-grid">
+          <sc-for list="{{ g.items }}" as="t" hint-placeholder-count="6">
+            <div class="sw-item">
+              <div class="sw-chip" style="background:{{ t.value }}"></div>
+              <div>
+                <div class="sw-name">{{ t.name }}</div>
+                <div class="sw-hex">{{ t.hex }}</div>
+              </div>
+            </div>
+          </sc-for>
+        </div>
+      </div>
+    </sc-for>
+  </div>
+  </sc-if>
+
+  <!-- ── SPACING ── -->
+  <sc-if value="{{ showSpace }}">
+  <div style="margin-bottom:44px">
+    <div class="tk-h" style="margin-bottom:6px">Spacing scale</div>
+    <div class="tk-role" style="margin-bottom:22px"><code>--size-*</code> · a 0 → 32px ladder driving padding and gaps. Tokens/components reference these by name, never the raw px.</div>
+    <div class="tk-card" style="padding:22px 24px">
+      <sc-for list="{{ spaceScale }}" as="sp" hint-placeholder-count="9">
+        <div style="display:flex;align-items:center;gap:16px;margin-bottom:12px">
+          <div style="width:130px;flex-shrink:0;font-family:ui-monospace,Menlo,monospace;font-size:12px;font-weight:700;color:var(--color-info-primary)">{{ sp.name }}</div>
+          <div style="height:16px;border-radius:5px;background:var(--color-action-primary);width:{{ sp.px }}"></div>
+          <div style="font-family:ui-monospace,Menlo,monospace;font-size:12px;color:var(--color-info-secondary)">{{ sp.px }}</div>
+        </div>
+      </sc-for>
+    </div>
+  </div>
+  </sc-if>
+
+  <!-- ── RADIUS ── -->
+  <sc-if value="{{ showRadius }}">
+  <div style="margin-bottom:44px">
+    <div class="tk-h" style="margin-bottom:6px">Radius scale</div>
+    <div class="tk-role" style="margin-bottom:22px"><code>--radius-*</code> · corner radii from 0 to a full 360px pill.</div>
+    <div class="tk-card" style="padding:24px">
+      <div style="display:flex;flex-wrap:wrap;gap:18px">
+        <sc-for list="{{ radiusScale }}" as="rd" hint-placeholder-count="9">
+          <div style="text-align:center">
+            <div style="width:74px;height:74px;background:color-mix(in oklab,var(--color-action-primary) 14%,var(--color-surface-primary));border:1.5px solid var(--color-action-primary);border-radius:{{ rd.px }};border-bottom-left-radius:0"></div>
+            <div style="font-family:ui-monospace,Menlo,monospace;font-size:11px;font-weight:700;color:var(--color-info-primary);margin-top:8px">{{ rd.name }}</div>
+            <div style="font-family:ui-monospace,Menlo,monospace;font-size:11px;color:var(--color-info-secondary)">{{ rd.px }}</div>
+          </div>
+        </sc-for>
+      </div>
+    </div>
+  </div>
+  </sc-if>
+
+  <!-- ── TYPE ── -->
+  <sc-if value="{{ showType }}">
+  <div style="margin-bottom:44px">
+    <div class="tk-h" style="margin-bottom:6px">Type primitives</div>
+    <div class="tk-role" style="margin-bottom:22px">Three raw font families and the raw size / line-height ladder. The named roles (title-h1, body-m…) live on the <a href="Tokens.dc.html" style="color:var(--color-action-primary);text-decoration:none;font-weight:700">Tokens</a> page.</div>
+    <div class="tk-card" style="padding:22px 26px;margin-bottom:20px">
+      <div class="grp-lbl">Families</div>
+      <div style="display:flex;flex-direction:column;gap:14px">
+        <div style="display:flex;align-items:baseline;gap:16px;flex-wrap:wrap"><div style="width:120px;flex-shrink:0;font-family:ui-monospace,Menlo,monospace;font-size:12px;color:var(--color-info-secondary)">--font-title</div><div style="font-family:var(--font-title);font-size:26px;color:var(--color-info-primary)">DM Serif Display</div></div>
+        <div style="display:flex;align-items:baseline;gap:16px;flex-wrap:wrap"><div style="width:120px;flex-shrink:0;font-family:ui-monospace,Menlo,monospace;font-size:12px;color:var(--color-info-secondary)">--font-body</div><div style="font-family:var(--font-body);font-size:22px;color:var(--color-info-primary)">Nunito — humanist sans</div></div>
+        <div style="display:flex;align-items:baseline;gap:16px;flex-wrap:wrap"><div style="width:120px;flex-shrink:0;font-family:ui-monospace,Menlo,monospace;font-size:12px;color:var(--color-info-secondary)">--font-arabic</div><div style="font-family:var(--font-arabic);font-size:26px;direction:rtl;color:var(--color-info-primary)">القرآن الكريم</div></div>
+      </div>
+    </div>
+    <div class="tk-card" style="padding:8px 26px">
+      <sc-for list="{{ typeScale }}" as="ty" hint-placeholder-count="8">
+        <div style="display:flex;align-items:baseline;gap:20px;padding:14px 0;border-bottom:1px solid color-mix(in oklab,var(--color-info-primary) 8%,transparent)">
+          <div style="width:150px;flex-shrink:0;font-family:ui-monospace,Menlo,monospace;font-size:12px;font-weight:700;color:var(--color-info-secondary)">{{ ty.name }}</div>
+          <div style="flex:1;min-width:0;font-family:var(--font-body);font-size:{{ ty.size }};line-height:1.2;color:var(--color-info-primary)">The quick brown fox</div>
+          <div style="width:80px;flex-shrink:0;text-align:right;font-family:ui-monospace,Menlo,monospace;font-size:12px;color:var(--color-info-secondary)">{{ ty.spec }}</div>
+        </div>
+      </sc-for>
+      <div style="display:flex;gap:20px;padding:14px 0">
+        <div style="width:150px;flex-shrink:0;font-family:ui-monospace,Menlo,monospace;font-size:12px;font-weight:700;color:var(--color-info-secondary)">weights</div>
+        <div style="flex:1;display:flex;gap:24px;flex-wrap:wrap">
+          <span style="font-weight:400;color:var(--color-info-primary)">Regular 400</span>
+          <span style="font-weight:500;color:var(--color-info-primary)">Medium 500</span>
+          <span style="font-weight:700;color:var(--color-info-primary)">Bold 700</span>
+        </div>
+      </div>
+    </div>
+  </div>
+  </sc-if>
+
+  <!-- ── GRADIENTS ── -->
+  <sc-if value="{{ showGradient }}">
+  <div style="margin-bottom:20px">
+    <div class="tk-h" style="margin-bottom:6px">Gradient recipes</div>
+    <div class="tk-role" style="margin-bottom:22px"><code>--gradient-*</code> · raw multi-stop wash recipes, named by hue. Layered over a surface for hero and celebration states.</div>
+    <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(180px,1fr));gap:18px">
+      <sc-for list="{{ gradients }}" as="gr" hint-placeholder-count="6">
+        <div style="border-radius:16px;overflow:hidden;border:1px solid var(--color-neutral-border)">
+          <div style="height:96px;background:var(--color-surface-card);position:relative">
+            <div style="position:absolute;inset:0;background:{{ gr.value }}"></div>
+          </div>
+          <div style="padding:11px 14px;background:var(--color-surface-primary)">
+            <div class="sw-name">{{ gr.name }}</div>
+          </div>
+        </div>
+      </sc-for>
+    </div>
+    <div class="tk-role" style="margin-top:22px;padding:14px 16px;background:var(--color-surface-secondary);border-radius:12px">
+      <b>Note — motion &amp; elevation are not primitives in Noor.</b> There is no <code>--duration-*</code> scale (durations
+      like 120ms / 240ms are currently hardcoded in <code>components.css</code>), and shadows skip straight to semantic
+      roles (<code>--shadow-card</code>, <code>--shadow-dialog</code>) — so they live on the Tokens page, not here.
+    </div>
+  </div>
+  </sc-if>
+
+  <!-- Footer -->
+  <div style="text-align:center;font-family:var(--font-body);font-size:12px;color:var(--canvas-label);margin-top:40px">
+    Noor Design System · <a href="../Index.dc.html" style="color:var(--color-action-primary);text-decoration:none;font-weight:700">Index</a> · <a href="Tokens.dc.html" style="color:var(--color-action-primary);text-decoration:none;font-weight:700">Tokens →</a> · <a href="Theme.dc.html" style="color:var(--color-action-primary);text-decoration:none;font-weight:700">Theme →</a>
+  </div>
+
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script>
+class Component extends DCLogic {
+  state = { cat: 'all' };
+
+  catDefs = [
+    { id: 'all', label: 'All' },
+    { id: 'color', label: 'Colour' },
+    { id: 'space', label: 'Spacing' },
+    { id: 'radius', label: 'Radius' },
+    { id: 'type', label: 'Type' },
+    { id: 'gradient', label: 'Gradients' },
+  ];
+
+  colorGroups = [
+    { title: 'Brand', items: [
+      { name: '--noor-brand', hex: '#C9AD7B' },
+    ]},
+    { title: 'Neutrals · light', items: [
+      { name: '--noor-pure-white', hex: '#FFFFFF' },
+      { name: '--noor-snow-drift', hex: '#FAFAFA' },
+      { name: '--noor-cultured-gray', hex: '#F4F4F5' },
+      { name: '--noor-gainsboro', hex: '#E4E4E7' },
+      { name: '--noor-slate-gray', hex: '#71717B' },
+      { name: '--noor-eerie-black', hex: '#18181B' },
+      { name: '--noor-jet-black', hex: '#09090B' },
+    ]},
+    { title: 'Neutrals · dark', items: [
+      { name: '--noor-snow-white', hex: '#FAFAFA' },
+      { name: '--noor-ash-gray', hex: '#9F9FA9' },
+      { name: '--noor-onyx-gray', hex: '#27272A' },
+      { name: '--noor-gunmetal', hex: '#18181B' },
+      { name: '--noor-rich-black', hex: '#09090B' },
+    ]},
+    { title: 'Greens', items: [
+      { name: '--noor-mint-cream', hex: '#F0FDF4' },
+      { name: '--noor-jade-green', hex: '#00C950' },
+      { name: '--noor-emerald-green', hex: '#00BC7D' },
+      { name: '--noor-pine-green', hex: '#008236' },
+      { name: '--noor-forest-green', hex: '#0D542B' },
+    ]},
+    { title: 'Accents & status', items: [
+      { name: '--noor-scarlet-red', hex: '#E7000B' },
+      { name: '--noor-coral-red', hex: '#FF6467' },
+      { name: '--noor-vermilion', hex: '#F54900' },
+      { name: '--noor-tangerine', hex: '#FE9A00' },
+      { name: '--noor-amber-orange', hex: '#FE9A00' },
+      { name: '--noor-amber', hex: '#FFB900' },
+      { name: '--noor-teal', hex: '#009689' },
+      { name: '--noor-midnight-teal', hex: '#104E64' },
+      { name: '--noor-sapphire-blue', hex: '#1447E6' },
+      { name: '--noor-amethyst-purple', hex: '#AD46FF' },
+      { name: '--noor-hot-pink', hex: '#FF2056' },
+    ]},
+    { title: 'Alpha composites', items: [
+      { name: '--noor-white-a10', hex: 'rgba(255,255,255,.10)' },
+      { name: '--noor-white-a15', hex: 'rgba(255,255,255,.15)' },
+      { name: '--noor-white-a60', hex: 'rgba(255,255,255,.60)' },
+      { name: '--noor-black-a40', hex: 'rgba(9,9,11,.40)' },
+      { name: '--noor-black-a60', hex: 'rgba(9,9,11,.60)' },
+      { name: '--noor-gunmetal-a80', hex: 'rgba(24,24,27,.80)' },
+    ]},
+  ];
+
+  spaceDefs = [
+    { name: '--size-none', px: '0px' }, { name: '--size-xs', px: '2px' }, { name: '--size-sm', px: '4px' },
+    { name: '--size-md', px: '8px' }, { name: '--size-lg', px: '10px' }, { name: '--size-xl', px: '12px' },
+    { name: '--size-2xl', px: '16px' }, { name: '--size-huge', px: '24px' }, { name: '--size-max', px: '32px' },
+  ];
+
+  radiusDefs = [
+    { name: 'none', px: '0px' }, { name: 'xs', px: '2px' }, { name: 'sm', px: '4px' }, { name: 'md', px: '8px' },
+    { name: 'lg', px: '10px' }, { name: 'xl', px: '12px' }, { name: '2xl', px: '16px' }, { name: 'huge', px: '24px' },
+    { name: 'circle', px: '360px' },
+  ];
+
+  typeDefs = [
+    { name: '--title-h1 / body-h1', size: '32px', spec: '32 / 40' },
+    { name: '--title-h3 / body-h3', size: '24px', spec: '24 / 32' },
+    { name: '--*-h4', size: '22px', spec: '22 / 28' },
+    { name: '--*-h5', size: '20px', spec: '20 / 24' },
+    { name: '--body-l', size: '18px', spec: '18 / 24' },
+    { name: '--body-m', size: '16px', spec: '16 / 24' },
+    { name: '--body-s', size: '14px', spec: '14 / 20' },
+    { name: '--body-xs', size: '12px', spec: '12 / 16' },
+  ];
+
+  gradientDefs = ['emerald', 'brand', 'sapphire', 'coral', 'amethyst', 'tangerine']
+    .map(g => ({ name: '--gradient-' + g, value: 'var(--gradient-' + g + ')' }));
+
+  setCat = (id) => this.setState({ cat: id });
+
+  renderVals() {
+    const cat = this.state.cat;
+    const chips = this.catDefs.map(c => ({
+      label: c.label,
+      bg: cat === c.id ? 'var(--color-action-primary)' : 'transparent',
+      color: cat === c.id ? 'var(--color-action-primary-inverse)' : 'var(--color-info-secondary)',
+      onSelect: () => this.setCat(c.id),
+    }));
+
+    const colorGroups = this.colorGroups.map(g => ({
+      title: g.title,
+      items: g.items.map(t => ({ name: t.name, hex: t.hex, value: 'var(' + t.name + ')' })),
+    }));
+
+    return {
+      chips,
+      showColor: cat === 'all' || cat === 'color',
+      showSpace: cat === 'all' || cat === 'space',
+      showRadius: cat === 'all' || cat === 'radius',
+      showType: cat === 'all' || cat === 'type',
+      showGradient: cat === 'all' || cat === 'gradient',
+      colorGroups,
+      spaceScale: this.spaceDefs,
+      radiusScale: this.radiusDefs,
+      typeScale: this.typeDefs,
+      gradients: this.gradientDefs,
+    };
+  }
+}
+</script>
+</body>
+</html>

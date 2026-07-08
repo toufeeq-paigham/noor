@@ -1,0 +1,165 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="../support.js"></script>
+<script src="../_theme/chrome.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+  <link rel="stylesheet" href="../_ds/noor-design-system-46f42e91-1858-412f-bdb6-560a6cc3df9f/colors_and_type.css">
+  <link rel="stylesheet" href="../_theme/poc.css">
+  <link rel="stylesheet" href="../_theme/components.css">
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Rounded:opsz,wght,FILL,GRAD@24,400,0..1,0&amp;display=block">
+  <style>
+    body{background:var(--canvas-bg);padding:56px 40px 120px;min-height:100vh;box-sizing:border-box}
+    ::-webkit-scrollbar{display:none}*{-ms-overflow-style:none;scrollbar-width:none}
+    .cp-wrap{max-width:1120px;margin:0 auto}
+    .cp-card{background:var(--color-surface-primary);border:1px solid var(--color-neutral-border);border-radius:18px;box-shadow:var(--shadow-card);padding:22px 24px;margin-bottom:24px}
+    .cp-h{font-family:var(--font-title);font-size:21px;color:var(--color-info-primary)}
+    .cp-sub{font-family:var(--font-body);font-size:12px;color:var(--color-info-secondary);margin-top:2px}
+    .cp-head{margin:0 0 16px}
+    .lbl{font-family:var(--font-body);font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:.08em;color:var(--color-info-secondary);margin-bottom:8px}
+    .th-preview{display:flex;gap:20px;flex-wrap:wrap}
+    .th-box{flex:1;min-width:280px;border-radius:16px;padding:24px;box-sizing:border-box;border:1px solid var(--color-neutral-border)}
+    .th-light{background:#FFFFFF;color:#09090B}
+    .th-dark{background:#09090B;color:#FFFFFF}
+    /* Binding table */
+    .bind-row{display:grid;grid-template-columns:minmax(200px,1.3fr) 1fr 1fr;gap:12px;align-items:center;padding:10px 0;border-bottom:1px solid color-mix(in oklab,var(--color-info-primary) 8%,transparent)}
+    .bind-row.head{border-bottom:1.5px solid var(--color-neutral-border);padding-bottom:8px}
+    .bind-tok{font-family:ui-monospace,SFMono-Regular,Menlo,monospace;font-size:12px;font-weight:700;color:var(--color-info-primary);word-break:break-word}
+    .bind-cell{display:flex;align-items:center;gap:8px;font-family:ui-monospace,Menlo,monospace;font-size:11px;color:var(--color-info-secondary)}
+    .bind-dot{width:18px;height:18px;border-radius:5px;border:1px solid var(--color-neutral-border);flex-shrink:0;box-shadow:inset 0 0 0 1px rgba(127,127,127,.06)}
+    .bind-hcell{font-family:var(--font-body);font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:.06em;color:var(--color-info-secondary)}
+    .chain{display:flex;align-items:center;gap:10px;flex-wrap:wrap;font-family:ui-monospace,Menlo,monospace;font-size:12px}
+    .chain .node{padding:8px 12px;border-radius:10px;background:var(--color-surface-secondary);color:var(--color-info-primary);font-weight:700}
+    .chain .arw{color:var(--color-action-primary);font-weight:700}
+  </style>
+</helmet>
+
+<div class="cp-wrap">
+
+  <!-- Header -->
+  <div style="display:flex;align-items:flex-end;justify-content:space-between;gap:24px;flex-wrap:wrap;margin-bottom:32px">
+    <div>
+      <div style="font-family:var(--font-body);font-size:12px;font-weight:800;letter-spacing:.1em;text-transform:uppercase;color:var(--color-neutral-brand);margin-bottom:8px">Foundation · Page 03</div>
+      <div style="font-family:var(--font-title);font-size:40px;letter-spacing:-0.5px;color:var(--color-info-primary);line-height:1.1">Theme</div>
+      <div style="font-family:var(--font-body);font-size:15px;color:var(--color-info-secondary);margin-top:6px;max-width:660px">
+        A theme introduces <b>no new values</b> — it only re-points each Token at a different Primitive.
+        <code>--color-action-primary</code> is jade-green in light and emerald-green in dark; the button that
+        uses it never changes. That indirection is what makes dark mode (and re-branding) free.
+      </div>
+    </div>
+    <a href="Tokens.dc.html" style="display:inline-flex;align-items:center;gap:8px;text-decoration:none;background:var(--color-surface-primary);border:1px solid var(--color-neutral-border);border-radius:999px;padding:10px 16px;box-shadow:var(--shadow-card)">
+      <span class="material-symbols-rounded" style="font-size:18px;color:var(--color-action-primary)">palette</span>
+      <span style="font-family:var(--font-body);font-size:13px;font-weight:700;color:var(--color-info-primary)">← Tokens</span>
+    </a>
+  </div>
+
+  <!-- The resolution chain -->
+  <div class="cp-card">
+    <div class="cp-head"><div class="cp-h">The resolution chain</div><div class="cp-sub">How a colour reaches the screen. Only the Theme step differs between light and dark.</div></div>
+    <div class="chain">
+      <span class="node">#00C950</span><span class="arw">→</span>
+      <span class="node">--noor-jade-green</span><span class="arw">→</span>
+      <span class="node">--color-action-primary</span><span class="arw">→</span>
+      <span class="node">Light / Dark</span><span class="arw">→</span>
+      <span class="node">.btn-filled</span>
+    </div>
+    <div style="display:flex;gap:14px;flex-wrap:wrap;margin-top:8px;font-family:var(--font-body);font-size:11px;color:var(--color-info-secondary)">
+      <span>Primitive (raw)</span><span>·</span><span>Token (role)</span><span>·</span><span>Theme (binding)</span><span>·</span><span>Component (consumer)</span>
+    </div>
+  </div>
+
+  <!-- Binding table -->
+  <div class="cp-card">
+    <div class="cp-head"><div class="cp-h">Light ↔ Dark bindings</div><div class="cp-sub">Same token name, different primitive per theme. Swatches use the raw <code>--noor-*</code> primitives, so both columns show regardless of the current mode.</div></div>
+    <div class="bind-row head">
+      <div class="bind-hcell">Token</div>
+      <div class="bind-hcell">Light →</div>
+      <div class="bind-hcell">Dark →</div>
+    </div>
+    <sc-for list="{{ bindings }}" as="b" hint-placeholder-count="12">
+      <div class="bind-row">
+        <div class="bind-tok">{{ b.token }}</div>
+        <div class="bind-cell"><span class="bind-dot" style="background:{{ b.lightVal }}"></span>{{ b.light }}</div>
+        <div class="bind-cell"><span class="bind-dot" style="background:{{ b.darkVal }}"></span>{{ b.dark }}</div>
+      </div>
+    </sc-for>
+  </div>
+
+  <!-- Live preview -->
+  <div class="cp-card">
+    <div class="cp-head"><div class="cp-h">Both modes at a glance</div><div class="cp-sub">The same UI under each theme's bindings.</div></div>
+    <div class="th-preview">
+      <div class="th-box th-light">
+        <div class="lbl" style="color:#71717A">Light mode (default)</div>
+        <div style="font-family:var(--font-title);font-size:28px;margin-bottom:8px">Comfort &amp; Clarity</div>
+        <div style="font-family:var(--font-body);font-size:14px;line-height:1.5;color:#52525B">
+          High legibility for daytime. Surface is pure white, primary is jade-green.
+        </div>
+      </div>
+      <div class="th-box th-dark">
+        <div class="lbl" style="color:#A1A1AA">Dark mode</div>
+        <div style="font-family:var(--font-title);font-size:28px;margin-bottom:8px">Serene &amp; Immersive</div>
+        <div style="font-family:var(--font-body);font-size:14px;line-height:1.5;color:#A1A1AA">
+          Rich-black surfaces with emerald-green + gold accents for low light.
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- How it works -->
+  <div class="cp-card">
+    <div class="cp-head"><div class="cp-h">How the switch works</div><div class="cp-sub">The mechanism behind the bottom-right toggle.</div></div>
+    <div style="font-family:var(--font-body);font-size:14px;color:var(--color-info-secondary);line-height:1.6">
+      <ul style="margin:0 0 0 20px;padding:0">
+        <li><strong>Local storage:</strong> preference persisted via <code>localStorage('theme')</code> — light / dark / system.</li>
+        <li><strong>Root attribute:</strong> <code>chrome.js</code> sets <code>data-theme="dark"</code> on <code>&lt;html&gt;</code>.</li>
+        <li><strong>CSS re-binds:</strong> the <code>[data-theme="dark"]</code> block in <code>colors_and_type.css</code> re-points every <code>--color-*</code> token — no component or screen is touched.</li>
+      </ul>
+    </div>
+  </div>
+
+  <!-- Footer -->
+  <div style="text-align:center;font-family:var(--font-body);font-size:12px;color:var(--canvas-label);margin-top:40px">
+    Noor Design System · <a href="Tokens.dc.html" style="color:var(--color-action-primary);text-decoration:none;font-weight:700">← Tokens</a> · <a href="../Index.dc.html" style="color:var(--color-action-primary);text-decoration:none;font-weight:700">Index</a> · <a href="../components/atoms/Atoms.dc.html" style="color:var(--color-action-primary);text-decoration:none;font-weight:700">Atoms →</a>
+  </div>
+
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script>
+class Component extends DCLogic {
+  bindingDefs = [
+    { token: '--color-surface-primary', light: 'noor-pure-white', dark: 'noor-rich-black' },
+    { token: '--color-surface-secondary', light: 'noor-mint-cream', dark: 'noor-gunmetal' },
+    { token: '--color-surface-card', light: 'noor-snow-drift', dark: 'noor-gunmetal' },
+    { token: '--color-action-primary', light: 'noor-jade-green', dark: 'noor-emerald-green' },
+    { token: '--color-action-primary-inverse', light: 'noor-mint-cream', dark: 'noor-forest-green' },
+    { token: '--color-action-background', light: 'noor-gainsboro', dark: 'noor-white-a10' },
+    { token: '--color-action-destructive', light: 'noor-scarlet-red', dark: 'noor-coral-red' },
+    { token: '--color-info-primary', light: 'noor-jet-black', dark: 'noor-snow-white' },
+    { token: '--color-info-secondary', light: 'noor-slate-gray', dark: 'noor-ash-gray' },
+    { token: '--color-input-background', light: 'noor-cultured-gray', dark: 'noor-white-a15' },
+    { token: '--color-input-border-focused', light: 'noor-jade-green', dark: 'noor-emerald-green' },
+    { token: '--color-status-success', light: 'noor-jade-green', dark: 'noor-emerald-green' },
+    { token: '--color-status-error', light: 'noor-scarlet-red', dark: 'noor-coral-red' },
+    { token: '--color-neutral-border', light: 'noor-gainsboro', dark: 'noor-white-a10' },
+  ];
+
+  renderVals() {
+    const bindings = this.bindingDefs.map(b => ({
+      token: b.token,
+      light: b.light,
+      dark: b.dark,
+      lightVal: 'var(--' + b.light + ')',
+      darkVal: 'var(--' + b.dark + ')',
+    }));
+    return { bindings };
+  }
+}
+</script>
+</body>
+</html>

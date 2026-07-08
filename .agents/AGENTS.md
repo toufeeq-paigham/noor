@@ -119,11 +119,51 @@ page at the repo root (plus `onboarding/Onboarding.dc.html`), rendered by a cust
 - `ios-frame.jsx` — the iOS device frame; follows the global theme automatically.
 - `Tokens.dc.html` / `Components.dc.html` — living previews of the token set and component kit.
 
+## Layer Architecture — HARD RULES (do not violate)
+
+Composition is strictly **one-directional**: each layer may only reach *down* to the layer below
+it; nothing ever depends upward. This was audited clean on 2026-07-08 — keep it that way. Before
+adding UI, identify which layer you are in and only pull from the layers beneath it.
+
+```
+FOUNDATION      Primitives ──▶ Tokens ──▶ Theme
+                (--noor-*)     (--color-* --font-* --size-* --radius-* --shadow-*)
+COMPONENTS      Atoms ──▶ Molecules ──▶ Organisms      (consume Tokens/Theme; NEVER Primitives)
+SCREENS/BOARDS  consume Components; only rarely Foundation tokens directly
+```
+
+1. **Primitives are foundation-only.** Raw `--noor-*` variables may appear ONLY in
+   `_ds/…/colors_and_type.css` (where tokens are defined) and the `foundation/*.dc.html` preview
+   pages. They must NEVER appear in `components.css`, any `components/**`, screens, or boards. Style
+   everything else with semantic `--color-*` / `--font-*` / `--size-*` / `--radius-*` / `--shadow-*`.
+2. **Components compose downward only.** Molecules are built from Atom classes; Organisms from
+   Molecule/Atom classes. A lower tier never references a higher one, and no page redefines a
+   component class it didn't originate.
+3. **Screens/boards consume the Components layer.** Use the `components.css` classes (`.btn`,
+   `.chip`, `.input`, `.otp`, `.app-bar`, `.nb-bar`, …). Do not rebuild a component inline and do not
+   define a page-local fork of one (e.g. an `.atom-chip` shadowing `.chip`).
+4. **Missing component → add it to the kit, don't inline-fork.** If a screen needs a component that
+   isn't in `components.css`, add the class there PLUS a variant on its Atoms/Molecules/Organisms
+   reference page, then use it. Never leave a reusable construct inline on tokens.
+5. **No hardcoded hex** except the whitelist: data/chart colors, badge accent hues, and on-color
+   text/icons composited over a solid fill, photo, or gradient (e.g. `#fff` on an accent button).
+   Inverse surfaces (snackbars, tooltips) use `--color-info-primary` + `--color-info-primary-inverse`,
+   never a literal dark.
+
+Self-check before finishing any DS/screen change — the first must be empty; the second may only
+return whitelisted hits:
+
+```bash
+grep -rnE '\-\-noor-' src/components src/_theme/components.css src/*.dc.html src/home src/onboarding
+grep -rnE '#[0-9a-fA-F]{3,8}' src/components src/_theme/components.css
+```
+
 ## Design System Rules
 
-- **Canonical source:** the exported DS in `~/Downloads/Noor Design System (1)/preview/*.html`
-  (also mirrored beside older copies) is ground truth for component construction. When a local
-  style drifts from it, sync FROM canonical — do not fork.
+- **Source of truth:** this repo *is* the design system of record. `_theme/components.css` plus the
+  Atoms / Molecules / Organisms pages define component construction, and `_ds/…/colors_and_type.css`
+  defines the tokens. There is no external DS to sync from; when you add or change a component, update
+  `components.css` and its reference page together.
 - **Tokens only:** style with `var(--color-*)` semantic tokens. No hardcoded palette hex except
   data colors (chart accents, badge accent hues) and text composited over photos/gradients.
 - **Reference, don't rebuild:** shared component constructions live in `_theme/components.css`

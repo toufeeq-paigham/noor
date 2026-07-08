@@ -1,0 +1,220 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="../../support.js"></script>
+<script src="../../_theme/chrome.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+  <link rel="stylesheet" href="../../_ds/noor-design-system-46f42e91-1858-412f-bdb6-560a6cc3df9f/colors_and_type.css">
+  <link rel="stylesheet" href="../../_theme/poc.css">
+  <link rel="stylesheet" href="../../_theme/components.css">
+  <script src="../../_ds/noor-design-system-46f42e91-1858-412f-bdb6-560a6cc3df9f/_ds_bundle.js"></script>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Rounded:opsz,wght,FILL,GRAD@24,400,0..1,0&amp;display=block">
+  <style>
+    body{background:var(--canvas-bg);padding:56px 40px 120px;min-height:100vh;box-sizing:border-box}
+    ::-webkit-scrollbar{display:none}*{-ms-overflow-style:none;scrollbar-width:none}
+    .cp-wrap{max-width:1120px;margin:0 auto}
+    .cp-card{background:var(--color-surface-primary);border:1px solid var(--color-neutral-border);border-radius:18px;box-shadow:var(--shadow-card);padding:22px 24px;margin-bottom:28px}
+    .cp-h{font-family:var(--font-title);font-size:21px;color:var(--color-info-primary)}
+    .cp-sub{font-family:var(--font-body);font-size:12px;color:var(--color-info-secondary);margin-top:2px}
+    .cp-head{margin:0 0 12px}
+    .lbl{font-family:var(--font-body);font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:.08em;color:var(--color-info-secondary);margin-bottom:8px}
+    
+    /* Calendar styles */
+    .cal-grid{display:grid;grid-template-columns:repeat(7,1fr);gap:4px;text-align:center;font-family:var(--font-body)}
+    .cal-cell{padding:8px 0;border-radius:8px;font-size:13px;color:var(--color-info-primary);cursor:pointer;font-weight:700}
+    .cal-cell:hover{background:color-mix(in oklab, var(--color-action-primary) 10%, transparent)}
+    .cal-cell.selected{background:var(--color-action-primary);color:var(--color-action-primary-inverse)}
+    .cal-cell.disabled{color:var(--color-status-disabled-alt);cursor:default}
+    
+    /* Dialog Preview container */
+    .dlg-box{width:270px;background:rgba(33,33,33,0.85);backdrop-filter:blur(20px);-webkit-backdrop-filter:blur(20px);border:0.5px solid rgba(255,255,255,0.15);border-radius:14px;box-sizing:border-box;display:flex;flex-direction:column}
+    .dlg-btn{padding:12px 16px;font-family:var(--font-body);font-size:16px;text-align:center;color:#0A84FF;cursor:pointer;font-weight:600}
+    .dlg-btn:active{background:rgba(255,255,255,0.1)}
+    .dlg-btn + .dlg-btn{border-top:0.5px solid rgba(255,255,255,0.15)}
+    /* .tbar/.tab (TabBar) styling lives in _theme/components.css */
+  </style>
+</helmet>
+
+<!-- Import Reusable components layer -->
+<x-import component="PromptCard" from="../../_theme/components.jsx" hint-size="0,0"></x-import>
+
+<div class="cp-wrap">
+
+  <!-- Header -->
+  <div style="display:flex;align-items:flex-end;justify-content:space-between;gap:24px;flex-wrap:wrap;margin-bottom:32px">
+    <div>
+      <div style="font-family:var(--font-body);font-size:12px;font-weight:800;letter-spacing:.1em;text-transform:uppercase;color:var(--color-neutral-brand);margin-bottom:8px">Components · Page 06</div>
+      <div style="font-family:var(--font-title);font-size:40px;letter-spacing:-0.5px;color:var(--color-info-primary);line-height:1.1">Organisms</div>
+      <div style="font-family:var(--font-body);font-size:15px;color:var(--color-info-secondary);margin-top:6px;max-width:640px">
+        Organisms — complex, modular assemblies of molecules and atoms that handle critical flows and layouts.
+      </div>
+    </div>
+    <div style="display:flex;gap:10px">
+      <a href="../molecules/Molecules.dc.html" style="display:inline-flex;align-items:center;gap:8px;text-decoration:none;background:var(--color-surface-primary);border:1px solid var(--color-neutral-border);border-radius:999px;padding:10px 16px;box-shadow:var(--shadow-card)">
+        <span class="material-symbols-rounded" style="font-size:18px;color:var(--color-action-primary)">bubble_chart</span>
+        <span style="font-family:var(--font-body);font-size:13px;font-weight:700;color:var(--color-info-primary)">← Molecules</span>
+      </a>
+      <a href="../../Index.dc.html" style="display:inline-flex;align-items:center;gap:8px;text-decoration:none;background:var(--color-surface-primary);border:1px solid var(--color-neutral-border);border-radius:999px;padding:10px 16px;box-shadow:var(--shadow-card)">
+        <span class="material-symbols-rounded" style="font-size:18px;color:var(--color-action-primary)">home</span>
+        <span style="font-family:var(--font-body);font-size:13px;font-weight:700;color:var(--color-info-primary)">Index</span>
+      </a>
+    </div>
+  </div>
+
+  <!-- 1. Dialog -->
+  <div class="cp-card">
+    <div class="cp-head">
+      <div class="cp-h">Dialog</div>
+      <div class="cp-sub">System prompt alerts and permissions requests.</div>
+    </div>
+    <div style="display:flex;justify-content:center;padding:20px 0;background:var(--color-surface-secondary);border-radius:12px">
+      <div class="dlg-box">
+        <div style="padding:20px 16px;text-align:center">
+          <div style="font-family:var(--font-body);font-size:17px;font-weight:700;color:#fff;line-height:1.25">Allow "Paigham" to track your activity?</div>
+          <div style="font-family:var(--font-body);font-size:13px;color:#fff;margin-top:6px;line-height:1.45">This allows the app to personalise features and show relevant Islamic content.</div>
+        </div>
+        <div class="dlg-btn" style="font-weight:700">Allow</div>
+        <div class="dlg-btn" style="color:#FF3B30">Ask App Not to Track</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 2. BottomSheet -->
+  <div class="cp-card">
+    <div class="cp-head">
+      <div class="cp-h">BottomSheet</div>
+      <div class="cp-sub">Sliding bottom sheet panel container.</div>
+    </div>
+    <div style="position:relative;height:220px;overflow:hidden;border:1.5px dashed var(--color-neutral-border);border-radius:12px;display:flex;align-items:center;justify-content:center">
+      <button class="btn btn-filled" onClick="{{ openSheet }}">Open Bottom Sheet Preview</button>
+      <x-import component="BottomSheet" from="../../_theme/components.jsx"
+                is-open="{{ sheetOpen }}"
+                on-close="{{ closeSheet }}"
+                bottom-offset="0"
+                hint-size="100%,100%">
+        <div style="padding: 24px">
+          <div style="font-family:var(--font-title);font-size:24px;color:#F4D090;margin-bottom:8px">Modal Bottom Sheet</div>
+          <div style="font-family:var(--font-body);font-size:14px;color:var(--color-info-secondary);line-height:1.45;margin-bottom:24px">
+            Slide up bottom sheet matching native Android/iOS designs.
+          </div>
+          <button class="btn btn-tonal lg" onClick="{{ closeSheet }}" style="width:100%">Close</button>
+        </div>
+      </x-import>
+    </div>
+  </div>
+
+  <!-- NudgeCard (PromptCard) -->
+  <div class="cp-card">
+    <div class="cp-head">
+      <div class="cp-h">NudgeCard (PromptCard)</div>
+      <div class="cp-sub">Gradient prompt nudge banners matching Compose PromptCard.kt.</div>
+    </div>
+    <div style="max-width:500px">
+      <x-import component="PromptCard" from="../../_theme/components.jsx"
+                variant="warning"
+                title="Follow a Masjid"
+                description="Follow a masjid you trust for iqama times and community updates"
+                primary-action-text="Find a Masjid"
+                hint-size="100%,auto">
+      </x-import>
+    </div>
+  </div>
+
+  <!-- 5. AppBar -->
+  <div class="cp-card">
+    <div class="cp-head">
+      <div class="cp-h">AppBar</div>
+      <div class="cp-sub">The transparent <code>.app-bar</code> — a backdrop-blur bar with a linear mask that fades the blur into the content (gradient blur + translucency). It only reads over media, so it's shown over a hero, exactly as the Home tab uses it.</div>
+    </div>
+    <div style="max-width:390px;position:relative;height:190px;border-radius:20px;overflow:hidden;border:1px solid var(--color-neutral-border)">
+      <img src="../../../images/isha_background.webp" style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;object-position:center 28%">
+      <div class="app-bar" style="padding:16px 16px 12px;align-items:center;gap:12px">
+        <div style="width:44px;height:44px;border-radius:50%;background:rgba(0,0,0,0.18);border:1.5px solid rgba(255,255,255,0.6);display:flex;align-items:center;justify-content:center;flex-shrink:0">
+          <span style="font-family:var(--font-body);font-size:18px;font-weight:700;color:#fff">T</span>
+        </div>
+        <div style="flex:1;min-width:0">
+          <div style="font-family:var(--font-body);font-size:17px;font-weight:700;color:#fff">Salaam, Toufeeq</div>
+          <div style="font-family:var(--font-body);font-size:12px;color:rgba(255,255,255,0.75);margin-top:1px">Masjid E Bilal</div>
+        </div>
+        <div style="position:relative;width:40px;height:40px;border-radius:50%;background:rgba(255,255,255,0.15);border:1.5px solid rgba(255,255,255,0.30);display:flex;align-items:center;justify-content:center;flex-shrink:0">
+          <span class="material-symbols-rounded" style="font-size:20px;color:#fff;font-variation-settings:'FILL' 1">notifications</span>
+          <div style="position:absolute;top:8px;right:9px;width:8px;height:8px;border-radius:50%;background:var(--color-action-primary);border:1.5px solid rgba(255,255,255,0.8)"></div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 6. NavigationBar -->
+  <div class="cp-card">
+    <div class="cp-head">
+      <div class="cp-h">NavigationBar</div>
+      <div class="cp-sub">Segmented bottom tab bar.</div>
+    </div>
+    <div class="nb-scaffold" style="height:80px">
+      <div class="nb-bar" style="position:relative">
+        <div class="nb-glow" style="left:40%"></div>
+        <div class="nb-nav">
+          <div class="nb-item"><span class="material-symbols-rounded">home</span><span>Home</span></div>
+          <div class="nb-item"><span class="material-symbols-rounded">group</span><span>Qaum</span></div>
+          <div class="nb-item active"><span class="material-symbols-rounded">menu_book</span><span>Quran</span></div>
+          <div class="nb-item"><span class="material-symbols-rounded">mosque</span><span>Salaah</span></div>
+          <div class="nb-item"><span class="material-symbols-rounded">person</span><span>Profile</span></div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 7. DatePicker -->
+  <div class="cp-card">
+    <div class="cp-head">
+      <div class="cp-h">DatePicker</div>
+      <div class="cp-sub">Islamic Hijri and Gregorian calendar grid picker.</div>
+    </div>
+    <div style="max-width:320px;background:var(--color-surface-secondary);border-radius:16px;padding:16px;border:1px solid var(--color-neutral-border)">
+      <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:16px">
+        <span class="material-symbols-rounded" style="color:var(--color-info-primary)">chevron_left</span>
+        <span style="font-family:var(--font-body);font-size:15px;font-weight:700;color:var(--color-info-primary)">Muharram 1447</span>
+        <span class="material-symbols-rounded" style="color:var(--color-info-primary)">chevron_right</span>
+      </div>
+      <div class="cal-grid">
+        <div class="cal-cell disabled">S</div><div class="cal-cell disabled">M</div><div class="cal-cell disabled">T</div><div class="cal-cell disabled">W</div><div class="cal-cell disabled">T</div><div class="cal-cell disabled">F</div><div class="cal-cell disabled">S</div>
+        <div class="cal-cell">1</div><div class="cal-cell">2</div><div class="cal-cell">3</div><div class="cal-cell">4</div><div class="cal-cell">5</div><div class="cal-cell">6</div><div class="cal-cell">7</div>
+        <div class="cal-cell">8</div><div class="cal-cell">9</div><div class="cal-cell selected">10</div><div class="cal-cell">11</div><div class="cal-cell">12</div><div class="cal-cell">13</div><div class="cal-cell">14</div>
+        <div class="cal-cell">15</div><div class="cal-cell">16</div><div class="cal-cell">17</div><div class="cal-cell">18</div><div class="cal-cell">19</div><div class="cal-cell">20</div><div class="cal-cell">21</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Footer -->
+  <div style="text-align:center;font-family:var(--font-body);font-size:12px;color:var(--canvas-label);margin-top:40px">
+    Noor Design System · <a href="../molecules/Molecules.dc.html" style="color:var(--color-action-primary);text-decoration:none;font-weight:700">← Molecules</a> · <a href="../../Index.dc.html" style="color:var(--color-action-primary);text-decoration:none;font-weight:700">Index</a>
+  </div>
+
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script>
+class Component extends DCLogic {
+  state = {
+    sheetOpen: false
+  };
+
+  openSheet = () => this.setState({ sheetOpen: true });
+  closeSheet = () => this.setState({ sheetOpen: false });
+
+  renderVals() {
+    const s = this.state;
+    return {
+      sheetOpen: s.sheetOpen,
+      openSheet: this.openSheet,
+      closeSheet: this.closeSheet
+    };
+  }
+}
+</script>
+</body>
+</html>

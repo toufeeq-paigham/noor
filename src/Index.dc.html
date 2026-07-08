@@ -47,7 +47,7 @@
       </div>
     </div>
     <div style="display:flex;gap:8px;flex-wrap:wrap">
-      <div style="background:var(--color-surface-secondary);border-radius:999px;padding:7px 14px;font-family:var(--font-body);font-size:12px;font-weight:700;color:var(--color-action-primary)">26 pages</div>
+      <div style="background:var(--color-surface-secondary);border-radius:999px;padding:7px 14px;font-family:var(--font-body);font-size:12px;font-weight:700;color:var(--color-action-primary)">30 pages</div>
       <div style="background:var(--color-surface-secondary);border-radius:999px;padding:7px 14px;font-family:var(--font-body);font-size:12px;font-weight:700;color:var(--color-action-primary)">Interactive</div>
       <div style="background:var(--color-surface-secondary);border-radius:999px;padding:7px 14px;font-family:var(--font-body);font-size:12px;font-weight:700;color:var(--color-action-primary)">Light · Dark · System</div>
     </div>
@@ -92,7 +92,7 @@
   </sc-for>
 
   <div style="text-align:center;font-family:var(--font-body);font-size:12px;color:var(--canvas-label);margin-top:20px">
-    Noor Design System · tokens, primitives &amp; components on pages 01–03 · built as a living POC
+    Noor Design System · tokens, primitives &amp; components on pages 01–06 · built as a living POC
   </div>
 </div>
 
@@ -102,27 +102,32 @@ class Component extends DCLogic {
   state = { filter: 'all' };
 
   data = [
-    { id: 'foundations', num: '00', title: 'Foundations', items: [
-      { name: 'Tokens', file: 'Tokens.dc.html', icon: 'palette', meta: 'Page 01 · colors, type, spacing' },
-      { name: 'Primitives', file: 'Primitives.dc.html', icon: 'widgets', meta: 'Page 02 · primitive styling gallery' },
-      { name: 'Components', file: 'Components.dc.html', icon: 'extension', meta: 'Page 03 · react components library' },
+    { id: 'foundations', num: '00', title: 'Foundation', items: [
+      { name: 'Primitives', file: 'foundation/Primitives.dc.html', icon: 'widgets', meta: 'Page 01 · surfaces, states, motion' },
+      { name: 'Tokens', file: 'foundation/Tokens.dc.html', icon: 'palette', meta: 'Page 02 · color, type, spacing' },
+      { name: 'Theme', file: 'foundation/Theme.dc.html', icon: 'dark_mode', meta: 'Page 03 · light & dark modes' },
     ]},
-    { id: 'onboarding', num: '01', title: 'Onboarding', items: [
+    { id: 'components', num: '01', title: 'Components', items: [
+      { name: 'Atoms', file: 'components/atoms/Atoms.dc.html', icon: 'widgets', meta: 'Page 04 · button, icon, input, toggles, chip, surface' },
+      { name: 'Molecules', file: 'components/molecules/Molecules.dc.html', icon: 'bubble_chart', meta: 'Page 05 · fields, search, list, OTP, tabs, snackbar' },
+      { name: 'Organisms', file: 'components/organisms/Organisms.dc.html', icon: 'dashboard', meta: 'Page 06 · dialog, sheet, nudge, bars, picker' },
+    ]},
+    { id: 'onboarding', num: '02', title: 'Onboarding', items: [
       { name: 'Intro', file: 'onboarding/Onboarding.dc.html#intro', icon: 'waving_hand', meta: 'Board row · 3 slides' },
       { name: 'Login', file: 'onboarding/Onboarding.dc.html#login', icon: 'login', meta: 'Board row · phone → OTP · 7 states' },
     ]},
-    { id: 'core', num: '02', title: 'Core app', items: [
+    { id: 'core', num: '03', title: 'Core app', items: [
       { name: 'Home Screen', file: 'home/Home Screen.dc.html', icon: 'splitscreen', meta: 'Section board · 5 tabs · 7 variations' },
       { name: 'Quran Reader', file: 'Quran Reader.dc.html', icon: 'auto_stories', meta: 'Screen · interactive' },
     ]},
-    { id: 'masjid', num: '03', title: 'Masjid', items: [
+    { id: 'masjid', num: '04', title: 'Masjid', items: [
       { name: 'Masjid Onboarding', file: 'Masjid Onboarding.dc.html', icon: 'add_home_work', meta: 'Flow · wizard + switcher sheet' },
       { name: 'Explore Masjids', file: 'Explore Masjids.dc.html', icon: 'travel_explore', meta: 'Screen · interactive' },
       { name: 'Search Masjids', file: 'Search Masjids.dc.html', icon: 'search', meta: 'Screen · interactive' },
       { name: 'Following Masjids', file: 'Following Masjids.dc.html', icon: 'favorite', meta: 'Screen · interactive' },
       { name: 'Scan QR', file: 'Scan QR.dc.html', icon: 'qr_code_scanner', meta: 'Screen · interactive' },
     ]},
-    { id: 'content', num: '04', title: 'Content & tools', items: [
+    { id: 'content', num: '05', title: 'Content & tools', items: [
       { name: 'Dua List', file: 'Dua List.dc.html', icon: 'volunteer_activism', meta: 'Screen · interactive' },
       { name: 'Dua Detail', file: 'Dua Detail.dc.html', icon: 'format_quote', meta: 'Screen · interactive' },
       { name: 'Hisnul Muslim', file: 'Hisnul Muslim.dc.html', icon: 'shield', meta: 'Screen · interactive' },
@@ -137,7 +142,8 @@ class Component extends DCLogic {
 
   chipDefs = [
     { id: 'all', label: 'All pages' },
-    { id: 'foundations', label: 'Foundations' },
+    { id: 'foundations', label: 'Foundation' },
+    { id: 'components', label: 'Components' },
     { id: 'onboarding', label: 'Onboarding' },
     { id: 'core', label: 'Core app' },
     { id: 'masjid', label: 'Masjid' },

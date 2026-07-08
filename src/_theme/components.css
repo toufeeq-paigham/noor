@@ -1,12 +1,20 @@
 /* ============================================================
    Noor DS — shared component constructions (CSS kit)
-   Source of truth: "Noor Design System (1)/preview/*.html".
+   Source of truth: this file + the Atoms/Molecules/Organisms pages.
    Loaded in every page's helmet AFTER colors_and_type.css and
-   poc.css. Screens REFERENCE these classes instead of rebuilding
-   components inline; Components.dc.html is the living preview.
+   poc.css. Screens and DS pages REFERENCE these classes instead
+   of rebuilding components inline. This file is the sole home for
+   component styling — pages keep only page-chrome (layout) inline.
+
+   Tier map (mirrors the atomic-design tree; see src/foundation/*
+   and src/components/{atoms,molecules,organisms}/*):
+     PRIMITIVES  .surf
+     ATOMS       .btn .ib · .badge .chip · .input .phone .otp · .sw .cb · .ind .dot
+     MOLECULES   .tbar .tab · .dd-menu .dd-item .chev · .rx-* .em
+     ORGANISMS   .app-bar .ab-* · .nb-bar .nb-*
    ============================================================ */
 
-/* ── Buttons (preview/buttons.html) ── */
+/* ── Buttons ── */
 .btn{display:inline-flex;align-items:center;justify-content:center;gap:8px;font-family:var(--font-body);font-weight:700;border:none;cursor:pointer;border-radius:16px;padding:12px 16px;min-height:40px;font-size:14px;box-sizing:border-box}
 .btn.lg{padding:14px 24px;min-height:48px;font-size:16px}
 .btn.sm{padding:6px 12px;min-height:32px;font-size:13px;border-radius:12px}
@@ -19,7 +27,7 @@
 .btn-destructive{background:var(--color-action-destructive);color:#fff;box-shadow:0 8px 20px -8px color-mix(in oklab,var(--color-action-destructive) 50%,transparent)}
 .btn[disabled]{background:var(--color-status-disabled);color:var(--color-status-disabled-alt);box-shadow:none;cursor:not-allowed}
 
-/* ── Icon buttons (preview/icon-buttons.html) ── */
+/* ── Icon buttons ── */
 .ib{width:48px;height:48px;border-radius:360px;display:inline-flex;align-items:center;justify-content:center;border:none;cursor:pointer;flex-shrink:0}
 .ib.sm{width:32px;height:32px}
 .ib.md{width:40px;height:40px}
@@ -33,7 +41,7 @@
 .ib.sm .material-symbols-rounded{font-size:16px}
 .ib.md .material-symbols-rounded{font-size:20px}
 
-/* ── Badges (preview/badges.html — accents are data colors, kept literal) ── */
+/* ── Badges (accents are data colors, kept literal) ── */
 .badge{display:inline-flex;align-items:center;gap:6px;padding:4px 10px;border-radius:360px;font-family:var(--font-body);font-size:14px;font-weight:500;border:1px solid}
 .badge.sm{padding:3px 8px;font-size:12px}
 .badge .material-symbols-rounded{font-size:14px}
@@ -44,7 +52,24 @@
 .badge.coral{background:color-mix(in oklab,#E7000B 15%,transparent);color:var(--color-status-error);border-color:#E7000B}
 .badge.purple{background:color-mix(in oklab,#AD46FF 15%,transparent);color:#AD46FF;border-color:#AD46FF}
 
-/* ── Text inputs (preview/inputs.html) ── */
+/* ── Chips (feed filter · follow toggle · count) ──
+   Small tappable pill. Variants are theme-aware (no literal accents like .badge):
+     .tonal   neutral, unselected (e.g. inactive filter)
+     .solid   selected/active (e.g. active filter)
+     .accent  filled CTA        (e.g. "Follow")
+     .outline resting/secondary (e.g. "Following")
+     .success accent-tint       (e.g. count "2", "Approve")
+     .sm      tighter padding for count pills */
+.chip{display:inline-flex;align-items:center;gap:6px;padding:6px 14px;border-radius:360px;font-family:var(--font-body);font-size:12px;font-weight:700;line-height:1;border:1px solid transparent;cursor:pointer;box-sizing:border-box;transition:background 200ms,border-color 200ms;flex-shrink:0}
+.chip.sm{padding:2px 9px}
+.chip .material-symbols-rounded{font-size:16px}
+.chip.tonal{background:var(--color-action-background);color:var(--color-info-primary)}
+.chip.solid{background:var(--color-info-primary);color:var(--color-surface-primary)}
+.chip.accent{background:var(--color-action-primary);color:var(--color-action-primary-inverse)}
+.chip.outline{background:transparent;border-color:var(--color-neutral-border);color:var(--color-info-secondary)}
+.chip.success{background:color-mix(in oklab,var(--color-action-primary) 14%,transparent);color:var(--color-action-primary)}
+
+/* ── Text inputs ── */
 .field{margin-bottom:12px;position:relative}
 .flabel{font-family:var(--font-body);font-size:13px;font-weight:500;color:var(--color-info-primary);margin-bottom:4px}
 .input{position:relative;background:var(--color-input-background);border-radius:16px;min-height:46px;padding:2px;box-sizing:border-box}
@@ -82,7 +107,7 @@
 .otp .cursor{width:1.5px;height:18px;background:var(--color-input-text);animation:noor-otp-blink 1s steps(1) infinite;display:inline-block;vertical-align:middle}
 @keyframes noor-otp-blink{50%{opacity:0}}
 
-/* ── Switches & checkboxes (preview/toggles.html) ── */
+/* ── Switches & checkboxes ── */
 .sw{position:relative;box-sizing:border-box;width:44px;height:24px;border-radius:360px;background:var(--color-input-background);border:1px solid var(--color-input-border);padding:2px;display:inline-flex;align-items:center;cursor:pointer;flex-shrink:0}
 .sw::after{content:"";display:block;width:18px;height:18px;border-radius:360px;background:var(--color-info-primary);transition:transform 120ms}
 .sw.on{background:var(--color-action-primary);border-color:transparent}
@@ -96,12 +121,12 @@
 .cb.small{width:32px;height:32px}
 .cb.small .material-symbols-rounded{font-size:16px}
 
-/* ── TabBar segmented (preview/tabbar.html) ── */
+/* ── TabBar segmented ── */
 .tbar{padding:4px;background:var(--color-action-background);border-radius:16px;display:flex;gap:2px}
 .tab{flex:1;padding:10px 12px;border-radius:12px;text-align:center;font-family:var(--font-body);font-size:14px;font-weight:700;color:var(--color-status-disabled-alt);cursor:pointer;transition:240ms}
 .tab.active{background:var(--color-action-primary);color:var(--color-action-primary-inverse)}
 
-/* ── Dropdown menu (preview/dropdown.html) ── */
+/* ── Dropdown menu ── */
 .dd-menu{position:absolute;left:0;right:0;top:calc(100% + 6px);z-index:5;background:color-mix(in oklab,var(--color-surface-card) 96%,transparent);backdrop-filter:blur(20px) saturate(180%);-webkit-backdrop-filter:blur(20px) saturate(180%);border-radius:16px;box-shadow:0 1px 2px rgba(9,9,11,.04),0 16px 32px -14px rgba(9,9,11,.2);padding:6px}
 .dd-item{display:flex;align-items:center;gap:10px;padding:10px 12px;border-radius:12px;font-family:var(--font-body);font-size:15px;color:var(--color-info-primary);cursor:pointer}
 .dd-item:hover{background:var(--color-input-background)}
@@ -111,7 +136,7 @@
 .chev{transition:transform 160ms}
 .chev.open{transform:rotate(180deg)}
 
-/* ── Cards & surfaces (preview/cards.html) ── */
+/* ── Cards & surfaces ── */
 .surf{padding:16px;border-radius:16px;background:var(--color-surface-primary);border:1px solid color-mix(in oklab,var(--color-action-primary) 30%,transparent);box-sizing:border-box}
 .surf.elev{box-shadow:0 12px 32px -14px color-mix(in oklab,var(--color-action-primary) 60%,transparent),0 4px 12px -4px rgba(9,9,11,.06)}
 .surf.subtle{background:var(--color-surface-secondary);border:none;box-shadow:0 4px 12px -8px rgba(9,9,11,.1)}
@@ -119,7 +144,7 @@
 .surf.grad-emerald{background:var(--gradient-emerald),var(--color-surface-card);border:1px solid color-mix(in oklab,#00C950 30%,transparent);box-shadow:0 1px 2px rgba(9,9,11,.04),0 10px 22px -16px rgba(0,150,137,.35)}
 .surf.grad-brand{background:var(--gradient-brand),var(--color-surface-card);border:1px solid color-mix(in oklab,#C9AD7B 35%,transparent);box-shadow:0 1px 2px rgba(9,9,11,.04),0 10px 22px -16px rgba(201,173,123,.4)}
 
-/* ── AppBar pieces (preview/appbar.html) ── */
+/* ── AppBar pieces ── */
 .ab-circle{width:36px;height:36px;border-radius:360px;background:color-mix(in oklab,var(--color-info-primary) 10%,transparent);display:inline-flex;align-items:center;justify-content:center;color:var(--color-info-primary);flex-shrink:0;cursor:pointer;border:none}
 .ab-title{font-family:var(--font-title);font-size:26px;line-height:1;color:var(--color-info-primary);letter-spacing:-.5px}
 .ab-haze{position:absolute;inset:0 0 auto 0;background:var(--gradient-emerald),var(--color-surface-primary);backdrop-filter:blur(26px) saturate(180%);-webkit-backdrop-filter:blur(26px) saturate(180%);-webkit-mask-image:linear-gradient(180deg,#000 0%,#000 55%,transparent 92%);mask-image:linear-gradient(180deg,#000 0%,#000 55%,transparent 92%)}
@@ -134,7 +159,7 @@
    title and bell along with it. */
 .app-bar::before{content:"";position:absolute;inset:0;z-index:-1;backdrop-filter:blur(20px);-webkit-backdrop-filter:blur(20px);-webkit-mask-image:linear-gradient(180deg,#000 0%,#000 60%,transparent 100%);mask-image:linear-gradient(180deg,#000 0%,#000 60%,transparent 100%)}
 
-/* ── Bottom NavBar (preview/navbar.html) ── */
+/* ── Bottom NavBar ── */
 .nb-bar{position:absolute;left:0;right:0;bottom:0;border-top-left-radius:26px;border-top-right-radius:26px;background:color-mix(in oklab,var(--color-surface-primary) 88%,transparent);border-top:1px solid var(--color-neutral-border);backdrop-filter:blur(20px);-webkit-backdrop-filter:blur(20px);padding:12px 8px 28px;box-sizing:border-box;z-index:50}
 .nb-glow{position:absolute;top:-8px;width:20%;height:60px;pointer-events:none;transition:left 250ms}
 .nb-glow::before{content:"";position:absolute;left:10%;right:10%;top:0;height:48px;background:radial-gradient(ellipse at top,color-mix(in oklab,var(--color-action-primary) 28%,transparent),transparent 70%);filter:blur(8px)}
@@ -145,14 +170,18 @@
 .nb-item.active .material-symbols-rounded{color:var(--color-action-primary);font-variation-settings:'FILL' 1}
 .nb-item.active span:not(.material-symbols-rounded){color:var(--color-action-primary);font-weight:700}
 
-/* ── Pager indicator (preview/pager-indicator.html) ── */
+/* ── Pager indicator ── */
 .ind{display:flex;gap:6px;align-items:center;height:6px}
 .dot{height:6px;width:6px;border-radius:360px;background:var(--color-info-secondary);transition:width 300ms}
 .dot.active{width:28px;background:var(--color-info-primary)}
 .dot.progress{width:28px;background:var(--color-info-secondary);position:relative;overflow:hidden}
 .dot.progress::after{content:"";position:absolute;inset:0;width:60%;background:var(--color-info-primary);border-radius:360px}
 
-/* ── Reactions (preview/reactions.html) ── */
+/* ── Reactions ── */
+.rx-empty{display:flex;align-items:center;gap:8px;padding:4px 8px}
+.rx-empty .material-symbols-rounded{color:var(--color-action-primary);font-size:22px;font-variation-settings:'FILL' 1}
+.rx-count{font-family:var(--font-body);font-size:14px;font-weight:500}
+.rx-count.you{color:var(--color-action-primary)}
 .em{display:inline-flex;align-items:center;justify-content:center;width:24px;height:24px;border-radius:360px;background:var(--color-surface-primary);border:1.5px solid var(--color-surface-secondary);margin-left:-8px;font-size:14px}
 .em:first-child{margin-left:0}
 .em.mine{background:var(--color-action-primary);border-color:var(--color-action-primary)}

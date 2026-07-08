@@ -1,0 +1,301 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="../../support.js"></script>
+<script src="../../_theme/chrome.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+  <link rel="stylesheet" href="../../_ds/noor-design-system-46f42e91-1858-412f-bdb6-560a6cc3df9f/colors_and_type.css">
+  <link rel="stylesheet" href="../../_theme/poc.css">
+  <link rel="stylesheet" href="../../_theme/components.css">
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Rounded:opsz,wght,FILL,GRAD@24,400,0..1,0&amp;display=block">
+  <style>
+    body{background:var(--canvas-bg);padding:56px 40px 120px;min-height:100vh;box-sizing:border-box}
+    ::-webkit-scrollbar{display:none}*{-ms-overflow-style:none;scrollbar-width:none}
+    .cp-wrap{max-width:1120px;margin:0 auto}
+    .cp-card{background:var(--color-surface-primary);border:1px solid var(--color-neutral-border);border-radius:18px;box-shadow:var(--shadow-card);padding:22px 24px;margin-bottom:24px}
+    .cp-h{font-family:var(--font-title);font-size:21px;color:var(--color-info-primary)}
+    .cp-sub{font-family:var(--font-body);font-size:12px;color:var(--color-info-secondary);margin-top:2px}
+    .cp-head{margin:0 0 12px}
+    .lbl{font-family:var(--font-body);font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:.08em;color:var(--color-info-secondary);margin-bottom:8px}
+    .row{display:flex;align-items:center;gap:12px;flex-wrap:wrap;margin-bottom:14px}
+    .rowlbl{width:100px;flex-shrink:0}
+    .cp-grid2{display:grid;grid-template-columns:1fr 1fr;gap:20px}
+    .tglbl{font-family:var(--font-body);font-size:13px;color:var(--color-info-primary)}
+    /* Demo labels inside surface previews (page content, not component styling) */
+    .surf .tag{display:inline-block;font-family:var(--font-body);font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:.08em;color:var(--color-info-secondary);margin-bottom:6px}
+    .surf .name{font-family:var(--font-title);font-size:18px;line-height:1.1;color:var(--color-info-primary);margin:0 0 4px}
+    .surf .sub{font-family:var(--font-body);font-size:12px;color:var(--color-info-secondary)}
+  </style>
+</helmet>
+
+<div class="cp-wrap">
+
+  <!-- Header -->
+  <div style="display:flex;align-items:flex-end;justify-content:space-between;gap:24px;flex-wrap:wrap;margin-bottom:32px">
+    <div>
+      <div style="font-family:var(--font-body);font-size:12px;font-weight:800;letter-spacing:.1em;text-transform:uppercase;color:var(--color-neutral-brand);margin-bottom:8px">Components · Page 04</div>
+      <div style="font-family:var(--font-title);font-size:40px;letter-spacing:-0.5px;color:var(--color-info-primary);line-height:1.1">Atoms</div>
+      <div style="font-family:var(--font-body);font-size:15px;color:var(--color-info-secondary);margin-top:6px;max-width:640px">
+        The atomic elements of the Noor interface — basic, self-contained controls that cannot be broken down further.
+      </div>
+    </div>
+    <div style="display:flex;gap:10px">
+      <a href="../../foundation/Theme.dc.html" style="display:inline-flex;align-items:center;gap:8px;text-decoration:none;background:var(--color-surface-primary);border:1px solid var(--color-neutral-border);border-radius:999px;padding:10px 16px;box-shadow:var(--shadow-card)">
+        <span class="material-symbols-rounded" style="font-size:18px;color:var(--color-action-primary)">dark_mode</span>
+        <span style="font-family:var(--font-body);font-size:13px;font-weight:700;color:var(--color-info-primary)">← Theme</span>
+      </a>
+      <a href="../../Index.dc.html" style="display:inline-flex;align-items:center;gap:8px;text-decoration:none;background:var(--color-surface-primary);border:1px solid var(--color-neutral-border);border-radius:999px;padding:10px 16px;box-shadow:var(--shadow-card)">
+        <span class="material-symbols-rounded" style="font-size:18px;color:var(--color-action-primary)">home</span>
+        <span style="font-family:var(--font-body);font-size:13px;font-weight:700;color:var(--color-info-primary)">Index</span>
+      </a>
+    </div>
+  </div>
+
+  <!-- 1. Buttons -->
+  <div class="cp-card">
+    <div class="cp-head">
+      <div class="cp-h">Button</div>
+      <div class="cp-sub">Filled, Tonal, Link, and Destructive buttons in standard sizes. Also includes circular icon buttons.</div>
+    </div>
+    <div style="display:flex;flex-direction:column;gap:16px">
+      <div>
+        <div class="lbl">Standard Buttons</div>
+        <div class="row"><div class="lbl rowlbl">Filled</div>
+          <button class="btn btn-filled sm">Save</button>
+          <button class="btn btn-filled">Continue</button>
+          <button class="btn btn-filled lg"><span class="material-symbols-rounded" style="font-size:18px">play_arrow</span>Start reading</button>
+          <button class="btn btn-filled" disabled="disabled">Disabled</button>
+        </div>
+        <div class="row"><div class="lbl rowlbl">Tonal</div>
+          <button class="btn btn-tonal sm">Cancel</button>
+          <button class="btn btn-tonal">Skip for now</button>
+          <button class="btn btn-tonal teal">Add bookmark</button>
+          <button class="btn btn-tonal contained">Share verse</button>
+        </div>
+        <div class="row"><div class="lbl rowlbl">Link</div>
+          <button class="btn btn-link">Read more</button>
+          <button class="btn btn-link">Forgot password</button>
+        </div>
+        <div class="row"><div class="lbl rowlbl">Destructive</div>
+          <button class="btn btn-destructive">Delete bookmark</button>
+          <button class="btn btn-destructive sm">Remove</button>
+        </div>
+      </div>
+
+      <hr style="border:none;border-top:1px solid var(--color-neutral-border);margin:8px 0">
+
+      <div>
+        <div class="lbl">Icon Buttons (.ib)</div>
+        <div class="row"><div class="lbl rowlbl">Filled</div>
+          <button class="ib ib-filled sm"><span class="material-symbols-rounded">add</span></button>
+          <button class="ib ib-filled md"><span class="material-symbols-rounded">bookmark</span></button>
+          <button class="ib ib-filled"><span class="material-symbols-rounded">play_arrow</span></button>
+        </div>
+        <div class="row"><div class="lbl rowlbl">Tonal</div>
+          <button class="ib ib-tonal sm"><span class="material-symbols-rounded">close</span></button>
+          <button class="ib ib-tonal md"><span class="material-symbols-rounded">search</span></button>
+          <button class="ib ib-tonal"><span class="material-symbols-rounded">notifications</span></button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Icon -->
+  <div class="cp-card">
+    <div class="cp-head">
+      <div class="cp-h">Icon</div>
+      <div class="cp-sub">Material symbols rounded with proper ligature scaling.</div>
+    </div>
+    <div class="row">
+      <div style="display:flex;align-items:center;gap:24px;background:var(--color-action-background);padding:16px 24px;border-radius:12px">
+        <span class="material-symbols-rounded" style="font-size:32px;color:var(--color-action-primary)">mosque</span>
+        <span class="material-symbols-rounded" style="font-size:32px;color:var(--color-action-primary)">volunteer_activism</span>
+        <span class="material-symbols-rounded" style="font-size:32px;color:var(--color-action-primary)">notifications</span>
+        <span class="material-symbols-rounded" style="font-size:32px;color:var(--color-action-primary)">search</span>
+        <span class="material-symbols-rounded" style="font-size:32px;color:var(--color-action-primary)">settings</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- 4. Chip & Badge -->
+  <div class="cp-card">
+    <div class="cp-head">
+      <div class="cp-h">Chip &amp; Badge</div>
+      <div class="cp-sub">Tappable pill chips (filter · follow · count) and tonal status badges (15% bg + 100% border).</div>
+    </div>
+    <div>
+      <div>
+        <div class="lbl" style="margin-bottom:8px">Chips (.chip)</div>
+        <div class="row">
+          <div class="chip solid">All Updates</div>
+          <div class="chip tonal">My Masjids</div>
+          <div class="chip accent">Follow</div>
+          <div class="chip outline">Following</div>
+          <div class="chip success"><span class="material-symbols-rounded">check</span>Approve</div>
+          <span class="chip success sm">2</span>
+        </div>
+      </div>
+
+      <hr style="border:none;border-top:1px solid var(--color-neutral-border);margin:16px 0">
+
+      <div>
+        <div class="lbl" style="margin-bottom:8px">Pill Badges (.badge)</div>
+        <div class="row">
+          <span class="badge teal">Verse of the day</span>
+          <span class="badge jade"><span class="material-symbols-rounded">check_circle</span>Goal met</span>
+          <span class="badge gold">Surah Yāsīn</span>
+          <span class="badge amber"><span class="material-symbols-rounded">schedule</span>Maghrib in 12m</span>
+          <span class="badge coral"><span class="material-symbols-rounded">error</span>Offline</span>
+          <span class="badge purple">Ramadan special</span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Input -->
+  <div class="cp-card">
+    <div class="cp-head">
+      <div class="cp-h">Input</div>
+      <div class="cp-sub">The bare text-field control in its four states. Labels, helper text, phone prefix and OTP are molecules built on this atom.</div>
+    </div>
+    <div class="cp-grid2">
+      <div>
+        <div class="lbl" style="margin-bottom:6px">Default</div>
+        <div class="input"><div class="inner"><span class="val ph">Search reciters</span><span class="material-symbols-rounded">expand_more</span></div></div>
+      </div>
+      <div>
+        <div class="lbl" style="margin-bottom:6px">Focused</div>
+        <div class="input focused"><div class="inner"><span class="material-symbols-rounded">mail</span><span class="val">misba@noor.app</span></div></div>
+      </div>
+      <div>
+        <div class="lbl" style="margin-bottom:6px">Error</div>
+        <div class="input error"><div class="inner"><span class="val">12</span></div></div>
+      </div>
+      <div>
+        <div class="lbl" style="margin-bottom:6px">Disabled</div>
+        <div class="input disabled"><div class="inner"><span class="val ph">MSJ-04421</span></div></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Switch -->
+  <div class="cp-card">
+    <div class="cp-head">
+      <div class="cp-h">Switch</div>
+      <div class="cp-sub">Track + thumb, on / off — click to toggle.</div>
+    </div>
+    <div class="cp-grid2" style="row-gap:16px">
+      <sc-for list="{{ switches }}" as="s" hint-placeholder-count="4">
+        <div class="row" style="margin-bottom:0"><span class="sw {{ s.cls }}" onClick="{{ s.onToggle }}"></span><span class="tglbl">{{ s.label }}</span></div>
+      </sc-for>
+    </div>
+  </div>
+
+  <!-- 7. Checkbox -->
+  <div class="cp-card">
+    <div class="cp-head">
+      <div class="cp-h">Checkbox</div>
+      <div class="cp-sub">Circular checkbox — off / on / indeterminate. Click to toggle.</div>
+    </div>
+    <div class="cp-grid2" style="row-gap:16px">
+      <sc-for list="{{ checks }}" as="c" hint-placeholder-count="4">
+        <div class="row" style="margin-bottom:0">
+          <span class="cb {{ c.cls }}" onClick="{{ c.onToggle }}"><sc-if value="{{ c.on }}"><span class="material-symbols-rounded">check</span></sc-if></span>
+          <span class="tglbl">{{ c.label }}</span>
+        </div>
+      </sc-for>
+    </div>
+  </div>
+
+  <!-- 8. Pager indicator -->
+  <div class="cp-card">
+    <div class="cp-head">
+      <div class="cp-h">Pager indicator</div>
+      <div class="cp-sub">Discrete dots + animated pill, plus auto-progress variant.</div>
+    </div>
+    <div style="display:flex;flex-direction:column;gap:18px">
+      <div><div class="lbl" style="margin-bottom:6px">Discrete — click a dot</div>
+        <div class="ind">
+          <sc-for list="{{ pagerDots }}" as="d" hint-placeholder-count="5">
+            <span class="dot {{ d.cls }}" onClick="{{ d.onSelect }}" style="cursor:pointer;transition:width 300ms"></span>
+          </sc-for>
+        </div>
+      </div>
+      <div><div class="lbl" style="margin-bottom:6px">Auto-progress (60%)</div>
+        <div class="ind"><span class="dot"></span><span class="dot progress"></span><span class="dot"></span><span class="dot"></span></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 9. Surface -->
+  <div class="cp-card">
+    <div class="cp-head">
+      <div class="cp-h">Surface</div>
+      <div class="cp-sub">The base container atom — PlainSurface flavours + emerald &amp; brand gradient surfaces. Every card and list row is built on it.</div>
+    </div>
+    <div style="display:grid;grid-template-columns:repeat(auto-fit, minmax(240px, 1fr));gap:14px">
+      <div class="surf"><div class="tag">PlainSurface</div><div class="name">Today's ayah</div><div class="sub">Hairline border, no shadow.</div></div>
+      <div class="surf elev"><div class="tag">.elevated</div><div class="name">Reading streak</div><div class="sub">Accent-tinted shadow.</div></div>
+      <div class="surf subtle"><div class="tag">.subtle</div><div class="name">Continue Surah</div><div class="sub">Secondary bg, soft shadow.</div></div>
+      <div class="surf flat"><div class="tag">.flat</div><div class="name">List row</div><div class="sub">No shadow, secondary bg.</div></div>
+      <div class="surf grad-emerald"><div class="tag">Gradient · emerald</div><div class="name">Daily goal met</div><div class="sub">Soft off-center radial wash.</div></div>
+      <div class="surf grad-brand"><div class="tag">Gradient · brand</div><div class="name">Juz 1 complete</div><div class="sub">Brand gold accent surface.</div></div>
+    </div>
+  </div>
+
+  <!-- Footer -->
+  <div style="text-align:center;font-family:var(--font-body);font-size:12px;color:var(--canvas-label);margin-top:40px">
+    Noor Design System · <a href="../../foundation/Theme.dc.html" style="color:var(--color-action-primary);text-decoration:none;font-weight:700">← Theme</a> · <a href="../../Index.dc.html" style="color:var(--color-action-primary);text-decoration:none;font-weight:700">Index</a> · <a href="../molecules/Molecules.dc.html" style="color:var(--color-action-primary);text-decoration:none;font-weight:700">Molecules →</a>
+  </div>
+
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script>
+class Component extends DCLogic {
+  state = {
+    switches: [true, false, true, false],
+    checks: [true, false, 'ind', true],
+    page: 2
+  };
+
+  switchLabels = ['Notifications', 'Auto-play next ayah', 'Show transliteration', 'Dark mode follows system'];
+  checkLabels = ['Daily ayah email', 'Weekly summary', 'Select all surahs', 'Include translation'];
+
+  flipSwitch = (i) => this.setState(s => {
+    const next = s.switches.slice(); next[i] = !next[i];
+    return { switches: next };
+  });
+  flipCheck = (i) => this.setState(s => {
+    const next = s.checks.slice(); next[i] = next[i] === true ? false : true;
+    return { checks: next };
+  });
+  setPage = (i) => this.setState({ page: i });
+
+  renderVals() {
+    const s = this.state;
+    const switches = this.switchLabels.map((label, i) => ({
+      label, cls: s.switches[i] ? 'on' : '',
+      onToggle: () => this.flipSwitch(i),
+    }));
+    const checks = this.checkLabels.map((label, i) => ({
+      label,
+      on: s.checks[i] === true,
+      cls: s.checks[i] === true ? 'on' : (s.checks[i] === 'ind' ? 'indeterminate' : ''),
+      onToggle: () => this.flipCheck(i),
+    }));
+    const pagerDots = Array.from({ length: 5 }, (_, i) => ({
+      cls: i === s.page ? 'active' : '',
+      onSelect: () => this.setPage(i),
+    }));
+
+    return { switches, checks, pagerDots };
+  }
+}
+</script>
+</body>
+</html>

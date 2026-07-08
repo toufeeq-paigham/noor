@@ -5,6 +5,8 @@
 .claude/skills/*-workspace/
 .thumbnail
 node_modules/
+# local reference screenshot dump (64MB of raw PNGs, not repo content)
+Screens/
 dist/
 __pycache__/
 *.pyc

@@ -680,16 +680,12 @@ function QaumScreen({
 
   const fPaigham = {
     label: follows.paigham ? 'Following' : 'Follow',
-    bg: follows.paigham ? 'transparent' : 'var(--color-action-primary)',
-    border: follows.paigham ? 'var(--color-neutral-border)' : 'transparent',
-    color: follows.paigham ? 'var(--color-info-secondary)' : 'var(--color-action-primary-inverse)'
+    variant: follows.paigham ? 'outline' : 'accent'
   };
 
   const fDargah = {
     label: follows.dargah ? 'Following' : 'Follow',
-    bg: follows.dargah ? 'transparent' : 'var(--color-action-primary)',
-    border: follows.dargah ? 'var(--color-neutral-border)' : 'transparent',
-    color: follows.dargah ? 'var(--color-info-secondary)' : 'var(--color-action-primary-inverse)'
+    variant: follows.dargah ? 'outline' : 'accent'
   };
 
   // Audio bars helper
@@ -711,9 +707,7 @@ function QaumScreen({
           {filters.map((f, idx) => {
             const active = activeFilter === f.index;
             return (
-              <div key={idx} onClick={() => onSelectFilter && onSelectFilter(f.index)} style={{ borderRadius: 999, padding: '6px 14px', cursor: 'pointer', background: active ? 'var(--color-info-primary)' : 'var(--color-action-background)', transition: 'background 200ms' }}>
-                <span style={{ fontFamily: '"Nunito", sans-serif', fontSize: 12, fontWeight: 700, color: active ? 'var(--color-surface-primary)' : 'var(--color-info-primary)' }}>{f.label}</span>
-              </div>
+              <div key={idx} onClick={() => onSelectFilter && onSelectFilter(f.index)} className={`chip ${active ? 'solid' : 'tonal'}`}>{f.label}</div>
             );
           })}
         </div>
@@ -730,9 +724,7 @@ function QaumScreen({
                 <div style={{ fontFamily: '"Nunito", sans-serif', fontSize: 15, fontWeight: 700, color: 'var(--color-info-primary)' }}>Paigham</div>
                 <div style={{ fontFamily: '"Nunito", sans-serif', fontSize: 12, color: 'var(--color-info-secondary)' }}>Paigham HQ</div>
               </div>
-              <div onClick={() => onToggleFollow && onToggleFollow('paigham')} style={{ marginLeft: 'auto', flexShrink: 0, borderRadius: 999, padding: '5px 13px', cursor: 'pointer', background: fPaigham.bg, border: `1px solid ${fPaigham.border}`, transition: 'background 200ms' }}>
-                <span style={{ fontFamily: '"Nunito", sans-serif', fontSize: 12, fontWeight: 700, color: fPaigham.color }}>{fPaigham.label}</span>
-              </div>
+              <div onClick={() => onToggleFollow && onToggleFollow('paigham')} className={`chip ${fPaigham.variant}`} style={{ marginLeft: 'auto' }}>{fPaigham.label}</div>
             </div>
             <div style={{ fontFamily: '"Nunito", sans-serif', fontSize: 14, color: 'color-mix(in oklab, var(--color-info-primary) 85%, transparent)', marginBottom: 10, lineHeight: 1.5 }}>
               Haj 2027 registration is open. Please check the website. <span style={{ fontWeight: 700, color: 'var(--color-info-primary)', cursor: 'pointer' }}>Read more</span>
@@ -781,9 +773,7 @@ function QaumScreen({
                 <div style={{ fontFamily: '"Nunito", sans-serif', fontSize: 15, fontWeight: 700, color: 'var(--color-info-primary)' }}>Dargah Masjid</div>
                 <div style={{ fontFamily: '"Nunito", sans-serif', fontSize: 12, color: 'var(--color-info-secondary)' }}>Molkalmuru - 577535</div>
               </div>
-              <div onClick={() => onToggleFollow && onToggleFollow('dargah')} style={{ marginLeft: 'auto', flexShrink: 0, borderRadius: 999, padding: '5px 13px', cursor: 'pointer', background: fDargah.bg, border: `1px solid ${fDargah.border}`, transition: 'background 200ms' }}>
-                <span style={{ fontFamily: '"Nunito", sans-serif', fontSize: 12, fontWeight: 700, color: fDargah.color }}>{fDargah.label}</span>
-              </div>
+              <div onClick={() => onToggleFollow && onToggleFollow('dargah')} className={`chip ${fDargah.variant}`} style={{ marginLeft: 'auto' }}>{fDargah.label}</div>
             </div>
             {/* Audio player card */}
             <div style={{ background: 'var(--color-surface-card)', borderRadius: 40, padding: '8px 14px', display: 'flex', alignItems: 'center', gap: 10, marginBottom: 10, border: '1px solid color-mix(in oklab, var(--color-action-primary) 18%, transparent)' }}>
@@ -1117,7 +1107,7 @@ function ProfileScreen({
             <div onClick={goMasjids} className="prow" style={{ display: 'flex', alignItems: 'center', gap: 12, padding: 16, borderBottom: '1px solid var(--color-neutral-border)' }}>
               <span className="material-symbols-rounded" style={{ fontSize: 22, color: 'var(--color-info-secondary)' }}>mosque</span>
               <span style={{ fontFamily: '"Nunito", sans-serif', fontSize: 16, color: 'var(--color-info-primary)', flex: 1 }}>My Masjids</span>
-              <span style={{ fontFamily: '"Nunito", sans-serif', fontSize: 12, fontWeight: 700, color: 'var(--color-action-primary)', background: 'rgba(0,201,80,0.14)', borderRadius: 999, padding: '2px 9px' }}>2</span>
+              <span className="chip success sm">2</span>
               <span className="material-symbols-rounded" style={{ fontSize: 20, color: 'var(--color-info-faint)' }}>chevron_right</span>
             </div>
             <div onClick={goRegister} className="prow" style={{ display: 'flex', alignItems: 'center', gap: 12, padding: 16, borderBottom: '1px solid var(--color-neutral-border)' }}>
@@ -1144,9 +1134,9 @@ function ProfileScreen({
                     <div key={idx} style={{ display: 'flex', alignItems: 'center', gap: 12 }}>
                       <div style={{ width: 32, height: 32, borderRadius: '50%', background: 'var(--color-status-disabled)', display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0 }}><span style={{ fontFamily: '"DM Serif Display", Georgia, serif', fontSize: 14, color: 'var(--color-info-secondary)' }}>{fr.letter}</span></div>
                       <span style={{ fontFamily: '"Nunito", sans-serif', fontSize: 14, fontWeight: 600, color: 'var(--color-info-primary)', flex: 1 }}>{fr.name}</span>
-                      <div onClick={() => onApproveFriend && onApproveFriend(fr.name)} style={{ display: 'flex', alignItems: 'center', gap: 4, background: 'rgba(0,201,80,0.14)', borderRadius: 999, padding: '6px 12px', cursor: 'pointer' }}>
-                        <span className="material-symbols-rounded" style={{ fontSize: 16, color: 'var(--color-action-primary)' }}>check</span>
-                        <span style={{ fontFamily: '"Nunito", sans-serif', fontSize: 12, fontWeight: 700, color: 'var(--color-action-primary)' }}>Approve</span>
+                      <div onClick={() => onApproveFriend && onApproveFriend(fr.name)} className="chip success">
+                        <span className="material-symbols-rounded">check</span>
+                        <span>Approve</span>
                       </div>
                     </div>
                   ))}

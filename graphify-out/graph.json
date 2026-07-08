@@ -2302,7 +2302,7 @@
       "label": "QuranScreen()",
       "file_type": "code",
       "source_file": "src/home/storyboards/screens.jsx",
-      "source_location": "L817",
+      "source_location": "L807",
       "id": "storyboards_screens_quranscreen",
       "community": 33,
       "norm_label": "quranscreen()"
@@ -2311,7 +2311,7 @@
       "label": "SalaahScreen()",
       "file_type": "code",
       "source_file": "src/home/storyboards/screens.jsx",
-      "source_location": "L929",
+      "source_location": "L919",
       "id": "storyboards_screens_salaahscreen",
       "community": 33,
       "norm_label": "salaahscreen()"
@@ -2320,7 +2320,7 @@
       "label": "ProfileScreen()",
       "file_type": "code",
       "source_file": "src/home/storyboards/screens.jsx",
-      "source_location": "L1084",
+      "source_location": "L1074",
       "id": "storyboards_screens_profilescreen",
       "community": 33,
       "norm_label": "profilescreen()"
@@ -3328,10 +3328,19 @@
       "norm_label": "project structure"
     },
     {
-      "label": "Design System Rules",
+      "label": "Layer Architecture \u2014 HARD RULES (do not violate)",
       "file_type": "document",
       "source_file": ".agents/AGENTS.md",
       "source_location": "L122",
+      "id": "agents_agents_layer_architecture_hard_rules_do_not_violate",
+      "community": 22,
+      "norm_label": "layer architecture \u2014 hard rules (do not violate)"
+    },
+    {
+      "label": "Design System Rules",
+      "file_type": "document",
+      "source_file": ".agents/AGENTS.md",
+      "source_location": "L161",
       "id": "agents_agents_design_system_rules",
       "community": 22,
       "norm_label": "design system rules"
@@ -3340,7 +3349,7 @@
       "label": "Commit Messages",
       "file_type": "document",
       "source_file": ".agents/AGENTS.md",
-      "source_location": "L139",
+      "source_location": "L179",
       "id": "agents_agents_commit_messages",
       "community": 22,
       "norm_label": "commit messages"
@@ -3796,10 +3805,19 @@
       "norm_label": "project structure"
     },
     {
+      "label": "Layer Architecture \u2014 HARD RULES (do not violate)",
+      "file_type": "document",
+      "source_file": "CLAUDE.md",
+      "source_location": "L125",
+      "id": "claude_layer_architecture_hard_rules_do_not_violate",
+      "community": 15,
+      "norm_label": "layer architecture \u2014 hard rules (do not violate)"
+    },
+    {
       "label": "Design System Rules",
       "file_type": "document",
       "source_file": "CLAUDE.md",
-      "source_location": "L122",
+      "source_location": "L164",
       "id": "claude_design_system_rules",
       "community": 15,
       "norm_label": "design system rules"
@@ -3808,91 +3826,10 @@
       "label": "Commit Messages",
       "file_type": "document",
       "source_file": "CLAUDE.md",
-      "source_location": "L139",
+      "source_location": "L183",
       "id": "claude_commit_messages",
       "community": 15,
       "norm_label": "commit messages"
-    },
-    {
-      "label": "SPEC.md",
-      "file_type": "document",
-      "source_file": "SPEC.md",
-      "source_location": "L1",
-      "id": "spec",
-      "community": 8,
-      "norm_label": "spec.md"
-    },
-    {
-      "label": "Noor POC conversion spec",
-      "file_type": "document",
-      "source_file": "SPEC.md",
-      "source_location": "L1",
-      "id": "spec_noor_poc_conversion_spec",
-      "community": 8,
-      "norm_label": "noor poc conversion spec"
-    },
-    {
-      "label": "1. Framework cheatsheet (`.dc.html` pages)",
-      "file_type": "document",
-      "source_file": "SPEC.md",
-      "source_location": "L6",
-      "id": "spec_1_framework_cheatsheet_dc_html_pages",
-      "community": 8,
-      "norm_label": "1. framework cheatsheet (`.dc.html` pages)"
-    },
-    {
-      "label": "2. Required page wiring",
-      "file_type": "document",
-      "source_file": "SPEC.md",
-      "source_location": "L15",
-      "id": "spec_2_required_page_wiring",
-      "community": 8,
-      "norm_label": "2. required page wiring"
-    },
-    {
-      "label": "3. Color token mapping (hex \u2192 var)",
-      "file_type": "document",
-      "source_file": "SPEC.md",
-      "source_location": "L31",
-      "id": "spec_3_color_token_mapping_hex_var",
-      "community": 8,
-      "norm_label": "3. color token mapping (hex \u2192 var)"
-    },
-    {
-      "label": "4. Interactivity requirements",
-      "file_type": "document",
-      "source_file": "SPEC.md",
-      "source_location": "L61",
-      "id": "spec_4_interactivity_requirements",
-      "community": 8,
-      "norm_label": "4. interactivity requirements"
-    },
-    {
-      "label": "5. Navigation",
-      "file_type": "document",
-      "source_file": "SPEC.md",
-      "source_location": "L65",
-      "id": "spec_5_navigation",
-      "community": 8,
-      "norm_label": "5. navigation"
-    },
-    {
-      "label": "6. Do not touch",
-      "file_type": "document",
-      "source_file": "SPEC.md",
-      "source_location": "L88",
-      "id": "spec_6_do_not_touch",
-      "community": 8,
-      "norm_label": "6. do not touch"
-    },
-    {
-      "label": "7. Self-verification (before you finish)",
-      "file_type": "document",
-      "source_file": "SPEC.md",
-      "source_location": "L92",
-      "id": "spec_7_self_verification_before_you_finish",
-      "community": 8,
-      "norm_label": "7. self-verification (before you finish)"
     },
     {
       "label": "README.md",
@@ -4100,6 +4037,87 @@
       "id": "noor_design_system_46f42e91_1858_412f_bdb6_560a6cc3df9f_readme_iconography",
       "community": 3,
       "norm_label": "iconography"
+    },
+    {
+      "label": "SPEC.md",
+      "file_type": "document",
+      "source_file": "SPEC.md",
+      "source_location": "L1",
+      "community": 8,
+      "norm_label": "spec.md",
+      "id": "spec"
+    },
+    {
+      "label": "Noor POC conversion spec",
+      "file_type": "document",
+      "source_file": "SPEC.md",
+      "source_location": "L1",
+      "community": 8,
+      "norm_label": "noor poc conversion spec",
+      "id": "spec_noor_poc_conversion_spec"
+    },
+    {
+      "label": "1. Framework cheatsheet (`.dc.html` pages)",
+      "file_type": "document",
+      "source_file": "SPEC.md",
+      "source_location": "L6",
+      "community": 8,
+      "norm_label": "1. framework cheatsheet (`.dc.html` pages)",
+      "id": "spec_1_framework_cheatsheet_dc_html_pages"
+    },
+    {
+      "label": "2. Required page wiring",
+      "file_type": "document",
+      "source_file": "SPEC.md",
+      "source_location": "L15",
+      "community": 8,
+      "norm_label": "2. required page wiring",
+      "id": "spec_2_required_page_wiring"
+    },
+    {
+      "label": "3. Color token mapping (hex \u2192 var)",
+      "file_type": "document",
+      "source_file": "SPEC.md",
+      "source_location": "L31",
+      "community": 8,
+      "norm_label": "3. color token mapping (hex \u2192 var)",
+      "id": "spec_3_color_token_mapping_hex_var"
+    },
+    {
+      "label": "4. Interactivity requirements",
+      "file_type": "document",
+      "source_file": "SPEC.md",
+      "source_location": "L61",
+      "community": 8,
+      "norm_label": "4. interactivity requirements",
+      "id": "spec_4_interactivity_requirements"
+    },
+    {
+      "label": "5. Navigation",
+      "file_type": "document",
+      "source_file": "SPEC.md",
+      "source_location": "L65",
+      "community": 8,
+      "norm_label": "5. navigation",
+      "id": "spec_5_navigation"
+    },
+    {
+      "label": "6. Do not touch",
+      "file_type": "document",
+      "source_file": "SPEC.md",
+      "source_location": "L88",
+      "community": 8,
+      "norm_label": "6. do not touch",
+      "id": "spec_6_do_not_touch"
+    },
+    {
+      "label": "7. Self-verification (before you finish)",
+      "file_type": "document",
+      "source_file": "SPEC.md",
+      "source_location": "L92",
+      "community": 8,
+      "norm_label": "7. self-verification (before you finish)",
+      "id": "spec_7_self_verification_before_you_finish"
     },
     {
       "label": "TabsRow()",
@@ -6780,9 +6798,9 @@
       "source_file": "src/_theme/components.jsx",
       "source_location": "L78",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "theme_components",
-      "target": "theme_components_bottomsheet",
-      "confidence_score": 1.0
+      "target": "theme_components_bottomsheet"
     },
     {
       "relation": "contains",
@@ -6790,9 +6808,9 @@
       "source_file": "src/_theme/components.jsx",
       "source_location": "L4",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "theme_components",
-      "target": "theme_components_promptcard",
-      "confidence_score": 1.0
+      "target": "theme_components_promptcard"
     },
     {
       "relation": "contains",
@@ -6820,9 +6838,9 @@
       "source_file": "src/home/storyboards/nav-bar.jsx",
       "source_location": "L19",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "storyboards_nav_bar",
-      "target": "storyboards_nav_bar_bottomnav",
-      "confidence_score": 1.0
+      "target": "storyboards_nav_bar_bottomnav"
     },
     {
       "relation": "contains",
@@ -6830,9 +6848,9 @@
       "source_file": "src/home/storyboards/nav-bar.jsx",
       "source_location": "L11",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "storyboards_nav_bar",
-      "target": "storyboards_nav_bar_nav_tabs",
-      "confidence_score": 1.0
+      "target": "storyboards_nav_bar_nav_tabs"
     },
     {
       "relation": "contains",
@@ -6890,9 +6908,9 @@
       "source_file": "src/home/storyboards/tabs-row.jsx",
       "source_location": "L127",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "storyboards_tabs_row",
-      "target": "storyboards_tabs_row_homeprayerrow",
-      "confidence_score": 1.0
+      "target": "storyboards_tabs_row_homeprayerrow"
     },
     {
       "relation": "contains",
@@ -6900,9 +6918,9 @@
       "source_file": "src/home/storyboards/tabs-row.jsx",
       "source_location": "L62",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "storyboards_tabs_row",
-      "target": "storyboards_tabs_row_homerow",
-      "confidence_score": 1.0
+      "target": "storyboards_tabs_row_homerow"
     },
     {
       "relation": "contains",
@@ -6910,9 +6928,9 @@
       "source_file": "src/home/storyboards/tabs-row.jsx",
       "source_location": "L17",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "storyboards_tabs_row",
-      "target": "storyboards_tabs_row_prayer_frames",
-      "confidence_score": 1.0
+      "target": "storyboards_tabs_row_prayer_frames"
     },
     {
       "relation": "contains",
@@ -6920,9 +6938,9 @@
       "source_file": "src/home/storyboards/tabs-row.jsx",
       "source_location": "L114",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "storyboards_tabs_row",
-      "target": "storyboards_tabs_row_profilerow",
-      "confidence_score": 1.0
+      "target": "storyboards_tabs_row_profilerow"
     },
     {
       "relation": "contains",
@@ -6930,9 +6948,9 @@
       "source_file": "src/home/storyboards/tabs-row.jsx",
       "source_location": "L75",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "storyboards_tabs_row",
-      "target": "storyboards_tabs_row_qaumrow",
-      "confidence_score": 1.0
+      "target": "storyboards_tabs_row_qaumrow"
     },
     {
       "relation": "contains",
@@ -6940,9 +6958,9 @@
       "source_file": "src/home/storyboards/tabs-row.jsx",
       "source_location": "L88",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "storyboards_tabs_row",
-      "target": "storyboards_tabs_row_quranrow",
-      "confidence_score": 1.0
+      "target": "storyboards_tabs_row_quranrow"
     },
     {
       "relation": "contains",
@@ -6950,9 +6968,9 @@
       "source_file": "src/home/storyboards/tabs-row.jsx",
       "source_location": "L25",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "storyboards_tabs_row",
-      "target": "storyboards_tabs_row_renderframe",
-      "confidence_score": 1.0
+      "target": "storyboards_tabs_row_renderframe"
     },
     {
       "relation": "contains",
@@ -6960,9 +6978,9 @@
       "source_file": "src/home/storyboards/tabs-row.jsx",
       "source_location": "L101",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "storyboards_tabs_row",
-      "target": "storyboards_tabs_row_salaahrow",
-      "confidence_score": 1.0
+      "target": "storyboards_tabs_row_salaahrow"
     },
     {
       "relation": "contains",
@@ -8421,6 +8439,16 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": ".agents/AGENTS.md",
+      "source_location": "L122",
+      "weight": 1.0,
+      "source": "agents_agents_agents_md",
+      "target": "agents_agents_layer_architecture_hard_rules_do_not_violate",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": ".agents/AGENTS.md",
       "source_location": "L104",
       "weight": 1.0,
       "confidence_score": 1.0,
@@ -8891,6 +8919,16 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "CLAUDE.md",
+      "source_location": "L125",
+      "weight": 1.0,
+      "source": "claude_claude_md",
+      "target": "claude_layer_architecture_hard_rules_do_not_violate",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "CLAUDE.md",
       "source_location": "L104",
       "weight": 1.0,
       "confidence_score": 1.0,
@@ -9026,86 +9064,6 @@
       "confidence_score": 1.0,
       "source": "claude_agent_behavior",
       "target": "claude_rule_9_tests_verify_intent_not_just_behavior"
-    },
-    {
-      "relation": "contains",
-      "confidence": "EXTRACTED",
-      "source_file": "SPEC.md",
-      "source_location": "L1",
-      "weight": 1.0,
-      "confidence_score": 1.0,
-      "source": "spec",
-      "target": "spec_noor_poc_conversion_spec"
-    },
-    {
-      "relation": "contains",
-      "confidence": "EXTRACTED",
-      "source_file": "SPEC.md",
-      "source_location": "L6",
-      "weight": 1.0,
-      "confidence_score": 1.0,
-      "source": "spec_noor_poc_conversion_spec",
-      "target": "spec_1_framework_cheatsheet_dc_html_pages"
-    },
-    {
-      "relation": "contains",
-      "confidence": "EXTRACTED",
-      "source_file": "SPEC.md",
-      "source_location": "L15",
-      "weight": 1.0,
-      "confidence_score": 1.0,
-      "source": "spec_noor_poc_conversion_spec",
-      "target": "spec_2_required_page_wiring"
-    },
-    {
-      "relation": "contains",
-      "confidence": "EXTRACTED",
-      "source_file": "SPEC.md",
-      "source_location": "L31",
-      "weight": 1.0,
-      "confidence_score": 1.0,
-      "source": "spec_noor_poc_conversion_spec",
-      "target": "spec_3_color_token_mapping_hex_var"
-    },
-    {
-      "relation": "contains",
-      "confidence": "EXTRACTED",
-      "source_file": "SPEC.md",
-      "source_location": "L61",
-      "weight": 1.0,
-      "confidence_score": 1.0,
-      "source": "spec_noor_poc_conversion_spec",
-      "target": "spec_4_interactivity_requirements"
-    },
-    {
-      "relation": "contains",
-      "confidence": "EXTRACTED",
-      "source_file": "SPEC.md",
-      "source_location": "L65",
-      "weight": 1.0,
-      "confidence_score": 1.0,
-      "source": "spec_noor_poc_conversion_spec",
-      "target": "spec_5_navigation"
-    },
-    {
-      "relation": "contains",
-      "confidence": "EXTRACTED",
-      "source_file": "SPEC.md",
-      "source_location": "L88",
-      "weight": 1.0,
-      "confidence_score": 1.0,
-      "source": "spec_noor_poc_conversion_spec",
-      "target": "spec_6_do_not_touch"
-    },
-    {
-      "relation": "contains",
-      "confidence": "EXTRACTED",
-      "source_file": "SPEC.md",
-      "source_location": "L92",
-      "weight": 1.0,
-      "confidence_score": 1.0,
-      "source": "spec_noor_poc_conversion_spec",
-      "target": "spec_7_self_verification_before_you_finish"
     },
     {
       "relation": "contains",
@@ -9330,6 +9288,86 @@
     {
       "relation": "contains",
       "confidence": "EXTRACTED",
+      "source_file": "SPEC.md",
+      "source_location": "L1",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "spec",
+      "target": "spec_noor_poc_conversion_spec"
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "SPEC.md",
+      "source_location": "L6",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "spec_noor_poc_conversion_spec",
+      "target": "spec_1_framework_cheatsheet_dc_html_pages"
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "SPEC.md",
+      "source_location": "L15",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "spec_noor_poc_conversion_spec",
+      "target": "spec_2_required_page_wiring"
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "SPEC.md",
+      "source_location": "L31",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "spec_noor_poc_conversion_spec",
+      "target": "spec_3_color_token_mapping_hex_var"
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "SPEC.md",
+      "source_location": "L61",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "spec_noor_poc_conversion_spec",
+      "target": "spec_4_interactivity_requirements"
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "SPEC.md",
+      "source_location": "L65",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "spec_noor_poc_conversion_spec",
+      "target": "spec_5_navigation"
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "SPEC.md",
+      "source_location": "L88",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "spec_noor_poc_conversion_spec",
+      "target": "spec_6_do_not_touch"
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "SPEC.md",
+      "source_location": "L92",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "spec_noor_poc_conversion_spec",
+      "target": "spec_7_self_verification_before_you_finish"
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
       "source_file": ".claude/skills/add-screen/evals/evals.json",
       "source_location": "L3",
       "weight": 1.0,
@@ -9510,5 +9548,5 @@
     }
   ],
   "hyperedges": [],
-  "built_at_commit": "2d97377e392a8c809dd1f3d10f71ec3203bf44de"
+  "built_at_commit": "d866044cad47038c3d3a5c81c861d34c9b47a869"
 }

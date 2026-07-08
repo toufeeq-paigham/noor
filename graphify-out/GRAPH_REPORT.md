@@ -1,16 +1,16 @@
-# Graph Report - noor  (2026-07-07)
+# Graph Report - noor  (2026-07-08)
 
 ## Corpus Check
-- 32 files · ~5,040,197 words
+- 31 files · ~2,776,377 words
 - Verdict: corpus is large enough that graph structure adds value.
 
 ## Summary
-- 478 nodes · 512 edges · 37 communities (23 shown, 14 thin omitted)
+- 480 nodes · 514 edges · 37 communities (23 shown, 14 thin omitted)
 - Extraction: 100% EXTRACTED · 0% INFERRED · 0% AMBIGUOUS
 - Token cost: 0 input · 0 output
 
 ## Graph Freshness
-- Built from commit: `2d97377e`
+- Built from commit: `d866044c`
 - Run `git rev-parse HEAD` and compare to check if the graph is stale.
 - Run `graphify update .` after code changes (no API cost).
 
@@ -103,7 +103,7 @@ Nodes (8): 1. Framework cheatsheet (`.dc.html` pages), 2. Required page wiring, 
 
 ### Community 15 - "Community 15"
 Cohesion: 0.10
-Nodes (18): Agent Behavior, Commit Messages, Design System Rules, graphify, Project Structure, Rule 10 — Checkpoint after every significant step, Rule 11 — Match the codebase's conventions, even if you disagree, Rule 12 — Fail loud (+10 more)
+Nodes (19): Agent Behavior, Commit Messages, Design System Rules, graphify, Layer Architecture — HARD RULES (do not violate), Project Structure, Rule 10 — Checkpoint after every significant step, Rule 11 — Match the codebase's conventions, even if you disagree (+11 more)
 
 ### Community 16 - "Community 16"
 Cohesion: 0.20
@@ -119,7 +119,7 @@ Nodes (5): IntroScreen(), Keypad(), KEYPAD_KEYS, OtpScreen(), PhoneScreen()
 
 ### Community 22 - "Community 22"
 Cohesion: 0.10
-Nodes (18): Agent Behavior, Commit Messages, Design System Rules, graphify, Project Structure, Rule 10 — Checkpoint after every significant step, Rule 11 — Match the codebase's conventions, even if you disagree, Rule 12 — Fail loud (+10 more)
+Nodes (19): Agent Behavior, Commit Messages, Design System Rules, graphify, Layer Architecture — HARD RULES (do not violate), Project Structure, Rule 10 — Checkpoint after every significant step, Rule 11 — Match the codebase's conventions, even if you disagree (+11 more)
 
 ### Community 23 - "Community 23"
 Cohesion: 0.20
@@ -146,7 +146,7 @@ Cohesion: 0.40
 Nodes (4): assertions, eval_id, eval_name, prompt
 
 ## Knowledge Gaps
-- **282 isolated node(s):** `eval_id`, `eval_name`, `prompt`, `assertions`, `eval_id` (+277 more)
+- **284 isolated node(s):** `eval_id`, `eval_name`, `prompt`, `assertions`, `eval_id` (+279 more)
   These have ≤1 connection - possible missing edges or undocumented components.
 - **14 thin communities (<3 nodes) omitted from report** — run `graphify query` to explore isolated nodes.
 
@@ -154,11 +154,11 @@ Nodes (4): assertions, eval_id, eval_name, prompt
 _Questions this graph is uniquely positioned to answer:_
 
 - **Why does `tokenKinds` connect `Community 0` to `Community 5`?**
-  _High betweenness centrality (0.099) - this node is a cross-community bridge._
+  _High betweenness centrality (0.098) - this node is a cross-community bridge._
 - **Why does `x-omelette` connect `Community 5` to `Community 0`?**
   _High betweenness centrality (0.013) - this node is a cross-community bridge._
 - **What connects `eval_id`, `eval_name`, `prompt` to the rest of the system?**
-  _282 weakly-connected nodes found - possible documentation gaps or missing edges._
+  _284 weakly-connected nodes found - possible documentation gaps or missing edges._
 - **Should `Community 0` be split into smaller, more focused modules?**
   _Cohesion score 0.014184397163120567 - nodes in this community are weakly interconnected._
 - **Should `Community 1` be split into smaller, more focused modules?**

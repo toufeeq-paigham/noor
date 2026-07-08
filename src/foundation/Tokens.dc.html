@@ -1,0 +1,253 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="../support.js"></script>
+<script src="../_theme/chrome.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+  <link rel="stylesheet" href="../_ds/noor-design-system-46f42e91-1858-412f-bdb6-560a6cc3df9f/colors_and_type.css">
+  <link rel="stylesheet" href="../_theme/poc.css">
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Rounded:opsz,wght,FILL,GRAD@24,400,0..1,0&amp;display=block">
+  <style>
+    body{background:var(--canvas-bg);padding:56px 40px 120px;min-height:100vh;box-sizing:border-box}
+    ::-webkit-scrollbar{display:none}*{-ms-overflow-style:none;scrollbar-width:none}
+    .tk-wrap{max-width:1120px;margin:0 auto}
+    .tk-card{background:var(--color-surface-primary);border:1px solid var(--color-neutral-border);border-radius:18px;box-shadow:var(--shadow-card)}
+    .tk-swatch{display:flex;flex-direction:column;gap:8px}
+    .tk-chip{height:64px;border-radius:12px;border:1px solid var(--color-neutral-border);box-shadow:inset 0 0 0 1px rgba(127,127,127,.06)}
+    .tk-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(160px,1fr));gap:16px}
+    .tk-name{font-family:ui-monospace,SFMono-Regular,Menlo,monospace;font-size:11px;font-weight:700;color:var(--color-info-primary);line-height:1.25;word-break:break-word}
+    .tk-role{font-family:var(--font-body);font-size:11px;color:var(--color-info-secondary);line-height:1.3}
+    .tk-maps{font-family:ui-monospace,SFMono-Regular,Menlo,monospace;font-size:10px;color:var(--color-action-primary);line-height:1.3;margin-top:2px}
+    .tk-h{font-family:var(--font-title);font-size:22px;color:var(--color-info-primary)}
+    .grp-lbl{font-family:var(--font-body);font-size:13px;font-weight:800;letter-spacing:.04em;text-transform:uppercase;color:var(--color-info-secondary);margin-bottom:14px}
+  </style>
+</helmet>
+
+<div class="tk-wrap">
+
+  <!-- Header -->
+  <div style="display:flex;align-items:flex-end;justify-content:space-between;gap:24px;flex-wrap:wrap;margin-bottom:8px">
+    <div>
+      <div style="font-family:var(--font-body);font-size:12px;font-weight:800;letter-spacing:.1em;text-transform:uppercase;color:var(--color-neutral-brand);margin-bottom:8px">Foundation · Page 02</div>
+      <div style="font-family:var(--font-title);font-size:40px;letter-spacing:-0.5px;color:var(--color-info-primary);line-height:1.1">Tokens</div>
+      <div style="font-family:var(--font-body);font-size:15px;color:var(--color-info-secondary);margin-top:6px;max-width:660px">
+        Semantic aliases with <b>meaning</b> — <code>--color-action-primary</code>, not <code>#00C950</code>.
+        Each token points at a <a href="Primitives.dc.html" style="color:var(--color-action-primary);text-decoration:none;font-weight:700">Primitive</a>
+        (the green label shows which, in light mode) and is re-pointed per
+        <a href="Theme.dc.html" style="color:var(--color-action-primary);text-decoration:none;font-weight:700">Theme</a>.
+        Components only ever reference these — flip the theme (bottom-right) to watch every swatch move.
+      </div>
+    </div>
+    <a href="Primitives.dc.html" style="display:inline-flex;align-items:center;gap:8px;text-decoration:none;background:var(--color-surface-primary);border:1px solid var(--color-neutral-border);border-radius:999px;padding:10px 16px;box-shadow:var(--shadow-card)">
+      <span class="material-symbols-rounded" style="font-size:18px;color:var(--color-action-primary)">widgets</span>
+      <span style="font-family:var(--font-body);font-size:13px;font-weight:700;color:var(--color-info-primary)">← Primitives</span>
+    </a>
+  </div>
+
+  <!-- Category filter -->
+  <div style="display:inline-flex;background:var(--color-action-background);border-radius:16px;padding:4px;gap:2px;margin:22px 0 34px;flex-wrap:wrap">
+    <sc-for list="{{ chips }}" as="c" hint-placeholder-count="4">
+      <div onClick="{{ c.onSelect }}" style="border-radius:12px;padding:8px 16px;cursor:pointer;background:{{ c.bg }};transition:background 200ms">
+        <span style="font-family:var(--font-body);font-size:13px;font-weight:700;color:{{ c.color }}">{{ c.label }}</span>
+      </div>
+    </sc-for>
+  </div>
+
+  <!-- ── COLOUR ROLES ── -->
+  <sc-if value="{{ showColor }}">
+  <div style="margin-bottom:44px">
+    <div class="tk-h" style="margin-bottom:6px">Colour roles</div>
+    <div class="tk-role" style="margin-bottom:22px">Semantic <code>--color-*</code> tokens. The <span style="color:var(--color-action-primary);font-weight:700">green line</span> is the light-mode primitive each resolves to.</div>
+    <sc-for list="{{ colorGroups }}" as="g" hint-placeholder-count="6">
+      <div style="margin-bottom:26px">
+        <div class="grp-lbl">{{ g.title }}</div>
+        <div class="tk-grid">
+          <sc-for list="{{ g.tokens }}" as="t" hint-placeholder-count="5">
+            <div class="tk-swatch">
+              <div class="tk-chip" style="background:{{ t.value }}"></div>
+              <div>
+                <div class="tk-name">{{ t.name }}</div>
+                <div class="tk-role">{{ t.role }}</div>
+                <div class="tk-maps">→ {{ t.maps }}</div>
+              </div>
+            </div>
+          </sc-for>
+        </div>
+      </div>
+    </sc-for>
+  </div>
+  </sc-if>
+
+  <!-- ── TYPE ROLES ── -->
+  <sc-if value="{{ showType }}">
+  <div style="margin-bottom:44px">
+    <div class="tk-h" style="margin-bottom:6px">Type roles</div>
+    <div class="tk-role" style="margin-bottom:22px">Named roles built on the Primitive size ladder — titles in <b>DM Serif Display</b>, body in <b>Nunito</b>, ayat in <b>AlQuran IndoPak</b>.</div>
+    <div class="tk-card" style="padding:8px 26px">
+      <sc-for list="{{ typeSamples }}" as="ty" hint-placeholder-count="8">
+        <div style="display:flex;align-items:baseline;gap:20px;padding:16px 0;border-bottom:1px solid color-mix(in oklab,var(--color-info-primary) 8%,transparent)">
+          <div style="width:120px;flex-shrink:0;font-family:ui-monospace,Menlo,monospace;font-size:12px;font-weight:700;color:var(--color-info-secondary)">{{ ty.label }}</div>
+          <div style="flex:1;min-width:0;font-family:{{ ty.family }};font-size:{{ ty.size }};line-height:{{ ty.lh }};letter-spacing:{{ ty.tracking }};color:var(--color-info-primary);direction:{{ ty.dir }}">{{ ty.text }}</div>
+          <div style="width:96px;flex-shrink:0;text-align:right;font-family:ui-monospace,Menlo,monospace;font-size:12px;color:var(--color-info-secondary)">{{ ty.spec }}</div>
+        </div>
+      </sc-for>
+    </div>
+  </div>
+  </sc-if>
+
+  <!-- ── ELEVATION ── -->
+  <sc-if value="{{ showElevation }}">
+  <div style="margin-bottom:44px">
+    <div class="tk-h" style="margin-bottom:6px">Elevation</div>
+    <div class="tk-role" style="margin-bottom:22px"><code>--shadow-*</code> · named by role (not "Shadow1"). Each deepens automatically in dark mode.</div>
+    <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:20px">
+      <sc-for list="{{ shadows }}" as="sh" hint-placeholder-count="4">
+        <div style="background:var(--color-surface-primary);border:1px solid var(--color-neutral-border);border-radius:16px;padding:24px 20px;box-shadow:{{ sh.value }}">
+          <div class="tk-name">{{ sh.name }}</div>
+          <div class="tk-role" style="margin-top:4px">{{ sh.role }}</div>
+        </div>
+      </sc-for>
+    </div>
+  </div>
+  </sc-if>
+
+  <!-- ── SIZING ── -->
+  <sc-if value="{{ showSizing }}">
+  <div style="margin-bottom:20px">
+    <div class="tk-h" style="margin-bottom:6px">Control sizing</div>
+    <div class="tk-role" style="margin-bottom:22px">Semantic heights for tappable controls — built on the Primitive spacing ladder.</div>
+    <div class="tk-card" style="padding:22px 24px">
+      <sc-for list="{{ sizing }}" as="sz" hint-placeholder-count="4">
+        <div style="display:flex;align-items:center;gap:16px;margin-bottom:14px">
+          <div style="width:150px;flex-shrink:0;font-family:ui-monospace,Menlo,monospace;font-size:12px;font-weight:700;color:var(--color-info-primary)">{{ sz.name }}</div>
+          <div style="height:{{ sz.px }};min-width:120px;border-radius:12px;background:color-mix(in oklab,var(--color-action-primary) 16%,var(--color-surface-primary));border:1.5px solid var(--color-action-primary);display:flex;align-items:center;padding:0 16px;font-family:var(--font-body);font-size:13px;font-weight:700;color:var(--color-info-primary)">{{ sz.role }}</div>
+          <div style="font-family:ui-monospace,Menlo,monospace;font-size:12px;color:var(--color-info-secondary)">{{ sz.px }}</div>
+        </div>
+      </sc-for>
+    </div>
+  </div>
+  </sc-if>
+
+  <div style="text-align:center;font-family:var(--font-body);font-size:12px;color:var(--canvas-label);margin-top:40px">
+    Noor Design System · <a href="Primitives.dc.html" style="color:var(--color-action-primary);text-decoration:none;font-weight:700">← Primitives</a> · <a href="../Index.dc.html" style="color:var(--color-action-primary);text-decoration:none;font-weight:700">Index</a> · <a href="Theme.dc.html" style="color:var(--color-action-primary);text-decoration:none;font-weight:700">Theme →</a>
+  </div>
+</div>
+
+</x-dc>
+<script type="text/x-dc" data-dc-script>
+class Component extends DCLogic {
+  state = { cat: 'all' };
+
+  catDefs = [
+    { id: 'all', label: 'All' },
+    { id: 'color', label: 'Colour' },
+    { id: 'type', label: 'Type' },
+    { id: 'elevation', label: 'Elevation' },
+    { id: 'sizing', label: 'Sizing' },
+  ];
+
+  colorGroups = [
+    { title: 'Surface', tokens: [
+      { name: '--color-surface-primary', role: 'Screens, sheets', maps: 'noor-pure-white' },
+      { name: '--color-surface-secondary', role: 'Tints, sections', maps: 'noor-mint-cream' },
+      { name: '--color-surface-card', role: 'Cards, sidebars', maps: 'noor-snow-drift' },
+      { name: '--color-surface-overlay', role: 'Glass overlays', maps: 'noor-white-a60' },
+      { name: '--color-surface-scrim', role: 'Modal scrim', maps: 'noor-black-a40' },
+    ]},
+    { title: 'Action', tokens: [
+      { name: '--color-action-primary', role: 'Primary CTAs', maps: 'noor-jade-green' },
+      { name: '--color-action-primary-inverse', role: 'On-primary text', maps: 'noor-mint-cream' },
+      { name: '--color-action-secondary', role: 'Secondary accent', maps: 'noor-teal' },
+      { name: '--color-action-background', role: 'Tonal fills, tracks', maps: 'noor-gainsboro' },
+      { name: '--color-action-destructive', role: 'Delete, danger', maps: 'noor-scarlet-red' },
+    ]},
+    { title: 'Info / text', tokens: [
+      { name: '--color-info-primary', role: 'Headings, body', maps: 'noor-jet-black' },
+      { name: '--color-info-secondary', role: 'Sub-text, captions', maps: 'noor-slate-gray' },
+      { name: '--color-info-tertiary', role: 'Hints', maps: 'noor-slate-gray' },
+      { name: '--color-info-primary-inverse', role: 'On-dark text', maps: 'noor-pure-white' },
+    ]},
+    { title: 'Input', tokens: [
+      { name: '--color-input-background', role: 'Fields, search', maps: 'noor-cultured-gray' },
+      { name: '--color-input-placeholder', role: 'Placeholder text', maps: 'noor-slate-gray' },
+      { name: '--color-input-border', role: 'Resting border', maps: 'noor-gainsboro' },
+      { name: '--color-input-border-focused', role: 'Focus ring', maps: 'noor-jade-green' },
+      { name: '--color-input-border-error', role: 'Error border', maps: 'noor-scarlet-red' },
+    ]},
+    { title: 'Status', tokens: [
+      { name: '--color-status-success', role: 'Confirmations', maps: 'noor-jade-green' },
+      { name: '--color-status-error', role: 'Errors', maps: 'noor-scarlet-red' },
+      { name: '--color-status-warning', role: 'Warnings', maps: 'noor-tangerine' },
+      { name: '--color-status-warning-alt', role: 'Warning alt', maps: 'noor-amber' },
+      { name: '--color-status-disabled', role: 'Disabled fills', maps: 'noor-cultured-gray' },
+    ]},
+    { title: 'Neutral', tokens: [
+      { name: '--color-neutral-brand', role: 'Gold Islamic motif', maps: 'noor-brand' },
+      { name: '--color-neutral-border', role: 'Hairlines, dividers', maps: 'noor-gainsboro' },
+      { name: '--color-neutral-black', role: 'True black', maps: 'noor-jet-black' },
+      { name: '--color-neutral-white', role: 'True white', maps: 'noor-pure-white' },
+    ]},
+  ];
+
+  typeSamples = [
+    { label: 'title-h1', family: 'var(--font-title)', size: '32px', lh: '40px', tracking: '-0.5px', dir: 'ltr', spec: '32 / 40', text: 'Bismillah' },
+    { label: 'title-h3', family: 'var(--font-title)', size: '24px', lh: '32px', tracking: '-0.5px', dir: 'ltr', spec: '24 / 32', text: 'Prayer times & tracker' },
+    { label: 'body-h4', family: 'var(--font-body)', size: '22px', lh: '28px', tracking: '0', dir: 'ltr', spec: '22 / 28', text: 'Follow your masjid' },
+    { label: 'body-l', family: 'var(--font-body)', size: '18px', lh: '24px', tracking: '0', dir: 'ltr', spec: '18 / 24', text: 'Enter your phone number to continue' },
+    { label: 'body-m', family: 'var(--font-body)', size: '16px', lh: '24px', tracking: '0', dir: 'ltr', spec: '16 / 24', text: 'The default reading size for descriptions and list rows.' },
+    { label: 'body-s', family: 'var(--font-body)', size: '14px', lh: '20px', tracking: '0', dir: 'ltr', spec: '14 / 20', text: 'Secondary metadata and helper text.' },
+    { label: 'body-xs', family: 'var(--font-body)', size: '12px', lh: '16px', tracking: '0', dir: 'ltr', spec: '12 / 16', text: 'Timestamps, chips and micro-labels.' },
+    { label: 'arabic', family: 'var(--font-arabic)', size: '30px', lh: '1.9', tracking: '0', dir: 'rtl', spec: 'RTL', text: 'بِسْمِ اللَّهِ الرَّحْمَٰنِ الرَّحِيمِ' },
+  ];
+
+  shadowDefs = [
+    { name: '--shadow-card', role: 'Resting cards', value: 'var(--shadow-card)' },
+    { name: '--shadow-button', role: 'Primary buttons', value: 'var(--shadow-button)' },
+    { name: '--shadow-elevated', role: 'Menus, popovers', value: 'var(--shadow-elevated)' },
+    { name: '--shadow-dialog', role: 'Dialogs, sheets', value: 'var(--shadow-dialog)' },
+  ];
+
+  sizingDefs = [
+    { name: '--control-h-sm', role: 'Small button', px: '32px' },
+    { name: '--control-h-md', role: 'Default button', px: '40px' },
+    { name: '--input-h', role: 'Text field', px: '46px' },
+    { name: '--control-h-lg', role: 'Large button', px: '48px' },
+  ];
+
+  setCat = (id) => this.setState({ cat: id });
+
+  renderVals() {
+    const cat = this.state.cat;
+    const chips = this.catDefs.map(c => ({
+      label: c.label,
+      bg: cat === c.id ? 'var(--color-action-primary)' : 'transparent',
+      color: cat === c.id ? 'var(--color-action-primary-inverse)' : 'var(--color-info-secondary)',
+      onSelect: () => this.setCat(c.id),
+    }));
+
+    const colorGroups = this.colorGroups.map(g => ({
+      title: g.title,
+      tokens: g.tokens.map(t => ({ name: t.name, role: t.role, maps: t.maps, value: 'var(' + t.name + ')' })),
+    }));
+
+    return {
+      chips,
+      showColor: cat === 'all' || cat === 'color',
+      showType: cat === 'all' || cat === 'type',
+      showElevation: cat === 'all' || cat === 'elevation',
+      showSizing: cat === 'all' || cat === 'sizing',
+      colorGroups,
+      typeSamples: this.typeSamples,
+      shadows: this.shadowDefs,
+      sizing: this.sizingDefs,
+    };
+  }
+}
+</script>
+</body>
+</html>

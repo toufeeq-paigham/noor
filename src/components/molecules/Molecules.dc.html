@@ -1,0 +1,325 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="../../support.js"></script>
+<script src="../../_theme/chrome.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+  <link rel="stylesheet" href="../../_ds/noor-design-system-46f42e91-1858-412f-bdb6-560a6cc3df9f/colors_and_type.css">
+  <link rel="stylesheet" href="../../_theme/poc.css">
+  <link rel="stylesheet" href="../../_theme/components.css">
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Rounded:opsz,wght,FILL,GRAD@24,400,0..1,0&amp;display=block">
+  <style>
+    body{background:var(--canvas-bg);padding:56px 40px 120px;min-height:100vh;box-sizing:border-box}
+    ::-webkit-scrollbar{display:none}*{-ms-overflow-style:none;scrollbar-width:none}
+    .cp-wrap{max-width:1120px;margin:0 auto}
+    .cp-card{background:var(--color-surface-primary);border:1px solid var(--color-neutral-border);border-radius:18px;box-shadow:var(--shadow-card);padding:22px 24px;margin-bottom:24px}
+    .cp-h{font-family:var(--font-title);font-size:21px;color:var(--color-info-primary)}
+    .cp-sub{font-family:var(--font-body);font-size:12px;color:var(--color-info-secondary);margin-top:2px}
+    .cp-head{margin:0 0 12px}
+    .lbl{font-family:var(--font-body);font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:.08em;color:var(--color-info-secondary);margin-bottom:8px}
+    .cp-grid2{display:grid;grid-template-columns:1fr 1fr;gap:20px}
+    .row{display:flex;align-items:center;gap:10px;flex-wrap:wrap}
+    /* Component styling (.input .otp .dd-menu .chev .rx-* .em) lives in _theme/components.css */
+  </style>
+</helmet>
+
+<div class="cp-wrap">
+
+  <!-- Header -->
+  <div style="display:flex;align-items:flex-end;justify-content:space-between;gap:24px;flex-wrap:wrap;margin-bottom:32px">
+    <div>
+      <div style="font-family:var(--font-body);font-size:12px;font-weight:800;letter-spacing:.1em;text-transform:uppercase;color:var(--color-neutral-brand);margin-bottom:8px">Components · Page 05</div>
+      <div style="font-family:var(--font-title);font-size:40px;letter-spacing:-0.5px;color:var(--color-info-primary);line-height:1.1">Molecules</div>
+      <div style="font-family:var(--font-body);font-size:15px;color:var(--color-info-secondary);margin-top:6px;max-width:640px">
+        Molecular components — combinations of atoms bonded together to form simple, functional UI units.
+      </div>
+    </div>
+    <div style="display:flex;gap:10px">
+      <a href="../atoms/Atoms.dc.html" style="display:inline-flex;align-items:center;gap:8px;text-decoration:none;background:var(--color-surface-primary);border:1px solid var(--color-neutral-border);border-radius:999px;padding:10px 16px;box-shadow:var(--shadow-card)">
+        <span class="material-symbols-rounded" style="font-size:18px;color:var(--color-action-primary)">widgets</span>
+        <span style="font-family:var(--font-body);font-size:13px;font-weight:700;color:var(--color-info-primary)">← Atoms</span>
+      </a>
+      <a href="../../Index.dc.html" style="display:inline-flex;align-items:center;gap:8px;text-decoration:none;background:var(--color-surface-primary);border:1px solid var(--color-neutral-border);border-radius:999px;padding:10px 16px;box-shadow:var(--shadow-card)">
+        <span class="material-symbols-rounded" style="font-size:18px;color:var(--color-action-primary)">home</span>
+        <span style="font-family:var(--font-body);font-size:13px;font-weight:700;color:var(--color-info-primary)">Index</span>
+      </a>
+    </div>
+  </div>
+
+  <!-- 1. SearchBar -->
+  <div class="cp-card">
+    <div class="cp-head">
+      <div class="cp-h">SearchBar</div>
+      <div class="cp-sub">Standard input wrapper containing search icon indicator and placeholders.</div>
+    </div>
+    <div style="max-width:400px">
+      <div class="input">
+        <div class="inner">
+          <span class="material-symbols-rounded">search</span>
+          <span class="val ph">Search surahs, masjids, or topics...</span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- FormField -->
+  <div class="cp-card">
+    <div class="cp-head">
+      <div class="cp-h">FormField</div>
+      <div class="cp-sub">Label + Input atom + helper text — the standard labelled field. Error variant swaps the helper tone.</div>
+    </div>
+    <div class="cp-grid2">
+      <div class="field" style="margin-bottom:0">
+        <div class="flabel">Email</div>
+        <div class="input focused"><div class="inner"><span class="material-symbols-rounded">mail</span><span class="val">misba@noor.app</span></div></div>
+        <div class="helper">We'll send a verification code.</div>
+      </div>
+      <div class="field" style="margin-bottom:0">
+        <div class="flabel">Verification code</div>
+        <div class="input error"><div class="inner"><span class="val">12</span></div></div>
+        <div class="helper err">Enter all 6 digits.</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- PhoneField -->
+  <div class="cp-card">
+    <div class="cp-head">
+      <div class="cp-h">PhoneField</div>
+      <div class="cp-sub">Country prefix + divider + entry — a phone-specific input molecule. The focus halo wraps only the entry portion.</div>
+    </div>
+    <div class="cp-grid2">
+      <div class="field" style="margin-bottom:0">
+        <div class="flabel">Phone — default</div>
+        <div class="input phone"><div class="inner"><div class="prefix">🇮🇳 +91</div><div class="divider"></div><div class="entry"></div></div><div class="halo"></div></div>
+      </div>
+      <div class="field" style="margin-bottom:0">
+        <div class="flabel">Phone — focused</div>
+        <div class="input phone focused"><div class="inner"><div class="prefix">🇮🇳 +91</div><div class="divider"></div><div class="entry"></div></div><div class="halo"></div></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 2. ListItem -->
+  <div class="cp-card">
+    <div class="cp-head">
+      <div class="cp-h">ListItem</div>
+      <div class="cp-sub">Single row items displaying a trailing status, metadata, or arrow actions.</div>
+    </div>
+    <div style="max-width:500px;background:var(--color-surface-secondary);border-radius:16px;padding:8px">
+      <div style="display:flex;align-items:center;justify-content:space-between;padding:12px 16px;border-bottom:1px solid var(--color-neutral-border)">
+        <div style="display:flex;align-items:center;gap:12px">
+          <span class="material-symbols-rounded" style="color:var(--color-action-primary)">mosque</span>
+          <div>
+            <div style="font-family:var(--font-body);font-size:15px;font-weight:700;color:var(--color-info-primary)">Masjid E Bilal</div>
+            <div style="font-family:var(--font-body);font-size:12px;color:var(--color-info-secondary)">0.8 km away · Bangalore</div>
+          </div>
+        </div>
+        <span class="material-symbols-rounded" style="color:var(--color-info-secondary)">chevron_right</span>
+      </div>
+      <div style="display:flex;align-items:center;justify-content:space-between;padding:12px 16px">
+        <div style="display:flex;align-items:center;gap:12px">
+          <span class="material-symbols-rounded" style="color:var(--color-action-primary)">bookmark</span>
+          <div>
+            <div style="font-family:var(--font-body);font-size:15px;font-weight:700;color:var(--color-info-primary)">Al-Baqarah (Ayah 255)</div>
+            <div style="font-family:var(--font-body);font-size:12px;color:var(--color-info-secondary)">Saved 2 days ago</div>
+          </div>
+        </div>
+        <span class="material-symbols-rounded" style="color:var(--color-info-secondary)">chevron_right</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- 3. OTPField -->
+  <div class="cp-card">
+    <div class="cp-head">
+      <div class="cp-h">OTPField</div>
+      <div class="cp-sub">Segmented code inputs mapping directly to the OTP screen flow.</div>
+    </div>
+    <div style="max-width:320px">
+      <div class="lbl">OTP Input Grid (Focused Cell 3)</div>
+      <div class="otp">
+        <div class="cells">
+          <div class="cell">9</div>
+          <div class="cell">2</div>
+          <div class="cell"><div class="cursor"></div></div>
+          <div class="cell"></div>
+          <div class="cell"></div>
+          <div class="cell"></div>
+        </div>
+        <div class="halo" style="left:106px;width:53px"></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 4. UserAvatarRow -->
+  <div class="cp-card">
+    <div class="cp-head">
+      <div class="cp-h">UserAvatarRow</div>
+      <div class="cp-sub">Top header user profile summary containing profile name and avatar indicator.</div>
+    </div>
+    <div style="max-width:400px;display:flex;align-items:center;justify-content:space-between;padding:12px 16px;background:var(--color-surface-secondary);border-radius:16px">
+      <div style="display:flex;align-items:center;gap:12px">
+        <div style="position:relative">
+          <div style="width:40px;height:40px;border-radius:50%;background:var(--color-action-primary);display:flex;align-items:center;justify-content:center;color:#fff;font-family:var(--font-body);font-weight:800;font-size:15px">TA</div>
+          <div style="position:absolute;bottom:0;right:0;width:12px;height:12px;border-radius:50%;background:var(--color-status-success);border:2px solid var(--color-surface-secondary)"></div>
+        </div>
+        <div>
+          <div style="font-family:var(--font-body);font-size:15px;font-weight:700;color:var(--color-info-primary)">Toufeeq Ahamed</div>
+          <div style="font-family:var(--font-body);font-size:12px;color:var(--color-info-secondary)">Verified Member</div>
+        </div>
+      </div>
+      <span class="material-symbols-rounded" style="color:var(--color-info-secondary)">settings</span>
+    </div>
+  </div>
+
+  <!-- 5. Dropdown Menu -->
+  <div class="cp-card">
+    <div class="cp-head">
+      <div class="cp-h">Dropdown Menu</div>
+      <div class="cp-sub">Select field combined with an overlay menu. Click to open.</div>
+    </div>
+    <div style="max-width:400px;position:relative;height:160px">
+      <div class="input {{ ddOpenCls }}" onClick="{{ toggleDd }}" style="cursor:pointer;user-select:none">
+        <div class="inner">
+          <span class="val">{{ ddValue }}</span>
+          <span class="material-symbols-rounded chev {{ ddOpenCls }}">expand_more</span>
+        </div>
+      </div>
+      <sc-if value="{{ ddOpen }}">
+        <div class="dd-menu">
+          <sc-for list="{{ ddItems }}" as="it" hint-placeholder-count="3">
+            <div class="dd-item {{ it.selCls }}" onClick="{{ it.onSelect }}">
+              {{ it.label }}
+              <sc-if value="{{ it.sel }}"><span class="material-symbols-rounded" style="margin-left:auto;color:var(--color-action-primary)">check</span></sc-if>
+            </div>
+          </sc-for>
+        </div>
+      </sc-if>
+    </div>
+  </div>
+
+  <!-- 6. Reaction Button -->
+  <div class="cp-card">
+    <div class="cp-head">
+      <div class="cp-h">Reaction Button</div>
+      <div class="cp-sub">Emoji summaries and floating long-press options.</div>
+    </div>
+    <div style="display:flex;flex-direction:column;gap:12px">
+      <div class="row"><div class="lbl" style="width:92px">Empty</div>
+        <div class="rx-empty"><span class="material-symbols-rounded">favorite</span><span class="rx-count you">0</span></div>
+      </div>
+      <div class="row"><div class="lbl" style="width:92px">Summary</div>
+        <div style="display:flex;align-items:center;gap:8px;padding:4px 8px">
+          <div style="display:inline-flex"><span class="em mine">❤️</span><span class="em">🤲</span><span class="em">👏</span></div>
+          <span class="rx-count you">142</span>
+        </div>
+      </div>
+      <div class="row"><div class="lbl" style="width:92px">Popup List</div>
+        <div class="rx-popup"><span class="em">❤️</span><span class="em">🤲</span><span class="em">👏</span><span class="em">😮</span><span class="em">😔</span></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 7. TabBar (Segmented Control) -->
+  <div class="cp-card">
+    <div class="cp-head">
+      <div class="cp-h">TabBar</div>
+      <div class="cp-sub">Pill-rounded segmented control — a row of tab atoms with an active slide.</div>
+    </div>
+    <div style="display:flex;flex-direction:column;gap:16px;max-width:500px">
+      <div>
+        <div class="lbl" style="margin-bottom:6px">3-tab segmented</div>
+        <div class="tbar">
+          <sc-for list="{{ tabs3 }}" as="t" hint-placeholder-count="3">
+            <div class="tab {{ t.cls }}" onClick="{{ t.onSelect }}">{{ t.label }}</div>
+          </sc-for>
+        </div>
+      </div>
+      <div>
+        <div class="lbl" style="margin-bottom:6px">2-tab</div>
+        <div class="tbar">
+          <sc-for list="{{ tabs2 }}" as="t" hint-placeholder-count="2">
+            <div class="tab {{ t.cls }}" onClick="{{ t.onSelect }}">{{ t.label }}</div>
+          </sc-for>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Snackbar -->
+  <div class="cp-card">
+    <div class="cp-head">
+      <div class="cp-h">Snackbar</div>
+      <div class="cp-sub">Transient feedback — icon + message + dismiss. A simple combo, so it lives with the molecules.</div>
+    </div>
+    <div style="display:flex;flex-direction:column;gap:12px;max-width:500px">
+      <div style="background:var(--color-info-primary);border-radius:12px;padding:14px 16px;display:flex;align-items:center;justify-content:space-between;box-shadow:var(--shadow-card)">
+        <div style="display:flex;align-items:center;gap:10px">
+          <span class="material-symbols-rounded" style="color:var(--color-status-success);font-size:20px">check_circle</span>
+          <span style="font-family:var(--font-body);font-size:14px;color:var(--color-info-primary-inverse);font-weight:600">Tasbih count saved successfully</span>
+        </div>
+        <span class="material-symbols-rounded" style="color:color-mix(in oklab,var(--color-info-primary-inverse) 60%,transparent);font-size:18px;cursor:pointer">close</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- Footer -->
+  <div style="text-align:center;font-family:var(--font-body);font-size:12px;color:var(--canvas-label);margin-top:40px">
+    Noor Design System · <a href="../atoms/Atoms.dc.html" style="color:var(--color-action-primary);text-decoration:none;font-weight:700">← Atoms</a> · <a href="../../Index.dc.html" style="color:var(--color-action-primary);text-decoration:none;font-weight:700">Index</a> · <a href="../organisms/Organisms.dc.html" style="color:var(--color-action-primary);text-decoration:none;font-weight:700">Organisms →</a>
+  </div>
+
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script>
+class Component extends DCLogic {
+  state = {
+    ddOpen: false,
+    ddSel: 0,
+    tab3: 0,
+    tab2: 1
+  };
+
+  ddOptions = ['Sahih International', 'Yusuf Ali', 'Fateh Muhammad Jalandhri'];
+  tab3Labels = ['Arabic', 'Translation', 'Tafsir'];
+  tab2Labels = ['Surahs', 'Juz'];
+
+  toggleDd = () => this.setState(s => ({ ddOpen: !s.ddOpen }));
+  selectDd = (i) => this.setState({ ddSel: i, ddOpen: false });
+  setTab3 = (i) => this.setState({ tab3: i });
+  setTab2 = (i) => this.setState({ tab2: i });
+
+  renderVals() {
+    const s = this.state;
+    const ddItems = this.ddOptions.map((label, i) => ({
+      label,
+      sel: i === s.ddSel,
+      selCls: i === s.ddSel ? 'selected' : '',
+      onSelect: () => this.selectDd(i)
+    }));
+    const tabs3 = this.tab3Labels.map((label, i) => ({
+      label, cls: i === s.tab3 ? 'active' : '', onSelect: () => this.setTab3(i)
+    }));
+    const tabs2 = this.tab2Labels.map((label, i) => ({
+      label, cls: i === s.tab2 ? 'active' : '', onSelect: () => this.setTab2(i)
+    }));
+
+    return {
+      ddOpen: s.ddOpen,
+      ddOpenCls: s.ddOpen ? 'open' : '',
+      ddValue: this.ddOptions[s.ddSel],
+      ddItems: ddItems,
+      toggleDd: this.toggleDd,
+      tabs3,
+      tabs2
+    };
+  }
+}
+</script>
+</body>
+</html>
