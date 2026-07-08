@@ -44,7 +44,7 @@ function BoardLive({ scale = 0.82, restart, hint, children }) {
       </div>
       {restart ? (
         <button className="poc-play" onClick={restart}>
-          <span className="material-symbols-rounded">replay</span>Restart
+          <span className="mi" data-i="replay"></span>Restart
         </button>
       ) : null}
       {hint ? <div className="poc-live-hint">{hint}</div> : null}

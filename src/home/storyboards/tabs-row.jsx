@@ -63,7 +63,7 @@ function HomeRow({ active = 0, onSelectFrame }) {
   return (
     <div>
       <div className="poc-row-label">
-        <span className="material-symbols-rounded">home</span> 02 · Home Tab — Maghrib &amp; Variations · 4 Screens
+        <span className="mi" data-i="home"></span> 02 · Home Tab — Maghrib &amp; Variations · 4 Screens
       </div>
       <div className="poc-board">
         {STORYBOARD_FRAMES.slice(0, 4).map((f, i) => renderFrame(f, i, active, onSelectFrame))}
@@ -76,7 +76,7 @@ function QaumRow({ active = 0, onSelectFrame }) {
   return (
     <div>
       <div className="poc-row-label">
-        <span className="material-symbols-rounded">group</span> 03 · Qaum Tab — Community Feed · 1 Screen
+        <span className="mi" data-i="group"></span> 03 · Qaum Tab — Community Feed · 1 Screen
       </div>
       <div className="poc-board">
         {STORYBOARD_FRAMES.slice(4, 5).map((f, i) => renderFrame(f, 4 + i, active, onSelectFrame))}
@@ -89,7 +89,7 @@ function QuranRow({ active = 0, onSelectFrame }) {
   return (
     <div>
       <div className="poc-row-label">
-        <span className="material-symbols-rounded">menu_book</span> 04 · Quran Tab — Surah Listing · 1 Screen
+        <span className="mi" data-i="menu_book"></span> 04 · Quran Tab — Surah Listing · 1 Screen
       </div>
       <div className="poc-board">
         {STORYBOARD_FRAMES.slice(5, 6).map((f, i) => renderFrame(f, 5 + i, active, onSelectFrame))}
@@ -102,7 +102,7 @@ function SalaahRow({ active = 0, onSelectFrame }) {
   return (
     <div>
       <div className="poc-row-label">
-        <span className="material-symbols-rounded">mosque</span> 05 · Salaah Tab — Bilal Timings · 1 Screen
+        <span className="mi" data-i="mosque"></span> 05 · Salaah Tab — Bilal Timings · 1 Screen
       </div>
       <div className="poc-board">
         {STORYBOARD_FRAMES.slice(6, 7).map((f, i) => renderFrame(f, 6 + i, active, onSelectFrame))}
@@ -115,7 +115,7 @@ function ProfileRow({ active = 0, onSelectFrame }) {
   return (
     <div>
       <div className="poc-row-label">
-        <span className="material-symbols-rounded">person</span> 06 · Profile Tab — User Settings · 1 Screen
+        <span className="mi" data-i="person"></span> 06 · Profile Tab — User Settings · 1 Screen
       </div>
       <div className="poc-board">
         {STORYBOARD_FRAMES.slice(7, 8).map((f, i) => renderFrame(f, 7 + i, active, onSelectFrame))}
@@ -128,7 +128,7 @@ function HomePrayerRow({ active = 0, onSelectFrame }) {
   return (
     <div>
       <div className="poc-row-label">
-        <span className="material-symbols-rounded">schedule</span> 01 · Home Tab — Prayer Variations · 5 Screens
+        <span className="mi" data-i="schedule"></span> 01 · Home Tab — Prayer Variations · 5 Screens
       </div>
       <div className="poc-board">
         {PRAYER_FRAMES.map((f, i) => renderFrame(f, 8 + i, active, onSelectFrame))}

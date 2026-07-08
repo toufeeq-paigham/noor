@@ -55,7 +55,7 @@ function PromptCard({
             cursor: 'pointer',
             flexShrink: 0
           }}>
-            <span className="material-symbols-rounded" style={{ fontSize: 16, color: 'var(--color-info-primary)' }}>close</span>
+            <span className="mi" style={{ fontSize: 16, color: 'var(--color-info-primary)' }} data-i="close"></span>
           </div>
         )}
       </div>

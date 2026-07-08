@@ -13,7 +13,7 @@ function PhoneRow({ active = -1 }) {
   const { PhoneScreen } = window;
   return (
     <div>
-      <div className="poc-row-label"><span className="material-symbols-rounded">phone_iphone</span> 02 · PHONE LOGIN · 3 STATES</div>
+      <div className="poc-row-label"><span className="mi" data-i="phone_iphone"></span> 02 · PHONE LOGIN · 3 STATES</div>
       <div className="poc-board">
         {PHONE_STATES.map((s, i) => {
           const isActive = active === i;

@@ -1,0 +1,92 @@
+/* ============================================================
+   Noor icon kit — local SVGs rendered via CSS mask.
+   Sources: app VectorDrawables (paigham-app) + Material Symbols
+   Rounded (Google) for gaps. `mask` means font-size (->1em) and
+   color (->currentColor) drive size/tint exactly like the old font.
+   Use: <span class="mi" data-i="home"></span>  (add class "fill" for filled).
+   ============================================================ */
+.mi{display:inline-block;width:1em;height:1em;flex-shrink:0;background:currentColor;
+    -webkit-mask:var(--mi) center/contain no-repeat;mask:var(--mi) center/contain no-repeat;
+    vertical-align:middle}
+.mi.fill{-webkit-mask-image:var(--mif,var(--mi));mask-image:var(--mif,var(--mi))}
+
+[data-i="add"]{--mi:url("../_ds/icons/add.svg")}
+[data-i="add_home_work"]{--mi:url("../_ds/icons/add_home_work.svg")}
+[data-i="arrow_back"]{--mi:url("../_ds/icons/arrow_back.svg")}
+[data-i="arrow_forward"]{--mi:url("../_ds/icons/arrow_forward.svg")}
+[data-i="auto_awesome"]{--mi:url("../_ds/icons/auto_awesome.svg")}
+[data-i="auto_stories"]{--mi:url("../_ds/icons/auto_stories.svg")}
+[data-i="backspace"]{--mi:url("../_ds/icons/backspace.svg")}
+[data-i="bedtime"]{--mi:url("../_ds/icons/bedtime.svg")}
+[data-i="bookmark"]{--mi:url("../_ds/icons/bookmark.svg")}
+[data-i="bubble_chart"]{--mi:url("../_ds/icons/bubble_chart.svg")}
+[data-i="calculate"]{--mi:url("../_ds/icons/calculate.svg")}
+[data-i="calendar_month"]{--mi:url("../_ds/icons/calendar_month.svg")}
+[data-i="call"]{--mi:url("../_ds/icons/call.svg")}
+[data-i="campaign"]{--mi:url("../_ds/icons/campaign.svg")}
+[data-i="chat_bubble"]{--mi:url("../_ds/icons/chat_bubble.svg");--mif:url("../_ds/icons/chat_bubble__fill.svg")}
+[data-i="check"]{--mi:url("../_ds/icons/check.svg");--mif:url("../_ds/icons/check__fill.svg")}
+[data-i="check_circle"]{--mi:url("../_ds/icons/check_circle.svg");--mif:url("../_ds/icons/check_circle__fill.svg")}
+[data-i="chevron_left"]{--mi:url("../_ds/icons/chevron_left.svg")}
+[data-i="chevron_right"]{--mi:url("../_ds/icons/chevron_right.svg")}
+[data-i="close"]{--mi:url("../_ds/icons/close.svg")}
+[data-i="corporate_fare"]{--mi:url("../_ds/icons/corporate_fare.svg");--mif:url("../_ds/icons/corporate_fare__fill.svg")}
+[data-i="dark_mode"]{--mi:url("../_ds/icons/dark_mode.svg")}
+[data-i="dashboard"]{--mi:url("../_ds/icons/dashboard.svg")}
+[data-i="description"]{--mi:url("../_ds/icons/description.svg")}
+[data-i="error"]{--mi:url("../_ds/icons/error.svg")}
+[data-i="expand_more"]{--mi:url("../_ds/icons/expand_more.svg")}
+[data-i="explore"]{--mi:url("../_ds/icons/explore.svg")}
+[data-i="favorite"]{--mi:url("../_ds/icons/favorite.svg");--mif:url("../_ds/icons/favorite__fill.svg")}
+[data-i="format_list_bulleted"]{--mi:url("../_ds/icons/format_list_bulleted.svg")}
+[data-i="format_quote"]{--mi:url("../_ds/icons/format_quote.svg")}
+[data-i="front_hand"]{--mi:url("../_ds/icons/front_hand.svg")}
+[data-i="group"]{--mi:url("../_ds/icons/group.svg");--mif:url("../_ds/icons/group__fill.svg")}
+[data-i="home"]{--mi:url("../_ds/icons/home.svg");--mif:url("../_ds/icons/home__fill.svg")}
+[data-i="hourglass_top"]{--mi:url("../_ds/icons/hourglass_top.svg")}
+[data-i="info"]{--mi:url("../_ds/icons/info.svg")}
+[data-i="keyboard_arrow_down"]{--mi:url("../_ds/icons/keyboard_arrow_down.svg")}
+[data-i="location_on"]{--mi:url("../_ds/icons/location_on.svg");--mif:url("../_ds/icons/location_on__fill.svg")}
+[data-i="login"]{--mi:url("../_ds/icons/login.svg")}
+[data-i="logout"]{--mi:url("../_ds/icons/logout.svg")}
+[data-i="mail"]{--mi:url("../_ds/icons/mail.svg")}
+[data-i="menu_book"]{--mi:url("../_ds/icons/menu_book.svg");--mif:url("../_ds/icons/menu_book__fill.svg")}
+[data-i="mosque"]{--mi:url("../_ds/icons/mosque.svg");--mif:url("../_ds/icons/mosque__fill.svg")}
+[data-i="my_location"]{--mi:url("../_ds/icons/my_location.svg")}
+[data-i="near_me"]{--mi:url("../_ds/icons/near_me.svg")}
+[data-i="notifications"]{--mi:url("../_ds/icons/notifications.svg");--mif:url("../_ds/icons/notifications__fill.svg")}
+[data-i="notifications_none"]{--mi:url("../_ds/icons/notifications_none.svg")}
+[data-i="notifications_off"]{--mi:url("../_ds/icons/notifications_off.svg")}
+[data-i="palette"]{--mi:url("../_ds/icons/palette.svg")}
+[data-i="password"]{--mi:url("../_ds/icons/password.svg")}
+[data-i="pause"]{--mi:url("../_ds/icons/pause.svg")}
+[data-i="person"]{--mi:url("../_ds/icons/person.svg");--mif:url("../_ds/icons/person__fill.svg")}
+[data-i="phone_iphone"]{--mi:url("../_ds/icons/phone_iphone.svg")}
+[data-i="photo_camera"]{--mi:url("../_ds/icons/photo_camera.svg")}
+[data-i="play_arrow"]{--mi:url("../_ds/icons/play_arrow.svg");--mif:url("../_ds/icons/play_arrow__fill.svg")}
+[data-i="qr_code_scanner"]{--mi:url("../_ds/icons/qr_code_scanner.svg")}
+[data-i="radio_button_checked"]{--mi:url("../_ds/icons/radio_button_checked.svg")}
+[data-i="radio_button_unchecked"]{--mi:url("../_ds/icons/radio_button_unchecked.svg")}
+[data-i="receipt_long"]{--mi:url("../_ds/icons/receipt_long.svg")}
+[data-i="remove"]{--mi:url("../_ds/icons/remove.svg")}
+[data-i="replay"]{--mi:url("../_ds/icons/replay.svg")}
+[data-i="reply"]{--mi:url("../_ds/icons/reply.svg")}
+[data-i="restaurant"]{--mi:url("../_ds/icons/restaurant.svg")}
+[data-i="savings"]{--mi:url("../_ds/icons/savings.svg")}
+[data-i="schedule"]{--mi:url("../_ds/icons/schedule.svg")}
+[data-i="search"]{--mi:url("../_ds/icons/search.svg")}
+[data-i="security"]{--mi:url("../_ds/icons/security.svg")}
+[data-i="sensors"]{--mi:url("../_ds/icons/sensors.svg")}
+[data-i="settings"]{--mi:url("../_ds/icons/settings.svg")}
+[data-i="share"]{--mi:url("../_ds/icons/share.svg")}
+[data-i="shield"]{--mi:url("../_ds/icons/shield.svg")}
+[data-i="splitscreen"]{--mi:url("../_ds/icons/splitscreen.svg")}
+[data-i="star"]{--mi:url("../_ds/icons/star.svg");--mif:url("../_ds/icons/star__fill.svg")}
+[data-i="travel_explore"]{--mi:url("../_ds/icons/travel_explore.svg")}
+[data-i="unfold_more"]{--mi:url("../_ds/icons/unfold_more.svg")}
+[data-i="verified"]{--mi:url("../_ds/icons/verified.svg")}
+[data-i="videocam_off"]{--mi:url("../_ds/icons/videocam_off.svg")}
+[data-i="volunteer_activism"]{--mi:url("../_ds/icons/volunteer_activism.svg")}
+[data-i="waving_hand"]{--mi:url("../_ds/icons/waving_hand.svg")}
+[data-i="wb_sunny"]{--mi:url("../_ds/icons/wb_sunny.svg")}
+[data-i="widgets"]{--mi:url("../_ds/icons/widgets.svg")}

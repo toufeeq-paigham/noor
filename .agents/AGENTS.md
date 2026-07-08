@@ -173,8 +173,13 @@ grep -rnE '#[0-9a-fA-F]{3,8}' src/components src/_theme/components.css
 - **Theme-aware always:** every page loads `chrome.js` in `<head>` (after `support.js`) and
   `poc.css` + `components.css` in the helmet; body background is `var(--canvas-bg)`. Never set a
   hardcoded `data-theme` or a `dark` prop on the device frame.
-- Dynamic Material icon names inside `{{ }}` bindings need `font-family:inherit` on the
-  `.sc-interp` span (handled in `poc.css`) or ligatures break.
+- **Icons — local kit only.** Use `<span class="mi" data-i="home"></span>` (add class `fill` for the
+  filled variant). Icons are self-hosted SVGs in `src/_ds/icons/` (app VectorDrawables converted +
+  Material Symbols Rounded from Google for gaps), rendered via CSS `mask` in `_theme/icons.css` so
+  `font-size` (→ size) and `color` (→ tint) work like the old font. Dynamic names bind through the
+  attribute: `data-i="{{ icon }}"` (dc) or `data-i={icon}` (jsx). To add an icon: drop
+  `NAME.svg` in `src/_ds/icons/` and add a `[data-i="NAME"]` rule to `icons.css`. Do NOT add new
+  `material-symbols-rounded` ligatures — that font is retained only for the vendored `_ds_bundle.js`.
 
 ## Commit Messages
 

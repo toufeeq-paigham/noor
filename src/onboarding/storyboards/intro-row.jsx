@@ -30,7 +30,7 @@ function IntroRow({ active = -1 }) {
   const { IntroScreen } = window;
   return (
     <div>
-      <div className="poc-row-label"><span className="material-symbols-rounded">waving_hand</span> 01 · Intro — onboarding carousel · 3 slides</div>
+      <div className="poc-row-label"><span className="mi" data-i="waving_hand"></span> 01 · Intro — onboarding carousel · 3 slides</div>
       <div className="poc-board">
         {INTRO_SLIDES.map((s, i) => {
           const isActive = active === i;

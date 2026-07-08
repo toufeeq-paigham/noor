@@ -14,7 +14,7 @@ function OtpRow({ active = -1 }) {
   const { OtpScreen } = window;
   return (
     <div>
-      <div className="poc-row-label"><span className="material-symbols-rounded">password</span> 03 · OTP VERIFICATION · 4 STATES</div>
+      <div className="poc-row-label"><span className="mi" data-i="password"></span> 03 · OTP VERIFICATION · 4 STATES</div>
       <div className="poc-board">
         {OTP_STATES.map((s, i) => {
           const isActive = active === i;

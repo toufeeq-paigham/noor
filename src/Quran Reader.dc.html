@@ -13,6 +13,7 @@
   <link rel="stylesheet" href="_theme/poc.css">
   <script src="_ds/noor-design-system-46f42e91-1858-412f-bdb6-560a6cc3df9f/_ds_bundle.js"></script>
   <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Rounded:opsz,wght,FILL,GRAD@24,400,0..1,0&amp;display=block">
+  <link rel="stylesheet" href="_theme/icons.css">
   <style>
     @font-face{font-family:'AlQuranIndoPak';src:url('_ds/noor-design-system-46f42e91-1858-412f-bdb6-560a6cc3df9f/fonts/AlQuran-IndoPak.ttf') format('truetype')}
     @font-face{font-family:'QWBWSurah';src:url('_ds/noor-design-system-46f42e91-1858-412f-bdb6-560a6cc3df9f/fonts/QWBWSurah.ttf') format('truetype')}
@@ -30,11 +31,11 @@
       <!-- AppBar -->
       <div style="flex-shrink:0;display:flex;align-items:center;justify-content:space-between;padding:12px 16px 10px;background:var(--color-surface-primary)">
         <div onClick="{{ goBack }}" style="width:40px;height:40px;border-radius:50%;background:color-mix(in oklab, var(--color-info-primary) 10%, transparent);border:1px solid color-mix(in oklab, var(--color-info-primary) 20%, transparent);display:flex;align-items:center;justify-content:center;cursor:pointer;box-sizing:border-box">
-          <span class="material-symbols-rounded" style="font-size:20px;color:var(--color-info-primary)">arrow_back</span>
+          <span class="mi" style="font-size:20px;color:var(--color-info-primary)" data-i="arrow_back"></span>
         </div>
         <div style="font-family:'QWBWSurah',serif;font-size:22px;color:var(--color-info-primary);direction:rtl">سُورَةُ الْفَاتِحَةِ</div>
         <div onClick="{{ toggleSettings }}" style="width:40px;height:40px;border-radius:50%;background:color-mix(in oklab, var(--color-info-primary) 10%, transparent);border:1px solid color-mix(in oklab, var(--color-info-primary) 20%, transparent);display:flex;align-items:center;justify-content:center;cursor:pointer;box-sizing:border-box">
-          <span class="material-symbols-rounded" style="font-size:20px;color:var(--color-info-primary)">settings</span>
+          <span class="mi" style="font-size:20px;color:var(--color-info-primary)" data-i="settings"></span>
         </div>
       </div>
 
@@ -61,10 +62,10 @@
               <div style="display:inline-block;background:var(--color-action-background);border-radius:6px;padding:2px 8px"><span style="font-family:'Nunito',sans-serif;font-size:11px;font-weight:600;color:var(--color-info-secondary)">{{ a.ref }}</span></div>
               <div style="display:flex;align-items:center;gap:4px">
                 <div onClick="{{ a.onPlay }}" style="width:30px;height:30px;border-radius:50%;display:flex;align-items:center;justify-content:center;cursor:pointer">
-                  <span class="material-symbols-rounded" style="font-size:20px;color:{{ a.playColor }};font-variation-settings:'FILL' {{ a.playFill }}">{{ a.playIcon }}</span>
+                  <span class="mi" style="font-size:20px;color:{{ a.playColor }};font-variation-settings:'FILL' {{ a.playFill }}" data-i="{{ a.playIcon }}"></span>
                 </div>
                 <div onClick="{{ a.onBookmark }}" style="width:30px;height:30px;border-radius:50%;display:flex;align-items:center;justify-content:center;cursor:pointer">
-                  <span class="material-symbols-rounded" style="font-size:20px;color:{{ a.bmColor }};font-variation-settings:'FILL' {{ a.bmFill }}">bookmark</span>
+                  <span class="mi" style="font-size:20px;color:{{ a.bmColor }};font-variation-settings:'FILL' {{ a.bmFill }}" data-i="bookmark"></span>
                 </div>
               </div>
             </div>
@@ -96,11 +97,11 @@
             <span style="font-family:'Nunito',sans-serif;font-size:16px;color:var(--color-info-primary)">Arabic Text Size</span>
             <div style="display:flex;align-items:center;gap:10px">
               <div onClick="{{ decFont }}" style="width:30px;height:30px;border-radius:50%;background:var(--color-action-background);display:flex;align-items:center;justify-content:center;cursor:pointer;opacity:{{ decOpacity }};transition:opacity 120ms">
-                <span class="material-symbols-rounded" style="font-size:18px;color:var(--color-info-primary)">remove</span>
+                <span class="mi" style="font-size:18px;color:var(--color-info-primary)" data-i="remove"></span>
               </div>
               <span style="font-family:'Nunito',sans-serif;font-size:14px;font-weight:700;color:var(--color-info-primary);min-width:22px;text-align:center">{{ arabicSizeLabel }}</span>
               <div onClick="{{ incFont }}" style="width:30px;height:30px;border-radius:50%;background:var(--color-action-background);display:flex;align-items:center;justify-content:center;cursor:pointer;opacity:{{ incOpacity }};transition:opacity 120ms">
-                <span class="material-symbols-rounded" style="font-size:18px;color:var(--color-info-primary)">add</span>
+                <span class="mi" style="font-size:18px;color:var(--color-info-primary)" data-i="add"></span>
               </div>
             </div>
           </div>

@@ -14,6 +14,7 @@
   <link rel="stylesheet" href="_theme/poc.css">
   <script src="_ds/noor-design-system-46f42e91-1858-412f-bdb6-560a6cc3df9f/_ds_bundle.js"></script>
   <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Rounded:opsz,wght,FILL,GRAD@24,400,0..1,0&amp;display=block">
+  <link rel="stylesheet" href="_theme/icons.css">
   <style>
     body{background:var(--canvas-bg);padding:56px 40px 120px;min-height:100vh;box-sizing:border-box}
     ::-webkit-scrollbar{display:none}*{-ms-overflow-style:none;scrollbar-width:none}
@@ -36,7 +37,7 @@
     <div>
       <div style="display:flex;align-items:center;gap:12px;margin-bottom:14px">
         <div style="width:44px;height:44px;border-radius:14px;background:var(--color-action-primary);display:flex;align-items:center;justify-content:center;box-shadow:var(--shadow-button)">
-          <span class="material-symbols-rounded" style="font-size:24px;color:var(--color-action-primary-inverse);font-variation-settings:'FILL' 1">mosque</span>
+          <span class="mi fill" style="font-size:24px;color:var(--color-action-primary-inverse);font-variation-settings:'FILL' 1" data-i="mosque"></span>
         </div>
         <div style="font-family:var(--font-body);font-size:12px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--canvas-label)">Paigham · Design POC</div>
       </div>
@@ -77,7 +78,7 @@
               <sc-if value="{{ p.hasTile }}"><img src="{{ p.tile }}" alt="{{ p.name }}"></sc-if>
               <sc-if value="{{ p.noTile }}">
                 <div class="idx-art" style="background:{{ p.artBg }}">
-                  <span class="material-symbols-rounded" style="font-size:52px;color:{{ p.artColor }};font-variation-settings:'FILL' 1">{{ p.icon }}</span>
+                  <span class="mi fill" style="font-size:52px;color:{{ p.artColor }};font-variation-settings:'FILL' 1" data-i="{{ p.icon }}"></span>
                 </div>
               </sc-if>
             </div>

@@ -128,7 +128,7 @@ html.noor-canvas-mode .poc-frames {
   color: var(--canvas-label);
   margin-bottom: 18px;
 }
-.poc-row-label .material-symbols-rounded { font-size: 16px; }
+.poc-row-label .mi { font-size: 16px; }
 
 .poc-panel-label {
   display: flex;
@@ -142,7 +142,7 @@ html.noor-canvas-mode .poc-frames {
   color: var(--canvas-label);
   margin-bottom: 18px;
 }
-.poc-panel-label .material-symbols-rounded { font-size: 15px; }
+.poc-panel-label .mi { font-size: 15px; }
 
 /* Storyboard strip of static frames — a single horizontal row that
    grows with the number of state frames; the canvas pans to reach
@@ -243,7 +243,7 @@ html.noor-canvas-mode .poc-frames {
   font-weight: 700;
   box-shadow: var(--shadow-button);
 }
-.poc-play .material-symbols-rounded { font-size: 18px; }
+.poc-play .mi { font-size: 18px; }
 .poc-live-hint {
   font-family: var(--font-body, "Nunito", sans-serif);
   font-size: 11px;
@@ -256,8 +256,8 @@ html.noor-canvas-mode .poc-frames {
    which kills Material Symbols ligatures for dynamically-bound icon names.
    Force interpolated text inside an icon span back to the icon font — and to
    the icon span's own size, since sibling-span rules (e.g. .nb-item labels)
-   can otherwise shrink the glyph via a :not(.material-symbols-rounded) match. */
-.material-symbols-rounded .sc-interp {
+   can otherwise shrink the glyph via a :not(.mi) match. */
+.mi .sc-interp {
   font-family: inherit !important;
   font-size: inherit !important;
   line-height: inherit !important;

@@ -117,7 +117,7 @@ function HomeScreen({
         </div>
         {/* Bell icon button */}
         <div onClick={onBellTap} style={{ position: 'relative', width: 40, height: 40, borderRadius: '50%', background: theme.bellBtnBg, border: `1.5px solid ${theme.bellBtnBorder}`, display: 'flex', alignItems: 'center', justifyContent: 'center', cursor: 'pointer', flexShrink: 0 }}>
-          <span className="material-symbols-rounded" style={{ fontSize: 20, color: theme.bellIconColor, opacity: bellOpacity, fontVariationSettings: `'FILL' ${bellFill}`, transition: 'opacity 160ms' }}>{bellIcon}</span>
+          <span className="mi" style={{ fontSize: 20, color: theme.bellIconColor, opacity: bellOpacity, fontVariationSettings: `'FILL' ${bellFill}`, transition: 'opacity 160ms' }} data-i={bellIcon}></span>
           <div style={{ position: 'absolute', top: 8, right: 9, width: 8, height: 8, borderRadius: '50%', background: 'var(--color-action-primary)', border: '1.5px solid rgba(255,255,255,0.8)', opacity: bellDotOpacity, transition: 'opacity 160ms' }} />
         </div>
       </div>
@@ -130,7 +130,7 @@ function HomeScreen({
           {/* Suhoor — beside the time */}
           <div onClick={onSuhoorTap} style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: 5, cursor: 'pointer', flexShrink: 0 }}>
             <div style={{ width: 46, height: 46, borderRadius: '50%', background: suhoorBg, backdropFilter: 'blur(10px)', border: suhoorBorder, display: 'flex', alignItems: 'center', justifyContent: 'center', transition: 'background 200ms, border 200ms' }}>
-              <span className="material-symbols-rounded" style={{ fontSize: 20, color: theme.flankerIconColor }}>wb_sunny</span>
+              <span className="mi" style={{ fontSize: 20, color: theme.flankerIconColor }} data-i="wb_sunny"></span>
             </div>
             <div style={{ textAlign: 'center' }}>
               <div style={{ fontFamily: '"Nunito", sans-serif', fontSize: 11, fontWeight: 600, color: theme.flankerTextColor }}>Suhoor</div>
@@ -149,7 +149,7 @@ function HomeScreen({
           {/* Iftaar — beside the time */}
           <div onClick={onIftaarTap} style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: 5, cursor: 'pointer', flexShrink: 0 }}>
             <div style={{ width: 46, height: 46, borderRadius: '50%', background: iftaarBg, backdropFilter: 'blur(10px)', border: iftaarBorder, display: 'flex', alignItems: 'center', justifyContent: 'center', transition: 'background 200ms, border 200ms' }}>
-              <span className="material-symbols-rounded" style={{ fontSize: 20, color: theme.flankerIconColor }}>bedtime</span>
+              <span className="mi" style={{ fontSize: 20, color: theme.flankerIconColor }} data-i="bedtime"></span>
             </div>
             <div style={{ textAlign: 'center' }}>
               <div style={{ fontFamily: '"Nunito", sans-serif', fontSize: 11, fontWeight: 600, color: theme.flankerTextColor }}>Iftaar</div>
@@ -181,7 +181,7 @@ function HomeScreen({
               {prayerList.map((p, idx) => (
                 <div key={idx} onClick={() => onTogglePrayer && onTogglePrayer(p.name)} style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: 8, cursor: 'pointer' }}>
                   <div style={{ width: 44, height: 44, borderRadius: '50%', background: p.bg, backgroundClip: 'content-box', padding: 3, boxSizing: 'border-box', border: p.border, display: 'flex', alignItems: 'center', justifyContent: 'center', transition: 'background 150ms, border 150ms' }}>
-                    <span className="material-symbols-rounded" style={{ fontSize: 20, color: 'var(--color-action-primary-inverse)', opacity: p.checkOpacity, fontVariationSettings: `'FILL' 1`, transition: 'opacity 150ms' }}>check</span>
+                    <span className="mi fill" style={{ fontSize: 20, color: 'var(--color-action-primary-inverse)', opacity: p.checkOpacity, fontVariationSettings: `'FILL' 1`, transition: 'opacity 150ms' }} data-i="check"></span>
                   </div>
                   <span style={{ fontFamily: '"Nunito", sans-serif', fontSize: 12, fontWeight: 600, color: p.labelColor }}>{p.name}</span>
                 </div>
@@ -205,7 +205,7 @@ function HomeScreen({
           {/* Hero details popup sheets (Absolute overlay within card context) */}
           {heroSel === 'suhoor' && (
             <div style={{ margin: '0 20px 24px', background: 'var(--color-surface-primary)', border: '1.5px solid var(--color-action-primary)', borderRadius: 16, padding: '16px 18px', display: 'flex', alignItems: 'flex-start', gap: 14 }}>
-              <span className="material-symbols-rounded" style={{ fontSize: 28, color: 'var(--color-action-primary)', flexShrink: 0 }}>wb_sunny</span>
+              <span className="mi" style={{ fontSize: 28, color: 'var(--color-action-primary)', flexShrink: 0 }} data-i="wb_sunny"></span>
               <div>
                 <div style={{ fontFamily: '"Nunito", sans-serif', fontSize: 16, fontWeight: 800, color: 'var(--color-info-primary)' }}>Suhoor ends at 4:31 AM</div>
                 <div style={{ fontFamily: '"Nunito", sans-serif', fontSize: 13, color: 'var(--color-info-secondary)', marginTop: 4, lineHeight: 1.45 }}>Eat before this time. The Fajr Azan is at 4:36 AM. Recommended to stop eating 10 mins before Azan.</div>
@@ -215,7 +215,7 @@ function HomeScreen({
 
           {heroSel === 'iftaar' && (
             <div style={{ margin: '0 20px 24px', background: 'var(--color-surface-primary)', border: '1.5px solid var(--color-action-primary)', borderRadius: 16, padding: '16px 18px', display: 'flex', alignItems: 'flex-start', gap: 14 }}>
-              <span className="material-symbols-rounded" style={{ fontSize: 28, color: 'var(--color-action-primary)', flexShrink: 0 }}>bedtime</span>
+              <span className="mi" style={{ fontSize: 28, color: 'var(--color-action-primary)', flexShrink: 0 }} data-i="bedtime"></span>
               <div>
                 <div style={{ fontFamily: '"Nunito", sans-serif', fontSize: 16, fontWeight: 800, color: 'var(--color-info-primary)' }}>Iftaar starts at 6:49 PM</div>
                 <div style={{ fontFamily: '"Nunito", sans-serif', fontSize: 13, color: 'var(--color-info-secondary)', marginTop: 4, lineHeight: 1.45 }}>Open your fast now. Remember to recite the fast-breaking dua before eating.</div>
@@ -235,7 +235,7 @@ function HomeScreen({
                   <img src={quranImg} style={{ position: 'absolute', inset: 0, width: '100%', height: '100%', objectFit: 'cover' }} />
                   <div style={{ position: 'absolute', inset: 0, background: 'linear-gradient(90deg, rgba(0,0,0,0.6) 0%, transparent 65%)' }} />
                   <div style={{ position: 'absolute', left: 16, bottom: 16, display: 'flex', flexDirection: 'column', gap: 2 }}>
-                    <span className="material-symbols-rounded" style={{ fontSize: 18, color: '#FFFFFF' }}>auto_stories</span>
+                    <span className="mi" style={{ fontSize: 18, color: '#FFFFFF' }} data-i="auto_stories"></span>
                     <div style={{ fontFamily: '"Nunito", sans-serif', fontSize: 15, fontWeight: 800, color: '#FFFFFF' }}>Quran</div>
                     <div style={{ fontFamily: '"Nunito", sans-serif', fontSize: 11, fontWeight: 500, color: 'rgba(255,255,255,0.8)' }}>Recite</div>
                   </div>
@@ -246,7 +246,7 @@ function HomeScreen({
                   <img src={sehriImg} style={{ position: 'absolute', inset: 0, width: '100%', height: '100%', objectFit: 'cover' }} />
                   <div style={{ position: 'absolute', inset: 0, background: 'linear-gradient(90deg, rgba(0,0,0,0.6) 0%, transparent 65%)' }} />
                   <div style={{ position: 'absolute', left: 16, bottom: 16, display: 'flex', flexDirection: 'column', gap: 2 }}>
-                    <span className="material-symbols-rounded" style={{ fontSize: 18, color: '#FFFFFF' }}>restaurant</span>
+                    <span className="mi" style={{ fontSize: 18, color: '#FFFFFF' }} data-i="restaurant"></span>
                     <div style={{ fontFamily: '"Nunito", sans-serif', fontSize: 15, fontWeight: 800, color: '#FFFFFF' }}>Sehri</div>
                     <div style={{ fontFamily: '"Nunito", sans-serif', fontSize: 11, fontWeight: 500, color: 'rgba(255,255,255,0.8)' }}>Locations &amp; more</div>
                   </div>
@@ -279,7 +279,7 @@ function HomeScreen({
               <img src={masjidImg} style={{ position: 'absolute', inset: 0, width: '100%', height: '100%', objectFit: 'cover' }} />
               <div style={{ position: 'absolute', inset: 0, background: 'linear-gradient(90deg, rgba(0,0,0,0.65) 0%, transparent 55%)' }} />
               <div style={{ position: 'absolute', left: 20, bottom: 20, display: 'flex', flexDirection: 'column', gap: 2 }}>
-                <span className="material-symbols-rounded" style={{ fontSize: 20, color: '#FFFFFF' }}>mosque</span>
+                <span className="mi" style={{ fontSize: 20, color: '#FFFFFF' }} data-i="mosque"></span>
                 <div style={{ fontFamily: '"Nunito", sans-serif', fontSize: 18, fontWeight: 800, color: '#FFFFFF' }}>Masjids</div>
                 <div style={{ fontFamily: '"Nunito", sans-serif', fontSize: 12, fontWeight: 500, color: 'rgba(255,255,255,0.8)' }}>Explore masjids near you</div>
               </div>
@@ -334,10 +334,10 @@ function HomeScreen({
                 </div>
                 <div style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
                   <div onClick={onHajLike} style={{ width: 24, height: 24, borderRadius: '50%', background: 'var(--color-action-background)', display: 'flex', alignItems: 'center', justifyContent: 'center', cursor: 'pointer' }}>
-                    <span className="material-symbols-rounded" style={{ fontSize: 12, color: likes.haj.liked ? '#E05060' : 'var(--color-info-faint)', fontVariationSettings: `'FILL' ${likes.haj.liked ? 1 : 0}` }}>favorite</span>
+                    <span className="mi" style={{ fontSize: 12, color: likes.haj.liked ? '#E05060' : 'var(--color-info-faint)', fontVariationSettings: `'FILL' ${likes.haj.liked ? 1 : 0}` }} data-i="favorite"></span>
                   </div>
                   <span style={{ fontFamily: '"Nunito", sans-serif', fontSize: 11, color: 'var(--color-info-secondary)' }}>{likes.haj.count}</span>
-                  <span className="material-symbols-rounded" style={{ fontSize: 16, color: 'var(--color-info-faint)', transform: 'scaleX(-1)' }}>reply</span>
+                  <span className="mi" style={{ fontSize: 16, color: 'var(--color-info-faint)', transform: 'scaleX(-1)' }} data-i="reply"></span>
                   <span style={{ fontFamily: '"Nunito", sans-serif', fontSize: 10, color: 'var(--color-info-faint)', marginLeft: 'auto' }}>2d ago</span>
                 </div>
               </div>
@@ -356,10 +356,10 @@ function HomeScreen({
                 </div>
                 <div style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
                   <div onClick={onEidLike} style={{ width: 24, height: 24, borderRadius: '50%', background: 'var(--color-action-background)', display: 'flex', alignItems: 'center', justifyContent: 'center', cursor: 'pointer' }}>
-                    <span className="material-symbols-rounded" style={{ fontSize: 12, color: likes.eid.liked ? '#E05060' : 'var(--color-info-faint)', fontVariationSettings: `'FILL' ${likes.eid.liked ? 1 : 0}` }}>favorite</span>
+                    <span className="mi" style={{ fontSize: 12, color: likes.eid.liked ? '#E05060' : 'var(--color-info-faint)', fontVariationSettings: `'FILL' ${likes.eid.liked ? 1 : 0}` }} data-i="favorite"></span>
                   </div>
                   <span style={{ fontFamily: '"Nunito", sans-serif', fontSize: 11, color: 'var(--color-info-secondary)' }}>{likes.eid.count}</span>
-                  <span className="material-symbols-rounded" style={{ fontSize: 16, color: 'var(--color-info-faint)', transform: 'scaleX(-1)' }}>reply</span>
+                  <span className="mi" style={{ fontSize: 16, color: 'var(--color-info-faint)', transform: 'scaleX(-1)' }} data-i="reply"></span>
                   <span style={{ fontFamily: '"Nunito", sans-serif', fontSize: 10, color: 'var(--color-info-faint)', marginLeft: 'auto' }}>1w ago</span>
                 </div>
               </div>
@@ -440,7 +440,7 @@ function HomeScreen({
             margin: '0 auto 20px',
             flexShrink: 0
           }}>
-            <span className="material-symbols-rounded" style={{ fontSize: 36, color: 'var(--color-action-primary)' }}>security</span>
+            <span className="mi" style={{ fontSize: 36, color: 'var(--color-action-primary)' }} data-i="security"></span>
           </div>
           
           {/* Title */}
@@ -488,7 +488,7 @@ function HomeScreen({
                 justifyContent: 'center',
                 flexShrink: 0
               }}>
-                <span className="material-symbols-rounded" style={{ fontSize: 20, color: 'var(--color-action-primary)' }}>security</span>
+                <span className="mi" style={{ fontSize: 20, color: 'var(--color-action-primary)' }} data-i="security"></span>
               </div>
               <div>
                 <div style={{ fontFamily: '"Nunito", sans-serif', fontSize: 16, fontWeight: 700, color: 'var(--color-info-primary)' }}>Private by design.</div>
@@ -508,7 +508,7 @@ function HomeScreen({
                 justifyContent: 'center',
                 flexShrink: 0
               }}>
-                <span className="material-symbols-rounded" style={{ fontSize: 20, color: 'var(--color-action-primary)' }}>person</span>
+                <span className="mi" style={{ fontSize: 20, color: 'var(--color-action-primary)' }} data-i="person"></span>
               </div>
               <div>
                 <div style={{ fontFamily: '"Nunito", sans-serif', fontSize: 16, fontWeight: 700, color: 'var(--color-info-primary)' }}>Tailored to you.</div>
@@ -528,7 +528,7 @@ function HomeScreen({
                 justifyContent: 'center',
                 flexShrink: 0
               }}>
-                <span className="material-symbols-rounded" style={{ fontSize: 20, color: 'var(--color-action-primary)' }}>campaign</span>
+                <span className="mi" style={{ fontSize: 20, color: 'var(--color-action-primary)' }} data-i="campaign"></span>
               </div>
               <div>
                 <div style={{ fontFamily: '"Nunito", sans-serif', fontSize: 16, fontWeight: 700, color: 'var(--color-info-primary)' }}>Help us grow.</div>
@@ -580,7 +580,7 @@ function HomeScreen({
                 position: 'relative'
               }}>
                 {/* Main signal/antenna icon */}
-                <span className="material-symbols-rounded" style={{ fontSize: 32, color: '#FFFFFF' }}>sensors</span>
+                <span className="mi" style={{ fontSize: 32, color: '#FFFFFF' }} data-i="sensors"></span>
                 
                 {/* Blue hand stop badge */}
                 <div style={{
@@ -596,7 +596,7 @@ function HomeScreen({
                   alignItems: 'center',
                   justifyContent: 'center'
                 }}>
-                  <span className="material-symbols-rounded" style={{ fontSize: 11, color: '#FFFFFF' }}>front_hand</span>
+                  <span className="mi" style={{ fontSize: 11, color: '#FFFFFF' }} data-i="front_hand"></span>
                 </div>
               </div>
               
@@ -755,10 +755,10 @@ function QaumScreen({
             {/* Actions */}
             <div style={{ display: 'flex', alignItems: 'center', gap: 12 }}>
               <div onClick={() => onLike && onLike('post1')} style={{ width: 28, height: 28, borderRadius: '50%', background: likes.post1.liked ? 'rgba(224,80,96,0.15)' : 'var(--color-action-background)', display: 'flex', alignItems: 'center', justifyContent: 'center', cursor: 'pointer', transition: 'background 200ms' }}>
-                <span className="material-symbols-rounded" style={{ fontSize: 14, color: likes.post1.liked ? '#E05060' : 'var(--color-info-secondary)', fontVariationSettings: `'FILL' ${likes.post1.liked ? 1 : 0}` }}>favorite</span>
+                <span className="mi" style={{ fontSize: 14, color: likes.post1.liked ? '#E05060' : 'var(--color-info-secondary)', fontVariationSettings: `'FILL' ${likes.post1.liked ? 1 : 0}` }} data-i="favorite"></span>
               </div>
               <span style={{ fontFamily: '"Nunito", sans-serif', fontSize: 13, color: 'var(--color-info-secondary)' }}>{likes.post1.count}</span>
-              <span className="material-symbols-rounded" style={{ fontSize: 20, color: 'var(--color-info-secondary)', transform: 'scaleX(-1)', cursor: 'pointer' }}>reply</span>
+              <span className="mi" style={{ fontSize: 20, color: 'var(--color-info-secondary)', transform: 'scaleX(-1)', cursor: 'pointer' }} data-i="reply"></span>
               <span style={{ fontFamily: '"Nunito", sans-serif', fontSize: 12, color: 'var(--color-info-faint)', marginLeft: 'auto' }}>2d ago</span>
             </div>
           </div>
@@ -778,7 +778,7 @@ function QaumScreen({
             {/* Audio player card */}
             <div style={{ background: 'var(--color-surface-card)', borderRadius: 40, padding: '8px 14px', display: 'flex', alignItems: 'center', gap: 10, marginBottom: 10, border: '1px solid color-mix(in oklab, var(--color-action-primary) 18%, transparent)' }}>
               <div onClick={onToggleAudio} style={{ width: 32, height: 32, borderRadius: '50%', background: 'var(--color-action-primary)', display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0, cursor: 'pointer' }}>
-                <span className="material-symbols-rounded" style={{ fontSize: 18, color: 'var(--color-action-primary-inverse)', fontVariationSettings: `'FILL' 1` }}>{audioPlaying ? 'pause' : 'play_arrow'}</span>
+                <span className="mi fill" style={{ fontSize: 18, color: 'var(--color-action-primary-inverse)', fontVariationSettings: `'FILL' 1` }} data-i={audioPlaying ? 'pause' : 'play_arrow'}></span>
               </div>
               <span style={{ fontFamily: '"Nunito", sans-serif', fontSize: 13, fontWeight: 600, color: 'var(--color-info-primary)', flexShrink: 0, width: 36 }}>{audioPlaying ? '0:12' : '1:34'}</span>
               <div style={{ display: 'flex', alignItems: 'center', gap: 1.5, flex: 1, height: 28 }}>
@@ -790,10 +790,10 @@ function QaumScreen({
             {/* Actions */}
             <div style={{ display: 'flex', alignItems: 'center', gap: 12 }}>
               <div onClick={() => onLike && onLike('post2')} style={{ width: 28, height: 28, borderRadius: '50%', background: likes.post2.liked ? 'rgba(224,80,96,0.15)' : 'var(--color-action-background)', display: 'flex', alignItems: 'center', justifyContent: 'center', cursor: 'pointer', transition: 'background 200ms' }}>
-                <span className="material-symbols-rounded" style={{ fontSize: 14, color: likes.post2.liked ? '#E05060' : 'var(--color-info-secondary)', fontVariationSettings: `'FILL' ${likes.post2.liked ? 1 : 0}` }}>favorite</span>
+                <span className="mi" style={{ fontSize: 14, color: likes.post2.liked ? '#E05060' : 'var(--color-info-secondary)', fontVariationSettings: `'FILL' ${likes.post2.liked ? 1 : 0}` }} data-i="favorite"></span>
               </div>
               <span style={{ fontFamily: '"Nunito", sans-serif', fontSize: 13, color: 'var(--color-info-secondary)' }}>{likes.post2.count}</span>
-              <span className="material-symbols-rounded" style={{ fontSize: 20, color: 'var(--color-info-secondary)', transform: 'scaleX(-1)', cursor: 'pointer' }}>reply</span>
+              <span className="mi" style={{ fontSize: 20, color: 'var(--color-info-secondary)', transform: 'scaleX(-1)', cursor: 'pointer' }} data-i="reply"></span>
               <span style={{ fontFamily: '"Nunito", sans-serif', fontSize: 12, color: 'var(--color-info-faint)', marginLeft: 'auto' }}>9mo ago</span>
             </div>
           </div>
@@ -860,7 +860,7 @@ function QuranScreen({
             {/* Continue card */}
             <div onClick={onOpenReader} style={{ background: 'var(--color-action-primary)', borderRadius: 16, padding: '14px 16px', display: 'flex', alignItems: 'center', gap: 12, cursor: 'pointer', boxShadow: 'var(--shadow-button)' }}>
               <div style={{ width: 40, height: 40, borderRadius: '50%', background: 'rgba(255,255,255,0.22)', flexShrink: 0, display: 'flex', alignItems: 'center', justifycontent: 'center', justifyContent: 'center' }}>
-                <span className="material-symbols-rounded" style={{ fontSize: 22, color: 'var(--color-action-primary-inverse)', fontVariationSettings: `'FILL' 1` }}>play_arrow</span>
+                <span className="mi fill" style={{ fontSize: 22, color: 'var(--color-action-primary-inverse)', fontVariationSettings: `'FILL' 1` }} data-i="play_arrow"></span>
               </div>
               <div style={{ flex: 1, minWidth: 0 }}>
                 <div style={{ fontFamily: '"Nunito", sans-serif', fontSize: 10, fontWeight: 800, letterSpacing: '.08em', textTransform: 'uppercase', color: 'rgba(255,255,255,0.8)' }}>Continue reading</div>
@@ -872,7 +872,7 @@ function QuranScreen({
                   <span style={{ fontFamily: '"Nunito", sans-serif', fontSize: 11, fontWeight: 700, color: 'rgba(255,255,255,0.8)' }}>Ayah 45 of 110</span>
                 </div>
               </div>
-              <span className="material-symbols-rounded" style={{ fontSize: 20, color: 'var(--color-action-primary-inverse)' }}>chevron_right</span>
+              <span className="mi" style={{ fontSize: 20, color: 'var(--color-action-primary-inverse)' }} data-i="chevron_right"></span>
             </div>
 
             {/* Surah List */}
@@ -904,7 +904,7 @@ function QuranScreen({
                     <div style={{ fontFamily: '"Nunito", sans-serif', fontSize: 16, fontWeight: 700, color: 'var(--color-info-primary)' }}>{j.title}</div>
                     <div style={{ fontFamily: '"Nunito", sans-serif', fontSize: 12, color: 'var(--color-info-secondary)' }}>{j.name}</div>
                   </div>
-                  <span className="material-symbols-rounded" style={{ fontSize: 20, color: 'var(--color-status-disabled-alt)' }}>chevron_right</span>
+                  <span className="mi" style={{ fontSize: 20, color: 'var(--color-status-disabled-alt)' }} data-i="chevron_right"></span>
                 </div>
               );
             })}
@@ -963,7 +963,7 @@ function SalaahScreen({
         <div style={{ flex: 1 }}>
           <div style={{ display: 'flex', alignItems: 'center', gap: 4 }}>
             <span style={{ fontFamily: '"Nunito", sans-serif', fontSize: 17, fontWeight: 700, color: 'var(--color-info-primary)' }}>{masjidName}</span>
-            <span className="material-symbols-rounded" style={{ fontSize: 18, color: 'var(--color-info-secondary)' }}>keyboard_arrow_down</span>
+            <span className="mi" style={{ fontSize: 18, color: 'var(--color-info-secondary)' }} data-i="keyboard_arrow_down"></span>
           </div>
           <div style={{ fontFamily: '"Nunito", sans-serif', fontSize: 12, color: 'var(--color-info-secondary)' }}>{masjidSub}</div>
         </div>
@@ -972,14 +972,14 @@ function SalaahScreen({
       {/* Date navigation */}
       <div style={{ flexShrink: 0, display: 'flex', alignItems: 'center', justifycontent: 'space-between', padding: '0 16px 12px', justifyContent: 'space-between' }}>
         <div onClick={() => onDateChange && onDateChange(-1)} style={{ width: 32, height: 32, borderRadius: '50%', background: 'var(--color-action-background)', display: 'flex', alignItems: 'center', justifyContent: 'center', cursor: 'pointer', opacity: dateIdx > 0 ? 1 : 0.4 }}>
-          <span className="material-symbols-rounded" style={{ fontSize: 20, color: 'var(--color-info-primary)' }}>chevron_left</span>
+          <span className="mi" style={{ fontSize: 20, color: 'var(--color-info-primary)' }} data-i="chevron_left"></span>
         </div>
         <div style={{ textAlign: 'center' }}>
           <div style={{ fontFamily: '"Nunito", sans-serif', fontSize: 16, fontWeight: 700, color: 'var(--color-info-primary)' }}>{dateTitles[dateIdx]}</div>
           <div style={{ fontFamily: '"Nunito", sans-serif', fontSize: 12, color: 'var(--color-info-secondary)' }}>{dateSubs[dateIdx]}</div>
         </div>
         <div onClick={() => onDateChange && onDateChange(1)} style={{ width: 32, height: 32, borderRadius: '50%', background: 'var(--color-action-background)', display: 'flex', alignItems: 'center', justifyContent: 'center', cursor: 'pointer', opacity: dateIdx < 2 ? 1 : 0.4 }}>
-          <span className="material-symbols-rounded" style={{ fontSize: 20, color: 'var(--color-info-primary)' }}>chevron_right</span>
+          <span className="mi" style={{ fontSize: 20, color: 'var(--color-info-primary)' }} data-i="chevron_right"></span>
         </div>
       </div>
 
@@ -999,13 +999,13 @@ function SalaahScreen({
             return (
               <div key={idx} style={{ display: 'flex', alignItems: 'center', padding: '14px 16px', borderBottom: '1px solid color-mix(in oklab, var(--color-info-primary) 6%, transparent)' }}>
                 <div onClick={() => onToggleCheck && onToggleCheck(p.name)} style={{ width: 22, height: 22, borderRadius: '50%', border: '2px solid var(--color-action-primary)', background: checked ? 'var(--color-action-primary)' : 'transparent', flexShrink: 0, marginRight: 10, cursor: 'pointer', display: 'flex', alignItems: 'center', justifyContent: 'center', boxSizing: 'border-box' }}>
-                  <span className="material-symbols-rounded" style={{ fontSize: 13, color: 'var(--color-action-primary-inverse)', opacity: checked ? 1 : 0 }}>check</span>
+                  <span className="mi" style={{ fontSize: 13, color: 'var(--color-action-primary-inverse)', opacity: checked ? 1 : 0 }} data-i="check"></span>
                 </div>
                 <span style={{ fontFamily: '"Nunito", sans-serif', fontSize: 15, fontWeight: 600, color: 'var(--color-info-primary)', flex: 1 }}>{p.name}</span>
                 <span style={{ fontFamily: '"Nunito", sans-serif', fontSize: 14, color: 'var(--color-info-secondary)', width: 80, textAlign: 'center' }}>{p.azaan}</span>
                 <div style={{ width: 100, display: 'flex', alignItems: 'center', justifycontent: 'flex-end', gap: 6, justifyContent: 'flex-end' }}>
                   <span style={{ fontFamily: '"Nunito", sans-serif', fontSize: 14, color: 'var(--color-info-primary)' }}>{p.iqama}</span>
-                  <span onClick={() => onToggleAlert && onToggleAlert(p.name)} className="material-symbols-rounded" style={{ fontSize: 18, color: alertOn ? 'var(--color-action-primary)' : 'var(--color-info-faint)', fontVariationSettings: `'FILL' ${alertOn ? 1 : 0}`, cursor: 'pointer' }}>{alertOn ? 'notifications' : 'notifications_none'}</span>
+                  <span onClick={() => onToggleAlert && onToggleAlert(p.name)} className={`mi ${alertOn ? 'fill' : ''}`} style={{ fontSize: 18, color: alertOn ? 'var(--color-action-primary)' : 'var(--color-info-faint)', cursor: 'pointer' }} data-i={alertOn ? 'notifications' : 'notifications_none'}></span>
                 </div>
               </div>
             );
@@ -1045,7 +1045,7 @@ function SalaahScreen({
           <div style={{ width: '100%', background: 'var(--color-surface-primary)', borderRadius: '24px 24px 0 0', padding: 20, boxSizing: 'border-box' }}>
             <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 16 }}>
               <span style={{ fontFamily: '"Nunito", sans-serif', fontSize: 18, fontWeight: 800, color: 'var(--color-info-primary)' }}>Switch Masjid</span>
-              <span onClick={onMasjidSheetToggle} className="material-symbols-rounded" style={{ fontSize: 24, color: 'var(--color-info-faint)', cursor: 'pointer' }}>close</span>
+              <span onClick={onMasjidSheetToggle} className="mi" style={{ fontSize: 24, color: 'var(--color-info-faint)', cursor: 'pointer' }} data-i="close"></span>
             </div>
             <div style={{ display: 'flex', flexDirection: 'column', gap: 12 }}>
               <div onClick={() => onSelectMasjid && onSelectMasjid('Masjid E Bilal')} style={{ display: 'flex', gap: 10, padding: 10, background: 'var(--color-action-background)', borderRadius: 12, cursor: 'pointer' }}>
@@ -1105,24 +1105,24 @@ function ProfileScreen({
           {/* Group 0: Masjids */}
           <div style={{ background: 'var(--color-surface-card)', borderRadius: 16, overflow: 'hidden' }}>
             <div onClick={goMasjids} className="prow" style={{ display: 'flex', alignItems: 'center', gap: 12, padding: 16, borderBottom: '1px solid var(--color-neutral-border)' }}>
-              <span className="material-symbols-rounded" style={{ fontSize: 22, color: 'var(--color-info-secondary)' }}>mosque</span>
+              <span className="mi" style={{ fontSize: 22, color: 'var(--color-info-secondary)' }} data-i="mosque"></span>
               <span style={{ fontFamily: '"Nunito", sans-serif', fontSize: 16, color: 'var(--color-info-primary)', flex: 1 }}>My Masjids</span>
               <span className="chip success sm">2</span>
-              <span className="material-symbols-rounded" style={{ fontSize: 20, color: 'var(--color-info-faint)' }}>chevron_right</span>
+              <span className="mi" style={{ fontSize: 20, color: 'var(--color-info-faint)' }} data-i="chevron_right"></span>
             </div>
             <div onClick={goRegister} className="prow" style={{ display: 'flex', alignItems: 'center', gap: 12, padding: 16, borderBottom: '1px solid var(--color-neutral-border)' }}>
-              <span className="material-symbols-rounded" style={{ fontSize: 22, color: 'var(--color-info-secondary)' }}>add_home_work</span>
+              <span className="mi" style={{ fontSize: 22, color: 'var(--color-info-secondary)' }} data-i="add_home_work"></span>
               <span style={{ fontFamily: '"Nunito", sans-serif', fontSize: 16, color: 'var(--color-info-primary)', flex: 1 }}>Register your Masjid</span>
-              <span className="material-symbols-rounded" style={{ fontSize: 20, color: 'var(--color-info-faint)' }}>chevron_right</span>
+              <span className="mi" style={{ fontSize: 20, color: 'var(--color-info-faint)' }} data-i="chevron_right"></span>
             </div>
           </div>
 
           {/* Group 1: Invite & Friends */}
           <div style={{ background: 'var(--color-surface-card)', borderRadius: 16, overflow: 'hidden' }}>
             <div onClick={onCopyInvite} className="prow" style={{ display: 'flex', alignItems: 'center', gap: 12, padding: 16, borderBottom: '1px solid var(--color-neutral-border)' }}>
-              <span className="material-symbols-rounded" style={{ fontSize: 22, color: inviteCopied ? 'var(--color-action-primary)' : 'var(--color-info-secondary)' }}>{inviteCopied ? 'check_circle' : 'share'}</span>
+              <span className="mi" style={{ fontSize: 22, color: inviteCopied ? 'var(--color-action-primary)' : 'var(--color-info-secondary)' }} data-i={inviteCopied ? 'check_circle' : 'share'}></span>
               <span style={{ fontFamily: '"Nunito", sans-serif', fontSize: 16, color: inviteCopied ? 'var(--color-action-primary)' : 'var(--color-info-primary)', flex: 1 }}>{inviteCopied ? 'Link Copied!' : 'Invite Friends'}</span>
-              <span className="material-symbols-rounded" style={{ fontSize: 20, color: 'var(--color-info-faint)' }}>chevron_right</span>
+              <span className="mi" style={{ fontSize: 20, color: 'var(--color-info-faint)' }} data-i="chevron_right"></span>
             </div>
 
             {/* Friend Requests */}
@@ -1135,7 +1135,7 @@ function ProfileScreen({
                       <div style={{ width: 32, height: 32, borderRadius: '50%', background: 'var(--color-status-disabled)', display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0 }}><span style={{ fontFamily: '"DM Serif Display", Georgia, serif', fontSize: 14, color: 'var(--color-info-secondary)' }}>{fr.letter}</span></div>
                       <span style={{ fontFamily: '"Nunito", sans-serif', fontSize: 14, fontWeight: 600, color: 'var(--color-info-primary)', flex: 1 }}>{fr.name}</span>
                       <div onClick={() => onApproveFriend && onApproveFriend(fr.name)} className="chip success">
-                        <span className="material-symbols-rounded">check</span>
+                        <span className="mi" data-i="check"></span>
                         <span>Approve</span>
                       </div>
                     </div>
@@ -1150,9 +1150,9 @@ function ProfileScreen({
           {/* Group 2: Log out */}
           <div style={{ background: 'var(--color-surface-card)', borderRadius: 16, overflow: 'hidden' }}>
             <div onClick={onToggleLogoutSheet} className="prow" style={{ display: 'flex', alignItems: 'center', gap: 12, padding: 16 }}>
-              <span className="material-symbols-rounded" style={{ fontSize: 22, color: 'var(--color-status-error)' }}>logout</span>
+              <span className="mi" style={{ fontSize: 22, color: 'var(--color-status-error)' }} data-i="logout"></span>
               <span style={{ fontFamily: '"Nunito", sans-serif', fontSize: 16, color: 'var(--color-status-error)', flex: 1 }}>Log Out</span>
-              <span className="material-symbols-rounded" style={{ fontSize: 20, color: 'color-mix(in oklab, var(--color-status-error) 40%, transparent)' }}>chevron_right</span>
+              <span className="mi" style={{ fontSize: 20, color: 'color-mix(in oklab, var(--color-status-error) 40%, transparent)' }} data-i="chevron_right"></span>
             </div>
           </div>
         </div>

@@ -13,6 +13,7 @@
   <link rel="stylesheet" href="../../_theme/poc.css">
   <link rel="stylesheet" href="../../_theme/components.css">
   <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Rounded:opsz,wght,FILL,GRAD@24,400,0..1,0&amp;display=block">
+  <link rel="stylesheet" href="../../_theme/icons.css">
   <style>
     body{background:var(--canvas-bg);padding:56px 40px 120px;min-height:100vh;box-sizing:border-box}
     ::-webkit-scrollbar{display:none}*{-ms-overflow-style:none;scrollbar-width:none}
@@ -46,11 +47,11 @@
     </div>
     <div style="display:flex;gap:10px">
       <a href="../../foundation/Theme.dc.html" style="display:inline-flex;align-items:center;gap:8px;text-decoration:none;background:var(--color-surface-primary);border:1px solid var(--color-neutral-border);border-radius:999px;padding:10px 16px;box-shadow:var(--shadow-card)">
-        <span class="material-symbols-rounded" style="font-size:18px;color:var(--color-action-primary)">dark_mode</span>
+        <span class="mi" style="font-size:18px;color:var(--color-action-primary)" data-i="dark_mode"></span>
         <span style="font-family:var(--font-body);font-size:13px;font-weight:700;color:var(--color-info-primary)">← Theme</span>
       </a>
       <a href="../../Index.dc.html" style="display:inline-flex;align-items:center;gap:8px;text-decoration:none;background:var(--color-surface-primary);border:1px solid var(--color-neutral-border);border-radius:999px;padding:10px 16px;box-shadow:var(--shadow-card)">
-        <span class="material-symbols-rounded" style="font-size:18px;color:var(--color-action-primary)">home</span>
+        <span class="mi" style="font-size:18px;color:var(--color-action-primary)" data-i="home"></span>
         <span style="font-family:var(--font-body);font-size:13px;font-weight:700;color:var(--color-info-primary)">Index</span>
       </a>
     </div>
@@ -68,7 +69,7 @@
         <div class="row"><div class="lbl rowlbl">Filled</div>
           <button class="btn btn-filled sm">Save</button>
           <button class="btn btn-filled">Continue</button>
-          <button class="btn btn-filled lg"><span class="material-symbols-rounded" style="font-size:18px">play_arrow</span>Start reading</button>
+          <button class="btn btn-filled lg"><span class="mi" style="font-size:18px" data-i="play_arrow"></span>Start reading</button>
           <button class="btn btn-filled" disabled="disabled">Disabled</button>
         </div>
         <div class="row"><div class="lbl rowlbl">Tonal</div>
@@ -92,14 +93,14 @@
       <div>
         <div class="lbl">Icon Buttons (.ib)</div>
         <div class="row"><div class="lbl rowlbl">Filled</div>
-          <button class="ib ib-filled sm"><span class="material-symbols-rounded">add</span></button>
-          <button class="ib ib-filled md"><span class="material-symbols-rounded">bookmark</span></button>
-          <button class="ib ib-filled"><span class="material-symbols-rounded">play_arrow</span></button>
+          <button class="ib ib-filled sm"><span class="mi" data-i="add"></span></button>
+          <button class="ib ib-filled md"><span class="mi" data-i="bookmark"></span></button>
+          <button class="ib ib-filled"><span class="mi" data-i="play_arrow"></span></button>
         </div>
         <div class="row"><div class="lbl rowlbl">Tonal</div>
-          <button class="ib ib-tonal sm"><span class="material-symbols-rounded">close</span></button>
-          <button class="ib ib-tonal md"><span class="material-symbols-rounded">search</span></button>
-          <button class="ib ib-tonal"><span class="material-symbols-rounded">notifications</span></button>
+          <button class="ib ib-tonal sm"><span class="mi" data-i="close"></span></button>
+          <button class="ib ib-tonal md"><span class="mi" data-i="search"></span></button>
+          <button class="ib ib-tonal"><span class="mi" data-i="notifications"></span></button>
         </div>
       </div>
     </div>
@@ -109,15 +110,15 @@
   <div class="cp-card">
     <div class="cp-head">
       <div class="cp-h">Icon</div>
-      <div class="cp-sub">Material symbols rounded with proper ligature scaling.</div>
+      <div class="cp-sub">Local icon kit (<code>.mi</code> + <code>data-i</code>) — app vector drawables, sized by <code>font-size</code> and tinted via <code>currentColor</code>.</div>
     </div>
     <div class="row">
       <div style="display:flex;align-items:center;gap:24px;background:var(--color-action-background);padding:16px 24px;border-radius:12px">
-        <span class="material-symbols-rounded" style="font-size:32px;color:var(--color-action-primary)">mosque</span>
-        <span class="material-symbols-rounded" style="font-size:32px;color:var(--color-action-primary)">volunteer_activism</span>
-        <span class="material-symbols-rounded" style="font-size:32px;color:var(--color-action-primary)">notifications</span>
-        <span class="material-symbols-rounded" style="font-size:32px;color:var(--color-action-primary)">search</span>
-        <span class="material-symbols-rounded" style="font-size:32px;color:var(--color-action-primary)">settings</span>
+        <span class="mi" style="font-size:32px;color:var(--color-action-primary)" data-i="mosque"></span>
+        <span class="mi" style="font-size:32px;color:var(--color-action-primary)" data-i="volunteer_activism"></span>
+        <span class="mi" style="font-size:32px;color:var(--color-action-primary)" data-i="notifications"></span>
+        <span class="mi" style="font-size:32px;color:var(--color-action-primary)" data-i="search"></span>
+        <span class="mi" style="font-size:32px;color:var(--color-action-primary)" data-i="settings"></span>
       </div>
     </div>
   </div>
@@ -136,7 +137,7 @@
           <div class="chip tonal">My Masjids</div>
           <div class="chip accent">Follow</div>
           <div class="chip outline">Following</div>
-          <div class="chip success"><span class="material-symbols-rounded">check</span>Approve</div>
+          <div class="chip success"><span class="mi" data-i="check"></span>Approve</div>
           <span class="chip success sm">2</span>
         </div>
       </div>
@@ -147,10 +148,10 @@
         <div class="lbl" style="margin-bottom:8px">Pill Badges (.badge)</div>
         <div class="row">
           <span class="badge teal">Verse of the day</span>
-          <span class="badge jade"><span class="material-symbols-rounded">check_circle</span>Goal met</span>
+          <span class="badge jade"><span class="mi" data-i="check_circle"></span>Goal met</span>
           <span class="badge gold">Surah Yāsīn</span>
-          <span class="badge amber"><span class="material-symbols-rounded">schedule</span>Maghrib in 12m</span>
-          <span class="badge coral"><span class="material-symbols-rounded">error</span>Offline</span>
+          <span class="badge amber"><span class="mi" data-i="schedule"></span>Maghrib in 12m</span>
+          <span class="badge coral"><span class="mi" data-i="error"></span>Offline</span>
           <span class="badge purple">Ramadan special</span>
         </div>
       </div>
@@ -166,11 +167,11 @@
     <div class="cp-grid2">
       <div>
         <div class="lbl" style="margin-bottom:6px">Default</div>
-        <div class="input"><div class="inner"><span class="val ph">Search reciters</span><span class="material-symbols-rounded">expand_more</span></div></div>
+        <div class="input"><div class="inner"><span class="val ph">Search reciters</span><span class="mi" data-i="expand_more"></span></div></div>
       </div>
       <div>
         <div class="lbl" style="margin-bottom:6px">Focused</div>
-        <div class="input focused"><div class="inner"><span class="material-symbols-rounded">mail</span><span class="val">misba@noor.app</span></div></div>
+        <div class="input focused"><div class="inner"><span class="mi" data-i="mail"></span><span class="val">misba@noor.app</span></div></div>
       </div>
       <div>
         <div class="lbl" style="margin-bottom:6px">Error</div>
@@ -205,7 +206,7 @@
     <div class="cp-grid2" style="row-gap:16px">
       <sc-for list="{{ checks }}" as="c" hint-placeholder-count="4">
         <div class="row" style="margin-bottom:0">
-          <span class="cb {{ c.cls }}" onClick="{{ c.onToggle }}"><sc-if value="{{ c.on }}"><span class="material-symbols-rounded">check</span></sc-if></span>
+          <span class="cb {{ c.cls }}" onClick="{{ c.onToggle }}"><sc-if value="{{ c.on }}"><span class="mi" data-i="check"></span></sc-if></span>
           <span class="tglbl">{{ c.label }}</span>
         </div>
       </sc-for>

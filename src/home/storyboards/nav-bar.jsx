@@ -29,7 +29,7 @@ function BottomNav({ activeIndex = 0, onSelect }) {
             className={`nb-item ${i === idx ? 'active' : ''}`}
             onClick={onSelect ? () => onSelect(i) : undefined}
           >
-            <span className="material-symbols-rounded">{t.icon}</span>
+            <span className="mi" data-i={t.icon}></span>
             <span>{t.label}</span>
           </div>
         ))}

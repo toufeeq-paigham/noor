@@ -34,9 +34,7 @@ function Keypad({ onPress }) {
                 display: 'flex', alignItems: 'center', justifyContent: 'center', cursor: 'pointer'
               }}
             >
-              <span className="material-symbols-rounded" style={{ fontSize: 22, color: 'var(--color-info-primary)' }}>
-                backspace
-              </span>
+              <span className="mi" style={{ fontSize: 22, color: 'var(--color-info-primary)' }} data-i="backspace"></span>
             </div>
           );
         }
@@ -160,7 +158,7 @@ function PhoneScreen({
   return (
     <div style={{ width: '100%', height: '100%', background: 'var(--color-surface-primary)', display: 'flex', flexDirection: 'column', padding: '62px 24px 0', boxSizing: 'border-box', position: 'relative', overflow: 'hidden' }}>
       <button className="ib ib-tonal md" onClick={onBack} style={{ marginTop: 8, alignSelf: 'flex-start' }}>
-        <span className="material-symbols-rounded">arrow_back</span>
+        <span className="mi" data-i="arrow_back"></span>
       </button>
 
       <div style={{ display: 'flex', flexDirection: 'column', flex: 1, minHeight: 0 }}>
@@ -271,9 +269,9 @@ function OtpScreen({
       {smsVisible && (
         <div className="otp-banner" style={{ position: 'absolute', top: 16, left: 12, right: 12, zIndex: 100, background: 'var(--color-surface-overlay)', border: '1px solid var(--color-neutral-border)', borderRadius: 16, padding: '12px 14px', backdropFilter: 'blur(20px)', WebkitBackdropFilter: 'blur(20px)', boxShadow: 'var(--sheet-shadow)', display: 'flex', gap: 12, alignItems: 'flex-start', cursor: 'pointer' }}>
           <div style={{ width: 42, height: 42, borderRadius: 10, background: 'linear-gradient(135deg,#5E6AD2,#8B9DDF)', display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0, position: 'relative' }}>
-            <span className="material-symbols-rounded" style={{ fontSize: 22, color: '#fff', fontVariationSettings: "'FILL' 1" }}>corporate_fare</span>
+            <span className="mi fill" style={{ fontSize: 22, color: '#fff', fontVariationSettings: "'FILL' 1" }} data-i="corporate_fare"></span>
             <div style={{ position: 'absolute', bottom: -3, right: -3, width: 16, height: 16, background: '#30D158', borderRadius: '50%', border: '2px solid var(--color-surface-overlay)', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
-              <span className="material-symbols-rounded" style={{ fontSize: 9, color: '#fff', fontVariationSettings: "'FILL' 1" }}>chat_bubble</span>
+              <span className="mi fill" style={{ fontSize: 9, color: '#fff', fontVariationSettings: "'FILL' 1" }} data-i="chat_bubble"></span>
             </div>
           </div>
           <div style={{ flex: 1, minWidth: 0 }}>
@@ -287,7 +285,7 @@ function OtpScreen({
       )}
 
       <button className="ib ib-tonal md" onClick={onBack} style={{ marginTop: 8, alignSelf: 'flex-start' }}>
-        <span className="material-symbols-rounded">arrow_back</span>
+        <span className="mi" data-i="arrow_back"></span>
       </button>
 
       <div style={{ display: 'flex', flexDirection: 'column', flex: 1, minHeight: 0 }}>
@@ -330,7 +328,7 @@ function OtpScreen({
           )}
           {success && (
             <span style={{ display: 'inline-flex', alignItems: 'center', gap: 6 }}>
-              <span className="material-symbols-rounded" style={{ fontSize: 18, color: 'var(--color-action-primary)', fontVariationSettings: "'FILL' 1" }}>check_circle</span>
+              <span className="mi fill" style={{ fontSize: 18, color: 'var(--color-action-primary)', fontVariationSettings: "'FILL' 1" }} data-i="check_circle"></span>
               <span style={{ fontFamily: '"Nunito", sans-serif', fontSize: 13, fontWeight: 700, color: 'var(--color-action-primary)' }}>Verified — taking you home</span>
             </span>
           )}
