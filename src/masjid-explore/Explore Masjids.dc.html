@@ -1,0 +1,243 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="../support.js"></script>
+<script src="../_theme/chrome.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+  <link rel="stylesheet" href="../_ds/noor-design-system-46f42e91-1858-412f-bdb6-560a6cc3df9f/colors_and_type.css">
+  <link rel="stylesheet" href="../_theme/poc.css">
+  <link rel="stylesheet" href="../_theme/components.css">
+  <script src="../_ds/noor-design-system-46f42e91-1858-412f-bdb6-560a6cc3df9f/_ds_bundle.js"></script>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Rounded:opsz,wght,FILL,GRAD@24,400,0..1,0&amp;display=block">
+  <link rel="stylesheet" href="../_theme/icons.css">
+  <style>
+    body{background:var(--canvas-bg);padding:36px 32px 90px;min-height:100vh;box-sizing:border-box}
+    ::-webkit-scrollbar{display:none}*{-ms-overflow-style:none;scrollbar-width:none}
+    @keyframes stepin { from{transform:translateX(28px);opacity:0} to{transform:translateX(0);opacity:1} }
+    @keyframes stepback { from{transform:translateX(-28px);opacity:0} to{transform:translateX(0);opacity:1} }
+    .step-fwd { animation:stepin .35s cubic-bezier(.2,.8,.2,1) }
+    .step-back { animation:stepback .35s cubic-bezier(.2,.8,.2,1) }
+    @keyframes qrscan { 0%{top:6%} 50%{top:94%} 100%{top:6%} }
+    .qr-scanline { animation:qrscan 2s ease-in-out infinite }
+    @keyframes blink { 0%,100%{opacity:1} 50%{opacity:0} }
+    .pc-cursor { display:inline-block; width:2px; height:20px; background:var(--color-action-primary); border-radius:1px; margin-left:1px; vertical-align:middle; animation:blink 1s step-end infinite }
+    .kp-key:active { filter:brightness(0.92) }
+    [data-theme="dark"] .kp-key:active { filter:brightness(1.25) }
+  </style>
+</helmet>
+
+<!-- ── Page header (shared board chrome) ── -->
+<x-import component="BoardHeader" from="../_theme/board.jsx"
+          title="Masjid Explore — Map · List · Pincode · QR"
+          subtitle="Explore masjids near you: toggle the map (pins + carousel) and the list, search by pincode, or scan a masjid QR to jump straight to it. Follow a masjid for prayer-time notifications."
+          hint-size="1440px,92px"></x-import>
+
+<!-- ── Board ── -->
+<div class="poc-stage">
+
+  <!-- Storyboard rows: static frames, ring follows the live device -->
+  <div class="poc-frames">
+    <x-import component="MapRow" from="./storyboards/map-row.jsx" active="{{ mapActive }}" hint-size="1200px,600px"></x-import>
+    <x-import component="ListRow" from="./storyboards/list-row.jsx" active="{{ listActive }}" hint-size="900px,600px"></x-import>
+    <x-import component="QrRow" from="./storyboards/qr-row.jsx" active="{{ qrActive }}" hint-size="900px,600px"></x-import>
+    <x-import component="PincodeRow" from="./storyboards/pincode-row.jsx" active="{{ pincodeActive }}" hint-size="1200px,600px"></x-import>
+  </div>
+
+  <!-- Live device — one continuous prototype -->
+  <x-import component="BoardLive" from="../_theme/board.jsx" restart="{{ restart }}" hint-size="400px,900px">
+        <x-import component="IOSDevice" from="../ios-frame.jsx" hint-size="402px,874px">
+          <div style="width:100%;height:100%;position:relative;overflow:hidden;background:var(--color-surface-primary)">
+
+            <!-- ════ STAGE · MAP ════ -->
+            <sc-if value="{{ isMapStage }}">
+              <div class="{{ stepAnim }}" style="position:absolute;inset:0">
+                <x-import component="ExploreMapScreen" from="./storyboards/screens.jsx"
+                          selected-idx="{{ selectedIdx }}"
+                          followed="{{ followed }}"
+                          on-select-masjid="{{ selectMasjid }}"
+                          on-toggle-follow="{{ toggleFollow }}"
+                          on-back="{{ goBack }}"
+                          on-search="{{ onSearch }}"
+                          on-qr="{{ onQr }}"
+                          on-open-list="{{ onOpenList }}"
+                          on-recenter="{{ recenter }}"
+                          hint-size="100%,100%">
+                </x-import>
+              </div>
+            </sc-if>
+
+            <!-- ════ STAGE · LIST ════ -->
+            <sc-if value="{{ isListStage }}">
+              <div class="{{ stepAnim }}" style="position:absolute;inset:0">
+                <x-import component="ExploreListScreen" from="./storyboards/screens.jsx"
+                          followed="{{ followed }}"
+                          on-toggle-follow="{{ toggleFollow }}"
+                          on-back="{{ goBack }}"
+                          on-search="{{ onSearch }}"
+                          on-qr="{{ onQr }}"
+                          on-open-map="{{ onOpenMap }}"
+                          hint-size="100%,100%">
+                </x-import>
+              </div>
+            </sc-if>
+
+            <!-- ════ STAGE · QR SCAN ════ -->
+            <sc-if value="{{ isQrStage }}">
+              <div class="{{ stepAnim }}" style="position:absolute;inset:0">
+                <x-import component="QRScreen" from="./storyboards/screens.jsx"
+                          scanning="{{ qrScanning }}"
+                          following="{{ qrFollowing }}"
+                          on-toggle-follow="{{ toggleQrFollow }}"
+                          on-scan="{{ qrDetect }}"
+                          on-back="{{ onOpenMap }}"
+                          hint-size="100%,100%">
+                </x-import>
+              </div>
+            </sc-if>
+
+            <!-- ════ STAGE · PINCODE SEARCH ════ -->
+            <sc-if value="{{ isPincodeStage }}">
+              <div class="{{ stepAnim }}" style="position:absolute;inset:0">
+                <x-import component="PincodeScreen" from="./storyboards/screens.jsx"
+                          query="{{ pincodeQuery }}"
+                          focused="{{ pincodeFocused }}"
+                          followed="{{ followed }}"
+                          on-toggle-follow="{{ toggleFollow }}"
+                          on-focus="{{ pincodeFocus }}"
+                          on-key-press="{{ pincodePress }}"
+                          on-pick-suggestion="{{ pickSuggestion }}"
+                          on-back="{{ onOpenMap }}"
+                          hint-size="100%,100%">
+                </x-import>
+              </div>
+            </sc-if>
+
+          </div>
+        </x-import>
+  </x-import>
+
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script>
+class Component extends DCLogic {
+  QR_RESULT_IDX = 0;        // the masjid the QR resolves to (reuses a nearby result)
+
+  state = {
+    stage: (location.hash === '#qr' ? 'qr'
+          : location.hash === '#pincode' ? 'pincode'
+          : location.hash === '#list' ? 'list' : 'map'),   // 'map' | 'list' | 'qr' | 'pincode'
+    stepDir: 'fwd',
+    selectedIdx: 0,
+    followed: {},          // { [index]: true } — survives selection + view changes
+    qrScanning: true,      // qr stage sub-state: true = scanning, false = result sheet
+    pincodeQuery: '',      // pincode stage: typed digits (max 6)
+    pincodeFocused: false, // pincode stage: keypad up + suggestions visible
+  };
+
+  componentDidMount() {
+    if (this.state.stage === 'qr') this.startQrScan();
+  }
+
+  componentWillUnmount() { clearTimeout(this._qrTimer); }
+
+  selectMasjid = (i) => this.setState({ selectedIdx: i });
+
+  toggleFollow = (i) => this.setState(s => ({
+    followed: { ...s.followed, [i]: !s.followed[i] }
+  }));
+
+  recenter = () => this.setState({ selectedIdx: 0 });
+
+  // Map ⇄ list toggle.
+  onOpenList = () => this.setState({ stage: 'list', stepDir: 'fwd' });
+  onOpenMap = () => { clearTimeout(this._qrTimer); this.setState({ stage: 'map', stepDir: 'back' }); };
+
+  // QR scan: enter scanning, auto-detect after a beat (or on tapping the frame).
+  onQr = () => { this.setState({ stage: 'qr', stepDir: 'fwd', qrScanning: true }); this.startQrScan(); };
+  startQrScan = () => {
+    clearTimeout(this._qrTimer);
+    this._qrTimer = setTimeout(() => this.setState(s => (s.stage === 'qr' ? { qrScanning: false } : {})), 1800);
+  };
+  qrDetect = () => { clearTimeout(this._qrTimer); this.setState({ qrScanning: false }); };
+  toggleQrFollow = () => this.toggleFollow(this.QR_RESULT_IDX);
+
+  // Pincode search.
+  onSearch = () => this.setState({ stage: 'pincode', stepDir: 'fwd', pincodeQuery: '', pincodeFocused: false });
+  pincodeFocus = () => this.setState({ pincodeFocused: true });
+  pincodePress = (key) => this.setState(s => {
+    if (key === 'backspace') return { pincodeQuery: s.pincodeQuery.slice(0, -1), pincodeFocused: true };
+    if (s.pincodeQuery.length >= 6) return {};
+    return { pincodeQuery: s.pincodeQuery + key, pincodeFocused: true };
+  });
+  pickSuggestion = (pin) => this.setState({ pincodeQuery: pin, pincodeFocused: true });
+
+  goBack = () => { window.location.href = '../home/Home Screen.dc.html'; };
+
+  restart = () => { clearTimeout(this._qrTimer); this.setState({ stage: 'map', stepDir: 'back', selectedIdx: 0, followed: {}, qrScanning: true, pincodeQuery: '', pincodeFocused: false }); };
+
+  renderVals() {
+    const s = this.state;
+    const isMap = s.stage === 'map';
+    const isList = s.stage === 'list';
+    const isQr = s.stage === 'qr';
+    const isPincode = s.stage === 'pincode';
+    const anyFollowed = Object.keys(s.followed).some(k => s.followed[k]);
+
+    // Map ring — matches map-row.jsx FRAMES (0 · first result, 1 · following, 2 · second result).
+    let mapActive = -1;
+    if (isMap) mapActive = s.selectedIdx === 0 ? (s.followed[0] ? 1 : 0) : 2;
+
+    // List ring — matches list-row.jsx FRAMES (0 · nearby list, 1 · following a masjid).
+    const listActive = isList ? (anyFollowed ? 1 : 0) : -1;
+
+    // QR ring — matches qr-row.jsx FRAMES (0 · scanning, 1 · masjid found).
+    const qrActive = isQr ? (s.qrScanning ? 0 : 1) : -1;
+
+    // Pincode ring — matches pincode-row.jsx FRAMES (0 · empty, 1 · typing, 2 · results).
+    let pincodeActive = -1;
+    if (isPincode) pincodeActive = s.pincodeQuery.length === 6 ? 2 : (s.pincodeFocused ? 1 : 0);
+
+    return {
+      isMapStage: isMap,
+      isListStage: isList,
+      isQrStage: isQr,
+      isPincodeStage: isPincode,
+      stepAnim: s.stepDir === 'back' ? 'step-back' : 'step-fwd',
+      mapActive,
+      listActive,
+      qrActive,
+      pincodeActive,
+      restart: this.restart,
+
+      selectedIdx: s.selectedIdx,
+      followed: s.followed,
+      selectMasjid: this.selectMasjid,
+      toggleFollow: this.toggleFollow,
+      recenter: this.recenter,
+      onOpenList: this.onOpenList,
+      onOpenMap: this.onOpenMap,
+      onSearch: this.onSearch,
+      onQr: this.onQr,
+      goBack: this.goBack,
+
+      qrScanning: s.qrScanning,
+      qrFollowing: !!s.followed[this.QR_RESULT_IDX],
+      qrDetect: this.qrDetect,
+      toggleQrFollow: this.toggleQrFollow,
+
+      pincodeQuery: s.pincodeQuery,
+      pincodeFocused: s.pincodeFocused,
+      pincodeFocus: this.pincodeFocus,
+      pincodePress: this.pincodePress,
+      pickSuggestion: this.pickSuggestion,
+    };
+  }
+}
+</script>
+</body>
+</html>
