@@ -50,6 +50,7 @@
 [data-i="login"]{--mi:url("../_ds/icons/login.svg")}
 [data-i="logout"]{--mi:url("../_ds/icons/logout.svg")}
 [data-i="mail"]{--mi:url("../_ds/icons/mail.svg")}
+[data-i="map"]{--mi:url("../_ds/icons/map.svg")}
 [data-i="menu_book"]{--mi:url("../_ds/icons/menu_book.svg");--mif:url("../_ds/icons/menu_book__fill.svg")}
 [data-i="mosque"]{--mi:url("../_ds/icons/mosque.svg");--mif:url("../_ds/icons/mosque__fill.svg")}
 [data-i="my_location"]{--mi:url("../_ds/icons/my_location.svg")}
@@ -90,3 +91,5 @@
 [data-i="waving_hand"]{--mi:url("../_ds/icons/waving_hand.svg")}
 [data-i="wb_sunny"]{--mi:url("../_ds/icons/wb_sunny.svg")}
 [data-i="widgets"]{--mi:url("../_ds/icons/widgets.svg")}
+[data-i="delete"]{--mi:url("../_ds/icons/delete.svg")}
+[data-i="edit"]{--mi:url("../_ds/icons/edit.svg")}
