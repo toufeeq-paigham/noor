@@ -5,9 +5,9 @@
 
 const STORYBOARD_FRAMES = [
   { id: 'home', name: 'Home — Maghrib Default', tab: 0, component: 'HomeScreen', props: { heroSel: null } },
-  { id: 'home-login-nudge', name: 'Home — Guest Login Nudge', tab: 0, component: 'HomeScreen', props: { heroSel: null, userName: 'Guest', masjidName: 'Bangalore (Approx.)', prayer: 'Asr', loginNudge: true } },
-  { id: 'home-privacy-consent', name: 'Home — Privacy Consent', tab: 0, component: 'HomeScreen', props: { heroSel: null, userName: 'Guest', masjidName: 'Bangalore (Approx.)', prayer: 'Asr', privacyConsent: true } },
-  { id: 'home-att-prompt', name: 'Home — ATT Tracking Prompt', tab: 0, component: 'HomeScreen', props: { heroSel: null, userName: 'Guest', masjidName: 'Bangalore (Approx.)', prayer: 'Asr', loginNudge: true, attPrompt: true } },
+  { id: 'home-login-nudge', name: 'Home — Guest Login Nudge', tab: 0, component: 'HomeScreen', props: { heroSel: null, userName: 'Guest', masjidName: 'Bangalore (Approx.)', prayer: 'Asr', loginNudge: true, onSignInTap: () => {} } },
+  { id: 'home-privacy-consent', name: 'Home — Privacy Consent', tab: 0, component: 'HomeScreen', props: { heroSel: null, userName: 'Guest', masjidName: 'Bangalore (Approx.)', prayer: 'Asr' }, privacySheet: true },
+  { id: 'home-att-prompt', name: 'Home — ATT Tracking Prompt', tab: 0, component: 'HomeScreen', props: { heroSel: null, userName: 'Guest', masjidName: 'Bangalore (Approx.)', prayer: 'Asr', loginNudge: true, onSignInTap: () => {} }, attDialog: true },
   { id: 'qaum', name: 'Qaum — community Feed', tab: 1, component: 'QaumScreen', props: {} },
   { id: 'quran', name: 'Quran — Surah Listing', tab: 2, component: 'QuranScreen', props: {} },
   { id: 'salaah', name: 'Salaah — Bilal Timings', tab: 3, component: 'SalaahScreen', props: {} },
@@ -35,8 +35,14 @@ const QURAN_EXTRA_FRAMES = [
   { id: 'quran-juz', name: 'Quran — Juz View', tab: 2, component: 'QuranScreen', props: { activeTab: 1 } }
 ];
 
+// NOTE: the guest / no-masjid / notification nudge STATES used to live here as extra frames.
+// They moved to their own board — src/nudge-states/ — to declutter this storyboard and cut the
+// canvas' pan/zoom cost. STORYBOARD_FRAMES indices 1-3 (login-nudge/privacy/ATT) are retained in
+// the array only so the live-device state machine's index space stays stable; they are no longer
+// rendered here.
+
 function renderFrame(f, i, active, onSelectFrame) {
-  const { HomeScreen, QaumScreen, QuranScreen, SalaahScreen, ProfileScreen, BottomNav } = window;
+  const { HomeScreen, QaumScreen, QuranScreen, SalaahScreen, ProfileScreen, BottomNav, Dialog, MasjidNudgeSheet, NotificationNudgeSheet, PrivacyNudgeSheet, AttDialog } = window;
   const isActive = active === i;
   const ringClass = isActive ? 'is-active' : '';
 
@@ -63,6 +69,41 @@ function renderFrame(f, i, active, onSelectFrame) {
             {/* Bottom Nav Bar (shared component, non-interactive preview) */}
             {BottomNav && <BottomNav activeIndex={f.tab} />}
 
+            {/* Optional LoginSheet snapshot over the whole device (covers the nav, like the app) */}
+            {f.sheet && Dialog && (
+              <Dialog mode="sheet" isOpen title={f.sheet.title} description={f.sheet.description}
+                      primary={{ text: 'Sign in', onClick: () => {} }} secondary={{ text: 'Cancel', onClick: () => {} }}
+                      onClose={() => {}} />
+            )}
+
+            {/* Optional rich follow-masjid sheet snapshot */}
+            {f.masjidSheet && MasjidNudgeSheet && (
+              <MasjidNudgeSheet isOpen onClose={() => {}} onFindMasjid={() => {}} />
+            )}
+
+            {/* Optional rich notification sheet snapshot */}
+            {f.notifSheet && NotificationNudgeSheet && (
+              <NotificationNudgeSheet isOpen onClose={() => {}} onAllow={() => {}} />
+            )}
+
+            {/* Optional guest sign-in interrupt sheet snapshot (NudgeSheetFactory.kt GuestSignIn) */}
+            {f.guestSignInSheet && Dialog && (
+              <Dialog mode="sheet" isOpen title="Sign in to Paigham"
+                      description="Save your masjid, get iqama times, and sync reminders across your devices."
+                      primary={{ text: 'Sign in', onClick: () => {} }} secondary={{ text: 'Not now', onClick: () => {} }}
+                      onClose={() => {}} />
+            )}
+
+            {/* Optional privacy / ATT pre-prompt sheet snapshot */}
+            {f.privacySheet && PrivacyNudgeSheet && (
+              <PrivacyNudgeSheet isOpen onClose={() => {}} onContinue={() => {}} />
+            )}
+
+            {/* Optional system ATT dialog snapshot */}
+            {f.attDialog && AttDialog && (
+              <AttDialog isOpen onChoice={() => {}} />
+            )}
+
             <div className="noor-home"></div>
           </div>
         </div>
@@ -76,10 +117,10 @@ function HomeRow({ active = 0, onSelectFrame }) {
   return (
     <div>
       <div className="poc-row-label">
-        <span className="mi" data-i="home"></span> 02 · Home Tab — Maghrib &amp; Variations · 4 Screens
+        <span className="mi" data-i="home"></span> 02 · Home Tab — Maghrib Default · 1 Screen
       </div>
       <div className="poc-board">
-        {STORYBOARD_FRAMES.slice(0, 4).map((f, i) => renderFrame(f, i, active, onSelectFrame))}
+        {renderFrame(STORYBOARD_FRAMES[0], 0, active, onSelectFrame)}
       </div>
     </div>
   );
@@ -121,7 +162,7 @@ function SalaahRow({ active = 0, onSelectFrame }) {
         <span className="mi" data-i="mosque"></span> 05 · Salaah Tab — Bilal Timings · 1 Screen
       </div>
       <div className="poc-board">
-        {STORYBOARD_FRAMES.slice(6, 7).map((f, i) => renderFrame(f, 6 + i, active, onSelectFrame))}
+        {renderFrame(STORYBOARD_FRAMES[6], 6, active, onSelectFrame)}
       </div>
     </div>
   );

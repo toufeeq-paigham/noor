@@ -31,11 +31,14 @@ function HomeScreen({
   loginNudge = false,
   onCloseLoginNudge,
   onSignInTap,
-  privacyConsent = false,
-  attPrompt = false,
-  onClosePrivacy
+  followNudge = false,      // signed-in without a primary masjid (InlineNudge.FollowMasjidSignedIn)
+  onCloseFollowNudge,
+  onFindMasjid,
+  notifNudge = false,       // signed-in with masjid, notifs off (InlineNudge.NotificationPermission)
+  onCloseNotifNudge,
+  onAllowNotif
 }) {
-  const { PromptCard, BottomSheet } = window;
+  const { PromptCard } = window;
   const bellIcon = notifOn ? 'notifications' : 'notifications_off';
   const bellFill = notifOn ? 1 : 0;
   const bellOpacity = notifOn ? 0.9 : 0.5;
@@ -86,17 +89,11 @@ function HomeScreen({
     flankerTimeColor: 'rgba(20,15,8,0.75)',
   };
 
-  const prayerList = ['Fajr', 'Zohar', 'Asr', 'Maghrib', 'Isha'].map(name => {
-    const checked = prayers[name];
-    return {
-      name,
-      // Match DS Checkbox.kt: fill + border in BOTH states (unchecked = soft green tint + 45% border)
-      bg: checked ? 'var(--color-action-primary)' : 'color-mix(in oklab, var(--color-action-primary) 12%, transparent)',
-      border: checked ? '1.5px solid var(--color-action-primary)' : '1.5px solid color-mix(in oklab, var(--color-action-primary) 45%, transparent)',
-      checkOpacity: checked ? 1 : 0,
-      labelColor: checked ? 'var(--color-info-secondary)' : 'var(--color-info-faint)'
-    };
-  });
+  const prayerList = ['Fajr', 'Zohar', 'Asr', 'Maghrib', 'Isha'].map(name => ({
+    name,
+    checked: prayers[name],
+    labelColor: prayers[name] ? 'var(--color-info-secondary)' : 'var(--color-info-faint)'
+  }));
 
   const suhoorBg = heroSel === 'suhoor' ? 'rgba(255,255,255,0.42)' : 'rgba(255,255,255,0.22)';
   const suhoorBorder = heroSel === 'suhoor' ? '1.5px solid rgba(255,255,255,0.75)' : '1.5px solid rgba(255,255,255,0.35)';
@@ -184,8 +181,8 @@ function HomeScreen({
             <div style={{ display: 'flex', justifyContent: 'space-between' }}>
               {prayerList.map((p, idx) => (
                 <div key={idx} onClick={() => onTogglePrayer && onTogglePrayer(p.name)} style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: 8, cursor: 'pointer' }}>
-                  <div style={{ width: 44, height: 44, borderRadius: '50%', background: p.bg, backgroundClip: 'content-box', padding: 3, boxSizing: 'border-box', border: p.border, display: 'flex', alignItems: 'center', justifyContent: 'center', transition: 'background 150ms, border 150ms' }}>
-                    <span className="mi fill" style={{ fontSize: 20, color: 'var(--color-action-primary-inverse)', opacity: p.checkOpacity, fontVariationSettings: `'FILL' 1`, transition: 'opacity 150ms' }} data-i="check"></span>
+                  <div className={`cb ${p.checked ? 'on' : ''}`}>
+                    {p.checked && <span className="mi" data-i="check"></span>}
                   </div>
                   <span style={{ fontFamily: '"Nunito", sans-serif', fontSize: 12, fontWeight: 600, color: p.labelColor }}>{p.name}</span>
                 </div>
@@ -202,6 +199,33 @@ function HomeScreen({
               primaryActionText="Sign In"
               onPrimaryAction={onSignInTap}
               onDismiss={onCloseLoginNudge}
+              style={{ margin: '0 20px 24px' }}
+            />
+          )}
+
+          {/* Follow-a-Masjid Nudge — signed in, no primary masjid (PromptCard.warning, NudgeInline.kt) */}
+          {followNudge && (
+            <PromptCard
+              variant="warning"
+              title="Follow a Masjid"
+              description="Follow a masjid you trust for iqama times and community updates"
+              primaryActionText="Find a Masjid"
+              primaryActionIcon="mosque"
+              onPrimaryAction={onFindMasjid}
+              onDismiss={onCloseFollowNudge}
+              style={{ margin: '0 20px 24px' }}
+            />
+          )}
+
+          {/* Enable-Notifications Nudge — signed in with masjid, notifs off (PromptCard.success, NudgeInline.kt) */}
+          {notifNudge && (
+            <PromptCard
+              variant="success"
+              title="Enable Notifications"
+              description="Never miss prayer time updates, announcements, and direct messages"
+              primaryActionText="Allow Notifications"
+              onPrimaryAction={onAllowNotif}
+              onDismiss={onCloseNotifNudge}
               style={{ margin: '0 20px 24px' }}
             />
           )}
@@ -430,235 +454,6 @@ function HomeScreen({
 
         </div>
 
-        {/* Privacy Consent Bottom Sheet */}
-        <BottomSheet isOpen={privacyConsent} onClose={onClosePrivacy}>
-          {/* Shield Icon Circle */}
-          <div style={{
-            width: 72,
-            height: 72,
-            background: 'color-mix(in oklab, var(--color-action-primary) 12%, transparent)',
-            display: 'flex',
-            alignItems: 'center',
-            justifyContent: 'center',
-            borderRadius: '50%',
-            margin: '0 auto 20px',
-            flexShrink: 0
-          }}>
-            <span className="mi" style={{ fontSize: 36, color: 'var(--color-action-primary)' }} data-i="security"></span>
-          </div>
-          
-          {/* Title */}
-          <div style={{
-            fontFamily: '"DM Serif Display", Georgia, serif',
-            fontSize: 24,
-            color: '#F4D090', // gold header
-            textAlign: 'center',
-            padding: '0 24px',
-            lineHeight: 1.25,
-            flexShrink: 0
-          }}>Your privacy, your choice</div>
-          
-          {/* Description */}
-          <div style={{
-            fontFamily: '"Nunito", sans-serif',
-            fontSize: 13,
-            color: 'var(--color-info-secondary)',
-            textAlign: 'center',
-            margin: '8px 24px 24px',
-            lineHeight: 1.45,
-            flexShrink: 0
-          }}>We use anonymised data to personalise your experience and show relevant Islamic content.</div>
-          
-          {/* What you get Header */}
-          <div style={{
-            fontFamily: '"DM Serif Display", Georgia, serif',
-            fontSize: 20,
-            color: 'var(--color-info-primary)',
-            margin: '0 24px 16px',
-            flexShrink: 0
-          }}>What you get</div>
-          
-          {/* Benefit Items */}
-          <div style={{ display: 'flex', flexDirection: 'column', gap: 18, padding: '0 24px', marginBottom: 24 }}>
-            {/* Item 1 */}
-            <div style={{ display: 'flex', gap: 16, alignItems: 'flex-start' }}>
-              <div style={{
-                width: 36,
-                height: 36,
-                borderRadius: '50%',
-                background: 'rgba(255, 255, 255, 0.06)',
-                display: 'flex',
-                alignItems: 'center',
-                justifyContent: 'center',
-                flexShrink: 0
-              }}>
-                <span className="mi" style={{ fontSize: 20, color: 'var(--color-action-primary)' }} data-i="security"></span>
-              </div>
-              <div>
-                <div style={{ fontFamily: '"Nunito", sans-serif', fontSize: 16, fontWeight: 700, color: 'var(--color-info-primary)' }}>Private by design.</div>
-                <div style={{ fontFamily: '"Nunito", sans-serif', fontSize: 13, color: 'var(--color-info-secondary)', marginTop: 2, lineHeight: 1.4 }}>All data is anonymised before use. No personal identifiers are stored.</div>
-              </div>
-            </div>
-            
-            {/* Item 2 */}
-            <div style={{ display: 'flex', gap: 16, alignItems: 'flex-start' }}>
-              <div style={{
-                width: 36,
-                height: 36,
-                borderRadius: '50%',
-                background: 'rgba(255, 255, 255, 0.06)',
-                display: 'flex',
-                alignItems: 'center',
-                justifyContent: 'center',
-                flexShrink: 0
-              }}>
-                <span className="mi" style={{ fontSize: 20, color: 'var(--color-action-primary)' }} data-i="person"></span>
-              </div>
-              <div>
-                <div style={{ fontFamily: '"Nunito", sans-serif', fontSize: 16, fontWeight: 700, color: 'var(--color-info-primary)' }}>Tailored to you.</div>
-                <div style={{ fontFamily: '"Nunito", sans-serif', fontSize: 13, color: 'var(--color-info-secondary)', marginTop: 2, lineHeight: 1.4 }}>Quran, duas, and community content matched to your interests.</div>
-              </div>
-            </div>
-            
-            {/* Item 3 */}
-            <div style={{ display: 'flex', gap: 16, alignItems: 'flex-start' }}>
-              <div style={{
-                width: 36,
-                height: 36,
-                borderRadius: '50%',
-                background: 'rgba(255, 255, 255, 0.06)',
-                display: 'flex',
-                alignItems: 'center',
-                justifyContent: 'center',
-                flexShrink: 0
-              }}>
-                <span className="mi" style={{ fontSize: 20, color: 'var(--color-action-primary)' }} data-i="campaign"></span>
-              </div>
-              <div>
-                <div style={{ fontFamily: '"Nunito", sans-serif', fontSize: 16, fontWeight: 700, color: 'var(--color-info-primary)' }}>Help us grow.</div>
-                <div style={{ fontFamily: '"Nunito", sans-serif', fontSize: 13, color: 'var(--color-info-secondary)', marginTop: 2, lineHeight: 1.4 }}>Your choice helps us make Paigham better for the whole ummah.</div>
-              </div>
-            </div>
-          </div>
-          
-          {/* Action Button */}
-          <div style={{ padding: '0 24px 32px' }}>
-            <button className="btn btn-filled lg" onClick={onClosePrivacy} style={{ width: '100%' }}>Continue</button>
-          </div>
-        </BottomSheet>
-
-        {/* iOS App Tracking Transparency (ATT) Prompt Dialog */}
-        {attPrompt && (
-          <div style={{
-            position: 'absolute',
-            inset: 0,
-            background: 'rgba(0, 0, 0, 0.4)',
-            zIndex: 150,
-            display: 'flex',
-            alignItems: 'center',
-            justifyContent: 'center'
-          }}>
-            <div style={{
-              width: 270,
-              background: 'rgba(33, 33, 33, 0.85)',
-              backdropFilter: 'blur(20px)',
-              WebkitBackdropFilter: 'blur(20px)',
-              borderRadius: 14,
-              boxShadow: '0 10px 30px rgba(0, 0, 0, 0.5)',
-              border: '0.5px solid rgba(255, 255, 255, 0.15)',
-              textAlign: 'center',
-              display: 'flex',
-              flexDirection: 'column',
-              overflow: 'hidden'
-            }}>
-              {/* Orange Tracking Card Icon */}
-              <div style={{
-                width: 60,
-                height: 60,
-                background: 'linear-gradient(135deg, #FF9500, #FF5E3A)',
-                borderRadius: 14,
-                margin: '16px auto 12px',
-                display: 'flex',
-                alignItems: 'center',
-                justifyContent: 'center',
-                position: 'relative'
-              }}>
-                {/* Main signal/antenna icon */}
-                <span className="mi" style={{ fontSize: 32, color: '#FFFFFF' }} data-i="sensors"></span>
-                
-                {/* Blue hand stop badge */}
-                <div style={{
-                  width: 20,
-                  height: 20,
-                  borderRadius: '50%',
-                  background: '#007AFF',
-                  position: 'absolute',
-                  bottom: -4,
-                  right: -4,
-                  border: '2px solid #202020',
-                  display: 'flex',
-                  alignItems: 'center',
-                  justifyContent: 'center'
-                }}>
-                  <span className="mi" style={{ fontSize: 11, color: '#FFFFFF' }} data-i="front_hand"></span>
-                </div>
-              </div>
-              
-              {/* Title */}
-              <div style={{
-                fontFamily: '-apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif',
-                fontSize: 15,
-                fontWeight: 600,
-                color: '#FFFFFF',
-                padding: '0 16px',
-                lineHeight: 1.3
-              }}>Allow “Paigham” to track your activity across other companies’ apps and websites?</div>
-              
-              {/* Description */}
-              <div style={{
-                fontFamily: '-apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif',
-                fontSize: 12,
-                color: '#EBEBF5',
-                opacity: 0.8,
-                padding: '6px 16px 16px',
-                lineHeight: 1.3
-              }}>Paigham uses this identifier to personalise your experience</div>
-              
-              {/* Button 1: Ask App Not to Track */}
-              <div style={{ borderTop: '0.5px solid rgba(255, 255, 255, 0.15)' }}>
-                <button style={{
-                  background: 'transparent',
-                  border: 'none',
-                  color: '#0A84FF',
-                  fontSize: 16,
-                  fontFamily: '-apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif',
-                  padding: '11px 8px',
-                  width: '100%',
-                  fontWeight: 400,
-                  cursor: 'pointer',
-                  outline: 'none'
-                }}>Ask App Not to Track</button>
-              </div>
-              
-              {/* Button 2: Allow */}
-              <div style={{ borderTop: '0.5px solid rgba(255, 255, 255, 0.15)' }}>
-                <button style={{
-                  background: 'transparent',
-                  border: 'none',
-                  color: '#0A84FF',
-                  fontSize: 16,
-                  fontFamily: '-apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif',
-                  padding: '11px 8px',
-                  width: '100%',
-                  fontWeight: 600,
-                  cursor: 'pointer',
-                  outline: 'none'
-                }}>Allow</button>
-              </div>
-            </div>
-          </div>
-        )}
-
       </div>
     </div>
   );
@@ -735,8 +530,18 @@ function QaumScreen({
   onToggleAudio,
   dock = 'none',         // storyboard override: force the docked player to 'top' | 'bottom'
   onCloseAudio,
-  dockBottomOffset = 104 // px from bottom for .dock-bottom (clears the nav bar + a gap; storyboard passes ~14)
+  dockBottomOffset = 104, // px from bottom for .dock-bottom (clears the nav bar + a gap; storyboard passes ~14)
+  loginNudge = false,    // guest sign-in nudge (PromptCard.error from NudgeInline.kt, Qaum copy)
+  onCloseLoginNudge,
+  onSignInTap,
+  followNudge = false,   // signed-in without a primary masjid (InlineNudge.FollowMasjidSignedIn)
+  onCloseFollowNudge,
+  onFindMasjid,
+  notifNudge = false,    // signed-in with masjid, notifs off (InlineNudge.NotificationPermission)
+  onCloseNotifNudge,
+  onAllowNotif
 }) {
+  const { PromptCard } = window;
   const APP_BAR_H = 96;
   // Scroll-driven docking: when the inline player scrolls out of view while playing,
   // the mini player sticks to the nearest edge (top if scrolled above, bottom if below).
@@ -770,6 +575,46 @@ function QaumScreen({
 
       {/* Feed — scrolls UNDER the app bar (like the Home tab) */}
       <div ref={feedRef} onScroll={recomputeDock} style={{ position: 'absolute', inset: 0, overflowY: 'auto', WebkitOverflowScrolling: 'touch', paddingTop: APP_BAR_H, paddingBottom: 90 }}>
+        {/* Guest sign-in nudge (PromptCard.error, NudgeInline.kt Qaum copy) */}
+        {loginNudge && (
+          <PromptCard
+            variant="error"
+            title="Sign in to join Qaum"
+            description="React to posts and join conversations on Qaum with your account"
+            primaryActionText="Sign In"
+            onPrimaryAction={onSignInTap}
+            onDismiss={onCloseLoginNudge}
+            style={{ margin: '8px 16px 12px' }}
+          />
+        )}
+
+        {/* Follow-a-Masjid nudge — signed in, no primary masjid (PromptCard.warning, NudgeInline.kt Qaum copy) */}
+        {followNudge && (
+          <PromptCard
+            variant="warning"
+            title="Follow a Masjid"
+            description="Follow a masjid to see iqama-related posts and updates from your community in Qaum"
+            primaryActionText="Find a Masjid"
+            primaryActionIcon="mosque"
+            onPrimaryAction={onFindMasjid}
+            onDismiss={onCloseFollowNudge}
+            style={{ margin: '8px 16px 12px' }}
+          />
+        )}
+
+        {/* Enable-Notifications nudge — signed in with masjid, notifs off (PromptCard.success, NudgeInline.kt Qaum copy) */}
+        {notifNudge && (
+          <PromptCard
+            variant="success"
+            title="Enable Notifications"
+            description="Enable notifications to stay updated with posts, reactions, and replies in your community"
+            primaryActionText="Allow Notifications"
+            onPrimaryAction={onAllowNotif}
+            onDismiss={onCloseNotifNudge}
+            style={{ margin: '8px 16px 12px' }}
+          />
+        )}
+
         {/* Post 1 — Paigham · Haj 2027 */}
         <div style={{ borderBottom: '1px solid var(--color-neutral-border)', padding: '16px 16px 14px' }}>
             <PostHeader letter="P" bg="#1A5E30" name="Paigham" sub="Paigham HQ" />
@@ -1013,16 +858,46 @@ function SalaahScreen({
   prayersAlert = { Fajr: false, Zohar: true, Asr: false, Maghrib: true, Isha: false },
   prayersChecked = { Fajr: true, Zohar: true, Asr: true, Maghrib: false, Isha: false },
   onToggleCheck,
-  onToggleAlert
+  onToggleAlert,
+  // Guest mode (SalaahTab.kt): approximate location timings, no masjid, no tracking.
+  guest = false,
+  loginNudge = false,       // guest sign-in nudge (PromptCard.error, NudgeInline.kt Salaah copy)
+  onCloseLoginNudge,
+  onSignInTap,
+  loginSheet = false,       // "Sign in to continue" LoginSheet — opened by auth-gated taps
+  onOpenLoginSheet,
+  onCloseLoginSheet,
+  // Signed in without a primary masjid: same approximate timings, but tracking works.
+  noMasjid = false,
+  followNudge = false,      // follow-masjid nudge (PromptCard.warning, NudgeInline.kt Salaah copy)
+  onCloseFollowNudge,
+  onFindMasjid,
+  notifNudge = false,       // signed-in with masjid, notifs off (InlineNudge.NotificationPermission)
+  onCloseNotifNudge,
+  onAllowNotif
 }) {
-  const prayerData = [
+  const { PromptCard, Dialog } = window;
+  // No masjid followed (guest or signed-in): approximate city timings — no iqama
+  // config, so Iqama mirrors Azaan and the date pager row shows.
+  const approx = guest || noMasjid;
+  const prayerData = approx ? [
+    { name: 'Fajr', azaan: '4:42 AM', iqama: '4:42 AM' },
+    { name: 'Zohar', azaan: '12:26 PM', iqama: '12:26 PM' },
+    { name: 'Asr', azaan: '4:58 PM', iqama: '4:58 PM' },
+    { name: 'Maghrib', azaan: '6:50 PM', iqama: '6:50 PM' },
+    { name: 'Isha', azaan: '8:08 PM', iqama: '8:08 PM' }
+  ] : [
     { name: 'Fajr', azaan: '4:36 AM', iqama: '5:00 AM' },
     { name: 'Zohar', azaan: '12:35 PM', iqama: '1:00 PM' },
     { name: 'Asr', azaan: '4:52 PM', iqama: '5:15 PM' },
     { name: 'Maghrib', azaan: '6:49 PM', iqama: '6:52 PM' },
     { name: 'Isha', azaan: '8:05 PM', iqama: '8:30 PM' }
   ];
-  const sunTimes = [
+  const sunTimes = approx ? [
+    { label: 'Sehri', time: '4:32 AM' },
+    { label: 'Sunrise', time: '6:00 AM' },
+    { label: 'Iftaar', time: '6:50 PM' }
+  ] : [
     { label: 'Sehri', time: '4:31 AM' },
     { label: 'Sunrise', time: '5:55 AM' },
     { label: 'Iftaar', time: '6:49 PM' }
@@ -1064,6 +939,59 @@ function SalaahScreen({
       <div style={{ position: 'absolute', inset: 0, overflowY: 'auto', WebkitOverflowScrolling: 'touch', paddingTop: SAL_APPBAR_H, paddingBottom: 80 }}>
         <div style={{ padding: '4px 16px 16px', display: 'flex', flexDirection: 'column', gap: 20 }}>
 
+        {/* Guest sign-in nudge (PromptCard.error, NudgeInline.kt Salaah copy) */}
+        {loginNudge && (
+          <PromptCard
+            variant="error"
+            title="Sign in for iqama times & reminders"
+            description="Follow a masjid for iqama times and prayer reminders on every device where you use Paigham"
+            primaryActionText="Sign In"
+            onPrimaryAction={onSignInTap}
+            onDismiss={onCloseLoginNudge}
+          />
+        )}
+
+        {/* Follow-a-Masjid nudge — signed in, no primary masjid (PromptCard.warning, NudgeInline.kt Salaah copy) */}
+        {followNudge && (
+          <PromptCard
+            variant="warning"
+            title="Follow a Masjid"
+            description="Follow a masjid for iqama times and prayer reminders from that masjid"
+            primaryActionText="Find a Masjid"
+            primaryActionIcon="mosque"
+            onPrimaryAction={onFindMasjid}
+            onDismiss={onCloseFollowNudge}
+          />
+        )}
+
+        {/* Enable-Notifications nudge — signed in with masjid, notifs off (PromptCard.success, NudgeInline.kt Salaah copy) */}
+        {notifNudge && (
+          <PromptCard
+            variant="success"
+            title="Enable Notifications"
+            description="Get timely reminders for Iqama times and prayer alerts from your followed Masjids"
+            primaryActionText="Allow Notifications"
+            onPrimaryAction={onAllowNotif}
+            onDismiss={onCloseNotifNudge}
+          />
+        )}
+
+        {/* Approx-location date pager row (Hijri date + prev/next) */}
+        {approx && (
+          <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', gap: 12 }}>
+            <button className="ib ib-tonal primary md" aria-label="Previous day">
+              <span className="mi" data-i="chevron_left"></span>
+            </button>
+            <div style={{ textAlign: 'center', minWidth: 0 }}>
+              <div style={{ fontFamily: 'var(--font-title)', fontSize: 21, color: 'var(--color-info-primary)', letterSpacing: '-0.3px' }}>27th Muharram 1448</div>
+              <div style={{ fontFamily: '"Nunito", sans-serif', fontSize: 13, color: 'var(--color-info-secondary)', marginTop: 2 }}>Mon, Jul 13</div>
+            </div>
+            <button className="ib ib-tonal primary md" aria-label="Next day">
+              <span className="mi" data-i="chevron_right"></span>
+            </button>
+          </div>
+        )}
+
         {/* Timings card */}
         <div style={{ background: 'color-mix(in oklab, var(--color-action-primary) 5%, var(--color-surface-primary))', border: '1px solid color-mix(in oklab, var(--color-action-primary) 25%, transparent)', borderRadius: 20, overflow: 'hidden' }}>
           <div style={{ display: 'flex', padding: '12px 16px 8px', borderBottom: '1px solid var(--color-neutral-border)' }}>
@@ -1073,18 +1001,20 @@ function SalaahScreen({
           </div>
 
           {prayerData.map((p, idx) => {
-            const checked = prayersChecked[p.name];
-            const alertOn = prayersAlert[p.name];
+            // Guest: tracking is auth-gated — checks stay empty and taps open the LoginSheet.
+            // Approx (no masjid): local azan alerts are on by default, not per-masjid toggles.
+            const checked = !guest && prayersChecked[p.name];
+            const alertOn = approx || prayersAlert[p.name];
             return (
               <div key={idx} style={{ display: 'flex', alignItems: 'center', padding: '14px 16px', borderBottom: '1px solid color-mix(in oklab, var(--color-info-primary) 6%, transparent)' }}>
-                <div onClick={() => onToggleCheck && onToggleCheck(p.name)} className={`cb small ${checked ? 'on' : ''}`} style={{ marginRight: 10 }}>
+                <div onClick={() => guest ? (onOpenLoginSheet && onOpenLoginSheet()) : (onToggleCheck && onToggleCheck(p.name))} className={`cb small ${checked ? 'on' : ''}`} style={{ marginRight: 10 }}>
                   {checked && <span className="mi" data-i="check"></span>}
                 </div>
                 <span style={{ fontFamily: '"Nunito", sans-serif', fontSize: 15, fontWeight: 600, color: 'var(--color-info-primary)', flex: 1 }}>{p.name}</span>
                 <span style={{ fontFamily: '"Nunito", sans-serif', fontSize: 14, color: 'var(--color-info-secondary)', width: 80, textAlign: 'center' }}>{p.azaan}</span>
                 <div style={{ width: 100, display: 'flex', alignItems: 'center', gap: 8, justifyContent: 'flex-end' }}>
                   <span style={{ fontFamily: '"Nunito", sans-serif', fontSize: 14, color: 'var(--color-info-primary)' }}>{p.iqama}</span>
-                  <span onClick={() => onToggleAlert && onToggleAlert(p.name)} className={`mi ${alertOn ? 'fill' : ''}`} style={{ fontSize: 18, color: alertOn ? 'var(--color-action-primary)' : 'var(--color-info-faint)', cursor: 'pointer' }} data-i="campaign"></span>
+                  <span onClick={() => !approx && onToggleAlert && onToggleAlert(p.name)} className={`mi ${alertOn ? 'fill' : ''}`} style={{ fontSize: 18, color: alertOn ? 'var(--color-action-primary)' : 'var(--color-info-faint)', cursor: 'pointer' }} data-i="campaign"></span>
                 </div>
               </div>
             );
@@ -1101,8 +1031,8 @@ function SalaahScreen({
           </div>
         </div>
 
-        {/* Attendance heatmap (GitHub-style, Hijri month-wise) */}
-        <div>
+        {/* Attendance heatmap (GitHub-style, Hijri month-wise) — tracking is signed-in only */}
+        {!guest && <div>
           <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'baseline', marginBottom: 14, gap: 8 }}>
             <span style={{ fontFamily: 'var(--font-title)', fontSize: 19, color: 'var(--color-info-primary)', letterSpacing: '-0.3px' }}>Muharram - Dhul Hijjah 1446</span>
             <span style={{ fontFamily: '"Nunito", sans-serif', fontSize: 13, fontWeight: 600, color: 'var(--color-action-primary)', textDecoration: 'underline', cursor: 'pointer', whiteSpace: 'nowrap' }}>⇄ English</span>
@@ -1146,25 +1076,45 @@ function SalaahScreen({
             ))}
             <span style={{ fontFamily: '"Nunito", sans-serif', fontSize: 11, color: 'var(--color-info-secondary)', marginLeft: 2 }}>5 times</span>
           </div>
-        </div>
+        </div>}
 
         </div>
       </div>
 
-      {/* App bar — DS .app-bar (progressive blur); masjid selector pinned in */}
-      <div className="app-bar" style={{ alignItems: 'center', height: SAL_APPBAR_H, padding: '54px 16px 10px' }} onClick={onMasjidSheetToggle}>
-        <div style={{ width: 44, height: 44, borderRadius: '50%', background: 'var(--color-action-secondary)', flexShrink: 0, display: 'flex', alignItems: 'center', justifyContent: 'center', color: '#fff', fontFamily: 'var(--font-title)', fontSize: 20 }}>{masjidLetter}</div>
-        <div style={{ flex: 1, minWidth: 0, cursor: 'pointer' }}>
-          <div style={{ display: 'flex', alignItems: 'center', gap: 4 }}>
-            <span style={{ fontFamily: 'var(--font-title)', fontSize: 22, color: 'var(--color-info-primary)', letterSpacing: '-0.3px' }}>{masjidName}</span>
-            <span className="mi" style={{ fontSize: 20, color: 'var(--color-info-secondary)' }} data-i="keyboard_arrow_down"></span>
+      {/* App bar — DS .app-bar (progressive blur); masjid selector pinned in.
+          No masjid followed — approximate location label (SalaahTab.kt); guest tap opens the LoginSheet. */}
+      {approx ? (
+        <div className="app-bar" style={{ alignItems: 'center', height: SAL_APPBAR_H, padding: '54px 16px 10px' }} onClick={guest ? onOpenLoginSheet : undefined}>
+          <div style={{ flex: 1, minWidth: 0, cursor: guest ? 'pointer' : 'default' }}>
+            <span style={{ fontFamily: 'var(--font-title)', fontSize: 22, color: 'var(--color-info-primary)', letterSpacing: '-0.3px' }}>📍 Bangalore (Approx.)</span>
           </div>
-          <div style={{ fontFamily: '"Nunito", sans-serif', fontSize: 13, color: 'var(--color-info-secondary)' }}>{masjidSub}</div>
         </div>
-      </div>
+      ) : (
+        <div className="app-bar" style={{ alignItems: 'center', height: SAL_APPBAR_H, padding: '54px 16px 10px' }} onClick={onMasjidSheetToggle}>
+          <div style={{ width: 44, height: 44, borderRadius: '50%', background: 'var(--color-action-secondary)', flexShrink: 0, display: 'flex', alignItems: 'center', justifyContent: 'center', color: '#fff', fontFamily: 'var(--font-title)', fontSize: 20 }}>{masjidLetter}</div>
+          <div style={{ flex: 1, minWidth: 0, cursor: 'pointer' }}>
+            <div style={{ display: 'flex', alignItems: 'center', gap: 4 }}>
+              <span style={{ fontFamily: 'var(--font-title)', fontSize: 22, color: 'var(--color-info-primary)', letterSpacing: '-0.3px' }}>{masjidName}</span>
+              <span className="mi" style={{ fontSize: 20, color: 'var(--color-info-secondary)' }} data-i="keyboard_arrow_down"></span>
+            </div>
+            <div style={{ fontFamily: '"Nunito", sans-serif', fontSize: 13, color: 'var(--color-info-secondary)' }}>{masjidSub}</div>
+          </div>
+        </div>
+      )}
 
-      {/* Masjid switcher — DS bottom-sheet dialog */}
-      {showMasjidSheet && (
+      {/* Guest LoginSheet (LoginSheet.kt defaults) — auth-gated taps land here */}
+      <Dialog
+        mode="sheet"
+        isOpen={guest && loginSheet}
+        onClose={onCloseLoginSheet}
+        title="Sign in to continue"
+        description="Enter your phone number to unlock your account and stay connected with your community."
+        primary={{ text: 'Sign in', onClick: onSignInTap }}
+        secondary={{ text: 'Cancel', onClick: onCloseLoginSheet }}
+      />
+
+      {/* Masjid switcher — DS bottom-sheet dialog (only when a masjid is followed) */}
+      {!approx && showMasjidSheet && (
         <div className="dlg-scrim sheet" onClick={onMasjidSheetToggle}>
           <div className="dlg" onClick={(e) => e.stopPropagation()}>
             <div className="dlg-handle" />
@@ -1195,89 +1145,70 @@ function SalaahScreen({
 
 // 5. PROFILE SCREEN
 function ProfileScreen({
-  userName = "Toufeeq Ahamed",
-  inviteCopied = false,
-  onCopyInvite,
-  pendingApproveList = [{ name: 'Suhail Ahmed', letter: 'S' }, { name: 'Syed Imran', letter: 'S' }],
-  onApproveFriend,
+  userName = "Toufeeq",
+  phone = "+91 87928 13003",
+  version = "1.0.0",
+  onRegister,
+  onInvite,
+  onApprove,
+  onTerms,
+  onPrivacy,
+  onAbout,
   logoutOpen = false,
   onToggleLogoutSheet,
-  onConfirmLogout,
-  goMasjids,
-  goRegister,
-  goFollowing
+  onConfirmLogout
 }) {
+  // Settings row (ProfileTab.kt ProfileItem): leading icon · label · optional trailing value · chevron.
+  const renderRow = (r, last) => (
+    <div key={r.label} onClick={r.onClick} className="prow" style={{ display: 'flex', alignItems: 'center', gap: 14, padding: 16, borderBottom: last ? 'none' : '1px solid var(--color-neutral-border)' }}>
+      <span className="mi" style={{ fontSize: 22, color: r.destructive ? 'var(--color-status-error)' : 'var(--color-info-secondary)' }} data-i={r.icon}></span>
+      <span style={{ fontFamily: '"Nunito", sans-serif', fontSize: 16, color: r.destructive ? 'var(--color-status-error)' : 'var(--color-info-primary)', flex: 1 }}>{r.label}</span>
+      {r.value ? <span style={{ fontFamily: '"Nunito", sans-serif', fontSize: 14, color: 'var(--color-info-secondary)' }}>{r.value}</span> : null}
+      <span className="mi" style={{ fontSize: 20, color: r.destructive ? 'color-mix(in oklab, var(--color-status-error) 40%, transparent)' : 'var(--color-info-faint)' }} data-i="chevron_right"></span>
+    </div>
+  );
+
+  const cards = [
+    [{ icon: 'add', label: 'Register a Masjid', onClick: onRegister }],
+    [
+      { icon: 'group', label: 'Invite your Friends', onClick: onInvite },
+      { icon: 'check_circle', label: 'Approve Friends', onClick: onApprove }
+    ],
+    [
+      { icon: 'description', label: 'Terms & Conditions', onClick: onTerms },
+      { icon: 'security', label: 'Privacy Policy', onClick: onPrivacy },
+      { icon: 'info', label: 'About', value: `Version ${version}`, onClick: onAbout }
+    ],
+    [{ icon: 'arrow_back', label: 'Log Out', destructive: true, onClick: onToggleLogoutSheet }]
+  ];
+
   return (
     <div style={{ width: '100%', height: '100%', position: 'relative', display: 'flex', flexDirection: 'column', overflow: 'hidden', background: 'var(--color-surface-primary)' }}>
       {/* Scroll container */}
       <div style={{ flex: 1, overflowY: 'auto', WebkitOverflowScrolling: 'touch', paddingBottom: 80 }}>
-        {/* Profile Hero section */}
-        <div className="p-hero" style={{ position: 'relative', height: 280, display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', gap: 10, padding: '24px 20px 0' }}>
-          <div style={{ width: 80, height: 80, borderRadius: '50%', background: '#4A5A6A', display: 'flex', alignItems: 'center', justifyContent: 'center', border: '2px solid var(--color-neutral-border)' }}>
-            <span style={{ fontFamily: '"DM Serif Display", Georgia, serif', fontSize: 32, color: '#fff' }}>{userName.charAt(0)}</span>
+        {/* Profile Hero — avatar + name + phone (no masjid when none followed) */}
+        <div className="p-hero" style={{ position: 'relative', display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', gap: 14, padding: '56px 20px 28px' }}>
+          <div style={{ width: 112, height: 112, borderRadius: '50%', background: 'color-mix(in oklab, var(--color-action-secondary) 22%, transparent)', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+            <span style={{ fontFamily: '"DM Serif Display", Georgia, serif', fontSize: 44, color: 'var(--color-info-primary)' }}>{userName.charAt(0)}</span>
           </div>
           <div style={{ textAlign: 'center' }}>
-            <div style={{ fontFamily: '"DM Serif Display", Georgia, serif', fontSize: 24, color: 'var(--color-info-primary)', marginBottom: 4 }}>{userName}</div>
-            <div style={{ fontFamily: '"Nunito", sans-serif', fontSize: 13, color: 'var(--color-info-secondary)' }}>Masjid E Bilal</div>
-            <div style={{ fontFamily: '"Nunito", sans-serif', fontSize: 13, color: 'var(--color-info-secondary)' }}>+91 81234 03269</div>
+            <div style={{ fontFamily: '"DM Serif Display", Georgia, serif', fontSize: 28, color: 'var(--color-info-primary)', marginBottom: 4 }}>{userName}</div>
+            <div style={{ fontFamily: '"Nunito", sans-serif', fontSize: 15, color: 'var(--color-info-secondary)' }}>{phone}</div>
           </div>
         </div>
 
-        {/* Settings rows */}
-        <div style={{ padding: '20px 16px', display: 'flex', flexDirection: 'column', gap: 12 }}>
-          {/* Group 0: Masjids */}
-          <div style={{ background: 'var(--color-surface-card)', borderRadius: 16, overflow: 'hidden' }}>
-            <div onClick={goMasjids} className="prow" style={{ display: 'flex', alignItems: 'center', gap: 12, padding: 16, borderBottom: '1px solid var(--color-neutral-border)' }}>
-              <span className="mi" style={{ fontSize: 22, color: 'var(--color-info-secondary)' }} data-i="mosque"></span>
-              <span style={{ fontFamily: '"Nunito", sans-serif', fontSize: 16, color: 'var(--color-info-primary)', flex: 1 }}>My Masjids</span>
-              <span className="chip success sm">2</span>
-              <span className="mi" style={{ fontSize: 20, color: 'var(--color-info-faint)' }} data-i="chevron_right"></span>
+        {/* Settings cards */}
+        <div style={{ padding: '8px 16px', display: 'flex', flexDirection: 'column', gap: 16 }}>
+          {cards.map((rows, ci) => (
+            <div key={ci} style={{ background: 'var(--color-surface-card)', borderRadius: 16, overflow: 'hidden' }}>
+              {rows.map((r, ri) => renderRow(r, ri === rows.length - 1))}
             </div>
-            <div onClick={goRegister} className="prow" style={{ display: 'flex', alignItems: 'center', gap: 12, padding: 16, borderBottom: '1px solid var(--color-neutral-border)' }}>
-              <span className="mi" style={{ fontSize: 22, color: 'var(--color-info-secondary)' }} data-i="add_home_work"></span>
-              <span style={{ fontFamily: '"Nunito", sans-serif', fontSize: 16, color: 'var(--color-info-primary)', flex: 1 }}>Register your Masjid</span>
-              <span className="mi" style={{ fontSize: 20, color: 'var(--color-info-faint)' }} data-i="chevron_right"></span>
-            </div>
-          </div>
+          ))}
+        </div>
 
-          {/* Group 1: Invite & Friends */}
-          <div style={{ background: 'var(--color-surface-card)', borderRadius: 16, overflow: 'hidden' }}>
-            <div onClick={onCopyInvite} className="prow" style={{ display: 'flex', alignItems: 'center', gap: 12, padding: 16, borderBottom: '1px solid var(--color-neutral-border)' }}>
-              <span className="mi" style={{ fontSize: 22, color: inviteCopied ? 'var(--color-action-primary)' : 'var(--color-info-secondary)' }} data-i={inviteCopied ? 'check_circle' : 'share'}></span>
-              <span style={{ fontFamily: '"Nunito", sans-serif', fontSize: 16, color: inviteCopied ? 'var(--color-action-primary)' : 'var(--color-info-primary)', flex: 1 }}>{inviteCopied ? 'Link Copied!' : 'Invite Friends'}</span>
-              <span className="mi" style={{ fontSize: 20, color: 'var(--color-info-faint)' }} data-i="chevron_right"></span>
-            </div>
-
-            {/* Friend Requests */}
-            <div style={{ padding: '12px 16px' }}>
-              <div style={{ fontFamily: '"Nunito", sans-serif', fontSize: 14, fontWeight: 700, color: 'var(--color-info-primary)', marginBottom: 10 }}>Approve Friends</div>
-              {pendingApproveList.length > 0 ? (
-                <div style={{ display: 'flex', flexDirection: 'column', gap: 8 }}>
-                  {pendingApproveList.map((fr, idx) => (
-                    <div key={idx} style={{ display: 'flex', alignItems: 'center', gap: 12 }}>
-                      <div style={{ width: 32, height: 32, borderRadius: '50%', background: 'var(--color-status-disabled)', display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0 }}><span style={{ fontFamily: '"DM Serif Display", Georgia, serif', fontSize: 14, color: 'var(--color-info-secondary)' }}>{fr.letter}</span></div>
-                      <span style={{ fontFamily: '"Nunito", sans-serif', fontSize: 14, fontWeight: 600, color: 'var(--color-info-primary)', flex: 1 }}>{fr.name}</span>
-                      <div onClick={() => onApproveFriend && onApproveFriend(fr.name)} className="chip success">
-                        <span className="mi" data-i="check"></span>
-                        <span>Approve</span>
-                      </div>
-                    </div>
-                  ))}
-                </div>
-              ) : (
-                <div style={{ fontFamily: '"Nunito", sans-serif', fontSize: 13, color: 'var(--color-info-secondary)' }}>No pending requests</div>
-              )}
-            </div>
-          </div>
-
-          {/* Group 2: Log out */}
-          <div style={{ background: 'var(--color-surface-card)', borderRadius: 16, overflow: 'hidden' }}>
-            <div onClick={onToggleLogoutSheet} className="prow" style={{ display: 'flex', alignItems: 'center', gap: 12, padding: 16 }}>
-              <span className="mi" style={{ fontSize: 22, color: 'var(--color-status-error)' }} data-i="logout"></span>
-              <span style={{ fontFamily: '"Nunito", sans-serif', fontSize: 16, color: 'var(--color-status-error)', flex: 1 }}>Log Out</span>
-              <span className="mi" style={{ fontSize: 20, color: 'color-mix(in oklab, var(--color-status-error) 40%, transparent)' }} data-i="chevron_right"></span>
-            </div>
-          </div>
+        {/* Footer branding */}
+        <div style={{ textAlign: 'center', padding: '16px 0 8px' }}>
+          <span style={{ fontFamily: '"Noto Nastaliq Urdu", serif', fontSize: 34, lineHeight: 1.4, color: 'var(--color-info-primary)', direction: 'rtl' }}>پیغام</span>
         </div>
       </div>
 
@@ -1298,4 +1229,107 @@ function ProfileScreen({
   );
 }
 
-Object.assign(window, { HomeScreen, QaumScreen, QuranScreen, SalaahScreen, ProfileScreen });
+// Rich follow-masjid sheet (UserOnboardingNudge.kt + NudgeSheetFactory.kt FirstTimeFollowMasjid).
+// Shown once per cold start to signed-in users without a primary masjid, alongside the inline nudge.
+// RichNudgeSheet is the shared shell (see _theme/components.jsx); this supplies the content preset.
+function MasjidNudgeSheet({ isOpen, onClose, onFindMasjid }) {
+  const { RichNudgeSheet } = window;
+  return (
+    <RichNudgeSheet
+      isOpen={isOpen}
+      onClose={onClose}
+      illustration="../../images/follow_masjids.webp"
+      title="Pick your masjid, stay in sync"
+      description="Choose a masjid you trust—iqama times and community updates stay with you here."
+      benefits={[
+        { icon: 'explore', title: 'Explore before you follow.', caption: 'Browse nearby masjids on the map, then pick the one you trust.' },
+        { icon: 'schedule', title: 'Iqama times that match your masjid.', caption: 'Prayer times reflect the schedule from the masjid you follow.' },
+        { icon: 'campaign', title: 'Updates in one place.', caption: 'Hear what matters from your masjid inside the app.' }
+      ]}
+      primaryText="Find my masjid"
+      onPrimary={onFindMasjid}
+    />
+  );
+}
+
+// Rich notification sheet (NotificationPermissionSheetContent.kt + NudgeSheetFactory.kt
+// NotificationPermission). Shown once to signed-in users with a masjid but notifs off,
+// on the 2nd qualifying Home/Salaah visit.
+function NotificationNudgeSheet({ isOpen, onClose, onAllow }) {
+  const { RichNudgeSheet } = window;
+  return (
+    <RichNudgeSheet
+      isOpen={isOpen}
+      onClose={onClose}
+      illustration="../../images/notifications_request_illustration.webp"
+      title="Stay in the loop"
+      description="Turn on notifications for prayer reminders and timely updates in Paigham."
+      benefits={[
+        { icon: 'schedule', title: 'Prayer times, right on time.', caption: 'Get reminders before each salah so you never miss a prayer.' },
+        { icon: 'menu_book', title: 'Quran and duas at your fingertips.', caption: 'Gentle nudges to keep your daily practice consistent.' },
+        { icon: 'campaign', title: 'Community updates in one place.', caption: 'Stay connected with your masjid and the broader ummah.' }
+      ]}
+      primaryText="Allow notifications"
+      onPrimary={onAllow}
+      secondaryText="Maybe later"
+    />
+  );
+}
+
+// ATT pre-prompt / privacy-consent sheet (AttPermissionSheetContent.kt). Device-level, like the
+// other nudge sheets, so it stays fixed over the whole screen (incl. the nav bar) and never
+// scrolls with the Home content. Continue → the system ATT dialog; Not now dismisses.
+function PrivacyNudgeSheet({ isOpen, onClose, onContinue }) {
+  const { RichNudgeSheet } = window;
+  return (
+    <RichNudgeSheet
+      isOpen={isOpen}
+      onClose={onClose}
+      showClose={false}
+      icon="security"
+      title="Your privacy, your choice"
+      description="We use anonymised data to personalise your experience and show relevant Islamic content."
+      benefits={[
+        { icon: 'security', title: 'Private by design.', caption: 'All data is anonymised before use. No personal identifiers are stored.' },
+        { icon: 'person', title: 'Tailored to you.', caption: 'Quran, duas, and community content matched to your interests.' },
+        { icon: 'campaign', title: 'Help us grow.', caption: 'Your choice helps us make Paigham better for the whole ummah.' }
+      ]}
+      primaryText="Continue"
+      onPrimary={onContinue}
+      secondaryText="Not now"
+    />
+  );
+}
+
+// iOS App Tracking Transparency system dialog — device-level centred modal (fixed, no scroll).
+function AttDialog({ isOpen, onChoice }) {
+  if (!isOpen) return null;
+  const btn = {
+    background: 'transparent', border: 'none', color: '#0A84FF', fontSize: 16,
+    fontFamily: '-apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif',
+    padding: '11px 8px', width: '100%', cursor: 'pointer', outline: 'none'
+  };
+  return (
+    <div style={{ position: 'absolute', inset: 0, background: 'rgba(0, 0, 0, 0.4)', zIndex: 210, display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+      <div style={{ width: 270, background: 'rgba(33, 33, 33, 0.85)', backdropFilter: 'blur(20px)', WebkitBackdropFilter: 'blur(20px)', borderRadius: 14, boxShadow: '0 10px 30px rgba(0, 0, 0, 0.5)', border: '0.5px solid rgba(255, 255, 255, 0.15)', textAlign: 'center', display: 'flex', flexDirection: 'column', overflow: 'hidden' }}>
+        {/* Orange tracking card icon */}
+        <div style={{ width: 60, height: 60, background: 'linear-gradient(135deg, #FF9500, #FF5E3A)', borderRadius: 14, margin: '16px auto 12px', display: 'flex', alignItems: 'center', justifyContent: 'center', position: 'relative' }}>
+          <span className="mi" style={{ fontSize: 32, color: '#FFFFFF' }} data-i="sensors"></span>
+          <div style={{ width: 20, height: 20, borderRadius: '50%', background: '#007AFF', position: 'absolute', bottom: -4, right: -4, border: '2px solid #202020', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+            <span className="mi" style={{ fontSize: 11, color: '#FFFFFF' }} data-i="front_hand"></span>
+          </div>
+        </div>
+        <div style={{ fontFamily: '-apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif', fontSize: 15, fontWeight: 600, color: '#FFFFFF', padding: '0 16px', lineHeight: 1.3 }}>Allow “Paigham” to track your activity across other companies’ apps and websites?</div>
+        <div style={{ fontFamily: '-apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif', fontSize: 12, color: '#EBEBF5', opacity: 0.8, padding: '6px 16px 16px', lineHeight: 1.3 }}>Paigham uses this identifier to personalise your experience</div>
+        <div style={{ borderTop: '0.5px solid rgba(255, 255, 255, 0.15)' }}>
+          <button onClick={onChoice} style={{ ...btn, fontWeight: 400 }}>Ask App Not to Track</button>
+        </div>
+        <div style={{ borderTop: '0.5px solid rgba(255, 255, 255, 0.15)' }}>
+          <button onClick={onChoice} style={{ ...btn, fontWeight: 600 }}>Allow</button>
+        </div>
+      </div>
+    </div>
+  );
+}
+
+Object.assign(window, { HomeScreen, QaumScreen, QuranScreen, SalaahScreen, ProfileScreen, MasjidNudgeSheet, NotificationNudgeSheet, PrivacyNudgeSheet, AttDialog });

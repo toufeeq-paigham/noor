@@ -112,14 +112,17 @@
                       go-asma="{{ goAsma }}"
                       go-zakaat="{{ goZakaat }}"
                       prayer="{{ homeActivePrayer }}"
-                      user-name="{{ homeGuest ? 'Guest' : 'Toufeeq Ahamed' }}"
-                      masjid-name="{{ homeGuest ? 'Bangalore (Approx.)' : 'Masjid E Bilal' }}"
+                      user-name="{{ homeUserName }}"
+                      masjid-name="{{ homeMasjidLabel }}"
                       login-nudge="{{ homeLoginNudge }}"
                       on-close-login-nudge="{{ closeLoginNudge }}"
                       on-sign-in-tap="{{ triggerSignIn }}"
-                      privacy-consent="{{ homePrivacyConsent }}"
-                      on-close-privacy="{{ closePrivacyConsent }}"
-                      att-prompt="{{ homeAttPrompt }}"
+                      follow-nudge="{{ homeFollowNudge }}"
+                      on-close-follow-nudge="{{ closeHomeFollowNudge }}"
+                      on-find-masjid="{{ goMasjids }}"
+                      notif-nudge="{{ homeNotifNudge }}"
+                      on-close-notif-nudge="{{ closeHomeNotifNudge }}"
+                      on-allow-notif="{{ allowNotif }}"
                       hint-size="100%,100%">
             </x-import>
           </sc-if>
@@ -134,6 +137,15 @@
                       on-toggle-audio="{{ toggleQaumAudio }}"
                       dock="{{ qaumDock }}"
                       on-close-audio="{{ closeQaumAudio }}"
+                      login-nudge="{{ qaumLoginNudge }}"
+                      on-close-login-nudge="{{ closeQaumNudge }}"
+                      on-sign-in-tap="{{ triggerSignIn }}"
+                      follow-nudge="{{ qaumFollowNudge }}"
+                      on-close-follow-nudge="{{ closeQaumNudge }}"
+                      on-find-masjid="{{ goMasjids }}"
+                      notif-nudge="{{ qaumNotifNudge }}"
+                      on-close-notif-nudge="{{ closeQaumNudge }}"
+                      on-allow-notif="{{ allowNotif }}"
                       hint-size="100%,100%">
             </x-import>
           </sc-if>
@@ -162,6 +174,20 @@
                       prayers-checked="{{ salaahPrayersChecked }}"
                       on-toggle-check="{{ toggleSalaahCheck }}"
                       on-toggle-alert="{{ toggleSalaahAlert }}"
+                      guest="{{ homeGuest }}"
+                      login-nudge="{{ salaahLoginNudge }}"
+                      on-close-login-nudge="{{ closeSalaahNudge }}"
+                      on-sign-in-tap="{{ triggerSignIn }}"
+                      login-sheet="{{ salaahLoginSheet }}"
+                      on-open-login-sheet="{{ openSalaahLoginSheet }}"
+                      on-close-login-sheet="{{ closeSalaahLoginSheet }}"
+                      no-masjid="{{ homeNoMasjid }}"
+                      follow-nudge="{{ salaahFollowNudge }}"
+                      on-close-follow-nudge="{{ closeSalaahNudge }}"
+                      on-find-masjid="{{ goMasjids }}"
+                      notif-nudge="{{ salaahNotifNudge }}"
+                      on-close-notif-nudge="{{ closeSalaahNudge }}"
+                      on-allow-notif="{{ allowNotif }}"
                       hint-size="100%,100%">
             </x-import>
           </sc-if>
@@ -169,17 +195,16 @@
           <!-- TAB 4: PROFILE SCREEN -->
           <sc-if value="{{ isProfileTab }}">
             <x-import component="ProfileScreen" from="./storyboards/screens.jsx"
-                      user-name="Toufeeq Ahamed"
-                      invite-copied="{{ profileInviteCopied }}"
-                      on-copy-invite="{{ copyProfileInvite }}"
-                      pending-approve-list="{{ profilePendingFriends }}"
-                      on-approve-friend="{{ approveProfileFriend }}"
+                      user-name="Toufeeq"
                       logout-open="{{ profileLogoutOpen }}"
                       on-toggle-logout-sheet="{{ toggleProfileLogoutSheet }}"
                       on-confirm-logout="{{ resetToDefault }}"
-                      go-masjids="{{ switchToTab3 }}"
-                      go-register="{{ noop }}"
-                      go-following="{{ noop }}"
+                      on-register="{{ noop }}"
+                      on-invite="{{ noop }}"
+                      on-approve="{{ noop }}"
+                      on-terms="{{ noop }}"
+                      on-privacy="{{ noop }}"
+                      on-about="{{ noop }}"
                       hint-size="100%,100%">
             </x-import>
           </sc-if>
@@ -191,6 +216,63 @@
                   active-index="{{ activeTab }}"
                   on-select="{{ onNavSelect }}"
                   hint-size="100%,84px">
+        </x-import>
+
+        <!-- Guest profile LoginSheet (HomeViewModel.kt) — guest taps the Profile tab.
+             Device-level so it overlays whichever tab is showing, nav bar included. -->
+        <x-import component="Dialog" from="../_theme/components.jsx"
+                  mode="sheet"
+                  is-open="{{ homeGuestSheet }}"
+                  on-close="{{ closeGuestSheet }}"
+                  title="Your profile is waiting for you"
+                  description="Sign in with your phone number to save your preferences, follow masjids you care about, and pick up where you left off."
+                  primary="{{ guestSheetPrimary }}"
+                  secondary="{{ guestSheetSecondary }}"
+                  hint-size="0,0">
+        </x-import>
+
+        <!-- Rich follow-masjid sheet (NudgeSheetFactory.kt FirstTimeFollowMasjid) — signed in,
+             no primary masjid, once per cold start. Device-level so it covers the nav bar. -->
+        <x-import component="MasjidNudgeSheet" from="./storyboards/screens.jsx"
+                  is-open="{{ masjidSheetOpen }}"
+                  on-close="{{ closeMasjidSheet }}"
+                  on-find-masjid="{{ goMasjids }}"
+                  hint-size="0,0">
+        </x-import>
+
+        <!-- Rich notification sheet (NotificationPermissionSheetContent.kt) — signed in with
+             masjid, notifs off, 2nd qualifying Home/Salaah visit. Device-level. -->
+        <x-import component="NotificationNudgeSheet" from="./storyboards/screens.jsx"
+                  is-open="{{ notifSheetOpen }}"
+                  on-close="{{ closeNotifSheet }}"
+                  on-allow="{{ allowNotif }}"
+                  hint-size="0,0">
+        </x-import>
+
+        <!-- Guest sign-in interrupt sheet (NudgeSheetFactory.kt GuestSignIn) — guest on Qaum/Salaah. -->
+        <x-import component="Dialog" from="../_theme/components.jsx"
+                  mode="sheet"
+                  is-open="{{ guestSignInSheetOpen }}"
+                  on-close="{{ closeGuestSignInSheet }}"
+                  title="Sign in to Paigham"
+                  description="Save your masjid, get iqama times, and sync reminders across your devices."
+                  primary="{{ guestSignInPrimary }}"
+                  secondary="{{ guestSignInSecondary }}"
+                  hint-size="0,0">
+        </x-import>
+
+        <!-- Privacy / ATT pre-prompt sheet + system ATT dialog — device-level (fixed, don't scroll
+             with the Home content). Continue → ATT dialog; a choice dismisses back to Home. -->
+        <x-import component="PrivacyNudgeSheet" from="./storyboards/screens.jsx"
+                  is-open="{{ homePrivacyConsent }}"
+                  on-close="{{ closePrivacyConsent }}"
+                  on-continue="{{ triggerAttPrompt }}"
+                  hint-size="0,0">
+        </x-import>
+        <x-import component="AttDialog" from="./storyboards/screens.jsx"
+                  is-open="{{ homeAttPrompt }}"
+                  on-choice="{{ dismissAttPrompt }}"
+                  hint-size="0,0">
         </x-import>
 
         <div class="noor-home"></div>
@@ -214,6 +296,17 @@ class Component extends DCLogic {
     homeLoginNudge: false,
     homePrivacyConsent: false,
     homeAttPrompt: false,
+    homeGuestSheet: false,       // "Your profile is waiting for you" LoginSheet (guest taps Profile tab)
+    qaumNudgeClosed: false,      // dismissed the Qaum inline nudge this session (guest or no-masjid)
+    salaahNudgeClosed: false,    // dismissed the Salaah inline nudge this session (guest or no-masjid)
+    salaahLoginSheet: false,     // Salaah "Sign in to continue" LoginSheet (guest auth-gated taps)
+    homeNoMasjid: false,         // signed in without a primary masjid (follow-masjid nudges)
+    homeFollowNudge: false,      // Home inline follow-masjid nudge visible
+    masjidSheetOpen: false,      // rich "Pick your masjid, stay in sync" sheet
+    homeNotifOff: false,         // signed in with masjid but notifications off (notif nudges)
+    homeNotifNudge: false,       // Home inline "Enable Notifications" nudge visible
+    notifSheetOpen: false,       // rich "Stay in the loop" sheet
+    guestSignInSheetOpen: false, // guest "Sign in to Paigham" interrupt sheet (Qaum/Salaah)
     homePrayers: { Fajr: true, Zohar: true, Asr: true, Maghrib: true, Isha: false },
     homeSehriNote: false,
     homeSlide: 0,
@@ -238,8 +331,6 @@ class Component extends DCLogic {
     salaahPrayersChecked: { Fajr: true, Zohar: true, Asr: true, Maghrib: false, Isha: false },
 
     // Profile tab state
-    profileInviteCopied: false,
-    profilePendingFriends: [{ name: 'Suhail Ahmed', letter: 'S' }, { name: 'Syed Imran', letter: 'S' }],
     profileLogoutOpen: false
   };
 
@@ -254,6 +345,20 @@ class Component extends DCLogic {
       else if (hash === '#quran') this.syncLiveStateToFrame(5);
       else if (hash === '#salaah') this.syncLiveStateToFrame(6);
       else if (hash === '#profile') this.syncLiveStateToFrame(7);
+      else if (hash === '#qaum-guest') this.syncLiveStateToFrame(17);
+      else if (hash === '#salaah-guest') this.syncLiveStateToFrame(18);
+      else if (hash === '#home-guest-sheet') this.syncLiveStateToFrame(19);
+      else if (hash === '#home-no-masjid') this.syncLiveStateToFrame(20);
+      else if (hash === '#qaum-no-masjid') this.syncLiveStateToFrame(21);
+      else if (hash === '#qaum-masjid-sheet') this.syncLiveStateToFrame(22);
+      else if (hash === '#salaah-no-masjid') this.syncLiveStateToFrame(23);
+      else if (hash === '#home-notif') this.syncLiveStateToFrame(24);
+      else if (hash === '#qaum-notif') this.syncLiveStateToFrame(25);
+      else if (hash === '#salaah-notif') this.syncLiveStateToFrame(26);
+      else if (hash === '#salaah-notif-sheet') this.syncLiveStateToFrame(27);
+      else if (hash === '#salaah-masjid-sheet') this.syncLiveStateToFrame(28);
+      else if (hash === '#qaum-guest-signin-sheet') this.syncLiveStateToFrame(29);
+      else if (hash === '#qaum-notif-sheet') this.syncLiveStateToFrame(30);
     }
   }
 
@@ -278,28 +383,70 @@ class Component extends DCLogic {
       { activeTab: 1, qaumAudioPlaying: true, qaumAudioProgress: 5, qaumDock: 'top' },
       { activeTab: 1, qaumAudioPlaying: true, qaumAudioProgress: 9, qaumDock: 'bottom' },
       // 16 · Quran Juz view
-      { activeTab: 2, quranTab: 1 }
+      { activeTab: 2, quranTab: 1 },
+      // 17-19 · Guest sign-in states (Qaum nudge · Salaah approx timings · Profile LoginSheet)
+      { activeTab: 1, homeGuest: true, qaumAudioPlaying: false, qaumAudioProgress: 0, qaumDock: 'none' },
+      { activeTab: 3, homeGuest: true },
+      { activeTab: 0, homeGuest: true, homeHeroSel: null, homeActivePrayer: 'Asr', homeLoginNudge: true, homeGuestSheet: true },
+      // 20-23 · Signed in, no primary masjid (follow-masjid nudges + rich sheet)
+      { activeTab: 0, homeNoMasjid: true, homeHeroSel: null, homeActivePrayer: 'Asr', homeFollowNudge: true },
+      { activeTab: 1, homeNoMasjid: true, qaumAudioPlaying: false, qaumAudioProgress: 0, qaumDock: 'none' },
+      { activeTab: 1, homeNoMasjid: true, masjidSheetOpen: true, qaumAudioPlaying: false, qaumAudioProgress: 0, qaumDock: 'none' },
+      { activeTab: 3, homeNoMasjid: true, salaahPrayersChecked: { Fajr: false, Zohar: false, Asr: false, Maghrib: false, Isha: false } },
+      // 24-27 · Signed in with masjid, notifications off (Enable Notifications nudges + rich sheet)
+      { activeTab: 0, homeNotifOff: true, homeHeroSel: null, homeActivePrayer: 'Asr', homeNotifNudge: true },
+      { activeTab: 1, homeNotifOff: true, qaumAudioPlaying: false, qaumAudioProgress: 0, qaumDock: 'none' },
+      { activeTab: 3, homeNotifOff: true },
+      { activeTab: 3, homeNotifOff: true, notifSheetOpen: true },
+      // 28 · No-masjid rich sheet on Salaah · 29 · Guest sign-in interrupt sheet on Qaum
+      { activeTab: 3, homeNoMasjid: true, masjidSheetOpen: true, salaahPrayersChecked: { Fajr: false, Zohar: false, Asr: false, Maghrib: false, Isha: false } },
+      { activeTab: 1, homeGuest: true, guestSignInSheetOpen: true, qaumAudioPlaying: false, qaumAudioProgress: 0, qaumDock: 'none' },
+      // 30 · Notification "Stay in the loop" sheet on Qaum
+      { activeTab: 1, homeNotifOff: true, notifSheetOpen: true, qaumAudioPlaying: false, qaumAudioProgress: 0, qaumDock: 'none' }
     ];
     clearInterval(this._audioTimer);
     this.setState({
+      // Baseline: leaving a guest/no-masjid frame returns to signed-in-with-masjid
+      // unless the frame re-asserts its mode.
+      homeGuest: false,
+      homeGuestSheet: false,
+      homeNoMasjid: false,
+      homeFollowNudge: false,
+      masjidSheetOpen: false,
+      homeNotifOff: false,
+      homeNotifNudge: false,
+      notifSheetOpen: false,
+      guestSignInSheetOpen: false,
+      qaumNudgeClosed: false,
+      salaahNudgeClosed: false,
+      salaahLoginSheet: false,
       ...states[idx],
       activeFrameIndex: idx
     });
   };
 
   // Sync canvas active highlight ring based on current live state
-  syncFrameIndexFromTab(tabIndex, heroSel = null, prayer = 'Maghrib', loginNudge = false, privacyConsent = false, attPrompt = false) {
+  syncFrameIndexFromTab(tabIndex, s) {
     if (tabIndex === 0) {
-      if (attPrompt) return 3;
-      if (privacyConsent) return 2;
-      if (loginNudge) return 1;
-      const p = (prayer || 'Maghrib').toLowerCase();
+      if (s.homeAttPrompt) return 3;
+      if (s.homePrivacyConsent) return 2;
+      if (s.homeGuestSheet) return 19;
+      if (s.homeLoginNudge) return 1;
+      if (s.homeFollowNudge) return 20;
+      if (s.homeNotifNudge) return 24;
+      const p = (s.homeActivePrayer || 'Maghrib').toLowerCase();
       if (p === 'fajr') return 8;
       if (p === 'zohar') return 9;
       if (p === 'asr') return 10;
       if (p === 'isha') return 12;
       return 0;
     }
+    if (tabIndex === 1 && s.homeGuest) return s.guestSignInSheetOpen ? 29 : 17;
+    if (tabIndex === 1 && s.homeNoMasjid) return s.masjidSheetOpen ? 22 : 21;
+    if (tabIndex === 1 && s.homeNotifOff) return s.notifSheetOpen ? 30 : 25;
+    if (tabIndex === 3 && s.homeGuest) return 18;
+    if (tabIndex === 3 && s.homeNoMasjid) return s.masjidSheetOpen ? 28 : 23;
+    if (tabIndex === 3 && s.homeNotifOff) return s.notifSheetOpen ? 27 : 26;
     return tabIndex + 3;
   }
 
@@ -307,19 +454,70 @@ class Component extends DCLogic {
   setTab = (idx) => () => {
     this.setState(s => ({
       activeTab: idx,
-      activeFrameIndex: this.syncFrameIndexFromTab(idx, idx === 0 ? s.homeHeroSel : null, idx === 0 ? s.homeActivePrayer : 'Maghrib', idx === 0 ? s.homeLoginNudge : false)
+      activeFrameIndex: this.syncFrameIndexFromTab(idx, s)
     }));
   };
 
   switchToTab2 = () => this.setTab(2)();
   switchToTab3 = () => this.setTab(3)();
 
-  // BottomNav onSelect — receives the tapped tab index
-  onNavSelect = (idx) => this.setTab(idx)();
+  // BottomNav onSelect — guest tapping Profile gets the LoginSheet (HomeViewModel.kt); no tab switch.
+  onNavSelect = (idx) => {
+    if (idx === 4 && this.state.homeGuest) {
+      this.setState(s => {
+        const next = { ...s, homeGuestSheet: true };
+        return { homeGuestSheet: true, activeFrameIndex: this.syncFrameIndexFromTab(s.activeTab, next) };
+      });
+      return;
+    }
+    this.setTab(idx)();
+  };
 
   closeLoginNudge = () => this.setState({ homeLoginNudge: false });
   closePrivacyConsent = () => this.setState({ homePrivacyConsent: false });
-  triggerSignIn = () => alert("Redirecting to login flow...");
+
+  // Privacy/ATT pre-prompt "Continue" → fire the system ATT dialog (next screen).
+  triggerAttPrompt = () => this.setState(s => {
+    const next = { ...s, homePrivacyConsent: false, homeAttPrompt: true };
+    return { homePrivacyConsent: false, homeAttPrompt: true, activeFrameIndex: this.syncFrameIndexFromTab(s.activeTab, next) };
+  });
+  // ATT dialog choice (Allow / Ask App Not to Track) → dismiss, back to Home.
+  dismissAttPrompt = () => this.setState(s => {
+    const next = { ...s, homeAttPrompt: false };
+    return { homeAttPrompt: false, activeFrameIndex: this.syncFrameIndexFromTab(s.activeTab, next) };
+  });
+  triggerSignIn = () => { window.location.href = '../onboarding/Onboarding.dc.html#login'; };
+
+  // Guest sign-in surfaces
+  closeGuestSheet = () => this.setState(s => {
+    const next = { ...s, homeGuestSheet: false };
+    return { homeGuestSheet: false, activeFrameIndex: this.syncFrameIndexFromTab(s.activeTab, next) };
+  });
+  closeQaumNudge = () => this.setState({ qaumNudgeClosed: true });
+  closeSalaahNudge = () => this.setState({ salaahNudgeClosed: true });
+  openSalaahLoginSheet = () => this.setState({ salaahLoginSheet: true });
+  closeSalaahLoginSheet = () => this.setState({ salaahLoginSheet: false });
+
+  // No-masjid (follow-masjid) surfaces
+  closeHomeFollowNudge = () => this.setState({ homeFollowNudge: false });
+  closeMasjidSheet = () => this.setState(s => {
+    const next = { ...s, masjidSheetOpen: false };
+    return { masjidSheetOpen: false, activeFrameIndex: this.syncFrameIndexFromTab(s.activeTab, next) };
+  });
+
+  // Notification-permission surfaces (signed in with masjid, notifs off)
+  closeHomeNotifNudge = () => this.setState({ homeNotifNudge: false });
+  closeNotifSheet = () => this.setState(s => {
+    const next = { ...s, notifSheetOpen: false };
+    return { notifSheetOpen: false, activeFrameIndex: this.syncFrameIndexFromTab(s.activeTab, next) };
+  });
+  allowNotif = () => alert('Requesting notification permission…');
+
+  // Guest sign-in interrupt sheet
+  closeGuestSignInSheet = () => this.setState(s => {
+    const next = { ...s, guestSignInSheetOpen: false };
+    return { guestSignInSheetOpen: false, activeFrameIndex: this.syncFrameIndexFromTab(s.activeTab, next) };
+  });
 
   // Reset to default settings
   resetToDefault = () => {
@@ -330,14 +528,23 @@ class Component extends DCLogic {
       homeActivePrayer: 'Maghrib',
       homeGuest: false,
       homeLoginNudge: false,
+      homeGuestSheet: false,
+      homeNoMasjid: false,
+      homeFollowNudge: false,
+      masjidSheetOpen: false,
+      homeNotifOff: false,
+      homeNotifNudge: false,
+      notifSheetOpen: false,
+      guestSignInSheetOpen: false,
+      qaumNudgeClosed: false,
+      salaahNudgeClosed: false,
+      salaahLoginSheet: false,
       homePrayers: { Fajr: true, Zohar: true, Asr: true, Maghrib: true, Isha: false },
       homeSehriNote: false,
       homeSlide: 0,
       quranTab: 0,
       salaahShowMasjidSheet: false,
-      profileInviteCopied: false,
-      profileLogoutOpen: false,
-      profilePendingFriends: [{ name: 'Suhail Ahmed', letter: 'S' }, { name: 'Syed Imran', letter: 'S' }]
+      profileLogoutOpen: false
     });
   };
 
@@ -346,7 +553,7 @@ class Component extends DCLogic {
     const nextSel = s.homeHeroSel === 'suhoor' ? null : 'suhoor';
     return {
       homeHeroSel: nextSel,
-      activeFrameIndex: this.syncFrameIndexFromTab(0, nextSel, s.homeActivePrayer, s.homeLoginNudge)
+      activeFrameIndex: this.syncFrameIndexFromTab(0, s)
     };
   });
 
@@ -354,7 +561,7 @@ class Component extends DCLogic {
     const nextSel = s.homeHeroSel === 'iftaar' ? null : 'iftaar';
     return {
       homeHeroSel: nextSel,
-      activeFrameIndex: this.syncFrameIndexFromTab(0, nextSel, s.homeActivePrayer, s.homeLoginNudge)
+      activeFrameIndex: this.syncFrameIndexFromTab(0, s)
     };
   });
 
@@ -441,7 +648,8 @@ class Component extends DCLogic {
   };
 
   goMasjids = () => {
-    window.location.href = '../masjid-explore/Explore Masjids.dc.html#map';
+    // Guest carries into the explore board (follow attempts prompt sign-in there).
+    window.location.href = '../masjid-explore/Explore Masjids.dc.html' + (this.state.homeGuest ? '#map-guest' : '#map');
   };
 
   goSehri = () => {
@@ -471,16 +679,6 @@ class Component extends DCLogic {
   }));
 
   // Profile handlers
-  copyProfileInvite = () => {
-    this.setState({ profileInviteCopied: true });
-    clearTimeout(this._inviteTimer);
-    this._inviteTimer = setTimeout(() => this.setState({ profileInviteCopied: false }), 2000);
-  };
-
-  approveProfileFriend = (name) => this.setState(s => ({
-    profilePendingFriends: s.profilePendingFriends.filter(fr => fr.name !== name)
-  }));
-
   toggleProfileLogoutSheet = () => this.setState(s => ({ profileLogoutOpen: !s.profileLogoutOpen }));
 
   noop = () => {};
@@ -562,10 +760,6 @@ class Component extends DCLogic {
       toggleSalaahAlert: this.toggleSalaahAlert,
 
       // Profile Screen props
-      profileInviteCopied: s.profileInviteCopied,
-      copyProfileInvite: this.copyProfileInvite,
-      profilePendingFriends: s.profilePendingFriends,
-      approveProfileFriend: this.approveProfileFriend,
       profileLogoutOpen: s.profileLogoutOpen,
       toggleProfileLogoutSheet: this.toggleProfileLogoutSheet,
 
@@ -576,7 +770,48 @@ class Component extends DCLogic {
       triggerSignIn: this.triggerSignIn,
       homePrivacyConsent: s.homePrivacyConsent,
       closePrivacyConsent: this.closePrivacyConsent,
-      homeAttPrompt: s.homeAttPrompt
+      triggerAttPrompt: this.triggerAttPrompt,
+      homeAttPrompt: s.homeAttPrompt,
+      dismissAttPrompt: this.dismissAttPrompt,
+
+      // Guest sign-in surfaces (Qaum/Salaah inline nudges + LoginSheets)
+      homeGuestSheet: s.homeGuestSheet,
+      closeGuestSheet: this.closeGuestSheet,
+      guestSheetPrimary: { text: 'Sign in', onClick: this.triggerSignIn },
+      guestSheetSecondary: { text: 'Cancel', onClick: this.closeGuestSheet },
+      qaumLoginNudge: s.homeGuest && !s.qaumNudgeClosed,
+      closeQaumNudge: this.closeQaumNudge,
+      salaahLoginNudge: s.homeGuest && !s.salaahNudgeClosed,
+      closeSalaahNudge: this.closeSalaahNudge,
+      salaahLoginSheet: s.salaahLoginSheet,
+      openSalaahLoginSheet: this.openSalaahLoginSheet,
+      closeSalaahLoginSheet: this.closeSalaahLoginSheet,
+
+      // No-masjid (follow-masjid) surfaces
+      homeNoMasjid: s.homeNoMasjid,
+      homeUserName: s.homeGuest ? 'Guest' : 'Toufeeq Ahamed',
+      homeMasjidLabel: (s.homeGuest || s.homeNoMasjid) ? 'Bangalore (Approx.)' : 'Masjid E Bilal',
+      homeFollowNudge: s.homeFollowNudge,
+      closeHomeFollowNudge: this.closeHomeFollowNudge,
+      qaumFollowNudge: s.homeNoMasjid && !s.qaumNudgeClosed,
+      salaahFollowNudge: s.homeNoMasjid && !s.salaahNudgeClosed,
+      masjidSheetOpen: s.masjidSheetOpen,
+      closeMasjidSheet: this.closeMasjidSheet,
+
+      // Notification-permission surfaces (signed in with masjid, notifs off)
+      homeNotifNudge: s.homeNotifNudge,
+      closeHomeNotifNudge: this.closeHomeNotifNudge,
+      qaumNotifNudge: s.homeNotifOff && !s.qaumNudgeClosed,
+      salaahNotifNudge: s.homeNotifOff && !s.salaahNudgeClosed,
+      notifSheetOpen: s.notifSheetOpen,
+      closeNotifSheet: this.closeNotifSheet,
+      allowNotif: this.allowNotif,
+
+      // Guest sign-in interrupt sheet (NudgeSheetFactory.kt GuestSignIn)
+      guestSignInSheetOpen: s.guestSignInSheetOpen,
+      closeGuestSignInSheet: this.closeGuestSignInSheet,
+      guestSignInPrimary: { text: 'Sign in', onClick: this.triggerSignIn },
+      guestSignInSecondary: { text: 'Not now', onClick: this.closeGuestSignInSheet }
     };
   }
 }
