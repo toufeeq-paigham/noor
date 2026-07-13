@@ -51,7 +51,9 @@ function SehriAppBar({ onBack, trailing }) {
 // Stylized dark map (imagery). Roads/water/parks are decorative data colors.
 function MapCanvas({ points, selectedIdx, onSelectPoint }) {
   return (
-    <div style={{ position: 'absolute', inset: 0, background: '#1C2535', overflow: 'hidden' }}>
+    // zIndex:0 makes this a stacking context so the pins' z-index stays contained
+    // (they must sit BEHIND the list sheet in the list view, not bleed over it).
+    <div style={{ position: 'absolute', inset: 0, background: '#1C2535', overflow: 'hidden', zIndex: 0 }}>
       <svg width="100%" height="100%" viewBox="0 0 402 874" preserveAspectRatio="xMidYMid slice" style={{ position: 'absolute', inset: 0, opacity: 0.9 }}>
         {/* water body */}
         <path d="M -20 470 Q 120 400 250 470 T 460 460 L 460 620 Q 260 560 90 630 L -20 600 Z" fill="#16324f" />
@@ -266,12 +268,20 @@ function SehriListScreen({
   const list = points || SEHRI;
   return (
     <div style={{ position: 'relative', width: '100%', height: '100%', overflow: 'hidden', background: 'var(--color-surface-primary)' }}>
-      {/* Map backdrop — fades into the surface so the list reads on top */}
+      {/* Map backdrop (markers sit behind, contained by MapCanvas' stacking context) */}
       <MapCanvas points={list} selectedIdx={-1} />
-      <div style={{ position: 'absolute', inset: 0, pointerEvents: 'none', background: 'linear-gradient(to bottom, transparent 0%, transparent 12%, var(--color-surface-primary) 40%, var(--color-surface-primary) 100%)' }} />
+      {/* Frosted sheet — translucent + blur so the map & markers read faintly behind; the
+          mask keeps a clear map strip at top for the headline (same technique as .app-bar). */}
+      <div style={{
+        position: 'absolute', inset: 0, pointerEvents: 'none', zIndex: 1,
+        background: 'color-mix(in oklab, var(--color-surface-primary) 80%, transparent)',
+        backdropFilter: 'blur(22px) saturate(160%)', WebkitBackdropFilter: 'blur(22px) saturate(160%)',
+        WebkitMaskImage: 'linear-gradient(to bottom, transparent 0, transparent 12%, #000 30%, #000 100%)',
+        maskImage: 'linear-gradient(to bottom, transparent 0, transparent 12%, #000 30%, #000 100%)'
+      }} />
 
       {/* Scrolling list */}
-      <div style={{ position: 'absolute', inset: 0, overflowY: 'auto', WebkitOverflowScrolling: 'touch', paddingTop: 140, paddingBottom: 28, boxSizing: 'border-box' }}>
+      <div style={{ position: 'absolute', inset: 0, zIndex: 2, overflowY: 'auto', WebkitOverflowScrolling: 'touch', paddingTop: 140, paddingBottom: 28, boxSizing: 'border-box' }}>
         {/* Headline — sits over the visible map strip */}
         <div style={{ display: 'flex', alignItems: 'flex-start', justifyContent: 'space-between', gap: 12, padding: '0 16px', marginBottom: 16 }}>
           <div style={{ fontFamily: 'var(--font-title)', fontSize: 26, color: '#fff', letterSpacing: '-0.3px', textShadow: '0 1px 6px rgba(0,0,0,0.55)', minWidth: 0 }}>{NEARBY_COUNT} Sehri Locations Nearby</div>

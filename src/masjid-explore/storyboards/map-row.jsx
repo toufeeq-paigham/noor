@@ -4,14 +4,16 @@
 // `active` = index of the frame the live device currently shows (-1 = none).
 
 // Each frame is a snapshot of the map view: which masjid is selected, and whether it's followed.
+// `guest` + `sheet` snapshot a guest follow attempt (LoginSheet copy from MasjidExplorerEffect.kt).
 const FRAMES = [
   { name: 'Nearby — first result', selectedIdx: 0, followed: {} },
   { name: 'Following a masjid', selectedIdx: 0, followed: { 0: true } },
   { name: 'Another result selected', selectedIdx: 1, followed: { 0: true } },
+  { name: 'Guest — sign in to follow', selectedIdx: 0, followed: {}, guest: true, sheet: true },
 ];
 
-function MapRow({ active = -1 }) {
-  const { ExploreMapScreen } = window;
+function MapRow({ active = -1, onSelectFrame }) {
+  const { ExploreMapScreen, Dialog } = window;
   return (
     <div>
       <div className="poc-row-label">
@@ -22,12 +24,19 @@ function MapRow({ active = -1 }) {
         {FRAMES.map((f, i) => {
           const isActive = active === i;
           return (
-            <div key={i} className="poc-board-item">
-              <div className={`noor-frame ${isActive ? 'is-active' : ''}`} style={{ '--s': '0.46' }}>
+            <div key={i} className="poc-board-item" onClick={() => onSelectFrame && onSelectFrame(i)}>
+              <div className={`noor-frame ${isActive ? 'is-active' : ''}`} style={{ '--s': '0.46', cursor: onSelectFrame ? 'pointer' : 'default' }}>
                 <div className="noor-frame-inner">
                   <div className="noor-screen">
                     <div className="noor-island"></div>
-                    <ExploreMapScreen selectedIdx={f.selectedIdx} followed={f.followed} />
+                    {ExploreMapScreen && <ExploreMapScreen selectedIdx={f.selectedIdx} followed={f.followed} guest={f.guest} />}
+                    {f.sheet && Dialog && (
+                      <Dialog mode="sheet" isOpen title="Sign in to follow masjids"
+                              description="Sign in with your phone number to follow masjids and receive their prayer timings and updates."
+                              primary={{ text: 'Sign in', onClick: () => {} }}
+                              secondary={{ text: 'Cancel', onClick: () => {} }}
+                              onClose={() => {}} />
+                    )}
                     <div className="noor-home"></div>
                   </div>
                 </div>

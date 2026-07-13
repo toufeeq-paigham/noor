@@ -52,7 +52,9 @@ function ExploreAppBar({ onBack, onSearch, onQr }) {
 // Stylized dark map (imagery). Roads/water/parks are decorative data colors.
 function MapCanvas({ masjids, selectedIdx, onSelectMasjid }) {
   return (
-    <div style={{ position: 'absolute', inset: 0, background: '#1C2535', overflow: 'hidden' }}>
+    // zIndex:0 makes this a stacking context so the pins' z-index stays contained
+    // (they must sit BEHIND the list sheet in the list view, not bleed over it).
+    <div style={{ position: 'absolute', inset: 0, background: '#1C2535', overflow: 'hidden', zIndex: 0 }}>
       <svg width="100%" height="100%" viewBox="0 0 402 874" preserveAspectRatio="xMidYMid slice" style={{ position: 'absolute', inset: 0, opacity: 0.9 }}>
         {/* water body */}
         <path d="M -20 470 Q 120 400 250 470 T 460 460 L 460 620 Q 260 560 90 630 L -20 600 Z" fill="#16324f" />
@@ -140,6 +142,7 @@ function ExploreMapScreen({
   masjids = MASJIDS,
   selectedIdx = 0,
   followed = {},
+  guest = false, // guest browse mode (MasjidExplorerSheet.kt ExplorerMode.Guest)
   onSelectMasjid,
   onToggleFollow,
   onBack,
@@ -177,7 +180,7 @@ function ExploreMapScreen({
             <span className="mi" data-i="format_list_bulleted"></span>
           </button>
         </div>
-        <div style={{ fontFamily: '"Nunito",sans-serif', fontSize: 13, color: 'var(--color-info-secondary)', marginTop: 2, marginBottom: 14 }}>Follow masjids to get prayer time notifications</div>
+        <div style={{ fontFamily: '"Nunito",sans-serif', fontSize: 13, color: 'var(--color-info-secondary)', marginTop: 2, marginBottom: 14 }}>{guest ? 'Sign in to follow masjids and get prayer time notifications' : 'Follow masjids to get prayer time notifications'}</div>
 
         {/* Carousel — transform track, dots + pins drive the index */}
         <div style={{ overflow: 'hidden' }}>
@@ -213,6 +216,7 @@ function ExploreMapScreen({
 function ExploreListScreen({
   masjids = MASJIDS,
   followed = {},
+  guest = false,
   onToggleFollow,
   onBack,
   onSearch,
@@ -222,17 +226,25 @@ function ExploreListScreen({
   const list = masjids || MASJIDS;
   return (
     <div style={{ position: 'relative', width: '100%', height: '100%', overflow: 'hidden', background: 'var(--color-surface-primary)' }}>
-      {/* Map backdrop — fades into the surface so the list reads on top */}
+      {/* Map backdrop (markers sit behind, contained by MapCanvas' stacking context) */}
       <MapCanvas masjids={list} selectedIdx={-1} />
-      <div style={{ position: 'absolute', inset: 0, pointerEvents: 'none', background: 'linear-gradient(to bottom, transparent 0%, transparent 14%, var(--color-surface-primary) 44%, var(--color-surface-primary) 100%)' }} />
+      {/* Frosted sheet — translucent + blur so the map & markers read faintly behind; the
+          mask keeps a clear map strip at top for the headline (same technique as .app-bar). */}
+      <div style={{
+        position: 'absolute', inset: 0, pointerEvents: 'none', zIndex: 1,
+        background: 'color-mix(in oklab, var(--color-surface-primary) 80%, transparent)',
+        backdropFilter: 'blur(22px) saturate(160%)', WebkitBackdropFilter: 'blur(22px) saturate(160%)',
+        WebkitMaskImage: 'linear-gradient(to bottom, transparent 0, transparent 13%, #000 32%, #000 100%)',
+        maskImage: 'linear-gradient(to bottom, transparent 0, transparent 13%, #000 32%, #000 100%)'
+      }} />
 
       {/* Scrolling list */}
-      <div style={{ position: 'absolute', inset: 0, overflowY: 'auto', WebkitOverflowScrolling: 'touch', paddingTop: 150, paddingBottom: 28, boxSizing: 'border-box' }}>
+      <div style={{ position: 'absolute', inset: 0, zIndex: 2, overflowY: 'auto', WebkitOverflowScrolling: 'touch', paddingTop: 150, paddingBottom: 28, boxSizing: 'border-box' }}>
         {/* Headline — sits over the visible map strip */}
         <div style={{ display: 'flex', alignItems: 'flex-start', justifyContent: 'space-between', gap: 12, padding: '0 16px', marginBottom: 16 }}>
           <div style={{ minWidth: 0 }}>
             <div style={{ fontFamily: 'var(--font-title)', fontSize: 26, color: '#fff', letterSpacing: '-0.3px', textShadow: '0 1px 6px rgba(0,0,0,0.55)' }}>{NEARBY_COUNT} Masjids Nearby</div>
-            <div style={{ fontFamily: '"Nunito",sans-serif', fontSize: 13, color: 'rgba(255,255,255,0.72)', marginTop: 3, textShadow: '0 1px 5px rgba(0,0,0,0.5)' }}>Follow masjids to get prayer time notifications</div>
+            <div style={{ fontFamily: '"Nunito",sans-serif', fontSize: 13, color: 'rgba(255,255,255,0.72)', marginTop: 3, textShadow: '0 1px 5px rgba(0,0,0,0.5)' }}>{guest ? 'Sign in to follow masjids and get prayer time notifications' : 'Follow masjids to get prayer time notifications'}</div>
           </div>
           <button
             className="ib md"
@@ -290,6 +302,7 @@ function QRScreen({
   scanning = true,
   masjid = MASJIDS[0],
   following = false,
+  guest = false, // guest CTA reads "Sign in to Follow" (MasjidQrSearchScreen.kt)
   onToggleFollow,
   onBack,
   onScan,      // tap the frame to simulate a detection
@@ -344,8 +357,8 @@ function QRScreen({
           <MasjidCard m={masjid} showFollow={false} onNavigate={() => {}} />
 
           <button className="btn btn-filled lg" onClick={onToggleFollow} style={{ width: '100%', marginTop: 16 }}>
-            {following ? <span className="mi" data-i="check"></span> : null}
-            {following ? 'Following' : 'Follow'}
+            {!guest && following ? <span className="mi" data-i="check"></span> : null}
+            {guest ? 'Sign in to Follow' : (following ? 'Following' : 'Follow')}
           </button>
         </div>
       )}

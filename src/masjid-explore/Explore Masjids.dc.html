@@ -31,6 +31,9 @@
   </style>
 </helmet>
 
+<!-- Reusable components layer (loads Dialog for the storyboards + LoginSheet) -->
+<x-import component="Dialog" from="../_theme/components.jsx" hint-size="0,0"></x-import>
+
 <!-- ── Page header (shared board chrome) ── -->
 <x-import component="BoardHeader" from="../_theme/board.jsx"
           title="Masjid Explore — Map · List · Pincode · QR"
@@ -42,10 +45,10 @@
 
   <!-- Storyboard rows: static frames, ring follows the live device -->
   <div class="poc-frames">
-    <x-import component="MapRow" from="./storyboards/map-row.jsx" active="{{ mapActive }}" hint-size="1200px,600px"></x-import>
-    <x-import component="ListRow" from="./storyboards/list-row.jsx" active="{{ listActive }}" hint-size="900px,600px"></x-import>
-    <x-import component="QrRow" from="./storyboards/qr-row.jsx" active="{{ qrActive }}" hint-size="900px,600px"></x-import>
-    <x-import component="PincodeRow" from="./storyboards/pincode-row.jsx" active="{{ pincodeActive }}" hint-size="1200px,600px"></x-import>
+    <x-import component="MapRow" from="./storyboards/map-row.jsx" active="{{ mapActive }}" on-select-frame="{{ selectMapFrame }}" hint-size="1200px,600px"></x-import>
+    <x-import component="ListRow" from="./storyboards/list-row.jsx" active="{{ listActive }}" on-select-frame="{{ selectListFrame }}" hint-size="900px,600px"></x-import>
+    <x-import component="QrRow" from="./storyboards/qr-row.jsx" active="{{ qrActive }}" on-select-frame="{{ selectQrFrame }}" hint-size="900px,600px"></x-import>
+    <x-import component="PincodeRow" from="./storyboards/pincode-row.jsx" active="{{ pincodeActive }}" on-select-frame="{{ selectPincodeFrame }}" hint-size="1200px,600px"></x-import>
   </div>
 
   <!-- Live device — one continuous prototype -->
@@ -59,6 +62,7 @@
                 <x-import component="ExploreMapScreen" from="./storyboards/screens.jsx"
                           selected-idx="{{ selectedIdx }}"
                           followed="{{ followed }}"
+                          guest="{{ guest }}"
                           on-select-masjid="{{ selectMasjid }}"
                           on-toggle-follow="{{ toggleFollow }}"
                           on-back="{{ goBack }}"
@@ -76,6 +80,7 @@
               <div class="{{ stepAnim }}" style="position:absolute;inset:0">
                 <x-import component="ExploreListScreen" from="./storyboards/screens.jsx"
                           followed="{{ followed }}"
+                          guest="{{ guest }}"
                           on-toggle-follow="{{ toggleFollow }}"
                           on-back="{{ goBack }}"
                           on-search="{{ onSearch }}"
@@ -92,6 +97,7 @@
                 <x-import component="QRScreen" from="./storyboards/screens.jsx"
                           scanning="{{ qrScanning }}"
                           following="{{ qrFollowing }}"
+                          guest="{{ guest }}"
                           on-toggle-follow="{{ toggleQrFollow }}"
                           on-scan="{{ qrDetect }}"
                           on-back="{{ onOpenMap }}"
@@ -117,6 +123,18 @@
               </div>
             </sc-if>
 
+            <!-- Guest follow LoginSheet (MasjidExplorerEffect.kt) — overlays whichever stage tried to follow -->
+            <x-import component="Dialog" from="../_theme/components.jsx"
+                      mode="sheet"
+                      is-open="{{ loginSheetOpen }}"
+                      on-close="{{ closeLoginSheet }}"
+                      title="Sign in to follow masjids"
+                      description="Sign in with your phone number to follow masjids and receive their prayer timings and updates."
+                      primary="{{ loginSheetPrimary }}"
+                      secondary="{{ loginSheetSecondary }}"
+                      hint-size="0,0">
+            </x-import>
+
           </div>
         </x-import>
   </x-import>
@@ -128,12 +146,18 @@ class Component extends DCLogic {
   QR_RESULT_IDX = 0;        // the masjid the QR resolves to (reuses a nearby result)
 
   state = {
-    stage: (location.hash === '#qr' ? 'qr'
-          : location.hash === '#pincode' ? 'pincode'
-          : location.hash === '#list' ? 'list' : 'map'),   // 'map' | 'list' | 'qr' | 'pincode'
+    stage: (location.hash.startsWith('#qr') ? 'qr'
+          : location.hash.startsWith('#pincode') ? 'pincode'
+          : location.hash.startsWith('#list') ? 'list' : 'map'),   // 'map' | 'list' | 'qr' | 'pincode'
     stepDir: 'fwd',
     selectedIdx: 0,
-    followed: {},          // { [index]: true } — survives selection + view changes
+    // { [index]: true } — survives selection + view changes. Seeded from #followed-<idx>
+    // when we return here from the personal-details flow (follow the pending masjid).
+    followed: (() => { const m = (location.hash.match(/#followed-(\d+)/) || [])[1]; return m != null ? { [parseInt(m, 10)]: true } : {}; })(),
+    guest: location.hash.includes('guest'),  // guest browse mode (e.g. #map-guest from the guest Home)
+    // Signed in but profile not completed: a follow attempt routes to personal-details first.
+    needsDetails: location.hash.includes('needs-details'),
+    loginSheetOpen: false, // guest follow attempt → "Sign in to follow masjids" LoginSheet
     qrScanning: true,      // qr stage sub-state: true = scanning, false = result sheet
     pincodeQuery: '',      // pincode stage: typed digits (max 6)
     pincodeFocused: false, // pincode stage: keypad up + suggestions visible
@@ -147,9 +171,19 @@ class Component extends DCLogic {
 
   selectMasjid = (i) => this.setState({ selectedIdx: i });
 
-  toggleFollow = (i) => this.setState(s => ({
-    followed: { ...s.followed, [i]: !s.followed[i] }
-  }));
+  // Follow is gated (MasjidExplorerViewModel.toggleFollow):
+  //  · guest → "Sign in to follow masjids" LoginSheet
+  //  · signed in w/o profile → route to personal-details, which posts details then follows this masjid
+  //  · otherwise → toggle follow
+  toggleFollow = (i) => {
+    const s = this.state;
+    if (s.guest) { this.setState({ loginSheetOpen: true }); return; }
+    if (s.needsDetails) { window.location.href = '../personal-details/Personal Details.dc.html#follow-' + i; return; }
+    this.setState(st => ({ followed: { ...st.followed, [i]: !st.followed[i] } }));
+  };
+
+  closeLoginSheet = () => this.setState({ loginSheetOpen: false });
+  signIn = () => { window.location.href = '../onboarding/Onboarding.dc.html#login'; };
 
   recenter = () => this.setState({ selectedIdx: 0 });
 
@@ -178,7 +212,37 @@ class Component extends DCLogic {
 
   goBack = () => { window.location.href = '../home/Home Screen.dc.html'; };
 
-  restart = () => { clearTimeout(this._qrTimer); this.setState({ stage: 'map', stepDir: 'back', selectedIdx: 0, followed: {}, qrScanning: true, pincodeQuery: '', pincodeFocused: false }); };
+  restart = () => { clearTimeout(this._qrTimer); this.setState({ stage: 'map', stepDir: 'back', selectedIdx: 0, followed: {}, loginSheetOpen: false, qrScanning: true, pincodeQuery: '', pincodeFocused: false }); };
+
+  // Tap a storyboard frame → start the journey from that state, per view.
+  selectMapFrame = (i) => {
+    clearTimeout(this._qrTimer);
+    // 0 first result · 1 following · 2 second result · 3 guest sign-in sheet
+    const states = [
+      { selectedIdx: 0, followed: {}, guest: false, loginSheetOpen: false },
+      { selectedIdx: 0, followed: { 0: true }, guest: false, loginSheetOpen: false },
+      { selectedIdx: 1, followed: { 0: true }, guest: false, loginSheetOpen: false },
+      { selectedIdx: 0, followed: {}, guest: true, loginSheetOpen: true }
+    ];
+    this.setState({ stage: 'map', stepDir: 'none', ...states[i] });
+  };
+  selectListFrame = (i) => {
+    clearTimeout(this._qrTimer);
+    // 0 nearby list · 1 following a masjid
+    this.setState({ stage: 'list', stepDir: 'none', guest: false, loginSheetOpen: false, followed: i === 1 ? { 1: true } : {} });
+  };
+  selectQrFrame = (i) => {
+    clearTimeout(this._qrTimer);
+    // 0 scanning · 1 masjid found
+    this.setState({ stage: 'qr', stepDir: 'none', guest: false, loginSheetOpen: false, qrScanning: i === 0 });
+    if (i === 0) this.startQrScan();
+  };
+  selectPincodeFrame = (i) => {
+    clearTimeout(this._qrTimer);
+    // 0 empty · 1 typing (suggestions) · 2 results
+    const q = i === 0 ? '' : (i === 1 ? '5600' : '560064');
+    this.setState({ stage: 'pincode', stepDir: 'none', guest: false, loginSheetOpen: false, pincodeQuery: q, pincodeFocused: i !== 0 });
+  };
 
   renderVals() {
     const s = this.state;
@@ -188,9 +252,12 @@ class Component extends DCLogic {
     const isPincode = s.stage === 'pincode';
     const anyFollowed = Object.keys(s.followed).some(k => s.followed[k]);
 
-    // Map ring — matches map-row.jsx FRAMES (0 · first result, 1 · following, 2 · second result).
+    // Map ring — matches map-row.jsx FRAMES (0 · first result, 1 · following, 2 · second result, 3 · guest sheet).
     let mapActive = -1;
-    if (isMap) mapActive = s.selectedIdx === 0 ? (s.followed[0] ? 1 : 0) : 2;
+    if (isMap) {
+      if (s.guest) mapActive = s.loginSheetOpen ? 3 : 0;
+      else mapActive = s.selectedIdx === 0 ? (s.followed[0] ? 1 : 0) : 2;
+    }
 
     // List ring — matches list-row.jsx FRAMES (0 · nearby list, 1 · following a masjid).
     const listActive = isList ? (anyFollowed ? 1 : 0) : -1;
@@ -213,9 +280,18 @@ class Component extends DCLogic {
       qrActive,
       pincodeActive,
       restart: this.restart,
+      selectMapFrame: this.selectMapFrame,
+      selectListFrame: this.selectListFrame,
+      selectQrFrame: this.selectQrFrame,
+      selectPincodeFrame: this.selectPincodeFrame,
 
       selectedIdx: s.selectedIdx,
       followed: s.followed,
+      guest: s.guest,
+      loginSheetOpen: s.loginSheetOpen,
+      closeLoginSheet: this.closeLoginSheet,
+      loginSheetPrimary: { text: 'Sign in', onClick: this.signIn },
+      loginSheetSecondary: { text: 'Cancel', onClick: this.closeLoginSheet },
       selectMasjid: this.selectMasjid,
       toggleFollow: this.toggleFollow,
       recenter: this.recenter,

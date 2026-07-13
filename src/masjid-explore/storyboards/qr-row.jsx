@@ -8,7 +8,7 @@ const FRAMES = [
   { name: 'Masjid found', scanning: false },
 ];
 
-function QrRow({ active = -1 }) {
+function QrRow({ active = -1, onSelectFrame }) {
   const { QRScreen } = window;
   return (
     <div>
@@ -20,12 +20,12 @@ function QrRow({ active = -1 }) {
         {FRAMES.map((f, i) => {
           const isActive = active === i;
           return (
-            <div key={i} className="poc-board-item">
-              <div className={`noor-frame ${isActive ? 'is-active' : ''}`} style={{ '--s': '0.46' }}>
+            <div key={i} className="poc-board-item" onClick={() => onSelectFrame && onSelectFrame(i)}>
+              <div className={`noor-frame ${isActive ? 'is-active' : ''}`} style={{ '--s': '0.46', cursor: onSelectFrame ? 'pointer' : 'default' }}>
                 <div className="noor-frame-inner">
                   <div className="noor-screen">
                     <div className="noor-island"></div>
-                    <QRScreen scanning={f.scanning} />
+                    {QRScreen && <QRScreen scanning={f.scanning} />}
                     <div className="noor-home"></div>
                   </div>
                 </div>

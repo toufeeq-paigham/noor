@@ -8,7 +8,7 @@ const FRAMES = [
   { name: 'Following a masjid', followed: { 1: true } },
 ];
 
-function ListRow({ active = -1 }) {
+function ListRow({ active = -1, onSelectFrame }) {
   const { ExploreListScreen } = window;
   return (
     <div>
@@ -20,12 +20,12 @@ function ListRow({ active = -1 }) {
         {FRAMES.map((f, i) => {
           const isActive = active === i;
           return (
-            <div key={i} className="poc-board-item">
-              <div className={`noor-frame ${isActive ? 'is-active' : ''}`} style={{ '--s': '0.46' }}>
+            <div key={i} className="poc-board-item" onClick={() => onSelectFrame && onSelectFrame(i)}>
+              <div className={`noor-frame ${isActive ? 'is-active' : ''}`} style={{ '--s': '0.46', cursor: onSelectFrame ? 'pointer' : 'default' }}>
                 <div className="noor-frame-inner">
                   <div className="noor-screen">
                     <div className="noor-island"></div>
-                    <ExploreListScreen followed={f.followed} />
+                    {ExploreListScreen && <ExploreListScreen followed={f.followed} />}
                     <div className="noor-home"></div>
                   </div>
                 </div>
