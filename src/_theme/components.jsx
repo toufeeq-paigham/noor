@@ -138,4 +138,51 @@ function BottomSheet({
   );
 }
 
-Object.assign(window, { PromptCard, BottomSheet });
+// ── Dialog — ONE component for alerts + sheets ──
+// Mirrors NoorUI AlertDialog + SheetDialog (dialog/AlertDialog.kt, dialog/SheetDialog.kt):
+// same body (TitleH2 + BodyMedium + optional content + primary(Filled)/secondary(Tonal) row)
+// and the same AlertAction { text, onClick } API. `mode` picks the surface:
+//   'alert' → centred modal card (all corners rounded)
+//   'sheet' → bottom sheet (top-rounded + drag handle)
+// Styling is the .dlg / .dlg-scrim kit in components.css. Keep it mounted and toggle `isOpen`.
+// When both actions are omitted it falls back to Ok + Cancel, exactly like the Kotlin.
+function Dialog({
+  mode = 'alert',            // 'alert' | 'sheet'
+  isOpen,
+  onClose,
+  title,
+  description,
+  primary,                   // { text, onClick }
+  secondary,                 // { text, onClick }
+  children,                  // optional content slot
+  dismissOnScrim = true
+}) {
+  if (!isOpen) return null;
+  const isSheet = mode === 'sheet';
+  const prim = primary || { text: 'Ok', onClick: onClose };
+  const sec = secondary || (primary ? null : { text: 'Cancel', onClick: onClose });
+
+  return (
+    <div
+      className={`dlg-scrim ${isSheet ? 'sheet' : ''}`}
+      onClick={dismissOnScrim ? onClose : undefined}
+      onWheel={(e) => e.stopPropagation()}
+      onTouchMove={(e) => e.stopPropagation()}
+    >
+      <div className="dlg" onClick={(e) => e.stopPropagation()}>
+        {isSheet && <div className="dlg-handle" />}
+        {title && <div className="dlg-title">{title}</div>}
+        {description && <div className="dlg-desc">{description}</div>}
+        {children ? <div className="dlg-body">{children}</div> : null}
+        {(prim || sec) && (
+          <div className="dlg-actions">
+            {prim && <button className="btn btn-filled" onClick={prim.onClick}>{prim.text}</button>}
+            {sec && <button className="btn btn-tonal" onClick={sec.onClick}>{sec.text}</button>}
+          </div>
+        )}
+      </div>
+    </div>
+  );
+}
+
+Object.assign(window, { PromptCard, BottomSheet, Dialog });
