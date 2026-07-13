@@ -9,7 +9,7 @@ const PHONE_STATES = [
   { phoneDisplay: "81234 00000", phoneMask: "", phoneError: true, name: "Phone — invalid" }
 ];
 
-function PhoneRow({ active = -1 }) {
+function PhoneRow({ active = -1, onSelectFrame }) {
   const { PhoneScreen } = window;
   return (
     <div>
@@ -19,17 +19,17 @@ function PhoneRow({ active = -1 }) {
           const isActive = active === i;
           const ringClass = isActive ? 'is-active' : '';
           return (
-            <div key={i} className="poc-board-item">
-              <div className={`noor-frame ${ringClass}`} style={{ '--s': '0.46' }}>
+            <div key={i} className="poc-board-item" onClick={() => onSelectFrame && onSelectFrame(i)}>
+              <div className={`noor-frame ${ringClass}`} style={{ '--s': '0.46', cursor: onSelectFrame ? 'pointer' : 'default' }}>
                 <div className="noor-frame-inner">
                   <div className="noor-screen">
                     <div className="noor-island"></div>
-                    <PhoneScreen
+                    {PhoneScreen && <PhoneScreen
                       phoneDisplay={s.phoneDisplay}
                       phoneMask={s.phoneMask}
                       phoneError={s.phoneError}
                       phoneFocused={false}
-                    />
+                    />}
                     <div className="noor-home"></div>
                   </div>
                 </div>

@@ -26,7 +26,7 @@ function introDots(activeIdx) {
   }).join('');
 }
 
-function IntroRow({ active = -1 }) {
+function IntroRow({ active = -1, onSelectFrame }) {
   const { IntroScreen } = window;
   return (
     <div>
@@ -38,17 +38,17 @@ function IntroRow({ active = -1 }) {
           const last = i === INTRO_SLIDES.length - 1;
           const cta = last ? 'Get started!' : 'Next';
           return (
-            <div key={i} className="poc-board-item">
-              <div className={`noor-frame ${ringClass}`} style={{ '--s': '0.46' }}>
+            <div key={i} className="poc-board-item" onClick={() => onSelectFrame && onSelectFrame(i)}>
+              <div className={`noor-frame ${ringClass}`} style={{ '--s': '0.46', cursor: onSelectFrame ? 'pointer' : 'default' }}>
                 <div className="noor-frame-inner">
                   <div className="noor-screen" data-theme="dark">
                     <div className="noor-island"></div>
-                    <IntroScreen
+                    {IntroScreen && <IntroScreen
                       slide={s}
                       showSkip={!last}
                       ctaLabel={cta}
                       activeDotIdx={i}
-                    />
+                    />}
                     <div className="noor-home"></div>
                   </div>
                 </div>

@@ -46,9 +46,9 @@
 
   <!-- Storyboard rows (static, one row per flow) -->
   <div class="poc-frames">
-    <x-import component="IntroRow" from="./storyboards/intro-row.jsx" active="{{ introActive }}" hint-size="760px,560px"></x-import>
-    <x-import component="PhoneRow" from="./storyboards/phone-row.jsx" active="{{ phoneActive }}" hint-size="760px,600px"></x-import>
-    <x-import component="OtpRow" from="./storyboards/otp-row.jsx" active="{{ otpActive }}" hint-size="1000px,600px"></x-import>
+    <x-import component="IntroRow" from="./storyboards/intro-row.jsx" active="{{ introActive }}" on-select-frame="{{ selectIntroFrame }}" hint-size="760px,560px"></x-import>
+    <x-import component="PhoneRow" from="./storyboards/phone-row.jsx" active="{{ phoneActive }}" on-select-frame="{{ selectPhoneFrame }}" hint-size="760px,600px"></x-import>
+    <x-import component="OtpRow" from="./storyboards/otp-row.jsx" active="{{ otpActive }}" on-select-frame="{{ selectOtpFrame }}" hint-size="1000px,600px"></x-import>
   </div>
 
   <!-- Live device (shared floating pane) — one continuous prototype: intro → phone → OTP -->
@@ -181,6 +181,29 @@ class Component extends DCLogic {
     this.setState({ stage: 'intro', slide: this.slideData.length - 1, stepDir: 'back' });
   };
 
+  // Tap a storyboard frame → start the journey from that state, per flow.
+  selectIntroFrame = (i) => {
+    this.clearTimers();
+    this.setState({ stage: 'intro', slide: i, stepDir: 'none' });
+  };
+  selectPhoneFrame = (i) => {
+    this.clearTimers();
+    // 0 empty · 1 filled · 2 invalid
+    const phone = i === 0 ? '' : (i === 1 ? '8123403269' : '8123400000');
+    this.setState({ stage: 'phone', stepDir: 'none', phone, phoneError: i === 2, otp: '', otpError: false, verifying: false, success: false, smsVisible: false });
+  };
+  selectOtpFrame = (i) => {
+    this.clearTimers();
+    // 0 SMS arrived · 1 typing · 2 incorrect · 3 verified
+    const states = [
+      { otp: '', otpError: false, verifying: false, success: false, resendIn: 30, smsVisible: true },
+      { otp: '3533', otpError: false, verifying: false, success: false, resendIn: 30, smsVisible: false },
+      { otp: '111111', otpError: true, verifying: false, success: false, resendIn: 30, smsVisible: false },
+      { otp: '353357', otpError: false, verifying: false, success: true, resendIn: 0, smsVisible: false }
+    ];
+    this.setState({ stage: 'otp', stepDir: 'none', phone: this.state.phone || '8123403269', ...states[i] });
+  };
+
   editPhone = () => {
     this.clearTimers();
     this.setState({ stage: 'phone', stepDir: 'back', otp: '', otpError: false, verifying: false, smsVisible: false, resendIn: 30 });
@@ -200,7 +223,7 @@ class Component extends DCLogic {
     setTimeout(() => {
       if (ok) {
         this.setState({ verifying: false, success: true });
-        setTimeout(() => { window.location.href = '../Home Screen.dc.html'; }, 900);
+        setTimeout(() => { window.location.href = '../home/Home Screen.dc.html'; }, 900);
       } else {
         this.setState({ verifying: false, otpError: true, smsVisible: true });
         setTimeout(() => this.setState(st => (st.otpError ? { otpError: false, otp: '' } : {})), 1200);
@@ -292,6 +315,9 @@ class Component extends DCLogic {
       phoneActive,
       otpActive,
       restart: this.restart,
+      selectIntroFrame: this.selectIntroFrame,
+      selectPhoneFrame: this.selectPhoneFrame,
+      selectOtpFrame: this.selectOtpFrame,
 
       /* intro */
       activeSlide: this.slideData[cur],

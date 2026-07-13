@@ -10,7 +10,7 @@ const OTP_STATES = [
   { otp: "353357", otpError: false, verifying: false, success: true, resendIn: 0, smsVisible: false, name: "OTP — verified" }
 ];
 
-function OtpRow({ active = -1 }) {
+function OtpRow({ active = -1, onSelectFrame }) {
   const { OtpScreen } = window;
   return (
     <div>
@@ -20,12 +20,12 @@ function OtpRow({ active = -1 }) {
           const isActive = active === i;
           const ringClass = isActive ? 'is-active' : '';
           return (
-            <div key={i} className="poc-board-item">
-              <div className={`noor-frame ${ringClass}`} style={{ '--s': '0.46' }}>
+            <div key={i} className="poc-board-item" onClick={() => onSelectFrame && onSelectFrame(i)}>
+              <div className={`noor-frame ${ringClass}`} style={{ '--s': '0.46', cursor: onSelectFrame ? 'pointer' : 'default' }}>
                 <div className="noor-frame-inner">
                   <div className="noor-screen">
                     <div className="noor-island"></div>
-                    <OtpScreen
+                    {OtpScreen && <OtpScreen
                       phoneFmt="81234 03269"
                       otp={s.otp}
                       otpError={s.otpError}
@@ -33,7 +33,7 @@ function OtpRow({ active = -1 }) {
                       success={s.success}
                       resendIn={s.resendIn}
                       smsVisible={s.smsVisible}
-                    />
+                    />}
                     <div className="noor-home"></div>
                   </div>
                 </div>
