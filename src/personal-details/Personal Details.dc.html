@@ -1,0 +1,182 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="../support.js"></script>
+<script src="../_theme/chrome.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+  <link rel="stylesheet" href="../_ds/noor-design-system-46f42e91-1858-412f-bdb6-560a6cc3df9f/colors_and_type.css">
+  <link rel="stylesheet" href="../_theme/poc.css">
+  <link rel="stylesheet" href="../_theme/components.css">
+  <script src="../_ds/noor-design-system-46f42e91-1858-412f-bdb6-560a6cc3df9f/_ds_bundle.js"></script>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Rounded:opsz,wght,FILL,GRAD@24,400,0..1,0&amp;display=block">
+  <link rel="stylesheet" href="../_theme/icons.css">
+  <style>
+    body{background:var(--canvas-bg);padding:36px 32px 90px;min-height:100vh;box-sizing:border-box}
+    ::-webkit-scrollbar{display:none}*{-ms-overflow-style:none;scrollbar-width:none}
+    @keyframes stepin { from{transform:translateX(28px);opacity:0} to{transform:translateX(0);opacity:1} }
+    @keyframes stepback { from{transform:translateX(-28px);opacity:0} to{transform:translateX(0);opacity:1} }
+    @keyframes confettidrift { 0%{transform:translateY(-8px) rotate(0deg)} 50%{transform:translateY(6px) rotate(180deg)} 100%{transform:translateY(-8px) rotate(360deg)} }
+    @keyframes ptshake { 0%,100%{transform:translateX(0)} 20%{transform:translateX(-8px)} 40%{transform:translateX(8px)} 60%{transform:translateX(-5px)} 80%{transform:translateX(5px)} }
+    .step-fwd { animation:stepin .35s cubic-bezier(.2,.8,.2,1) }
+    .step-back { animation:stepback .35s cubic-bezier(.2,.8,.2,1) }
+  </style>
+</helmet>
+
+<!-- ── Page header (shared board chrome) ── -->
+<x-import component="BoardHeader" from="../_theme/board.jsx"
+          title="Personal Details — Complete your profile"
+          subtitle="Shown when a signed-in member follows a masjid before completing their profile. Fill the details, and on Complete Setup we save them and follow the masjid that sent you here."
+          hint-size="1440px,92px"></x-import>
+
+<!-- ── Board ── -->
+<div class="poc-stage">
+
+  <!-- Storyboard row (static states) -->
+  <div class="poc-frames">
+    <x-import component="DetailsRow" from="./storyboards/details-row.jsx" active="{{ detailsActive }}" on-select-frame="{{ selectFrame }}" hint-size="1000px,600px"></x-import>
+  </div>
+
+  <!-- Live device — one continuous prototype: details → success -->
+  <x-import component="BoardLive" from="../_theme/board.jsx" restart="{{ restart }}" hint-size="400px,900px">
+        <x-import component="IOSDevice" from="../ios-frame.jsx" hint-size="402px,874px">
+          <div style="width:100%;height:100%;position:relative;overflow:hidden;background:var(--color-surface-primary)">
+
+            <!-- ════ STAGE · DETAILS ════ -->
+            <sc-if value="{{ isDetailsStage }}">
+              <div class="{{ stepAnim }}" style="position:absolute;inset:0">
+                <x-import component="PersonalDetailsScreen" from="./storyboards/screens.jsx"
+                          name="{{ name }}"
+                          gender="{{ gender }}"
+                          name-error="{{ nameError }}"
+                          gender-error="{{ genderError }}"
+                          shake-key="{{ shakeKey }}"
+                          on-name-tap="{{ fillName }}"
+                          on-select-gender="{{ selectGender }}"
+                          on-complete-setup="{{ completeSetup }}"
+                          on-back="{{ goBack }}"
+                          hint-size="100%,100%">
+                </x-import>
+              </div>
+            </sc-if>
+
+            <!-- ════ STAGE · SUCCESS ════ -->
+            <sc-if value="{{ isSuccessStage }}">
+              <div class="{{ stepAnim }}" style="position:absolute;inset:0">
+                <x-import component="SuccessScreen" from="./storyboards/screens.jsx"
+                          on-back="{{ goBack }}"
+                          hint-size="100%,100%">
+                </x-import>
+              </div>
+            </sc-if>
+
+          </div>
+        </x-import>
+  </x-import>
+
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script>
+class Component extends DCLogic {
+  // Masjid carried in from the explore flow (#follow-<idx>); null when opened standalone.
+  pendingMasjid = (location.hash.match(/#follow-(\d+)/) || [])[1] != null
+    ? parseInt((location.hash.match(/#follow-(\d+)/) || [])[1], 10)
+    : null;
+
+  state = {
+    stage: 'details',   // 'details' | 'success'
+    stepDir: 'fwd',
+    name: '',
+    gender: null,       // 'male' | 'female' | null
+    nameError: false,
+    genderError: false,
+    shakeKey: 0,        // bump to replay the gender-row shake on repeat invalid submits
+  };
+
+  componentWillUnmount() { clearTimeout(this._returnTimer); }
+
+  // Interacting clears that field's error (matches the app clearing on change).
+  fillName = () => this.setState(s => ({ name: s.name ? '' : 'Toufeeq Ahamed', nameError: false }));
+  selectGender = (g) => this.setState({ gender: g, genderError: false });
+
+  // Complete Setup validates first (PersonalDetailsViewModel): name ≥ 3 chars + a gender.
+  // On failure, show error states (gender row shakes) and stay. On success → post → celebrate,
+  // and when a masjid is pending, return to the explore flow which follows it.
+  completeSetup = () => {
+    const s = this.state;
+    const nameBad = s.name.trim().length < 3;
+    const genderBad = !s.gender;
+    if (nameBad || genderBad) {
+      this.setState(st => ({ nameError: nameBad, genderError: genderBad, shakeKey: st.shakeKey + 1 }));
+      return;
+    }
+    this.setState({ stage: 'success', stepDir: 'fwd', nameError: false, genderError: false });
+    if (this.pendingMasjid != null) {
+      clearTimeout(this._returnTimer);
+      this._returnTimer = setTimeout(() => {
+        window.location.href = '../masjid-explore/Explore Masjids.dc.html#followed-' + this.pendingMasjid;
+      }, 1900);
+    }
+  };
+
+  goBack = () => {
+    if (this.state.stage === 'success') { this.setState({ stage: 'details', stepDir: 'back' }); return; }
+    // From the form: return to where we came from.
+    if (this.pendingMasjid != null) {
+      window.location.href = '../masjid-explore/Explore Masjids.dc.html#map';
+    } else {
+      window.location.href = '../home/Home Screen.dc.html';
+    }
+  };
+
+  restart = () => {
+    clearTimeout(this._returnTimer);
+    this.setState({ stage: 'details', stepDir: 'back', name: '', gender: null, nameError: false, genderError: false, shakeKey: 0 });
+  };
+
+  // Tap a storyboard frame → jump the live device to that state (0 empty · 1 error · 2 filled · 3 success).
+  selectFrame = (i) => {
+    clearTimeout(this._returnTimer);
+    const states = [
+      { stage: 'details', name: '', gender: null, nameError: false, genderError: false },
+      { stage: 'details', name: '', gender: null, nameError: true, genderError: true },
+      { stage: 'details', name: 'Toufeeq Ahamed', gender: 'male', nameError: false, genderError: false },
+      { stage: 'success', name: 'Toufeeq Ahamed', gender: 'male', nameError: false, genderError: false }
+    ];
+    this.setState(s => ({ ...states[i], stepDir: 'none', shakeKey: s.shakeKey + 1 }));
+  };
+
+  renderVals() {
+    const s = this.state;
+    const isDetails = s.stage === 'details';
+    const isSuccess = s.stage === 'success';
+    // Ring → details-row frames: 0 empty · 1 validation error · 2 filled · 3 success.
+    const detailsActive = isSuccess ? 3 : ((s.nameError || s.genderError) ? 1 : ((s.name && s.gender) ? 2 : 0));
+
+    return {
+      isDetailsStage: isDetails,
+      isSuccessStage: isSuccess,
+      detailsActive,
+      stepAnim: s.stepDir === 'back' ? 'step-back' : 'step-fwd',
+      restart: this.restart,
+      selectFrame: this.selectFrame,
+
+      name: s.name,
+      gender: s.gender,
+      nameError: s.nameError,
+      genderError: s.genderError,
+      shakeKey: s.shakeKey,
+      fillName: this.fillName,
+      selectGender: this.selectGender,
+      completeSetup: this.completeSetup,
+      goBack: this.goBack,
+    };
+  }
+}
+</script>
+</body>
+</html>
