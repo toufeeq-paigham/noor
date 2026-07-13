@@ -54,6 +54,62 @@
     { id: 'dark', icon: 'dark_mode', label: 'Dark' }
   ];
 
+  /* ---------- site map (single source of truth) ----------
+     Shared by the left nav drawer here and the Index cover page,
+     which reads window.NoorSiteMap. `file` paths are relative to
+     src/; the drawer prefixes them for the current page depth. */
+  var NAV = [
+    { id: 'foundations', num: '00', title: 'Foundation', items: [
+      { name: 'Primitives', file: 'foundation/Primitives.dc.html', icon: 'widgets', meta: 'Page 01 · surfaces, states, motion' },
+      { name: 'Tokens', file: 'foundation/Tokens.dc.html', icon: 'palette', meta: 'Page 02 · color, type, spacing' },
+      { name: 'Theme', file: 'foundation/Theme.dc.html', icon: 'dark_mode', meta: 'Page 03 · light & dark modes' }
+    ]},
+    { id: 'components', num: '01', title: 'Components', items: [
+      { name: 'Atoms', file: 'components/atoms/Atoms.dc.html', icon: 'widgets', meta: 'Page 04 · button, icon, input, toggles, chip, surface' },
+      { name: 'Molecules', file: 'components/molecules/Molecules.dc.html', icon: 'bubble_chart', meta: 'Page 05 · fields, search, list, OTP, tabs, snackbar' },
+      { name: 'Organisms', file: 'components/organisms/Organisms.dc.html', icon: 'dashboard', meta: 'Page 06 · dialog, sheet, nudge, bars, picker' }
+    ]},
+    { id: 'onboarding', num: '02', title: 'Onboarding', items: [
+      { name: 'Sign in', file: 'onboarding/Onboarding.dc.html#intro', icon: 'login', meta: 'Board · intro → phone → OTP' },
+      { name: 'Complete Profile', file: 'personal-details/Personal Details.dc.html#details', icon: 'person', meta: 'Board · details → welcome · 3 states' }
+    ]},
+    { id: 'core', num: '03', title: 'Core app', items: [
+      { name: 'Home Screen', file: 'home/Home Screen.dc.html', icon: 'splitscreen', meta: 'Section board · 5 tabs + prayer/audio variations' },
+      { name: 'Sign-in & Nudge States', file: 'nudge-states/Sign-in & Nudge States.dc.html', icon: 'notifications', meta: 'Board · guest · no-masjid · notifications · 17 states' },
+      { name: 'Quran', file: 'Quran.dc.html#home', icon: 'auto_stories', meta: 'Section board · Home → index → reader · 6 states' }
+    ]},
+    { id: 'masjid', num: '04', title: 'Masjid', items: [
+      { name: 'Masjid Onboarding', file: 'Masjid Onboarding.dc.html', icon: 'add_home_work', meta: 'Flow · wizard + switcher sheet' },
+      { name: 'Explore Masjids', file: 'masjid-explore/Explore Masjids.dc.html#map', icon: 'travel_explore', meta: 'Section board · map · list · pincode · QR · 10 states' }
+    ]},
+    { id: 'content', num: '05', title: 'Content & tools', items: [
+      { name: 'Find Sehri', file: 'sehri/Sehri.dc.html#map', icon: 'restaurant', meta: 'Section board · Home → permission → map · list · 5 states' },
+      { name: 'Dua & Dikhr', file: 'dua-dikhr/Dua & Dikhr.dc.html#categories', icon: 'volunteer_activism', meta: 'Section board · Hisnul Muslim · 5 states' },
+      { name: 'Asma ul Husna', file: 'asma-ul-husna/Asma ul Husna.dc.html', icon: 'auto_awesome', meta: 'Section board · grid + detail' },
+      { name: 'Qibla', file: 'Qibla Screen.dc.html', icon: 'explore', meta: 'Screen · interactive' },
+      { name: 'Hijri', file: 'hijri/Hijri.dc.html', icon: 'calendar_month', meta: 'Section board · month grid · 3 states' },
+      { name: 'Zakaat', file: 'zakaat/Zakaat.dc.html', icon: 'savings', meta: 'Section board · 6-step calculator' }
+    ]}
+  ];
+  window.NoorSiteMap = NAV;
+
+  /* sidebar-toggle glyph (macOS-style split panel) */
+  var SIDEBAR_SVG = '<svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">' +
+    '<rect x="3" y="4.5" width="18" height="15" rx="3.4" stroke="currentColor" stroke-width="1.8"/>' +
+    '<line x1="9.3" y1="4.5" x2="9.3" y2="19.5" stroke="currentColor" stroke-width="1.8"/>' +
+    '</svg>';
+
+  /* back-arrow glyph */
+  var BACK_SVG = '<svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">' +
+    '<path d="M19 12H5M11 6l-6 6 6 6" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"/>' +
+    '</svg>';
+
+  /* home glyph */
+  var HOME_SVG = '<svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">' +
+    '<path d="M4.5 10.4 12 4.4l7.5 6M6.2 9.1V19a.9.9 0 0 0 .9.9h3.1v-4.9h3.6v4.9h3.1a.9.9 0 0 0 .9-.9V9.1" ' +
+    'stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/>' +
+    '</svg>';
+
   function syncChrome() {
     var bar = document.getElementById('noor-chrome');
     if (!bar) return;
@@ -64,9 +120,94 @@
     });
   }
 
+  /* ---------- app-bar title ----------
+     Boards push their descriptive title via window.NoorSetChromeTitle
+     (called from BoardHeader). Plain screens fall back to their site-map
+     name; the cover falls back to 'Noor'. */
+  function navItemFor(curPath) {
+    for (var i = 0; i < NAV.length; i++) {
+      var items = NAV[i].items;
+      for (var j = 0; j < items.length; j++) {
+        var f = items[j].file.split('#')[0];
+        if (curPath.indexOf('/' + f) !== -1) return items[j];
+      }
+    }
+    return null;
+  }
+  function setChromeTitle(text) {
+    var el = document.getElementById('noor-chrome-title');
+    if (el && text) el.textContent = text;
+  }
+  window.NoorSetChromeTitle = setChromeTitle;
+  function setChromeSubtitle(text) {
+    var el = document.getElementById('noor-chrome-sub');
+    if (!el) return;
+    el.textContent = text || '';
+    el.style.display = text ? '' : 'none';
+  }
+  window.NoorSetChromeSubtitle = setChromeSubtitle;
+
+  /* ---------- left nav drawer ---------- */
+  function openDrawer() { document.documentElement.classList.add('noor-nav-open'); }
+  function closeDrawer() { document.documentElement.classList.remove('noor-nav-open'); }
+  function toggleDrawer() { document.documentElement.classList.toggle('noor-nav-open'); }
+
+  function buildDrawer(prefix) {
+    if (document.getElementById('noor-nav')) return;
+    var curPath = '';
+    try { curPath = decodeURIComponent(window.location.pathname); } catch (e) { curPath = window.location.pathname; }
+
+    var scrim = document.createElement('div');
+    scrim.id = 'noor-nav-scrim';
+    scrim.addEventListener('click', closeDrawer);
+
+    var nav = document.createElement('aside');
+    nav.id = 'noor-nav';
+
+    var list = document.createElement('div');
+    list.className = 'nn-list';
+    NAV.forEach(function (sec) {
+      var secLabel = document.createElement('div');
+      secLabel.className = 'nn-sec';
+      secLabel.textContent = sec.num + ' · ' + sec.title;
+      list.appendChild(secLabel);
+      sec.items.forEach(function (p) {
+        var a = document.createElement('a');
+        a.className = 'nn-item';
+        a.href = prefix + p.file;
+        var fileNoHash = p.file.split('#')[0];
+        if (curPath.indexOf('/' + fileNoHash) !== -1) a.classList.add('current');
+        var ic = document.createElement('span');
+        ic.className = 'nn-ic';
+        ic.innerHTML = '<span class="material-symbols-rounded"></span>';
+        ic.firstChild.textContent = p.icon;
+        var tx = document.createElement('span');
+        tx.className = 'nn-tx';
+        var nm = document.createElement('span');
+        nm.className = 'nn-name';
+        nm.textContent = p.name;
+        var mt = document.createElement('span');
+        mt.className = 'nn-meta';
+        mt.textContent = p.meta;
+        tx.appendChild(nm);
+        tx.appendChild(mt);
+        a.appendChild(ic);
+        a.appendChild(tx);
+        list.appendChild(a);
+      });
+    });
+    nav.appendChild(list);
+
+    document.body.appendChild(scrim);
+    document.body.appendChild(nav);
+
+    window.addEventListener('keydown', function (e) {
+      if (e.key === 'Escape') closeDrawer();
+    });
+  }
+
   function buildChrome() {
     if (document.getElementById('noor-chrome')) return;
-    var isIndex = document.documentElement.hasAttribute('data-noor-index');
 
     var css = [
       '#noor-chrome{position:fixed;top:0;left:0;right:0;height:' + BAR_H + 'px;z-index:99999;',
@@ -76,17 +217,48 @@
       'border-bottom:1px solid var(--color-neutral-border,#E4E4E7);font-family:var(--font-body,Nunito,sans-serif)}',
       /* reserve space so page content clears the fixed bar */
       'body{padding-top:64px !important}',
-      '#noor-chrome .noor-chrome-left{display:flex;align-items:center;gap:10px;min-width:0}',
-      '#noor-chrome .noor-chrome-home{display:flex;align-items:center;gap:6px;text-decoration:none;',
-      'color:var(--color-info-primary,#09090B);font-size:13px;font-weight:700;padding:7px 12px;border-radius:999px}',
-      '#noor-chrome .noor-chrome-home:hover{background:var(--color-surface-secondary,#F0FDF4)}',
-      '#noor-chrome .noor-chrome-brand{font-family:var(--font-title,serif);font-size:17px;color:var(--color-info-primary,#09090B);letter-spacing:-0.3px}',
+      '#noor-chrome .noor-chrome-left{display:flex;align-items:center;gap:6px;min-width:0;overflow:hidden}',
+      '#noor-chrome .noor-chrome-toggle{width:34px;height:30px;flex:none;border:none;background:transparent;border-radius:9px;cursor:pointer;',
+      'color:var(--color-info-secondary,#71717B);display:flex;align-items:center;justify-content:center;padding:0}',
+      '#noor-chrome .noor-chrome-toggle:hover{background:var(--color-surface-secondary,#F0FDF4);color:var(--color-info-primary,#09090B)}',
+      '#noor-chrome .noor-chrome-toggle svg{width:19px;height:19px;display:block}',
+      '#noor-chrome a.noor-chrome-toggle{text-decoration:none;box-sizing:border-box}',
+      '#noor-chrome .noor-chrome-titles{display:flex;flex-direction:column;justify-content:center;min-width:0;padding:0 2px}',
+      '#noor-chrome .noor-chrome-title{font-family:var(--font-title,serif);font-size:16px;line-height:1.15;color:var(--color-info-primary,#09090B);letter-spacing:-0.2px;',
+      'white-space:nowrap;overflow:hidden;text-overflow:ellipsis;min-width:0}',
+      '#noor-chrome .noor-chrome-sub{font-size:11.5px;line-height:1.2;color:var(--color-info-secondary,#71717B);margin-top:1px;',
+      'white-space:nowrap;overflow:hidden;text-overflow:ellipsis;min-width:0}',
       '#noor-chrome .noor-chrome-seg{display:flex;align-items:center;gap:2px;background:var(--color-action-background,#E4E4E7);border-radius:12px;padding:3px}',
       '#noor-chrome .noor-chrome-seg button{width:34px;height:28px;border:none;background:transparent;border-radius:9px;',
       'cursor:pointer;color:var(--color-info-secondary,#71717B);display:flex;align-items:center;justify-content:center;padding:0}',
       '#noor-chrome .noor-chrome-seg button[data-active="1"]{background:var(--color-action-primary,#00C950);color:var(--color-action-primary-inverse,#F0FDF4)}',
       '#noor-chrome .noor-chrome-seg button:not([data-active="1"]):hover{color:var(--color-info-primary,#09090B)}',
-      '#noor-chrome .material-symbols-rounded{font-size:18px}'
+      '#noor-chrome .material-symbols-rounded{font-size:18px}',
+      /* ---- left nav drawer ---- */
+      '#noor-nav-scrim{position:fixed;inset:0;z-index:100000;background:color-mix(in oklab,var(--color-info-primary,#000) 26%,transparent);',
+      'backdrop-filter:blur(3px);-webkit-backdrop-filter:blur(3px);opacity:0;pointer-events:none;transition:opacity .3s ease}',
+      'html.noor-nav-open #noor-nav-scrim{opacity:1;pointer-events:auto}',
+      /* floating "liquid glass" panel — detached from the edges */
+      '#noor-nav{position:fixed;top:64px;left:14px;bottom:14px;width:314px;max-width:86vw;z-index:100001;box-sizing:border-box;overflow:hidden;',
+      'background:color-mix(in oklab,var(--color-surface-primary,#fff) 76%,transparent);',
+      'backdrop-filter:blur(26px) saturate(180%);-webkit-backdrop-filter:blur(26px) saturate(180%);',
+      'border:1px solid color-mix(in oklab,var(--color-neutral-border,#E4E4E7) 55%,transparent);border-radius:24px;',
+      'box-shadow:0 28px 64px -16px rgba(0,0,0,.34),0 10px 28px -12px rgba(0,0,0,.20);',
+      'transform:translateX(calc(-100% - 22px));opacity:0;',
+      'transition:transform .36s cubic-bezier(.2,.9,.25,1),opacity .28s ease;display:flex;flex-direction:column;font-family:var(--font-body,Nunito,sans-serif)}',
+      'html.noor-nav-open #noor-nav{transform:translateX(0);opacity:1}',
+      '#noor-nav .nn-list{flex:1;overflow-y:auto;padding:6px 10px 22px;overscroll-behavior:contain}',
+      '#noor-nav .nn-sec{font-size:11px;font-weight:800;letter-spacing:.08em;text-transform:uppercase;color:var(--color-info-secondary,#71717B);padding:16px 12px 6px}',
+      '#noor-nav .nn-item{display:flex;align-items:center;gap:12px;padding:9px 12px;border-radius:12px;text-decoration:none;color:var(--color-info-primary,#09090B)}',
+      '#noor-nav .nn-item:hover{background:var(--color-surface-secondary,#F0FDF4)}',
+      '#noor-nav .nn-item.current{background:var(--color-action-background,#DCFCE7)}',
+      '#noor-nav .nn-ic{width:34px;height:34px;flex:none;border-radius:10px;background:var(--color-surface-secondary,#F0FDF4);',
+      'display:flex;align-items:center;justify-content:center;color:var(--color-action-primary,#00C950)}',
+      '#noor-nav .nn-item.current .nn-ic{background:var(--color-action-primary,#00C950);color:var(--color-action-primary-inverse,#F0FDF4)}',
+      '#noor-nav .nn-ic .material-symbols-rounded{font-size:20px}',
+      '#noor-nav .nn-tx{min-width:0;display:flex;flex-direction:column}',
+      '#noor-nav .nn-name{font-size:14px;font-weight:700;line-height:1.2}',
+      '#noor-nav .nn-meta{font-size:11px;color:var(--color-info-secondary,#71717B);line-height:1.3;margin-top:2px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}'
     ].join('');
     var style = document.createElement('style');
     style.textContent = css;
@@ -97,29 +269,79 @@
 
     var left = document.createElement('div');
     left.className = 'noor-chrome-left';
-    if (isIndex) {
-      var brand = document.createElement('div');
-      brand.className = 'noor-chrome-brand';
-      brand.textContent = 'Noor';
-      left.appendChild(brand);
-    } else {
-      var prefix = '';
-      var path = window.location.pathname;
-      if (path) {
-        var parts = path.split('/').filter(Boolean);
-        var isFile = parts.length > 0 && parts[parts.length - 1].indexOf('.') !== -1;
-        var folderCount = isFile ? parts.length - 1 : parts.length;
-        for (var d = 0; d < folderCount - 1; d++) {
-          prefix += '../';
-        }
+
+    var prefix = '';
+    var path = window.location.pathname;
+    if (path) {
+      var parts = path.split('/').filter(Boolean);
+      var isFile = parts.length > 0 && parts[parts.length - 1].indexOf('.') !== -1;
+      var folderCount = isFile ? parts.length - 1 : parts.length;
+      for (var d = 0; d < folderCount - 1; d++) {
+        prefix += '../';
       }
-      var home = document.createElement('a');
-      home.className = 'noor-chrome-home';
-      home.href = prefix + 'Index.dc.html';
-      home.innerHTML = '<span class="material-symbols-rounded">grid_view</span><span>Index</span>';
-      left.appendChild(home);
     }
+
+    /* back button — returns to the previous page (Index if none) */
+    var back = document.createElement('button');
+    back.className = 'noor-chrome-toggle';
+    back.type = 'button';
+    back.title = 'Back';
+    back.setAttribute('aria-label', 'Go back');
+    back.innerHTML = BACK_SVG;
+    back.addEventListener('click', function () {
+      if (window.history.length > 1) window.history.back();
+      else window.location.href = prefix + 'Index.dc.html';
+    });
+    left.appendChild(back);
+
+    /* home — straight to the cover index */
+    var home = document.createElement('a');
+    home.className = 'noor-chrome-toggle';
+    home.href = prefix + 'Index.dc.html';
+    home.title = 'Home';
+    home.setAttribute('aria-label', 'Go to the cover index page');
+    home.innerHTML = HOME_SVG;
+    left.appendChild(home);
+
+    /* sidebar toggle — opens the nav pane */
+    var toggle = document.createElement('button');
+    toggle.className = 'noor-chrome-toggle';
+    toggle.type = 'button';
+    toggle.title = 'Navigation';
+    toggle.setAttribute('aria-label', 'Toggle navigation');
+    toggle.innerHTML = SIDEBAR_SVG;
+    toggle.addEventListener('click', toggleDrawer);
+    left.appendChild(toggle);
+
+    /* page title + subtitle — boards override these via
+       window.NoorSetChromeTitle / window.NoorSetChromeSubtitle */
+    var curPath = '';
+    try { curPath = decodeURIComponent(path || ''); } catch (e) { curPath = path || ''; }
+    var navItem = navItemFor(curPath);
+    var titles = document.createElement('div');
+    titles.className = 'noor-chrome-titles';
+    var title = document.createElement('div');
+    title.id = 'noor-chrome-title';
+    title.className = 'noor-chrome-title';
+    title.textContent = (navItem && navItem.name) || 'Noor';
+    titles.appendChild(title);
+    var sub = document.createElement('div');
+    sub.id = 'noor-chrome-sub';
+    sub.className = 'noor-chrome-sub';
+    sub.style.display = 'none';
+    /* subtitle: <meta name="noor-subtitle"> wins, else the site-map meta line;
+       boards override it later through window.NoorSetChromeSubtitle */
+    var metaSub = document.querySelector('meta[name="noor-subtitle"]');
+    var subText = (metaSub && metaSub.getAttribute('content')) || (navItem && navItem.meta) || '';
+    if (subText) {
+      sub.textContent = subText;
+      sub.style.display = '';
+    }
+    titles.appendChild(sub);
+    left.appendChild(titles);
+
     bar.appendChild(left);
+    buildDrawer(prefix);
 
     var seg = document.createElement('div');
     seg.className = 'noor-chrome-seg';
@@ -140,7 +362,7 @@
   /* ---------- shared helpers ---------- */
   function isInteractive(t) {
     if (!t || !t.closest) return false;
-    return !!t.closest('.poc-live, #noor-chrome, a, button, input, textarea, select, [onclick], .kp-key');
+    return !!t.closest('.poc-live, #noor-chrome, #noor-nav, #noor-nav-scrim, a, button, input, textarea, select, [onclick], .kp-key');
   }
 
   /* ---------- Figma-style canvas (board pages) ----------
@@ -175,9 +397,13 @@
     }
 
     /* wheel: two-finger pan in any direction; ctrl/cmd+wheel (and
-       trackpad pinch, which Chrome reports as ctrl+wheel) zooms */
+       trackpad pinch, which Chrome reports as ctrl+wheel) zooms.
+       CAPTURE phase so the canvas claims the gesture before any frame
+       content can stopPropagation() it (e.g. a sheet scrim's onWheel) —
+       otherwise panning dies over storyboard frames that show a sheet.
+       The .poc-live check still exempts the live device so it scrolls. */
     window.addEventListener('wheel', function (e) {
-      if (e.target && e.target.closest && e.target.closest('.poc-live, #noor-chrome')) return;
+      if (e.target && e.target.closest && e.target.closest('.poc-live, #noor-chrome, #noor-nav')) return;
       e.preventDefault();
       if (e.ctrlKey || e.metaKey) {
         zoomAt(e.clientX, e.clientY, Math.exp(-e.deltaY * 0.01));
@@ -185,7 +411,7 @@
         px -= e.deltaX; py -= e.deltaY;
         apply();
       }
-    }, { passive: false });
+    }, { passive: false, capture: true });
 
     /* Safari trackpad pinch */
     var gestureBase = 1;
