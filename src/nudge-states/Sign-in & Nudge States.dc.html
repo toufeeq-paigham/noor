@@ -1,0 +1,205 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="../support.js"></script>
+<script src="../_theme/chrome.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+  <link rel="stylesheet" href="../_ds/noor-design-system-46f42e91-1858-412f-bdb6-560a6cc3df9f/colors_and_type.css">
+  <link rel="stylesheet" href="../_theme/poc.css">
+  <link rel="stylesheet" href="../_theme/components.css">
+  <script src="../_ds/noor-design-system-46f42e91-1858-412f-bdb6-560a6cc3df9f/_ds_bundle.js"></script>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Rounded:opsz,wght,FILL,GRAD@24,400,0..1,0&amp;display=block">
+  <link rel="stylesheet" href="../_theme/icons.css">
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Noto+Nastaliq+Urdu:wght@700&amp;display=swap">
+  <style>
+    body{background:var(--canvas-bg);padding:36px 32px 90px;min-height:100vh;box-sizing:border-box}
+    ::-webkit-scrollbar{display:none}*{-ms-overflow-style:none;scrollbar-width:none}
+    @keyframes confettidrift { 0%{transform:translateY(-8px) rotate(0deg)} 50%{transform:translateY(6px) rotate(180deg)} 100%{transform:translateY(-8px) rotate(360deg)} }
+  </style>
+</helmet>
+
+<!-- Preload shared + screen components so the storyboard rows (which read them from window)
+     have them defined before first render — prevents React #130. Deps first. -->
+<div style="display:none">
+  <x-import component="PromptCard" from="../_theme/components.jsx" hint-size="0,0"></x-import>
+  <x-import component="Dialog" from="../_theme/components.jsx" hint-size="0,0"></x-import>
+  <x-import component="BottomNav" from="../home/storyboards/nav-bar.jsx" hint-size="0,0"></x-import>
+  <x-import component="HomeScreen" from="../home/storyboards/screens.jsx" hint-size="0,0"></x-import>
+</div>
+
+<!-- ── Board header ── -->
+<x-import component="BoardHeader" from="../_theme/board.jsx"
+          title="Sign-in &amp; Nudge States"
+          subtitle="The guest, no-masjid and notifications-off nudge states across the Home, Qaum and Salaah tabs — inline cards and sheets. Tap any frame to run it in the device."
+          hint-size="1440px,92px"></x-import>
+
+<!-- ── Board ── -->
+<div class="poc-stage">
+  <div class="poc-frames">
+    <x-import component="GuestRow" from="./storyboards/states-row.jsx" active="{{ curIdx }}" on-select-frame="{{ selectFrame }}" hint-size="1400px,600px"></x-import>
+    <x-import component="NoMasjidRow" from="./storyboards/states-row.jsx" active="{{ curIdx }}" on-select-frame="{{ selectFrame }}" hint-size="1200px,600px"></x-import>
+    <x-import component="NotifRow" from="./storyboards/states-row.jsx" active="{{ curIdx }}" on-select-frame="{{ selectFrame }}" hint-size="1200px,600px"></x-import>
+  </div>
+
+  <!-- Live device — renders the selected nudge state -->
+  <x-import component="BoardLive" from="../_theme/board.jsx" restart="{{ restart }}" hint-size="400px,900px">
+    <x-import component="IOSDevice" from="../ios-frame.jsx" hint-size="402px,874px">
+      <div class="noor-screen" style="display:flex;flex-direction:column;height:100%;position:relative;overflow:hidden">
+        <div class="noor-island"></div>
+
+        <div style="position:absolute;inset:0;z-index:1">
+          <sc-if value="{{ isHome }}">
+            <x-import component="HomeScreen" from="../home/storyboards/screens.jsx"
+                      hero-sel="{{ hHeroSel }}"
+                      prayer="{{ hPrayer }}"
+                      user-name="{{ hUserName }}"
+                      masjid-name="{{ hMasjidName }}"
+                      login-nudge="{{ hLoginNudge }}"
+                      on-close-login-nudge="{{ dismiss }}"
+                      on-sign-in-tap="{{ signIn }}"
+                      follow-nudge="{{ hFollowNudge }}"
+                      on-close-follow-nudge="{{ dismiss }}"
+                      on-find-masjid="{{ findMasjid }}"
+                      notif-nudge="{{ hNotifNudge }}"
+                      on-close-notif-nudge="{{ dismiss }}"
+                      on-allow-notif="{{ allowNotif }}"
+                      hint-size="100%,100%"></x-import>
+          </sc-if>
+          <sc-if value="{{ isQaum }}">
+            <x-import component="QaumScreen" from="../home/storyboards/screens.jsx"
+                      login-nudge="{{ qLoginNudge }}"
+                      on-close-login-nudge="{{ dismiss }}"
+                      on-sign-in-tap="{{ signIn }}"
+                      follow-nudge="{{ qFollowNudge }}"
+                      on-close-follow-nudge="{{ dismiss }}"
+                      on-find-masjid="{{ findMasjid }}"
+                      notif-nudge="{{ qNotifNudge }}"
+                      on-close-notif-nudge="{{ dismiss }}"
+                      on-allow-notif="{{ allowNotif }}"
+                      hint-size="100%,100%"></x-import>
+          </sc-if>
+          <sc-if value="{{ isSalaah }}">
+            <x-import component="SalaahScreen" from="../home/storyboards/screens.jsx"
+                      guest="{{ sGuest }}"
+                      no-masjid="{{ sNoMasjid }}"
+                      login-nudge="{{ sLoginNudge }}"
+                      on-close-login-nudge="{{ dismiss }}"
+                      on-sign-in-tap="{{ signIn }}"
+                      on-open-login-sheet="{{ signIn }}"
+                      follow-nudge="{{ sFollowNudge }}"
+                      on-close-follow-nudge="{{ dismiss }}"
+                      on-find-masjid="{{ findMasjid }}"
+                      notif-nudge="{{ sNotifNudge }}"
+                      on-close-notif-nudge="{{ dismiss }}"
+                      on-allow-notif="{{ allowNotif }}"
+                      hint-size="100%,100%"></x-import>
+          </sc-if>
+        </div>
+
+        <x-import component="BottomNav" from="../home/storyboards/nav-bar.jsx"
+                  active-index="{{ navActive }}" on-select="{{ noop }}" hint-size="100%,84px"></x-import>
+
+        <!-- Device-level nudge sheets (fixed, cover the nav) -->
+        <x-import component="MasjidNudgeSheet" from="../home/storyboards/screens.jsx" is-open="{{ sheetMasjid }}" on-close="{{ dismiss }}" on-find-masjid="{{ findMasjid }}" hint-size="0,0"></x-import>
+        <x-import component="NotificationNudgeSheet" from="../home/storyboards/screens.jsx" is-open="{{ sheetNotif }}" on-close="{{ dismiss }}" on-allow="{{ allowNotif }}" hint-size="0,0"></x-import>
+        <x-import component="PrivacyNudgeSheet" from="../home/storyboards/screens.jsx" is-open="{{ sheetPrivacy }}" on-close="{{ dismiss }}" on-continue="{{ dismiss }}" hint-size="0,0"></x-import>
+        <x-import component="AttDialog" from="../home/storyboards/screens.jsx" is-open="{{ sheetAtt }}" on-choice="{{ dismiss }}" hint-size="0,0"></x-import>
+        <x-import component="Dialog" from="../_theme/components.jsx" mode="sheet" is-open="{{ sheetProfile }}" on-close="{{ dismiss }}"
+                  title="Your profile is waiting for you"
+                  description="Sign in with your phone number to save your preferences, follow masjids you care about, and pick up where you left off."
+                  primary="{{ guestSheetPrimary }}" secondary="{{ guestSheetSecondary }}" hint-size="0,0"></x-import>
+        <x-import component="Dialog" from="../_theme/components.jsx" mode="sheet" is-open="{{ sheetGuestSignin }}" on-close="{{ dismiss }}"
+                  title="Sign in to Paigham"
+                  description="Save your masjid, get iqama times, and sync reminders across your devices."
+                  primary="{{ guestSigninPrimary }}" secondary="{{ guestSigninSecondary }}" hint-size="0,0"></x-import>
+
+        <div class="noor-home"></div>
+      </div>
+    </x-import>
+  </x-import>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script>
+class Component extends DCLogic {
+  state = { curIdx: 0, dismissed: false };
+
+  get STATES() { return window.NUDGE_STATES || []; }
+
+  componentDidMount() {
+    const id = (location.hash || '').slice(1);
+    if (id) { const idx = this.STATES.findIndex(s => s.id === id); if (idx >= 0) this.setState({ curIdx: idx }); }
+  }
+
+  selectFrame = (i) => this.setState({ curIdx: i, dismissed: false });
+  restart = () => this.setState({ curIdx: 0, dismissed: false });
+  dismiss = () => this.setState({ dismissed: true });
+  noop = () => {};
+  signIn = () => { window.location.href = '../onboarding/Onboarding.dc.html#login'; };
+  findMasjid = () => { window.location.href = '../masjid-explore/Explore Masjids.dc.html#map'; };
+  allowNotif = () => {};
+
+  renderVals() {
+    const STATES = this.STATES;
+    const cur = STATES[this.state.curIdx] || STATES[0] || { props: {}, tab: 0 };
+    const p = cur.props || {};
+    const tab = cur.tab;
+    const sheetOpen = (name) => cur.sheet === name && !this.state.dismissed;
+
+    return {
+      curIdx: this.state.curIdx,
+      selectFrame: this.selectFrame,
+      restart: this.restart,
+      dismiss: this.dismiss,
+      noop: this.noop,
+      signIn: this.signIn,
+      findMasjid: this.findMasjid,
+      allowNotif: this.allowNotif,
+
+      isHome: tab === 0,
+      isQaum: tab === 1,
+      isSalaah: tab === 3,
+      navActive: tab,
+
+      /* Home props */
+      hHeroSel: null,
+      hPrayer: p.prayer || 'Maghrib',
+      hUserName: p.userName || 'Toufeeq Ahamed',
+      hMasjidName: p.masjidName || 'Masjid E Bilal',
+      hLoginNudge: !!p.loginNudge,
+      hFollowNudge: !!p.followNudge,
+      hNotifNudge: !!p.notifNudge,
+
+      /* Qaum props */
+      qLoginNudge: !!p.loginNudge,
+      qFollowNudge: !!p.followNudge,
+      qNotifNudge: !!p.notifNudge,
+
+      /* Salaah props */
+      sGuest: !!p.guest,
+      sNoMasjid: !!p.noMasjid,
+      sLoginNudge: !!p.loginNudge,
+      sFollowNudge: !!p.followNudge,
+      sNotifNudge: !!p.notifNudge,
+
+      /* device-level sheets */
+      sheetPrivacy: sheetOpen('privacy'),
+      sheetAtt: sheetOpen('att'),
+      sheetMasjid: sheetOpen('masjid'),
+      sheetNotif: sheetOpen('notif'),
+      sheetProfile: sheetOpen('profile'),
+      sheetGuestSignin: sheetOpen('guestSignin'),
+      guestSheetPrimary: { text: 'Sign in', onClick: this.signIn },
+      guestSheetSecondary: { text: 'Cancel', onClick: this.dismiss },
+      guestSigninPrimary: { text: 'Sign in', onClick: this.signIn },
+      guestSigninSecondary: { text: 'Not now', onClick: this.dismiss },
+    };
+  }
+}
+</script>
+</body>
+</html>
