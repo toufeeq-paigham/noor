@@ -1,0 +1,160 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="../support.js"></script>
+<script src="../_theme/chrome.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+  <link rel="stylesheet" href="../_ds/noor-design-system-46f42e91-1858-412f-bdb6-560a6cc3df9f/colors_and_type.css">
+  <link rel="stylesheet" href="../_theme/poc.css">
+  <link rel="stylesheet" href="../_theme/components.css">
+  <script src="../_ds/noor-design-system-46f42e91-1858-412f-bdb6-560a6cc3df9f/_ds_bundle.js"></script>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Rounded:opsz,wght,FILL,GRAD@24,400,0..1,0&amp;display=block">
+  <link rel="stylesheet" href="../_theme/icons.css">
+  <style>
+    @font-face{font-family:'AlQuranIndoPak';src:url('../_ds/noor-design-system-46f42e91-1858-412f-bdb6-560a6cc3df9f/fonts/AlQuran-IndoPak.ttf') format('truetype')}
+    body{background:var(--canvas-bg);padding:36px 32px 90px;min-height:100vh;box-sizing:border-box}
+    ::-webkit-scrollbar{display:none}*{-ms-overflow-style:none;scrollbar-width:none}
+    @keyframes stepin { from{transform:translateX(28px);opacity:0} to{transform:translateX(0);opacity:1} }
+    @keyframes stepback { from{transform:translateX(-28px);opacity:0} to{transform:translateX(0);opacity:1} }
+    .step-fwd { animation:stepin .35s cubic-bezier(.2,.8,.2,1) }
+    .step-back { animation:stepback .35s cubic-bezier(.2,.8,.2,1) }
+  </style>
+</helmet>
+
+<!-- ── Page header ── -->
+<x-import component="BoardHeader" from="../_theme/board.jsx"
+          title="Asma ul Husna — 99 Names of Allah"
+          subtitle="One board, one flow. The device on the right runs the interactive prototype; the board follows its state."
+          hint-size="1440px,92px"></x-import>
+
+<!-- ── Board ── -->
+<div class="poc-stage">
+
+  <!-- Static storyboard rows -->
+  <div class="poc-frames">
+    <x-import component="NamesRow" from="./storyboards/names-row.jsx"
+              active="{{ namesActive }}"
+              on-select-frame="{{ selectFrame }}"
+              hint-size="760px,560px">
+    </x-import>
+  </div>
+
+  <!-- Live interactive device -->
+  <x-import component="BoardLive" from="../_theme/board.jsx"
+            restart="{{ restart }}"
+            hint="Click a name card to view its detail. Use ← → to navigate."
+            hint-size="400px,900px">
+    <x-import component="IOSDevice" from="../ios-frame.jsx" hint-size="402px,874px">
+      <div style="width:100%;height:100%;position:relative;overflow:hidden;background:var(--color-surface-primary)">
+
+        <!-- ════ STAGE · GRID ════ -->
+        <sc-if value="{{ isGridStage }}">
+          <div class="{{ stepAnim }}" style="position:absolute;inset:0">
+            <x-import component="GridScreen" from="./storyboards/screens.jsx"
+                      on-select-name="{{ selectName }}"
+                      on-back="{{ goBack }}"
+                      hint-size="100%,100%">
+            </x-import>
+          </div>
+        </sc-if>
+
+        <!-- ════ STAGE · DETAIL ════ -->
+        <sc-if value="{{ isDetailStage }}">
+          <div class="{{ stepAnim }}" style="position:absolute;inset:0">
+            <x-import component="DetailScreen" from="./storyboards/screens.jsx"
+                      selected-idx="{{ selectedIdx }}"
+                      on-prev="{{ prevName }}"
+                      on-next="{{ nextName }}"
+                      on-back="{{ goGridStage }}"
+                      hint-size="100%,100%">
+            </x-import>
+          </div>
+        </sc-if>
+
+      </div>
+    </x-import>
+  </x-import>
+
+</div>
+</x-dc>
+
+<script type="text/x-dc" data-dc-script>
+class Component extends DCLogic {
+  state = {
+    stage: location.hash === '#detail' ? 'detail' : 'grid',
+    selectedIdx: 6, // Al-Muhaymin (#7) as default detail
+    stepDir: 'fwd'
+  };
+
+  selectName = (idx) => {
+    this.setState({ stage: 'detail', selectedIdx: idx, stepDir: 'fwd' });
+  };
+
+  selectFrame = (i) => {
+    if (i <= 1) {
+      this.setState({ stage: 'grid', stepDir: 'back' });
+    } else {
+      this.setState({ stage: 'detail', selectedIdx: 6, stepDir: 'fwd' });
+    }
+  };
+
+  prevName = () => {
+    this.setState(s => {
+      if (s.selectedIdx <= 0) return {};
+      return { selectedIdx: s.selectedIdx - 1 };
+    });
+  };
+
+  nextName = () => {
+    this.setState(s => {
+      if (s.selectedIdx >= 17) return {};
+      return { selectedIdx: s.selectedIdx + 1 };
+    });
+  };
+
+  goGridStage = () => {
+    this.setState({ stage: 'grid', stepDir: 'back' });
+  };
+
+  goBack = () => {
+    window.location.href = '../home/Home Screen.dc.html';
+  };
+
+  restart = () => {
+    this.setState({ stage: 'grid', selectedIdx: 6, stepDir: 'back' });
+  };
+
+  renderVals() {
+    const s = this.state;
+
+    let namesActive = -1;
+    if (s.stage === 'grid') {
+      namesActive = 0;
+    } else if (s.stage === 'detail') {
+      namesActive = 2;
+    }
+
+    return {
+      selectedIdx: s.selectedIdx,
+      namesActive,
+      isGridStage: s.stage === 'grid',
+      isDetailStage: s.stage === 'detail',
+      stepAnim: s.stepDir === 'fwd' ? 'step-fwd' : s.stepDir === 'back' ? 'step-back' : '',
+      selectName: this.selectName,
+      selectFrame: this.selectFrame,
+      prevName: this.prevName,
+      nextName: this.nextName,
+      goGridStage: this.goGridStage,
+      goBack: this.goBack,
+      restart: this.restart
+    };
+  }
+}
+</script>
+</body>
+</html>
