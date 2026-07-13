@@ -1,16 +1,16 @@
-# Graph Report - noor  (2026-07-08)
+# Graph Report - noor  (2026-07-13)
 
 ## Corpus Check
-- 31 files · ~2,780,755 words
+- 48 files · ~2,801,593 words
 - Verdict: corpus is large enough that graph structure adds value.
 
 ## Summary
-- 480 nodes · 514 edges · 37 communities (23 shown, 14 thin omitted)
+- 587 nodes · 613 edges · 54 communities (27 shown, 27 thin omitted)
 - Extraction: 100% EXTRACTED · 0% INFERRED · 0% AMBIGUOUS
 - Token cost: 0 input · 0 output
 
 ## Graph Freshness
-- Built from commit: `b32edae2`
+- Built from commit: `ea241bc9`
 - Run `git rev-parse HEAD` and compare to check if the graph is stale.
 - Run `graphify update .` after code changes (no API cost).
 
@@ -46,8 +46,25 @@
 - [[_COMMUNITY_Community 30|Community 30]]
 - [[_COMMUNITY_Community 31|Community 31]]
 - [[_COMMUNITY_Community 32|Community 32]]
+- [[_COMMUNITY_Community 33|Community 33]]
 - [[_COMMUNITY_Community 34|Community 34]]
 - [[_COMMUNITY_Community 35|Community 35]]
+- [[_COMMUNITY_Community 37|Community 37]]
+- [[_COMMUNITY_Community 38|Community 38]]
+- [[_COMMUNITY_Community 39|Community 39]]
+- [[_COMMUNITY_Community 40|Community 40]]
+- [[_COMMUNITY_Community 41|Community 41]]
+- [[_COMMUNITY_Community 42|Community 42]]
+- [[_COMMUNITY_Community 43|Community 43]]
+- [[_COMMUNITY_Community 44|Community 44]]
+- [[_COMMUNITY_Community 46|Community 46]]
+- [[_COMMUNITY_Community 47|Community 47]]
+- [[_COMMUNITY_Community 48|Community 48]]
+- [[_COMMUNITY_Community 49|Community 49]]
+- [[_COMMUNITY_Community 50|Community 50]]
+- [[_COMMUNITY_Community 51|Community 51]]
+- [[_COMMUNITY_Community 52|Community 52]]
+- [[_COMMUNITY_Community 53|Community 53]]
 
 ## God Nodes (most connected - your core abstractions)
 1. `tokenKinds` - 141 edges
@@ -67,7 +84,7 @@
 ## Import Cycles
 - None detected.
 
-## Communities (37 total, 14 thin omitted)
+## Communities (54 total, 27 thin omitted)
 
 ### Community 0 - "Community 0"
 Cohesion: 0.01
@@ -122,20 +139,20 @@ Cohesion: 0.10
 Nodes (19): Agent Behavior, Commit Messages, Design System Rules, graphify, Layer Architecture — HARD RULES (do not violate), Project Structure, Rule 10 — Checkpoint after every significant step, Rule 11 — Match the codebase's conventions, even if you disagree (+11 more)
 
 ### Community 23 - "Community 23"
-Cohesion: 0.20
-Nodes (9): Add a section board to the Noor POC, Anatomy, Step 1 — Inventory the source screens, Step 2 — Scaffold the board page, Step 3 — Storyboard rows, Step 4 — The live device: one stage machine, Step 5 — Theming and DS fidelity, Step 6 — Rewire the rest of the repo (+1 more)
+Cohesion: 0.14
+Nodes (13): Pre-loading cross-section components (React Error #130 prevention), Add a section board to the Noor POC, Anatomy, App bar — use the DS `.app-bar` (progressive blur), like Home, Audio player — use the DS `.aplayer` molecule, don't build a container, Pre-loading cross-section components (React Error #130 prevention), Step 1 — Inventory the source screens, Step 2 — Scaffold the board page (+5 more)
 
 ### Community 24 - "Community 24"
-Cohesion: 0.20
-Nodes (9): Add a section board to the Noor POC, Anatomy, Step 1 — Inventory the source screens, Step 2 — Scaffold the board page, Step 3 — Storyboard rows, Step 4 — The live device: one stage machine, Step 5 — Theming and DS fidelity, Step 6 — Rewire the rest of the repo (+1 more)
+Cohesion: 0.15
+Nodes (12): Add a section board to the Noor POC, Anatomy, App bar — use the DS `.app-bar` (progressive blur), like Home, Audio player — use the DS `.aplayer` molecule, don't build a container, Pre-loading cross-section components (React Error #130 prevention), Step 1 — Inventory the source screens, Step 2 — Scaffold the board page, Step 3 — Storyboard rows (+4 more)
 
 ### Community 25 - "Community 25"
-Cohesion: 0.33
-Nodes (5): 1. The board page — `<section>/<Section>.dc.html`, 2. A storyboard row — `<section>/storyboards/<flow>-row.jsx`, 3. Shared screen components — `<section>/storyboards/screens.jsx`, Index registration, Section board — annotated skeletons
+Cohesion: 0.25
+Nodes (7): 1. The board page — `<section>/<Section>.dc.html`, 2. A storyboard row — `<section>/storyboards/<flow>-row.jsx`, 3. Shared screen components — `<section>/storyboards/screens.jsx`, Index registration, Pre-loading cross-section components, Section board — annotated skeletons, Pre-loading cross-section components
 
 ### Community 26 - "Community 26"
-Cohesion: 0.33
-Nodes (5): 1. The board page — `<section>/<Section>.dc.html`, 2. A storyboard row — `<section>/storyboards/<flow>-row.jsx`, 3. Shared screen components — `<section>/storyboards/screens.jsx`, Index registration, Section board — annotated skeletons
+Cohesion: 0.29
+Nodes (6): 1. The board page — `<section>/<Section>.dc.html`, 2. A storyboard row — `<section>/storyboards/<flow>-row.jsx`, 3. Shared screen components — `<section>/storyboards/screens.jsx`, Index registration, Pre-loading cross-section components, Section board — annotated skeletons
 
 ### Community 27 - "Community 27"
 Cohesion: 0.40
@@ -145,20 +162,36 @@ Nodes (4): assertions, eval_id, eval_name, prompt
 Cohesion: 0.40
 Nodes (4): assertions, eval_id, eval_name, prompt
 
+### Community 33 - "Community 33"
+Cohesion: 0.18
+Nodes (4): QAUM_AMP, QaumAudioPlayer(), qaumBars(), qaumTime()
+
+### Community 34 - "Community 34"
+Cohesion: 0.18
+Nodes (7): PRAYER_FRAMES, QAUM_EXTRA_FRAMES, QaumRow(), QURAN_EXTRA_FRAMES, QuranRow(), renderFrame(), STORYBOARD_FRAMES
+
+### Community 39 - "Community 39"
+Cohesion: 0.22
+Nodes (7): AUDIO_AMP, audioBars(), DUA_CATEGORIES, DUA_DETAIL, DUA_LIST, DuaDetailScreen(), fmtTime()
+
+### Community 46 - "Community 46"
+Cohesion: 0.70
+Nodes (4): compress_image(), compress_pdf(), process_file(), compress_files.sh script
+
 ## Knowledge Gaps
-- **284 isolated node(s):** `eval_id`, `eval_name`, `prompt`, `assertions`, `eval_id` (+279 more)
+- **312 isolated node(s):** `eval_id`, `eval_name`, `prompt`, `assertions`, `eval_id` (+307 more)
   These have ≤1 connection - possible missing edges or undocumented components.
-- **14 thin communities (<3 nodes) omitted from report** — run `graphify query` to explore isolated nodes.
+- **27 thin communities (<3 nodes) omitted from report** — run `graphify query` to explore isolated nodes.
 
 ## Suggested Questions
 _Questions this graph is uniquely positioned to answer:_
 
 - **Why does `tokenKinds` connect `Community 0` to `Community 5`?**
-  _High betweenness centrality (0.098) - this node is a cross-community bridge._
+  _High betweenness centrality (0.066) - this node is a cross-community bridge._
 - **Why does `x-omelette` connect `Community 5` to `Community 0`?**
-  _High betweenness centrality (0.013) - this node is a cross-community bridge._
+  _High betweenness centrality (0.008) - this node is a cross-community bridge._
 - **What connects `eval_id`, `eval_name`, `prompt` to the rest of the system?**
-  _284 weakly-connected nodes found - possible documentation gaps or missing edges._
+  _312 weakly-connected nodes found - possible documentation gaps or missing edges._
 - **Should `Community 0` be split into smaller, more focused modules?**
   _Cohesion score 0.014184397163120567 - nodes in this community are weakly interconnected._
 - **Should `Community 1` be split into smaller, more focused modules?**

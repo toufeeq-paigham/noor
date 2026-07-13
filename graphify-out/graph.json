@@ -187,7 +187,7 @@
       "label": "main()",
       "file_type": "code",
       "source_file": ".claude/skills/add-screen/scripts/check_page.py",
-      "source_location": "L28",
+      "source_location": "L26",
       "id": "claude_skills_add_screen_scripts_check_page_py_scripts_check_page_main",
       "community": 32,
       "norm_label": "main()"
@@ -196,7 +196,7 @@
       "label": "int",
       "file_type": "code",
       "source_file": ".claude/skills/add-screen/scripts/check_page.py",
-      "source_location": "L28",
+      "source_location": "L26",
       "id": "claude_skills_add_screen_scripts_check_page_py_int",
       "community": 32,
       "norm_label": "int"
@@ -227,6 +227,71 @@
       "id": "vscode_launch_configurations",
       "community": 12,
       "norm_label": "configurations"
+    },
+    {
+      "label": "compress_files.sh",
+      "file_type": "code",
+      "source_file": "compress_files.sh",
+      "source_location": "L1",
+      "metadata": {
+        "language": "bash",
+        "kind": "file"
+      },
+      "id": "compress_files",
+      "community": 46,
+      "norm_label": "compress_files.sh"
+    },
+    {
+      "label": "compress_files.sh script",
+      "file_type": "code",
+      "source_file": "compress_files.sh",
+      "source_location": "L1",
+      "metadata": {
+        "language": "bash",
+        "kind": "bash_entrypoint"
+      },
+      "id": "users_toufeeqahamed_paigham_noor_compress_files_sh__entry",
+      "community": 46,
+      "norm_label": "compress_files.sh script"
+    },
+    {
+      "label": "compress_image()",
+      "file_type": "code",
+      "source_file": "compress_files.sh",
+      "source_location": "L18",
+      "metadata": {
+        "language": "bash",
+        "kind": "bash_function"
+      },
+      "id": "compress_files_compress_image",
+      "community": 46,
+      "norm_label": "compress_image()"
+    },
+    {
+      "label": "compress_pdf()",
+      "file_type": "code",
+      "source_file": "compress_files.sh",
+      "source_location": "L75",
+      "metadata": {
+        "language": "bash",
+        "kind": "bash_function"
+      },
+      "id": "compress_files_compress_pdf",
+      "community": 46,
+      "norm_label": "compress_pdf()"
+    },
+    {
+      "label": "process_file()",
+      "file_type": "code",
+      "source_file": "compress_files.sh",
+      "source_location": "L106",
+      "metadata": {
+        "language": "bash",
+        "kind": "bash_function"
+      },
+      "id": "compress_files_process_file",
+      "community": 46,
+      "norm_label": "process_file()"
     },
     {
       "label": "_adherence.oxlintrc.json",
@@ -2218,6 +2283,15 @@
       "norm_label": "bottomsheet()"
     },
     {
+      "label": "Dialog()",
+      "file_type": "code",
+      "source_file": "src/_theme/components.jsx",
+      "source_location": "L149",
+      "id": "theme_components_dialog",
+      "community": 36,
+      "norm_label": "dialog()"
+    },
+    {
       "label": "devserver.py",
       "file_type": "code",
       "source_file": "src/_theme/devserver.py",
@@ -2243,6 +2317,249 @@
       "id": "theme_devserver_nocachehandler_end_headers",
       "community": 11,
       "norm_label": ".end_headers()"
+    },
+    {
+      "label": "names-row.jsx",
+      "file_type": "code",
+      "source_file": "src/asma-ul-husna/storyboards/names-row.jsx",
+      "source_location": "L1",
+      "id": "storyboards_names_row",
+      "community": 42,
+      "norm_label": "names-row.jsx"
+    },
+    {
+      "label": "STORYBOARD_FRAMES",
+      "file_type": "code",
+      "source_file": "src/asma-ul-husna/storyboards/names-row.jsx",
+      "source_location": "L6",
+      "id": "storyboards_names_row_storyboard_frames",
+      "community": 42,
+      "norm_label": "storyboard_frames"
+    },
+    {
+      "label": "NamesRow()",
+      "file_type": "code",
+      "source_file": "src/asma-ul-husna/storyboards/names-row.jsx",
+      "source_location": "L12",
+      "id": "storyboards_names_row_namesrow",
+      "community": 42,
+      "norm_label": "namesrow()"
+    },
+    {
+      "label": "screens.jsx",
+      "file_type": "code",
+      "source_file": "src/asma-ul-husna/storyboards/screens.jsx",
+      "source_location": "L1",
+      "id": "src_asma_ul_husna_storyboards_screens_jsx_storyboards_screens",
+      "community": 40,
+      "norm_label": "screens.jsx"
+    },
+    {
+      "label": "NAMES",
+      "file_type": "code",
+      "source_file": "src/asma-ul-husna/storyboards/screens.jsx",
+      "source_location": "L4",
+      "id": "storyboards_screens_names",
+      "community": 40,
+      "norm_label": "names"
+    },
+    {
+      "label": "GridScreen()",
+      "file_type": "code",
+      "source_file": "src/asma-ul-husna/storyboards/screens.jsx",
+      "source_location": "L26",
+      "id": "storyboards_screens_gridscreen",
+      "community": 40,
+      "norm_label": "gridscreen()"
+    },
+    {
+      "label": "DetailScreen()",
+      "file_type": "code",
+      "source_file": "src/asma-ul-husna/storyboards/screens.jsx",
+      "source_location": "L64",
+      "id": "storyboards_screens_detailscreen",
+      "community": 40,
+      "norm_label": "detailscreen()"
+    },
+    {
+      "label": "dua-row.jsx",
+      "file_type": "code",
+      "source_file": "src/dua-dikhr/storyboards/dua-row.jsx",
+      "source_location": "L1",
+      "id": "storyboards_dua_row",
+      "community": 41,
+      "norm_label": "dua-row.jsx"
+    },
+    {
+      "label": "STORYBOARD_FRAMES",
+      "file_type": "code",
+      "source_file": "src/dua-dikhr/storyboards/dua-row.jsx",
+      "source_location": "L6",
+      "id": "storyboards_dua_row_storyboard_frames",
+      "community": 41,
+      "norm_label": "storyboard_frames"
+    },
+    {
+      "label": "DuaRow()",
+      "file_type": "code",
+      "source_file": "src/dua-dikhr/storyboards/dua-row.jsx",
+      "source_location": "L14",
+      "id": "storyboards_dua_row_duarow",
+      "community": 41,
+      "norm_label": "duarow()"
+    },
+    {
+      "label": "screens.jsx",
+      "file_type": "code",
+      "source_file": "src/dua-dikhr/storyboards/screens.jsx",
+      "source_location": "L1",
+      "id": "src_dua_dikhr_storyboards_screens_jsx_storyboards_screens",
+      "community": 39,
+      "norm_label": "screens.jsx"
+    },
+    {
+      "label": "DUA_CATEGORIES",
+      "file_type": "code",
+      "source_file": "src/dua-dikhr/storyboards/screens.jsx",
+      "source_location": "L7",
+      "id": "storyboards_screens_dua_categories",
+      "community": 39,
+      "norm_label": "dua_categories"
+    },
+    {
+      "label": "DUA_LIST",
+      "file_type": "code",
+      "source_file": "src/dua-dikhr/storyboards/screens.jsx",
+      "source_location": "L21",
+      "id": "storyboards_screens_dua_list",
+      "community": 39,
+      "norm_label": "dua_list"
+    },
+    {
+      "label": "DUA_DETAIL",
+      "file_type": "code",
+      "source_file": "src/dua-dikhr/storyboards/screens.jsx",
+      "source_location": "L37",
+      "id": "storyboards_screens_dua_detail",
+      "community": 39,
+      "norm_label": "dua_detail"
+    },
+    {
+      "label": "AUDIO_AMP",
+      "file_type": "code",
+      "source_file": "src/dua-dikhr/storyboards/screens.jsx",
+      "source_location": "L57",
+      "id": "storyboards_screens_audio_amp",
+      "community": 39,
+      "norm_label": "audio_amp"
+    },
+    {
+      "label": "audioBars()",
+      "file_type": "code",
+      "source_file": "src/dua-dikhr/storyboards/screens.jsx",
+      "source_location": "L59",
+      "id": "storyboards_screens_audiobars",
+      "community": 39,
+      "norm_label": "audiobars()"
+    },
+    {
+      "label": "fmtTime()",
+      "file_type": "code",
+      "source_file": "src/dua-dikhr/storyboards/screens.jsx",
+      "source_location": "L63",
+      "id": "storyboards_screens_fmttime",
+      "community": 39,
+      "norm_label": "fmttime()"
+    },
+    {
+      "label": "AppBar()",
+      "file_type": "code",
+      "source_file": "src/dua-dikhr/storyboards/screens.jsx",
+      "source_location": "L73",
+      "id": "storyboards_screens_appbar",
+      "community": 39,
+      "norm_label": "appbar()"
+    },
+    {
+      "label": "CategoriesScreen()",
+      "file_type": "code",
+      "source_file": "src/dua-dikhr/storyboards/screens.jsx",
+      "source_location": "L90",
+      "id": "storyboards_screens_categoriesscreen",
+      "community": 39,
+      "norm_label": "categoriesscreen()"
+    },
+    {
+      "label": "DuaListScreen()",
+      "file_type": "code",
+      "source_file": "src/dua-dikhr/storyboards/screens.jsx",
+      "source_location": "L129",
+      "id": "storyboards_screens_dualistscreen",
+      "community": 39,
+      "norm_label": "dualistscreen()"
+    },
+    {
+      "label": "DuaDetailScreen()",
+      "file_type": "code",
+      "source_file": "src/dua-dikhr/storyboards/screens.jsx",
+      "source_location": "L151",
+      "id": "storyboards_screens_duadetailscreen",
+      "community": 39,
+      "norm_label": "duadetailscreen()"
+    },
+    {
+      "label": "calendar-row.jsx",
+      "file_type": "code",
+      "source_file": "src/hijri/storyboards/calendar-row.jsx",
+      "source_location": "L1",
+      "id": "storyboards_calendar_row",
+      "community": 38,
+      "norm_label": "calendar-row.jsx"
+    },
+    {
+      "label": "STORYBOARD_FRAMES",
+      "file_type": "code",
+      "source_file": "src/hijri/storyboards/calendar-row.jsx",
+      "source_location": "L6",
+      "id": "storyboards_calendar_row_storyboard_frames",
+      "community": 38,
+      "norm_label": "storyboard_frames"
+    },
+    {
+      "label": "CalendarRow()",
+      "file_type": "code",
+      "source_file": "src/hijri/storyboards/calendar-row.jsx",
+      "source_location": "L13",
+      "id": "storyboards_calendar_row_calendarrow",
+      "community": 38,
+      "norm_label": "calendarrow()"
+    },
+    {
+      "label": "screens.jsx",
+      "file_type": "code",
+      "source_file": "src/hijri/storyboards/screens.jsx",
+      "source_location": "L1",
+      "id": "src_hijri_storyboards_screens_jsx_storyboards_screens",
+      "community": 37,
+      "norm_label": "screens.jsx"
+    },
+    {
+      "label": "MONTHS_DATA",
+      "file_type": "code",
+      "source_file": "src/hijri/storyboards/screens.jsx",
+      "source_location": "L4",
+      "id": "storyboards_screens_months_data",
+      "community": 37,
+      "norm_label": "months_data"
+    },
+    {
+      "label": "CalendarScreen()",
+      "file_type": "code",
+      "source_file": "src/hijri/storyboards/screens.jsx",
+      "source_location": "L56",
+      "id": "storyboards_screens_calendarscreen",
+      "community": 37,
+      "norm_label": "calendarscreen()"
     },
     {
       "label": "nav-bar.jsx",
@@ -2290,19 +2607,82 @@
       "norm_label": "homescreen()"
     },
     {
+      "label": "QAUM_AMP",
+      "file_type": "code",
+      "source_file": "src/home/storyboards/screens.jsx",
+      "source_location": "L669",
+      "id": "storyboards_screens_qaum_amp",
+      "community": 33,
+      "norm_label": "qaum_amp"
+    },
+    {
+      "label": "qaumBars()",
+      "file_type": "code",
+      "source_file": "src/home/storyboards/screens.jsx",
+      "source_location": "L671",
+      "id": "storyboards_screens_qaumbars",
+      "community": 33,
+      "norm_label": "qaumbars()"
+    },
+    {
+      "label": "qaumTime()",
+      "file_type": "code",
+      "source_file": "src/home/storyboards/screens.jsx",
+      "source_location": "L675",
+      "id": "storyboards_screens_qaumtime",
+      "community": 33,
+      "norm_label": "qaumtime()"
+    },
+    {
+      "label": "QaumAudioPlayer()",
+      "file_type": "code",
+      "source_file": "src/home/storyboards/screens.jsx",
+      "source_location": "L681",
+      "id": "storyboards_screens_qaumaudioplayer",
+      "community": 33,
+      "norm_label": "qaumaudioplayer()"
+    },
+    {
+      "label": "PostHeader()",
+      "file_type": "code",
+      "source_file": "src/home/storyboards/screens.jsx",
+      "source_location": "L704",
+      "id": "storyboards_screens_postheader",
+      "community": 33,
+      "norm_label": "postheader()"
+    },
+    {
+      "label": "PostActions()",
+      "file_type": "code",
+      "source_file": "src/home/storyboards/screens.jsx",
+      "source_location": "L715",
+      "id": "storyboards_screens_postactions",
+      "community": 33,
+      "norm_label": "postactions()"
+    },
+    {
       "label": "QaumScreen()",
       "file_type": "code",
       "source_file": "src/home/storyboards/screens.jsx",
-      "source_location": "L664",
+      "source_location": "L729",
       "id": "storyboards_screens_qaumscreen",
       "community": 33,
       "norm_label": "qaumscreen()"
     },
     {
+      "label": "SurahRow()",
+      "file_type": "code",
+      "source_file": "src/home/storyboards/screens.jsx",
+      "source_location": "L898",
+      "id": "storyboards_screens_surahrow",
+      "community": 33,
+      "norm_label": "surahrow()"
+    },
+    {
       "label": "QuranScreen()",
       "file_type": "code",
       "source_file": "src/home/storyboards/screens.jsx",
-      "source_location": "L807",
+      "source_location": "L915",
       "id": "storyboards_screens_quranscreen",
       "community": 33,
       "norm_label": "quranscreen()"
@@ -2311,7 +2691,7 @@
       "label": "SalaahScreen()",
       "file_type": "code",
       "source_file": "src/home/storyboards/screens.jsx",
-      "source_location": "L919",
+      "source_location": "L1006",
       "id": "storyboards_screens_salaahscreen",
       "community": 33,
       "norm_label": "salaahscreen()"
@@ -2320,7 +2700,7 @@
       "label": "ProfileScreen()",
       "file_type": "code",
       "source_file": "src/home/storyboards/screens.jsx",
-      "source_location": "L1074",
+      "source_location": "L1197",
       "id": "storyboards_screens_profilescreen",
       "community": 33,
       "norm_label": "profilescreen()"
@@ -2353,10 +2733,28 @@
       "norm_label": "prayer_frames"
     },
     {
+      "label": "QAUM_EXTRA_FRAMES",
+      "file_type": "code",
+      "source_file": "src/home/storyboards/tabs-row.jsx",
+      "source_location": "L27",
+      "id": "storyboards_tabs_row_qaum_extra_frames",
+      "community": 34,
+      "norm_label": "qaum_extra_frames"
+    },
+    {
+      "label": "QURAN_EXTRA_FRAMES",
+      "file_type": "code",
+      "source_file": "src/home/storyboards/tabs-row.jsx",
+      "source_location": "L34",
+      "id": "storyboards_tabs_row_quran_extra_frames",
+      "community": 34,
+      "norm_label": "quran_extra_frames"
+    },
+    {
       "label": "renderFrame()",
       "file_type": "code",
       "source_file": "src/home/storyboards/tabs-row.jsx",
-      "source_location": "L25",
+      "source_location": "L38",
       "id": "storyboards_tabs_row_renderframe",
       "community": 34,
       "norm_label": "renderframe()"
@@ -2365,7 +2763,7 @@
       "label": "HomeRow()",
       "file_type": "code",
       "source_file": "src/home/storyboards/tabs-row.jsx",
-      "source_location": "L62",
+      "source_location": "L75",
       "id": "storyboards_tabs_row_homerow",
       "community": 34,
       "norm_label": "homerow()"
@@ -2374,7 +2772,7 @@
       "label": "QaumRow()",
       "file_type": "code",
       "source_file": "src/home/storyboards/tabs-row.jsx",
-      "source_location": "L75",
+      "source_location": "L88",
       "id": "storyboards_tabs_row_qaumrow",
       "community": 34,
       "norm_label": "qaumrow()"
@@ -2383,7 +2781,7 @@
       "label": "QuranRow()",
       "file_type": "code",
       "source_file": "src/home/storyboards/tabs-row.jsx",
-      "source_location": "L88",
+      "source_location": "L103",
       "id": "storyboards_tabs_row_quranrow",
       "community": 34,
       "norm_label": "quranrow()"
@@ -2392,7 +2790,7 @@
       "label": "SalaahRow()",
       "file_type": "code",
       "source_file": "src/home/storyboards/tabs-row.jsx",
-      "source_location": "L101",
+      "source_location": "L117",
       "id": "storyboards_tabs_row_salaahrow",
       "community": 34,
       "norm_label": "salaahrow()"
@@ -2401,7 +2799,7 @@
       "label": "ProfileRow()",
       "file_type": "code",
       "source_file": "src/home/storyboards/tabs-row.jsx",
-      "source_location": "L114",
+      "source_location": "L130",
       "id": "storyboards_tabs_row_profilerow",
       "community": 34,
       "norm_label": "profilerow()"
@@ -2410,7 +2808,7 @@
       "label": "HomePrayerRow()",
       "file_type": "code",
       "source_file": "src/home/storyboards/tabs-row.jsx",
-      "source_location": "L127",
+      "source_location": "L143",
       "id": "storyboards_tabs_row_homeprayerrow",
       "community": 34,
       "norm_label": "homeprayerrow()"
@@ -2495,6 +2893,231 @@
       "id": "src_ios_frame_ioskeyboard",
       "community": 7,
       "norm_label": "ioskeyboard()"
+    },
+    {
+      "label": "list-row.jsx",
+      "file_type": "code",
+      "source_file": "src/masjid-explore/storyboards/list-row.jsx",
+      "source_location": "L1",
+      "id": "storyboards_list_row",
+      "community": 49,
+      "norm_label": "list-row.jsx"
+    },
+    {
+      "label": "FRAMES",
+      "file_type": "code",
+      "source_file": "src/masjid-explore/storyboards/list-row.jsx",
+      "source_location": "L6",
+      "id": "storyboards_list_row_frames",
+      "community": 49,
+      "norm_label": "frames"
+    },
+    {
+      "label": "ListRow()",
+      "file_type": "code",
+      "source_file": "src/masjid-explore/storyboards/list-row.jsx",
+      "source_location": "L11",
+      "id": "storyboards_list_row_listrow",
+      "community": 49,
+      "norm_label": "listrow()"
+    },
+    {
+      "label": "map-row.jsx",
+      "file_type": "code",
+      "source_file": "src/masjid-explore/storyboards/map-row.jsx",
+      "source_location": "L1",
+      "id": "storyboards_map_row",
+      "community": 50,
+      "norm_label": "map-row.jsx"
+    },
+    {
+      "label": "FRAMES",
+      "file_type": "code",
+      "source_file": "src/masjid-explore/storyboards/map-row.jsx",
+      "source_location": "L7",
+      "id": "storyboards_map_row_frames",
+      "community": 50,
+      "norm_label": "frames"
+    },
+    {
+      "label": "MapRow()",
+      "file_type": "code",
+      "source_file": "src/masjid-explore/storyboards/map-row.jsx",
+      "source_location": "L13",
+      "id": "storyboards_map_row_maprow",
+      "community": 50,
+      "norm_label": "maprow()"
+    },
+    {
+      "label": "pincode-row.jsx",
+      "file_type": "code",
+      "source_file": "src/masjid-explore/storyboards/pincode-row.jsx",
+      "source_location": "L1",
+      "id": "storyboards_pincode_row",
+      "community": 51,
+      "norm_label": "pincode-row.jsx"
+    },
+    {
+      "label": "FRAMES",
+      "file_type": "code",
+      "source_file": "src/masjid-explore/storyboards/pincode-row.jsx",
+      "source_location": "L6",
+      "id": "storyboards_pincode_row_frames",
+      "community": 51,
+      "norm_label": "frames"
+    },
+    {
+      "label": "PincodeRow()",
+      "file_type": "code",
+      "source_file": "src/masjid-explore/storyboards/pincode-row.jsx",
+      "source_location": "L12",
+      "id": "storyboards_pincode_row_pincoderow",
+      "community": 51,
+      "norm_label": "pincoderow()"
+    },
+    {
+      "label": "qr-row.jsx",
+      "file_type": "code",
+      "source_file": "src/masjid-explore/storyboards/qr-row.jsx",
+      "source_location": "L1",
+      "id": "storyboards_qr_row",
+      "community": 52,
+      "norm_label": "qr-row.jsx"
+    },
+    {
+      "label": "FRAMES",
+      "file_type": "code",
+      "source_file": "src/masjid-explore/storyboards/qr-row.jsx",
+      "source_location": "L6",
+      "id": "storyboards_qr_row_frames",
+      "community": 52,
+      "norm_label": "frames"
+    },
+    {
+      "label": "QrRow()",
+      "file_type": "code",
+      "source_file": "src/masjid-explore/storyboards/qr-row.jsx",
+      "source_location": "L11",
+      "id": "storyboards_qr_row_qrrow",
+      "community": 52,
+      "norm_label": "qrrow()"
+    },
+    {
+      "label": "screens.jsx",
+      "file_type": "code",
+      "source_file": "src/masjid-explore/storyboards/screens.jsx",
+      "source_location": "L1",
+      "id": "src_masjid_explore_storyboards_screens_jsx_storyboards_screens",
+      "community": 43,
+      "norm_label": "screens.jsx"
+    },
+    {
+      "label": "MASJIDS",
+      "file_type": "code",
+      "source_file": "src/masjid-explore/storyboards/screens.jsx",
+      "source_location": "L7",
+      "id": "storyboards_screens_masjids",
+      "community": 43,
+      "norm_label": "masjids"
+    },
+    {
+      "label": "GlassBtn()",
+      "file_type": "code",
+      "source_file": "src/masjid-explore/storyboards/screens.jsx",
+      "source_location": "L22",
+      "id": "src_masjid_explore_storyboards_screens_jsx_storyboards_screens_glassbtn",
+      "community": 43,
+      "norm_label": "glassbtn()"
+    },
+    {
+      "label": "ExploreAppBar()",
+      "file_type": "code",
+      "source_file": "src/masjid-explore/storyboards/screens.jsx",
+      "source_location": "L41",
+      "id": "storyboards_screens_exploreappbar",
+      "community": 43,
+      "norm_label": "exploreappbar()"
+    },
+    {
+      "label": "MapCanvas()",
+      "file_type": "code",
+      "source_file": "src/masjid-explore/storyboards/screens.jsx",
+      "source_location": "L53",
+      "id": "src_masjid_explore_storyboards_screens_jsx_storyboards_screens_mapcanvas",
+      "community": 43,
+      "norm_label": "mapcanvas()"
+    },
+    {
+      "label": "MasjidCard()",
+      "file_type": "code",
+      "source_file": "src/masjid-explore/storyboards/screens.jsx",
+      "source_location": "L109",
+      "id": "storyboards_screens_masjidcard",
+      "community": 43,
+      "norm_label": "masjidcard()"
+    },
+    {
+      "label": "ExploreMapScreen()",
+      "file_type": "code",
+      "source_file": "src/masjid-explore/storyboards/screens.jsx",
+      "source_location": "L139",
+      "id": "storyboards_screens_exploremapscreen",
+      "community": 43,
+      "norm_label": "exploremapscreen()"
+    },
+    {
+      "label": "ExploreListScreen()",
+      "file_type": "code",
+      "source_file": "src/masjid-explore/storyboards/screens.jsx",
+      "source_location": "L213",
+      "id": "storyboards_screens_explorelistscreen",
+      "community": 43,
+      "norm_label": "explorelistscreen()"
+    },
+    {
+      "label": "FauxQR()",
+      "file_type": "code",
+      "source_file": "src/masjid-explore/storyboards/screens.jsx",
+      "source_location": "L267",
+      "id": "storyboards_screens_fauxqr",
+      "community": 43,
+      "norm_label": "fauxqr()"
+    },
+    {
+      "label": "QRScreen()",
+      "file_type": "code",
+      "source_file": "src/masjid-explore/storyboards/screens.jsx",
+      "source_location": "L289",
+      "id": "storyboards_screens_qrscreen",
+      "community": 43,
+      "norm_label": "qrscreen()"
+    },
+    {
+      "label": "PIN_KEYS",
+      "file_type": "code",
+      "source_file": "src/masjid-explore/storyboards/screens.jsx",
+      "source_location": "L357",
+      "id": "storyboards_screens_pin_keys",
+      "community": 43,
+      "norm_label": "pin_keys"
+    },
+    {
+      "label": "PincodeKeypad()",
+      "file_type": "code",
+      "source_file": "src/masjid-explore/storyboards/screens.jsx",
+      "source_location": "L363",
+      "id": "storyboards_screens_pincodekeypad",
+      "community": 43,
+      "norm_label": "pincodekeypad()"
+    },
+    {
+      "label": "PincodeScreen()",
+      "file_type": "code",
+      "source_file": "src/masjid-explore/storyboards/screens.jsx",
+      "source_location": "L395",
+      "id": "storyboards_screens_pincodescreen",
+      "community": 43,
+      "norm_label": "pincodescreen()"
     },
     {
       "label": "intro-row.jsx",
@@ -2639,6 +3262,177 @@
       "id": "storyboards_screens_otpscreen",
       "community": 21,
       "norm_label": "otpscreen()"
+    },
+    {
+      "label": "quran-reader.jsx",
+      "file_type": "code",
+      "source_file": "src/quran-reader.jsx",
+      "source_location": "L1",
+      "id": "src_quran_reader",
+      "community": 47,
+      "norm_label": "quran-reader.jsx"
+    },
+    {
+      "label": "QURAN_AYAHS",
+      "file_type": "code",
+      "source_file": "src/quran-reader.jsx",
+      "source_location": "L12",
+      "id": "src_quran_reader_quran_ayahs",
+      "community": 47,
+      "norm_label": "quran_ayahs"
+    },
+    {
+      "label": "QuranReaderScreen()",
+      "file_type": "code",
+      "source_file": "src/quran-reader.jsx",
+      "source_location": "L22",
+      "id": "src_quran_reader_quranreaderscreen",
+      "community": 47,
+      "norm_label": "quranreaderscreen()"
+    },
+    {
+      "label": "QURAN_READER_FRAMES",
+      "file_type": "code",
+      "source_file": "src/quran-reader.jsx",
+      "source_location": "L122",
+      "id": "src_quran_reader_quran_reader_frames",
+      "community": 47,
+      "norm_label": "quran_reader_frames"
+    },
+    {
+      "label": "QuranReaderRow()",
+      "file_type": "code",
+      "source_file": "src/quran-reader.jsx",
+      "source_location": "L131",
+      "id": "src_quran_reader_quranreaderrow",
+      "community": 47,
+      "norm_label": "quranreaderrow()"
+    },
+    {
+      "label": "screens.jsx",
+      "file_type": "code",
+      "source_file": "src/sehri/storyboards/screens.jsx",
+      "source_location": "L1",
+      "id": "src_sehri_storyboards_screens_jsx_storyboards_screens",
+      "community": 44,
+      "norm_label": "screens.jsx"
+    },
+    {
+      "label": "SEHRI",
+      "file_type": "code",
+      "source_file": "src/sehri/storyboards/screens.jsx",
+      "source_location": "L8",
+      "id": "storyboards_screens_sehri",
+      "community": 44,
+      "norm_label": "sehri"
+    },
+    {
+      "label": "GlassBtn()",
+      "file_type": "code",
+      "source_file": "src/sehri/storyboards/screens.jsx",
+      "source_location": "L22",
+      "id": "src_sehri_storyboards_screens_jsx_storyboards_screens_glassbtn",
+      "community": 44,
+      "norm_label": "glassbtn()"
+    },
+    {
+      "label": "SehriAppBar()",
+      "file_type": "code",
+      "source_file": "src/sehri/storyboards/screens.jsx",
+      "source_location": "L41",
+      "id": "storyboards_screens_sehriappbar",
+      "community": 44,
+      "norm_label": "sehriappbar()"
+    },
+    {
+      "label": "MapCanvas()",
+      "file_type": "code",
+      "source_file": "src/sehri/storyboards/screens.jsx",
+      "source_location": "L52",
+      "id": "src_sehri_storyboards_screens_jsx_storyboards_screens_mapcanvas",
+      "community": 44,
+      "norm_label": "mapcanvas()"
+    },
+    {
+      "label": "StatusTab()",
+      "file_type": "code",
+      "source_file": "src/sehri/storyboards/screens.jsx",
+      "source_location": "L105",
+      "id": "storyboards_screens_statustab",
+      "community": 44,
+      "norm_label": "statustab()"
+    },
+    {
+      "label": "DetailRow()",
+      "file_type": "code",
+      "source_file": "src/sehri/storyboards/screens.jsx",
+      "source_location": "L113",
+      "id": "storyboards_screens_detailrow",
+      "community": 44,
+      "norm_label": "detailrow()"
+    },
+    {
+      "label": "SehriCard()",
+      "file_type": "code",
+      "source_file": "src/sehri/storyboards/screens.jsx",
+      "source_location": "L127",
+      "id": "storyboards_screens_sehricard",
+      "community": 44,
+      "norm_label": "sehricard()"
+    },
+    {
+      "label": "LocationPermissionSheet()",
+      "file_type": "code",
+      "source_file": "src/sehri/storyboards/screens.jsx",
+      "source_location": "L158",
+      "id": "storyboards_screens_locationpermissionsheet",
+      "community": 44,
+      "norm_label": "locationpermissionsheet()"
+    },
+    {
+      "label": "SehriMapScreen()",
+      "file_type": "code",
+      "source_file": "src/sehri/storyboards/screens.jsx",
+      "source_location": "L199",
+      "id": "storyboards_screens_sehrimapscreen",
+      "community": 44,
+      "norm_label": "sehrimapscreen()"
+    },
+    {
+      "label": "SehriListScreen()",
+      "file_type": "code",
+      "source_file": "src/sehri/storyboards/screens.jsx",
+      "source_location": "L261",
+      "id": "storyboards_screens_sehrilistscreen",
+      "community": 44,
+      "norm_label": "sehrilistscreen()"
+    },
+    {
+      "label": "sehri-row.jsx",
+      "file_type": "code",
+      "source_file": "src/sehri/storyboards/sehri-row.jsx",
+      "source_location": "L1",
+      "id": "storyboards_sehri_row",
+      "community": 53,
+      "norm_label": "sehri-row.jsx"
+    },
+    {
+      "label": "FRAMES",
+      "file_type": "code",
+      "source_file": "src/sehri/storyboards/sehri-row.jsx",
+      "source_location": "L7",
+      "id": "storyboards_sehri_row_frames",
+      "community": 53,
+      "norm_label": "frames"
+    },
+    {
+      "label": "SehriRow()",
+      "file_type": "code",
+      "source_file": "src/sehri/storyboards/sehri-row.jsx",
+      "source_location": "L15",
+      "id": "storyboards_sehri_row_sehrirow",
+      "community": 53,
+      "norm_label": "sehrirow()"
     },
     {
       "label": "support.js",
@@ -3127,6 +3921,105 @@
       "norm_label": "init()"
     },
     {
+      "label": "screens.jsx",
+      "file_type": "code",
+      "source_file": "src/zakaat/storyboards/screens.jsx",
+      "source_location": "L1",
+      "id": "src_zakaat_storyboards_screens_jsx_storyboards_screens",
+      "community": 45,
+      "norm_label": "screens.jsx"
+    },
+    {
+      "label": "ZakaatKeypad()",
+      "file_type": "code",
+      "source_file": "src/zakaat/storyboards/screens.jsx",
+      "source_location": "L8",
+      "id": "storyboards_screens_zakaatkeypad",
+      "community": 45,
+      "norm_label": "zakaatkeypad()"
+    },
+    {
+      "label": "ZakaatEmptyScreen()",
+      "file_type": "code",
+      "source_file": "src/zakaat/storyboards/screens.jsx",
+      "source_location": "L69",
+      "id": "storyboards_screens_zakaatemptyscreen",
+      "community": 45,
+      "norm_label": "zakaatemptyscreen()"
+    },
+    {
+      "label": "ZakaatListScreen()",
+      "file_type": "code",
+      "source_file": "src/zakaat/storyboards/screens.jsx",
+      "source_location": "L98",
+      "id": "storyboards_screens_zakaatlistscreen",
+      "community": 45,
+      "norm_label": "zakaatlistscreen()"
+    },
+    {
+      "label": "ZakaatLoadingScreen()",
+      "file_type": "code",
+      "source_file": "src/zakaat/storyboards/screens.jsx",
+      "source_location": "L203",
+      "id": "storyboards_screens_zakaatloadingscreen",
+      "community": 45,
+      "norm_label": "zakaatloadingscreen()"
+    },
+    {
+      "label": "ZakaatStepScreen()",
+      "file_type": "code",
+      "source_file": "src/zakaat/storyboards/screens.jsx",
+      "source_location": "L234",
+      "id": "storyboards_screens_zakaatstepscreen",
+      "community": 45,
+      "norm_label": "zakaatstepscreen()"
+    },
+    {
+      "label": "ZakaatSummaryScreen()",
+      "file_type": "code",
+      "source_file": "src/zakaat/storyboards/screens.jsx",
+      "source_location": "L478",
+      "id": "storyboards_screens_zakaatsummaryscreen",
+      "community": 45,
+      "norm_label": "zakaatsummaryscreen()"
+    },
+    {
+      "label": "zakaat-row.jsx",
+      "file_type": "code",
+      "source_file": "src/zakaat/storyboards/zakaat-row.jsx",
+      "source_location": "L1",
+      "id": "storyboards_zakaat_row",
+      "community": 48,
+      "norm_label": "zakaat-row.jsx"
+    },
+    {
+      "label": "ZAKAAT_STEPS_FRAMES",
+      "file_type": "code",
+      "source_file": "src/zakaat/storyboards/zakaat-row.jsx",
+      "source_location": "L4",
+      "id": "storyboards_zakaat_row_zakaat_steps_frames",
+      "community": 48,
+      "norm_label": "zakaat_steps_frames"
+    },
+    {
+      "label": "ZAKAAT_SUMMARY_FRAMES",
+      "file_type": "code",
+      "source_file": "src/zakaat/storyboards/zakaat-row.jsx",
+      "source_location": "L17",
+      "id": "storyboards_zakaat_row_zakaat_summary_frames",
+      "community": 48,
+      "norm_label": "zakaat_summary_frames"
+    },
+    {
+      "label": "ZakaatRow()",
+      "file_type": "code",
+      "source_file": "src/zakaat/storyboards/zakaat-row.jsx",
+      "source_location": "L22",
+      "id": "storyboards_zakaat_row_zakaatrow",
+      "community": 48,
+      "norm_label": "zakaatrow()"
+    },
+    {
       "label": "start.sh",
       "file_type": "code",
       "source_file": "start.sh",
@@ -3376,7 +4269,7 @@
       "label": "Anatomy",
       "file_type": "document",
       "source_file": ".agents/skills/add-screen/SKILL.md",
-      "source_location": "L21",
+      "source_location": "L34",
       "id": "agents_skills_add_screen_skill_md_add_screen_skill_anatomy",
       "community": 23,
       "norm_label": "anatomy"
@@ -3385,7 +4278,7 @@
       "label": "Step 1 \u2014 Inventory the source screens",
       "file_type": "document",
       "source_file": ".agents/skills/add-screen/SKILL.md",
-      "source_location": "L35",
+      "source_location": "L48",
       "id": "agents_skills_add_screen_skill_md_add_screen_skill_step_1_inventory_the_source_screens",
       "community": 23,
       "norm_label": "step 1 \u2014 inventory the source screens"
@@ -3394,7 +4287,7 @@
       "label": "Step 2 \u2014 Scaffold the board page",
       "file_type": "document",
       "source_file": ".agents/skills/add-screen/SKILL.md",
-      "source_location": "L47",
+      "source_location": "L60",
       "id": "agents_skills_add_screen_skill_md_add_screen_skill_step_2_scaffold_the_board_page",
       "community": 23,
       "norm_label": "step 2 \u2014 scaffold the board page"
@@ -3403,7 +4296,7 @@
       "label": "Step 3 \u2014 Storyboard rows",
       "file_type": "document",
       "source_file": ".agents/skills/add-screen/SKILL.md",
-      "source_location": "L80",
+      "source_location": "L93",
       "id": "agents_skills_add_screen_skill_md_add_screen_skill_step_3_storyboard_rows",
       "community": 23,
       "norm_label": "step 3 \u2014 storyboard rows"
@@ -3412,25 +4305,52 @@
       "label": "Step 4 \u2014 The live device: one stage machine",
       "file_type": "document",
       "source_file": ".agents/skills/add-screen/SKILL.md",
-      "source_location": "L93",
+      "source_location": "L109",
       "id": "agents_skills_add_screen_skill_md_add_screen_skill_step_4_the_live_device_one_stage_machine",
       "community": 23,
       "norm_label": "step 4 \u2014 the live device: one stage machine"
     },
     {
+      "label": "Pre-loading cross-section components (React Error #130 prevention)",
+      "file_type": "document",
+      "source_file": ".agents/skills/add-screen/SKILL.md",
+      "source_location": "L126",
+      "id": "agents_skills_add_screen_skill_md_add_screen_skill_pre_loading_cross_section_components_react_error_130_prevention",
+      "community": 23,
+      "norm_label": "pre-loading cross-section components (react error #130 prevention)"
+    },
+    {
       "label": "Step 5 \u2014 Theming and DS fidelity",
       "file_type": "document",
       "source_file": ".agents/skills/add-screen/SKILL.md",
-      "source_location": "L110",
+      "source_location": "L149",
       "id": "agents_skills_add_screen_skill_md_add_screen_skill_step_5_theming_and_ds_fidelity",
       "community": 23,
       "norm_label": "step 5 \u2014 theming and ds fidelity"
     },
     {
+      "label": "App bar \u2014 use the DS `.app-bar` (progressive blur), like Home",
+      "file_type": "document",
+      "source_file": ".agents/skills/add-screen/SKILL.md",
+      "source_location": "L165",
+      "id": "agents_skills_add_screen_skill_md_add_screen_skill_app_bar_use_the_ds_app_bar_progressive_blur_like_home",
+      "community": 23,
+      "norm_label": "app bar \u2014 use the ds `.app-bar` (progressive blur), like home"
+    },
+    {
+      "label": "Audio player \u2014 use the DS `.aplayer` molecule, don't build a container",
+      "file_type": "document",
+      "source_file": ".agents/skills/add-screen/SKILL.md",
+      "source_location": "L198",
+      "id": "agents_skills_add_screen_skill_md_add_screen_skill_audio_player_use_the_ds_aplayer_molecule_don_t_build_a_container",
+      "community": 23,
+      "norm_label": "audio player \u2014 use the ds `.aplayer` molecule, don't build a container"
+    },
+    {
       "label": "Step 6 \u2014 Rewire the rest of the repo",
       "file_type": "document",
       "source_file": ".agents/skills/add-screen/SKILL.md",
-      "source_location": "L123",
+      "source_location": "L208",
       "id": "agents_skills_add_screen_skill_md_add_screen_skill_step_6_rewire_the_rest_of_the_repo",
       "community": 23,
       "norm_label": "step 6 \u2014 rewire the rest of the repo"
@@ -3439,7 +4359,7 @@
       "label": "Step 7 \u2014 Verify before you're done",
       "file_type": "document",
       "source_file": ".agents/skills/add-screen/SKILL.md",
-      "source_location": "L133",
+      "source_location": "L226",
       "id": "agents_skills_add_screen_skill_md_add_screen_skill_step_7_verify_before_you_re_done",
       "community": 23,
       "norm_label": "step 7 \u2014 verify before you're done"
@@ -3472,10 +4392,19 @@
       "norm_label": "1. the board page \u2014 `<section>/<section>.dc.html`"
     },
     {
-      "label": "2. A storyboard row \u2014 `<section>/storyboards/<flow>-row.jsx`",
+      "label": "Pre-loading cross-section components",
       "file_type": "document",
       "source_file": ".agents/skills/add-screen/references/board-anatomy.md",
       "source_location": "L137",
+      "id": "agents_skills_add_screen_references_board_anatomy_md_references_board_anatomy_pre_loading_cross_section_components",
+      "community": 25,
+      "norm_label": "pre-loading cross-section components"
+    },
+    {
+      "label": "2. A storyboard row \u2014 `<section>/storyboards/<flow>-row.jsx`",
+      "file_type": "document",
+      "source_file": ".agents/skills/add-screen/references/board-anatomy.md",
+      "source_location": "L154",
       "id": "agents_skills_add_screen_references_board_anatomy_md_references_board_anatomy_2_a_storyboard_row_section_storyboards_flow_row_jsx",
       "community": 25,
       "norm_label": "2. a storyboard row \u2014 `<section>/storyboards/<flow>-row.jsx`"
@@ -3484,7 +4413,7 @@
       "label": "3. Shared screen components \u2014 `<section>/storyboards/screens.jsx`",
       "file_type": "document",
       "source_file": ".agents/skills/add-screen/references/board-anatomy.md",
-      "source_location": "L187",
+      "source_location": "L206",
       "id": "agents_skills_add_screen_references_board_anatomy_md_references_board_anatomy_3_shared_screen_components_section_storyboards_screens_jsx",
       "community": 25,
       "norm_label": "3. shared screen components \u2014 `<section>/storyboards/screens.jsx`"
@@ -3493,7 +4422,7 @@
       "label": "Index registration",
       "file_type": "document",
       "source_file": ".agents/skills/add-screen/references/board-anatomy.md",
-      "source_location": "L219",
+      "source_location": "L259",
       "id": "agents_skills_add_screen_references_board_anatomy_md_references_board_anatomy_index_registration",
       "community": 25,
       "norm_label": "index registration"
@@ -3520,7 +4449,7 @@
       "label": "Anatomy",
       "file_type": "document",
       "source_file": ".claude/skills/add-screen/SKILL.md",
-      "source_location": "L31",
+      "source_location": "L34",
       "id": "claude_skills_add_screen_skill_md_add_screen_skill_anatomy",
       "community": 24,
       "norm_label": "anatomy"
@@ -3529,7 +4458,7 @@
       "label": "Step 1 \u2014 Inventory the source screens",
       "file_type": "document",
       "source_file": ".claude/skills/add-screen/SKILL.md",
-      "source_location": "L45",
+      "source_location": "L48",
       "id": "claude_skills_add_screen_skill_md_add_screen_skill_step_1_inventory_the_source_screens",
       "community": 24,
       "norm_label": "step 1 \u2014 inventory the source screens"
@@ -3538,7 +4467,7 @@
       "label": "Step 2 \u2014 Scaffold the board page",
       "file_type": "document",
       "source_file": ".claude/skills/add-screen/SKILL.md",
-      "source_location": "L57",
+      "source_location": "L60",
       "id": "claude_skills_add_screen_skill_md_add_screen_skill_step_2_scaffold_the_board_page",
       "community": 24,
       "norm_label": "step 2 \u2014 scaffold the board page"
@@ -3547,7 +4476,7 @@
       "label": "Step 3 \u2014 Storyboard rows",
       "file_type": "document",
       "source_file": ".claude/skills/add-screen/SKILL.md",
-      "source_location": "L92",
+      "source_location": "L93",
       "id": "claude_skills_add_screen_skill_md_add_screen_skill_step_3_storyboard_rows",
       "community": 24,
       "norm_label": "step 3 \u2014 storyboard rows"
@@ -3556,25 +4485,52 @@
       "label": "Step 4 \u2014 The live device: one stage machine",
       "file_type": "document",
       "source_file": ".claude/skills/add-screen/SKILL.md",
-      "source_location": "L105",
+      "source_location": "L109",
       "id": "claude_skills_add_screen_skill_md_add_screen_skill_step_4_the_live_device_one_stage_machine",
       "community": 24,
       "norm_label": "step 4 \u2014 the live device: one stage machine"
     },
     {
+      "label": "Pre-loading cross-section components (React Error #130 prevention)",
+      "file_type": "document",
+      "source_file": ".claude/skills/add-screen/SKILL.md",
+      "source_location": "L126",
+      "id": "claude_skills_add_screen_skill_md_add_screen_skill_pre_loading_cross_section_components_react_error_130_prevention",
+      "community": 24,
+      "norm_label": "pre-loading cross-section components (react error #130 prevention)"
+    },
+    {
       "label": "Step 5 \u2014 Theming and DS fidelity",
       "file_type": "document",
       "source_file": ".claude/skills/add-screen/SKILL.md",
-      "source_location": "L122",
+      "source_location": "L149",
       "id": "claude_skills_add_screen_skill_md_add_screen_skill_step_5_theming_and_ds_fidelity",
       "community": 24,
       "norm_label": "step 5 \u2014 theming and ds fidelity"
     },
     {
+      "label": "App bar \u2014 use the DS `.app-bar` (progressive blur), like Home",
+      "file_type": "document",
+      "source_file": ".claude/skills/add-screen/SKILL.md",
+      "source_location": "L165",
+      "id": "claude_skills_add_screen_skill_md_add_screen_skill_app_bar_use_the_ds_app_bar_progressive_blur_like_home",
+      "community": 24,
+      "norm_label": "app bar \u2014 use the ds `.app-bar` (progressive blur), like home"
+    },
+    {
+      "label": "Audio player \u2014 use the DS `.aplayer` molecule, don't build a container",
+      "file_type": "document",
+      "source_file": ".claude/skills/add-screen/SKILL.md",
+      "source_location": "L198",
+      "id": "claude_skills_add_screen_skill_md_add_screen_skill_audio_player_use_the_ds_aplayer_molecule_don_t_build_a_container",
+      "community": 24,
+      "norm_label": "audio player \u2014 use the ds `.aplayer` molecule, don't build a container"
+    },
+    {
       "label": "Step 6 \u2014 Rewire the rest of the repo",
       "file_type": "document",
       "source_file": ".claude/skills/add-screen/SKILL.md",
-      "source_location": "L141",
+      "source_location": "L208",
       "id": "claude_skills_add_screen_skill_md_add_screen_skill_step_6_rewire_the_rest_of_the_repo",
       "community": 24,
       "norm_label": "step 6 \u2014 rewire the rest of the repo"
@@ -3583,7 +4539,7 @@
       "label": "Step 7 \u2014 Verify before you're done",
       "file_type": "document",
       "source_file": ".claude/skills/add-screen/SKILL.md",
-      "source_location": "L151",
+      "source_location": "L226",
       "id": "claude_skills_add_screen_skill_md_add_screen_skill_step_7_verify_before_you_re_done",
       "community": 24,
       "norm_label": "step 7 \u2014 verify before you're done"
@@ -3616,10 +4572,19 @@
       "norm_label": "1. the board page \u2014 `<section>/<section>.dc.html`"
     },
     {
+      "label": "Pre-loading cross-section components",
+      "file_type": "document",
+      "source_file": ".claude/skills/add-screen/references/board-anatomy.md",
+      "source_location": "L137",
+      "id": "claude_skills_add_screen_references_board_anatomy_md_references_board_anatomy_pre_loading_cross_section_components",
+      "community": 26,
+      "norm_label": "pre-loading cross-section components"
+    },
+    {
       "label": "2. A storyboard row \u2014 `<section>/storyboards/<flow>-row.jsx`",
       "file_type": "document",
       "source_file": ".claude/skills/add-screen/references/board-anatomy.md",
-      "source_location": "L139",
+      "source_location": "L154",
       "id": "claude_skills_add_screen_references_board_anatomy_md_references_board_anatomy_2_a_storyboard_row_section_storyboards_flow_row_jsx",
       "community": 26,
       "norm_label": "2. a storyboard row \u2014 `<section>/storyboards/<flow>-row.jsx`"
@@ -3628,7 +4593,7 @@
       "label": "3. Shared screen components \u2014 `<section>/storyboards/screens.jsx`",
       "file_type": "document",
       "source_file": ".claude/skills/add-screen/references/board-anatomy.md",
-      "source_location": "L189",
+      "source_location": "L206",
       "id": "claude_skills_add_screen_references_board_anatomy_md_references_board_anatomy_3_shared_screen_components_section_storyboards_screens_jsx",
       "community": 26,
       "norm_label": "3. shared screen components \u2014 `<section>/storyboards/screens.jsx`"
@@ -3637,7 +4602,7 @@
       "label": "Index registration",
       "file_type": "document",
       "source_file": ".claude/skills/add-screen/references/board-anatomy.md",
-      "source_location": "L221",
+      "source_location": "L259",
       "id": "claude_skills_add_screen_references_board_anatomy_md_references_board_anatomy_index_registration",
       "community": 26,
       "norm_label": "index registration"
@@ -4037,6 +5002,24 @@
       "id": "noor_design_system_46f42e91_1858_412f_bdb6_560a6cc3df9f_readme_iconography",
       "community": 3,
       "norm_label": "iconography"
+    },
+    {
+      "label": "Pre-loading cross-section components (React Error #130 prevention)",
+      "file_type": "document",
+      "source_file": ".agents/skills/add-screen/SKILL.md",
+      "source_location": "L126",
+      "community": 23,
+      "norm_label": "pre-loading cross-section components (react error #130 prevention)",
+      "id": "add_screen_skill_pre_loading_cross_section_components_react_error_130_prevention"
+    },
+    {
+      "label": "Pre-loading cross-section components",
+      "file_type": "document",
+      "source_file": ".agents/skills/add-screen/references/board-anatomy.md",
+      "source_location": "L137",
+      "community": 25,
+      "norm_label": "pre-loading cross-section components",
+      "id": "references_board_anatomy_pre_loading_cross_section_components"
     },
     {
       "label": "SPEC.md",
@@ -4518,6 +5501,79 @@
       "confidence_score": 1.0,
       "source": "vscode_launch",
       "target": "vscode_launch_version"
+    },
+    {
+      "relation": "defines",
+      "confidence": "EXTRACTED",
+      "source_file": "compress_files.sh",
+      "source_location": "L18",
+      "weight": 1.0,
+      "source": "compress_files",
+      "target": "compress_files_compress_image",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "defines",
+      "confidence": "EXTRACTED",
+      "source_file": "compress_files.sh",
+      "source_location": "L75",
+      "weight": 1.0,
+      "source": "compress_files",
+      "target": "compress_files_compress_pdf",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "defines",
+      "confidence": "EXTRACTED",
+      "source_file": "compress_files.sh",
+      "source_location": "L106",
+      "weight": 1.0,
+      "source": "compress_files",
+      "target": "compress_files_process_file",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "compress_files.sh",
+      "source_location": "L1",
+      "weight": 1.0,
+      "source": "compress_files",
+      "target": "users_toufeeqahamed_paigham_noor_compress_files_sh__entry",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "calls",
+      "confidence": "EXTRACTED",
+      "source_file": "compress_files.sh",
+      "source_location": "L122",
+      "weight": 1.0,
+      "context": "call",
+      "source": "users_toufeeqahamed_paigham_noor_compress_files_sh__entry",
+      "target": "compress_files_process_file",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "calls",
+      "confidence": "EXTRACTED",
+      "source_file": "compress_files.sh",
+      "source_location": "L111",
+      "weight": 1.0,
+      "context": "call",
+      "source": "compress_files_process_file",
+      "target": "compress_files_compress_image",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "calls",
+      "confidence": "EXTRACTED",
+      "source_file": "compress_files.sh",
+      "source_location": "L112",
+      "weight": 1.0,
+      "context": "call",
+      "source": "compress_files_process_file",
+      "target": "compress_files_compress_pdf",
+      "confidence_score": 1.0
     },
     {
       "relation": "contains",
@@ -6806,6 +7862,16 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "src/_theme/components.jsx",
+      "source_location": "L149",
+      "weight": 1.0,
+      "source": "theme_components",
+      "target": "theme_components_dialog",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "src/_theme/components.jsx",
       "source_location": "L4",
       "weight": 1.0,
       "confidence_score": 1.0,
@@ -6831,6 +7897,238 @@
       "confidence_score": 1.0,
       "source": "theme_devserver_nocachehandler",
       "target": "theme_devserver_nocachehandler_end_headers"
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "src/asma-ul-husna/storyboards/names-row.jsx",
+      "source_location": "L12",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "storyboards_names_row",
+      "target": "storyboards_names_row_namesrow"
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "src/asma-ul-husna/storyboards/names-row.jsx",
+      "source_location": "L6",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "storyboards_names_row",
+      "target": "storyboards_names_row_storyboard_frames"
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "src/asma-ul-husna/storyboards/screens.jsx",
+      "source_location": "L64",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "src_asma_ul_husna_storyboards_screens_jsx_storyboards_screens",
+      "target": "storyboards_screens_detailscreen"
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "src/asma-ul-husna/storyboards/screens.jsx",
+      "source_location": "L26",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "src_asma_ul_husna_storyboards_screens_jsx_storyboards_screens",
+      "target": "storyboards_screens_gridscreen"
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "src/asma-ul-husna/storyboards/screens.jsx",
+      "source_location": "L4",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "src_asma_ul_husna_storyboards_screens_jsx_storyboards_screens",
+      "target": "storyboards_screens_names"
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "src/dua-dikhr/storyboards/dua-row.jsx",
+      "source_location": "L14",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "storyboards_dua_row",
+      "target": "storyboards_dua_row_duarow"
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "src/dua-dikhr/storyboards/dua-row.jsx",
+      "source_location": "L6",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "storyboards_dua_row",
+      "target": "storyboards_dua_row_storyboard_frames"
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "src/dua-dikhr/storyboards/screens.jsx",
+      "source_location": "L73",
+      "weight": 1.0,
+      "source": "src_dua_dikhr_storyboards_screens_jsx_storyboards_screens",
+      "target": "storyboards_screens_appbar",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "src/dua-dikhr/storyboards/screens.jsx",
+      "source_location": "L57",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "src_dua_dikhr_storyboards_screens_jsx_storyboards_screens",
+      "target": "storyboards_screens_audio_amp"
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "src/dua-dikhr/storyboards/screens.jsx",
+      "source_location": "L59",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "src_dua_dikhr_storyboards_screens_jsx_storyboards_screens",
+      "target": "storyboards_screens_audiobars"
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "src/dua-dikhr/storyboards/screens.jsx",
+      "source_location": "L56",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "src_dua_dikhr_storyboards_screens_jsx_storyboards_screens",
+      "target": "storyboards_screens_categoriesscreen"
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "src/dua-dikhr/storyboards/screens.jsx",
+      "source_location": "L7",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "src_dua_dikhr_storyboards_screens_jsx_storyboards_screens",
+      "target": "storyboards_screens_dua_categories"
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "src/dua-dikhr/storyboards/screens.jsx",
+      "source_location": "L37",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "src_dua_dikhr_storyboards_screens_jsx_storyboards_screens",
+      "target": "storyboards_screens_dua_detail"
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "src/dua-dikhr/storyboards/screens.jsx",
+      "source_location": "L21",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "src_dua_dikhr_storyboards_screens_jsx_storyboards_screens",
+      "target": "storyboards_screens_dua_list"
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "src/dua-dikhr/storyboards/screens.jsx",
+      "source_location": "L128",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "src_dua_dikhr_storyboards_screens_jsx_storyboards_screens",
+      "target": "storyboards_screens_duadetailscreen"
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "src/dua-dikhr/storyboards/screens.jsx",
+      "source_location": "L101",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "src_dua_dikhr_storyboards_screens_jsx_storyboards_screens",
+      "target": "storyboards_screens_dualistscreen"
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "src/dua-dikhr/storyboards/screens.jsx",
+      "source_location": "L63",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "src_dua_dikhr_storyboards_screens_jsx_storyboards_screens",
+      "target": "storyboards_screens_fmttime"
+    },
+    {
+      "relation": "calls",
+      "context": "call",
+      "confidence": "EXTRACTED",
+      "source_file": "src/dua-dikhr/storyboards/screens.jsx",
+      "source_location": "L157",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "storyboards_screens_duadetailscreen",
+      "target": "storyboards_screens_audiobars"
+    },
+    {
+      "relation": "calls",
+      "context": "call",
+      "confidence": "EXTRACTED",
+      "source_file": "src/dua-dikhr/storyboards/screens.jsx",
+      "source_location": "L205",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "storyboards_screens_duadetailscreen",
+      "target": "storyboards_screens_fmttime"
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "src/islamic-calendar/storyboards/calendar-row.jsx",
+      "source_location": "L12",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "storyboards_calendar_row",
+      "target": "storyboards_calendar_row_calendarrow"
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "src/islamic-calendar/storyboards/calendar-row.jsx",
+      "source_location": "L6",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "storyboards_calendar_row",
+      "target": "storyboards_calendar_row_storyboard_frames"
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "src/hijri/storyboards/screens.jsx",
+      "source_location": "L56",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "src_hijri_storyboards_screens_jsx_storyboards_screens",
+      "target": "storyboards_screens_calendarscreen"
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "src/hijri/storyboards/screens.jsx",
+      "source_location": "L4",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "src_hijri_storyboards_screens_jsx_storyboards_screens",
+      "target": "storyboards_screens_months_data"
     },
     {
       "relation": "contains",
@@ -6866,6 +8164,26 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "src/home/storyboards/screens.jsx",
+      "source_location": "L715",
+      "weight": 1.0,
+      "source": "src_home_storyboards_screens_jsx_storyboards_screens",
+      "target": "storyboards_screens_postactions",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "src/home/storyboards/screens.jsx",
+      "source_location": "L704",
+      "weight": 1.0,
+      "source": "src_home_storyboards_screens_jsx_storyboards_screens",
+      "target": "storyboards_screens_postheader",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "src/home/storyboards/screens.jsx",
       "source_location": "L694",
       "weight": 1.0,
       "confidence_score": 1.0,
@@ -6876,11 +8194,51 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "src/home/storyboards/screens.jsx",
+      "source_location": "L669",
+      "weight": 1.0,
+      "source": "src_home_storyboards_screens_jsx_storyboards_screens",
+      "target": "storyboards_screens_qaum_amp",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "src/home/storyboards/screens.jsx",
+      "source_location": "L681",
+      "weight": 1.0,
+      "source": "src_home_storyboards_screens_jsx_storyboards_screens",
+      "target": "storyboards_screens_qaumaudioplayer",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "src/home/storyboards/screens.jsx",
+      "source_location": "L671",
+      "weight": 1.0,
+      "source": "src_home_storyboards_screens_jsx_storyboards_screens",
+      "target": "storyboards_screens_qaumbars",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "src/home/storyboards/screens.jsx",
       "source_location": "L274",
       "weight": 1.0,
       "confidence_score": 1.0,
       "source": "src_home_storyboards_screens_jsx_storyboards_screens",
       "target": "storyboards_screens_qaumscreen"
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "src/home/storyboards/screens.jsx",
+      "source_location": "L675",
+      "weight": 1.0,
+      "source": "src_home_storyboards_screens_jsx_storyboards_screens",
+      "target": "storyboards_screens_qaumtime",
+      "confidence_score": 1.0
     },
     {
       "relation": "contains",
@@ -6901,6 +8259,38 @@
       "confidence_score": 1.0,
       "source": "src_home_storyboards_screens_jsx_storyboards_screens",
       "target": "storyboards_screens_salaahscreen"
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "src/home/storyboards/screens.jsx",
+      "source_location": "L898",
+      "weight": 1.0,
+      "source": "src_home_storyboards_screens_jsx_storyboards_screens",
+      "target": "storyboards_screens_surahrow",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "calls",
+      "context": "call",
+      "confidence": "EXTRACTED",
+      "source_file": "src/home/storyboards/screens.jsx",
+      "source_location": "L683",
+      "weight": 1.0,
+      "source": "storyboards_screens_qaumaudioplayer",
+      "target": "storyboards_screens_qaumbars",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "calls",
+      "context": "call",
+      "confidence": "EXTRACTED",
+      "source_file": "src/home/storyboards/screens.jsx",
+      "source_location": "L689",
+      "weight": 1.0,
+      "source": "storyboards_screens_qaumaudioplayer",
+      "target": "storyboards_screens_qaumtime",
+      "confidence_score": 1.0
     },
     {
       "relation": "contains",
@@ -6946,11 +8336,31 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "src/home/storyboards/tabs-row.jsx",
+      "source_location": "L27",
+      "weight": 1.0,
+      "source": "storyboards_tabs_row",
+      "target": "storyboards_tabs_row_qaum_extra_frames",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "src/home/storyboards/tabs-row.jsx",
       "source_location": "L75",
       "weight": 1.0,
       "confidence_score": 1.0,
       "source": "storyboards_tabs_row",
       "target": "storyboards_tabs_row_qaumrow"
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "src/home/storyboards/tabs-row.jsx",
+      "source_location": "L34",
+      "weight": 1.0,
+      "source": "storyboards_tabs_row",
+      "target": "storyboards_tabs_row_quran_extra_frames",
+      "confidence_score": 1.0
     },
     {
       "relation": "contains",
@@ -7001,6 +8411,28 @@
       "confidence_score": 1.0,
       "source": "storyboards_tabs_row",
       "target": "storyboards_tabs_row_tabsrow"
+    },
+    {
+      "relation": "calls",
+      "context": "call",
+      "confidence": "EXTRACTED",
+      "source_file": "src/home/storyboards/tabs-row.jsx",
+      "source_location": "L96",
+      "weight": 1.0,
+      "source": "storyboards_tabs_row_qaumrow",
+      "target": "storyboards_tabs_row_renderframe",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "calls",
+      "context": "call",
+      "confidence": "EXTRACTED",
+      "source_file": "src/home/storyboards/tabs-row.jsx",
+      "source_location": "L110",
+      "weight": 1.0,
+      "source": "storyboards_tabs_row_quranrow",
+      "target": "storyboards_tabs_row_renderframe",
+      "confidence_score": 1.0
     },
     {
       "relation": "contains",
@@ -7158,6 +8590,206 @@
       "confidence_score": 1.0,
       "source": "src_ios_frame_iosstatusbar",
       "target": "src_ios_frame_usenoordark"
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "src/masjid-explore/storyboards/list-row.jsx",
+      "source_location": "L6",
+      "weight": 1.0,
+      "source": "storyboards_list_row",
+      "target": "storyboards_list_row_frames",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "src/masjid-explore/storyboards/list-row.jsx",
+      "source_location": "L11",
+      "weight": 1.0,
+      "source": "storyboards_list_row",
+      "target": "storyboards_list_row_listrow",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "src/masjid-explore/storyboards/map-row.jsx",
+      "source_location": "L7",
+      "weight": 1.0,
+      "source": "storyboards_map_row",
+      "target": "storyboards_map_row_frames",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "src/masjid-explore/storyboards/map-row.jsx",
+      "source_location": "L13",
+      "weight": 1.0,
+      "source": "storyboards_map_row",
+      "target": "storyboards_map_row_maprow",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "src/masjid-explore/storyboards/pincode-row.jsx",
+      "source_location": "L6",
+      "weight": 1.0,
+      "source": "storyboards_pincode_row",
+      "target": "storyboards_pincode_row_frames",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "src/masjid-explore/storyboards/pincode-row.jsx",
+      "source_location": "L12",
+      "weight": 1.0,
+      "source": "storyboards_pincode_row",
+      "target": "storyboards_pincode_row_pincoderow",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "src/masjid-explore/storyboards/qr-row.jsx",
+      "source_location": "L6",
+      "weight": 1.0,
+      "source": "storyboards_qr_row",
+      "target": "storyboards_qr_row_frames",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "src/masjid-explore/storyboards/qr-row.jsx",
+      "source_location": "L11",
+      "weight": 1.0,
+      "source": "storyboards_qr_row",
+      "target": "storyboards_qr_row_qrrow",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "src/masjid-explore/storyboards/screens.jsx",
+      "source_location": "L22",
+      "weight": 1.0,
+      "source": "src_masjid_explore_storyboards_screens_jsx_storyboards_screens",
+      "target": "src_masjid_explore_storyboards_screens_jsx_storyboards_screens_glassbtn",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "src/masjid-explore/storyboards/screens.jsx",
+      "source_location": "L53",
+      "weight": 1.0,
+      "source": "src_masjid_explore_storyboards_screens_jsx_storyboards_screens",
+      "target": "src_masjid_explore_storyboards_screens_jsx_storyboards_screens_mapcanvas",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "src/masjid-explore/storyboards/screens.jsx",
+      "source_location": "L41",
+      "weight": 1.0,
+      "source": "src_masjid_explore_storyboards_screens_jsx_storyboards_screens",
+      "target": "storyboards_screens_exploreappbar",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "src/masjid-explore/storyboards/screens.jsx",
+      "source_location": "L213",
+      "weight": 1.0,
+      "source": "src_masjid_explore_storyboards_screens_jsx_storyboards_screens",
+      "target": "storyboards_screens_explorelistscreen",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "src/masjid-explore/storyboards/screens.jsx",
+      "source_location": "L139",
+      "weight": 1.0,
+      "source": "src_masjid_explore_storyboards_screens_jsx_storyboards_screens",
+      "target": "storyboards_screens_exploremapscreen",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "src/masjid-explore/storyboards/screens.jsx",
+      "source_location": "L267",
+      "weight": 1.0,
+      "source": "src_masjid_explore_storyboards_screens_jsx_storyboards_screens",
+      "target": "storyboards_screens_fauxqr",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "src/masjid-explore/storyboards/screens.jsx",
+      "source_location": "L109",
+      "weight": 1.0,
+      "source": "src_masjid_explore_storyboards_screens_jsx_storyboards_screens",
+      "target": "storyboards_screens_masjidcard",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "src/masjid-explore/storyboards/screens.jsx",
+      "source_location": "L7",
+      "weight": 1.0,
+      "source": "src_masjid_explore_storyboards_screens_jsx_storyboards_screens",
+      "target": "storyboards_screens_masjids",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "src/masjid-explore/storyboards/screens.jsx",
+      "source_location": "L357",
+      "weight": 1.0,
+      "source": "src_masjid_explore_storyboards_screens_jsx_storyboards_screens",
+      "target": "storyboards_screens_pin_keys",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "src/masjid-explore/storyboards/screens.jsx",
+      "source_location": "L363",
+      "weight": 1.0,
+      "source": "src_masjid_explore_storyboards_screens_jsx_storyboards_screens",
+      "target": "storyboards_screens_pincodekeypad",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "src/masjid-explore/storyboards/screens.jsx",
+      "source_location": "L395",
+      "weight": 1.0,
+      "source": "src_masjid_explore_storyboards_screens_jsx_storyboards_screens",
+      "target": "storyboards_screens_pincodescreen",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "src/masjid-explore/storyboards/screens.jsx",
+      "source_location": "L289",
+      "weight": 1.0,
+      "source": "src_masjid_explore_storyboards_screens_jsx_storyboards_screens",
+      "target": "storyboards_screens_qrscreen",
+      "confidence_score": 1.0
     },
     {
       "relation": "contains",
@@ -7328,6 +8960,166 @@
       "confidence_score": 1.0,
       "source": "storyboards_screens",
       "target": "storyboards_screens_otpscreen"
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "src/quran-reader.jsx",
+      "source_location": "L12",
+      "weight": 1.0,
+      "source": "src_quran_reader",
+      "target": "src_quran_reader_quran_ayahs",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "src/quran-reader.jsx",
+      "source_location": "L122",
+      "weight": 1.0,
+      "source": "src_quran_reader",
+      "target": "src_quran_reader_quran_reader_frames",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "src/quran-reader.jsx",
+      "source_location": "L131",
+      "weight": 1.0,
+      "source": "src_quran_reader",
+      "target": "src_quran_reader_quranreaderrow",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "src/quran-reader.jsx",
+      "source_location": "L22",
+      "weight": 1.0,
+      "source": "src_quran_reader",
+      "target": "src_quran_reader_quranreaderscreen",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "src/sehri/storyboards/screens.jsx",
+      "source_location": "L22",
+      "weight": 1.0,
+      "source": "src_sehri_storyboards_screens_jsx_storyboards_screens",
+      "target": "src_sehri_storyboards_screens_jsx_storyboards_screens_glassbtn",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "src/sehri/storyboards/screens.jsx",
+      "source_location": "L52",
+      "weight": 1.0,
+      "source": "src_sehri_storyboards_screens_jsx_storyboards_screens",
+      "target": "src_sehri_storyboards_screens_jsx_storyboards_screens_mapcanvas",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "src/sehri/storyboards/screens.jsx",
+      "source_location": "L113",
+      "weight": 1.0,
+      "source": "src_sehri_storyboards_screens_jsx_storyboards_screens",
+      "target": "storyboards_screens_detailrow",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "src/sehri/storyboards/screens.jsx",
+      "source_location": "L158",
+      "weight": 1.0,
+      "source": "src_sehri_storyboards_screens_jsx_storyboards_screens",
+      "target": "storyboards_screens_locationpermissionsheet",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "src/sehri/storyboards/screens.jsx",
+      "source_location": "L8",
+      "weight": 1.0,
+      "source": "src_sehri_storyboards_screens_jsx_storyboards_screens",
+      "target": "storyboards_screens_sehri",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "src/sehri/storyboards/screens.jsx",
+      "source_location": "L41",
+      "weight": 1.0,
+      "source": "src_sehri_storyboards_screens_jsx_storyboards_screens",
+      "target": "storyboards_screens_sehriappbar",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "src/sehri/storyboards/screens.jsx",
+      "source_location": "L127",
+      "weight": 1.0,
+      "source": "src_sehri_storyboards_screens_jsx_storyboards_screens",
+      "target": "storyboards_screens_sehricard",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "src/sehri/storyboards/screens.jsx",
+      "source_location": "L261",
+      "weight": 1.0,
+      "source": "src_sehri_storyboards_screens_jsx_storyboards_screens",
+      "target": "storyboards_screens_sehrilistscreen",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "src/sehri/storyboards/screens.jsx",
+      "source_location": "L199",
+      "weight": 1.0,
+      "source": "src_sehri_storyboards_screens_jsx_storyboards_screens",
+      "target": "storyboards_screens_sehrimapscreen",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "src/sehri/storyboards/screens.jsx",
+      "source_location": "L105",
+      "weight": 1.0,
+      "source": "src_sehri_storyboards_screens_jsx_storyboards_screens",
+      "target": "storyboards_screens_statustab",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "src/sehri/storyboards/sehri-row.jsx",
+      "source_location": "L7",
+      "weight": 1.0,
+      "source": "storyboards_sehri_row",
+      "target": "storyboards_sehri_row_frames",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "src/sehri/storyboards/sehri-row.jsx",
+      "source_location": "L15",
+      "weight": 1.0,
+      "source": "storyboards_sehri_row",
+      "target": "storyboards_sehri_row_sehrirow",
+      "confidence_score": 1.0
     },
     {
       "relation": "contains",
@@ -8366,6 +10158,96 @@
       "target": "src_support_loadscript"
     },
     {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "src/zakaat/storyboards/screens.jsx",
+      "source_location": "L69",
+      "weight": 1.0,
+      "source": "src_zakaat_storyboards_screens_jsx_storyboards_screens",
+      "target": "storyboards_screens_zakaatemptyscreen",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "src/zakaat/storyboards/screens.jsx",
+      "source_location": "L8",
+      "weight": 1.0,
+      "source": "src_zakaat_storyboards_screens_jsx_storyboards_screens",
+      "target": "storyboards_screens_zakaatkeypad",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "src/zakaat/storyboards/screens.jsx",
+      "source_location": "L98",
+      "weight": 1.0,
+      "source": "src_zakaat_storyboards_screens_jsx_storyboards_screens",
+      "target": "storyboards_screens_zakaatlistscreen",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "src/zakaat/storyboards/screens.jsx",
+      "source_location": "L203",
+      "weight": 1.0,
+      "source": "src_zakaat_storyboards_screens_jsx_storyboards_screens",
+      "target": "storyboards_screens_zakaatloadingscreen",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "src/zakaat/storyboards/screens.jsx",
+      "source_location": "L234",
+      "weight": 1.0,
+      "source": "src_zakaat_storyboards_screens_jsx_storyboards_screens",
+      "target": "storyboards_screens_zakaatstepscreen",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "src/zakaat/storyboards/screens.jsx",
+      "source_location": "L478",
+      "weight": 1.0,
+      "source": "src_zakaat_storyboards_screens_jsx_storyboards_screens",
+      "target": "storyboards_screens_zakaatsummaryscreen",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "src/zakaat/storyboards/zakaat-row.jsx",
+      "source_location": "L4",
+      "weight": 1.0,
+      "source": "storyboards_zakaat_row",
+      "target": "storyboards_zakaat_row_zakaat_steps_frames",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "src/zakaat/storyboards/zakaat-row.jsx",
+      "source_location": "L17",
+      "weight": 1.0,
+      "source": "storyboards_zakaat_row",
+      "target": "storyboards_zakaat_row_zakaat_summary_frames",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "src/zakaat/storyboards/zakaat-row.jsx",
+      "source_location": "L22",
+      "weight": 1.0,
+      "source": "storyboards_zakaat_row",
+      "target": "storyboards_zakaat_row_zakaatrow",
+      "confidence_score": 1.0
+    },
+    {
       "relation": "defines",
       "confidence": "EXTRACTED",
       "source_file": "start.sh",
@@ -8678,6 +10560,46 @@
     {
       "relation": "contains",
       "confidence": "EXTRACTED",
+      "source_file": ".agents/skills/add-screen/SKILL.md",
+      "source_location": "L126",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "agents_skills_add_screen_skill_md_add_screen_skill_step_4_the_live_device_one_stage_machine",
+      "target": "add_screen_skill_pre_loading_cross_section_components_react_error_130_prevention"
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": ".agents/skills/add-screen/SKILL.md",
+      "source_location": "L126",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "agents_skills_add_screen_skill_md_add_screen_skill_step_4_the_live_device_one_stage_machine",
+      "target": "agents_skills_add_screen_skill_md_add_screen_skill_pre_loading_cross_section_components_react_error_130_prevention"
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": ".agents/skills/add-screen/SKILL.md",
+      "source_location": "L165",
+      "weight": 1.0,
+      "source": "agents_skills_add_screen_skill_md_add_screen_skill_step_5_theming_and_ds_fidelity",
+      "target": "agents_skills_add_screen_skill_md_add_screen_skill_app_bar_use_the_ds_app_bar_progressive_blur_like_home",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": ".agents/skills/add-screen/SKILL.md",
+      "source_location": "L198",
+      "weight": 1.0,
+      "source": "agents_skills_add_screen_skill_md_add_screen_skill_step_5_theming_and_ds_fidelity",
+      "target": "agents_skills_add_screen_skill_md_add_screen_skill_audio_player_use_the_ds_aplayer_molecule_don_t_build_a_container",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
       "source_file": ".agents/skills/add-screen/references/board-anatomy.md",
       "source_location": "L1",
       "weight": 1.0,
@@ -8724,6 +10646,26 @@
       "confidence_score": 1.0,
       "source": "agents_skills_add_screen_references_board_anatomy_md_references_board_anatomy_section_board_annotated_skeletons",
       "target": "agents_skills_add_screen_references_board_anatomy_md_references_board_anatomy_index_registration"
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": ".agents/skills/add-screen/references/board-anatomy.md",
+      "source_location": "L137",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "agents_skills_add_screen_references_board_anatomy_md_references_board_anatomy_1_the_board_page_section_section_dc_html",
+      "target": "agents_skills_add_screen_references_board_anatomy_md_references_board_anatomy_pre_loading_cross_section_components"
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": ".agents/skills/add-screen/references/board-anatomy.md",
+      "source_location": "L137",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "agents_skills_add_screen_references_board_anatomy_md_references_board_anatomy_1_the_board_page_section_section_dc_html",
+      "target": "references_board_anatomy_pre_loading_cross_section_components"
     },
     {
       "relation": "contains",
@@ -8818,6 +10760,36 @@
     {
       "relation": "contains",
       "confidence": "EXTRACTED",
+      "source_file": ".claude/skills/add-screen/SKILL.md",
+      "source_location": "L126",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "claude_skills_add_screen_skill_md_add_screen_skill_step_4_the_live_device_one_stage_machine",
+      "target": "claude_skills_add_screen_skill_md_add_screen_skill_pre_loading_cross_section_components_react_error_130_prevention"
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": ".claude/skills/add-screen/SKILL.md",
+      "source_location": "L165",
+      "weight": 1.0,
+      "source": "claude_skills_add_screen_skill_md_add_screen_skill_step_5_theming_and_ds_fidelity",
+      "target": "claude_skills_add_screen_skill_md_add_screen_skill_app_bar_use_the_ds_app_bar_progressive_blur_like_home",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": ".claude/skills/add-screen/SKILL.md",
+      "source_location": "L198",
+      "weight": 1.0,
+      "source": "claude_skills_add_screen_skill_md_add_screen_skill_step_5_theming_and_ds_fidelity",
+      "target": "claude_skills_add_screen_skill_md_add_screen_skill_audio_player_use_the_ds_aplayer_molecule_don_t_build_a_container",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
       "source_file": ".claude/skills/add-screen/references/board-anatomy.md",
       "source_location": "L1",
       "weight": 1.0,
@@ -8864,6 +10836,16 @@
       "confidence_score": 1.0,
       "source": "claude_skills_add_screen_references_board_anatomy_md_references_board_anatomy_section_board_annotated_skeletons",
       "target": "claude_skills_add_screen_references_board_anatomy_md_references_board_anatomy_index_registration"
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": ".claude/skills/add-screen/references/board-anatomy.md",
+      "source_location": "L137",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "claude_skills_add_screen_references_board_anatomy_md_references_board_anatomy_1_the_board_page_section_section_dc_html",
+      "target": "claude_skills_add_screen_references_board_anatomy_md_references_board_anatomy_pre_loading_cross_section_components"
     },
     {
       "relation": "contains",
@@ -9548,5 +11530,5 @@
     }
   ],
   "hyperedges": [],
-  "built_at_commit": "b32edae201db2d6748483ee00669050d5ecb8a33"
+  "built_at_commit": "ea241bc9aee50e7984920d295ea1b7eb3df60547"
 }
