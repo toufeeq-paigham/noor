@@ -11,6 +11,7 @@ function HomeScreen({
   salaahCount = "4 of 5 today",
   sehriNoteVisible = false,
   onSehriTap,
+  goSehri,
   slide = 0,
   onSlideDotTap,
   likes = { haj: { liked: true, count: 4 }, eid: { liked: true, count: 12 } },
@@ -23,6 +24,9 @@ function HomeScreen({
   goQuran,
   goDua,
   goMasjids,
+  goHijri,
+  goAsma,
+  goZakaat,
   prayer = 'Maghrib',
   loginNudge = false,
   onCloseLoginNudge,
@@ -242,7 +246,7 @@ function HomeScreen({
                 </div>
                 
                 {/* Sehri Card */}
-                <div onClick={onSehriTap} style={{ position: 'relative', height: 130, borderRadius: 24, overflow: 'hidden', cursor: 'pointer' }}>
+                <div onClick={goSehri || onSehriTap} style={{ position: 'relative', height: 130, borderRadius: 24, overflow: 'hidden', cursor: 'pointer' }}>
                   <img src={sehriImg} style={{ position: 'absolute', inset: 0, width: '100%', height: '100%', objectFit: 'cover' }} />
                   <div style={{ position: 'absolute', inset: 0, background: 'linear-gradient(90deg, rgba(0,0,0,0.6) 0%, transparent 65%)' }} />
                   <div style={{ position: 'absolute', left: 16, bottom: 16, display: 'flex', flexDirection: 'column', gap: 2 }}>
@@ -291,12 +295,12 @@ function HomeScreen({
             <div style={{ fontFamily: '"Nunito", sans-serif', fontSize: 20, fontWeight: 700, color: 'var(--color-info-primary)', marginBottom: 14 }}>Islamic tools</div>
             <div style={{ display: 'grid', gridTemplateColumns: 'repeat(4,1fr)', gap: 8 }}>
               {[
-                { img: '../../images/zakaat.webp', label: 'Zakaat' },
-                { img: '../../images/hijri.webp', label: 'Hijri' },
+                { img: '../../images/zakaat.webp', label: 'Zakaat', onClick: goZakaat },
+                { img: '../../images/hijri.webp', label: 'Hijri', onClick: goHijri },
                 { img: '../../images/qibla.png', label: 'Qibla' },
-                { img: '../../images/99Names.webp', label: '99 Names' }
+                { img: '../../images/99Names.webp', label: '99 Names', onClick: goAsma }
               ].map((t, idx) => (
-                <div key={idx} style={{ background: 'transparent', borderRadius: 16, padding: '8px 4px', display: 'flex', flexDirection: 'column', alignItems: 'center', gap: 8, cursor: 'pointer' }}>
+                <div key={idx} onClick={t.onClick} style={{ background: 'transparent', borderRadius: 16, padding: '8px 4px', display: 'flex', flexDirection: 'column', alignItems: 'center', gap: 8, cursor: 'pointer' }}>
                   <img src={t.img} style={{ width: 48, height: 48, objectFit: 'contain' }} />
                   <span style={{ fontFamily: '"Nunito", sans-serif', fontSize: 11, fontWeight: 700, color: 'var(--color-info-primary)', textWrap: 'nowrap' }}>{t.label}</span>
                 </div>
@@ -660,72 +664,115 @@ function HomeScreen({
   );
 }
 
+// ── Qaum audio player (DS .aplayer molecule) helpers ──
+const QAUM_AUDIO_TOTAL = 22; // seconds
+const QAUM_AMP = Array.from({ length: 38 }, (_, i) =>
+  26 + Math.round(Math.abs(Math.sin(i * 0.7) * Math.cos(i * 0.33)) * 70));
+function qaumBars(frac) {
+  const played = Math.round(QAUM_AMP.length * frac);
+  return QAUM_AMP.map((h, i) => ({ h: h + '%', on: i < played }));
+}
+function qaumTime(sec) {
+  const m = String(Math.floor(sec / 60)).padStart(2, '0');
+  const s = String(Math.round(sec) % 60).padStart(2, '0');
+  return m + ':' + s;
+}
+// Reusable .aplayer body (toggle + time + waveform + optional close).
+function QaumAudioPlayer({ playing, progress, onToggle, onClose, className = '', style }) {
+  const frac = Math.min(1, progress / QAUM_AUDIO_TOTAL);
+  const bars = qaumBars(frac);
+  return (
+    <div className={`aplayer ${className}`} style={style}>
+      <button className="ap-toggle" onClick={onToggle} aria-label={playing ? 'Pause' : 'Play'}>
+        <span className="mi fill" data-i={playing ? 'pause' : 'play_arrow'}></span>
+      </button>
+      <span className="ap-time">{qaumTime(progress)}</span>
+      <div className="ap-wave">
+        {bars.map((b, i) => <i key={i} className={b.on ? 'on' : ''} style={{ '--h': b.h }}></i>)}
+        <div className="ap-head" style={{ left: Math.round(frac * 100) + '%' }}></div>
+      </div>
+      {onClose ? (
+        <button className="ap-close" onClick={onClose} aria-label="Close player">
+          <span className="mi" data-i="close"></span>
+        </button>
+      ) : null}
+    </div>
+  );
+}
+
+// Post header (avatar + name + subtitle) and action row (like + reply + time) — shared by feed posts.
+function PostHeader({ letter, bg, name, sub }) {
+  return (
+    <div style={{ display: 'flex', alignItems: 'flex-start', gap: 10, marginBottom: 10 }}>
+      <div style={{ width: 44, height: 44, borderRadius: '50%', background: bg, flexShrink: 0, display: 'flex', alignItems: 'center', justifyContent: 'center', color: '#fff', fontFamily: '"Nunito", sans-serif', fontSize: 18, fontWeight: 700 }}>{letter}</div>
+      <div style={{ flex: 1, minWidth: 0 }}>
+        <div style={{ fontFamily: '"Nunito", sans-serif', fontSize: 15, fontWeight: 700, color: 'var(--color-info-primary)' }}>{name}</div>
+        <div style={{ fontFamily: '"Nunito", sans-serif', fontSize: 12, color: 'var(--color-info-secondary)' }}>{sub}</div>
+      </div>
+    </div>
+  );
+}
+function PostActions({ liked, count, time, onLike }) {
+  return (
+    <div style={{ display: 'flex', alignItems: 'center', gap: 12 }}>
+      <div onClick={onLike} style={{ width: 28, height: 28, borderRadius: '50%', background: liked ? 'rgba(224,80,96,0.15)' : 'var(--color-action-background)', display: 'flex', alignItems: 'center', justifyContent: 'center', cursor: onLike ? 'pointer' : 'default', transition: 'background 200ms' }}>
+        <span className="mi" style={{ fontSize: 14, color: liked ? '#E05060' : 'var(--color-info-secondary)', fontVariationSettings: `'FILL' ${liked ? 1 : 0}` }} data-i="favorite"></span>
+      </div>
+      <span style={{ fontFamily: '"Nunito", sans-serif', fontSize: 13, color: 'var(--color-info-secondary)' }}>{count}</span>
+      <span className="mi" style={{ fontSize: 20, color: 'var(--color-info-secondary)', transform: 'scaleX(-1)', cursor: 'pointer' }} data-i="reply"></span>
+      <span style={{ fontFamily: '"Nunito", sans-serif', fontSize: 12, color: 'var(--color-info-faint)', marginLeft: 'auto' }}>{time}</span>
+    </div>
+  );
+}
+
 // 2. QAUM SCREEN
 function QaumScreen({
   activeFilter = 0,
-  onSelectFilter,
   likes = { post1: { liked: true, count: 4 }, post2: { liked: false, count: 2 }, post3: { liked: true, count: 8 } },
   onLike,
-  follows = { paigham: true, dargah: false },
-  onToggleFollow,
   audioPlaying = false,
-  audioProgress = 4, // out of 22 bars
-  onToggleAudio
+  audioProgress = 0,     // seconds, of QAUM_AUDIO_TOTAL
+  onToggleAudio,
+  dock = 'none',         // storyboard override: force the docked player to 'top' | 'bottom'
+  onCloseAudio,
+  dockBottomOffset = 104 // px from bottom for .dock-bottom (clears the nav bar + a gap; storyboard passes ~14)
 }) {
-  const filters = [
-    { label: 'All Updates', index: 0 },
-    { label: 'My Masjids', index: 1 },
-    { label: 'Saved', index: 2 }
-  ];
+  const APP_BAR_H = 96;
+  // Scroll-driven docking: when the inline player scrolls out of view while playing,
+  // the mini player sticks to the nearest edge (top if scrolled above, bottom if below).
+  const feedRef = React.useRef(null);
+  const inlineRef = React.useRef(null);
+  const [scrollDock, setScrollDock] = React.useState('none');
 
-  const fPaigham = {
-    label: follows.paigham ? 'Following' : 'Follow',
-    variant: follows.paigham ? 'outline' : 'accent'
+  const recomputeDock = () => {
+    const feedEl = feedRef.current, inlEl = inlineRef.current;
+    if (!feedEl || !inlEl) return;
+    // Layout coords (offsetTop/scrollTop/clientHeight) are unscaled, so this stays correct
+    // even though the live device is rendered at 0.82 scale.
+    const top = inlEl.offsetTop - feedEl.scrollTop;      // inline player top, relative to the feed viewport
+    const bottom = top + inlEl.offsetHeight;
+    if (bottom < APP_BAR_H + 4) setScrollDock('top');                       // scrolled up behind the app bar
+    else if (top > feedEl.clientHeight - dockBottomOffset - 4) setScrollDock('bottom'); // scrolled down behind the nav
+    else setScrollDock('none');
   };
 
-  const fDargah = {
-    label: follows.dargah ? 'Following' : 'Follow',
-    variant: follows.dargah ? 'outline' : 'accent'
-  };
+  React.useEffect(() => {
+    const id = requestAnimationFrame(recomputeDock);
+    return () => cancelAnimationFrame(id);
+  }, [audioPlaying]);
 
-  // Audio bars helper
-  const audioBars = Array.from({ length: 22 }).map((_, idx) => ({
-    h: 4 + Math.sin(idx * 0.4) * 12 + Math.cos(idx * 0.8) * 6 + 10,
-    bg: idx < audioProgress ? 'var(--color-action-primary)' : 'var(--color-info-faint)'
-  }));
-
-  const showPost1 = activeFilter === 0 || (activeFilter === 1 && follows.paigham);
-  const showPost2 = activeFilter === 0 || (activeFilter === 1 && follows.dargah);
+  // Storyboard passes an explicit `dock` to demo the state; the live device leaves it
+  // 'none' and lets scroll position decide (only while playing).
+  const effectiveDock = (dock && dock !== 'none') ? dock : (audioPlaying ? scrollDock : 'none');
 
   return (
-    <div style={{ width: '100%', height: '100%', display: 'flex', flexDirection: 'column', overflow: 'hidden', background: 'var(--color-surface-primary)' }}>
-      {/* AppBar */}
-      <div style={{ flexShrink: 0, padding: '54px 18px 12px', background: 'var(--color-surface-primary)', borderBottom: '1.5px solid var(--color-neutral-border)' }}>
-        <div style={{ fontFamily: '"Nunito", sans-serif', fontSize: 26, fontWeight: 800, color: 'var(--color-info-primary)' }}>Qaum</div>
-        {/* Feed filter chips */}
-        <div style={{ display: 'flex', gap: 8, marginTop: 10 }}>
-          {filters.map((f, idx) => {
-            const active = activeFilter === f.index;
-            return (
-              <div key={idx} onClick={() => onSelectFilter && onSelectFilter(f.index)} className={`chip ${active ? 'solid' : 'tonal'}`}>{f.label}</div>
-            );
-          })}
-        </div>
-      </div>
+    <div style={{ position: 'relative', width: '100%', height: '100%', overflow: 'hidden', background: 'var(--color-surface-primary)' }}>
 
-      {/* Feed container */}
-      <div style={{ flex: 1, overflowY: 'auto', WebkitOverflowScrolling: 'touch', paddingBottom: 80 }}>
-        {/* Post 1 */}
-        {showPost1 && (
-          <div style={{ borderBottom: '1px solid var(--color-neutral-border)', padding: '16px 16px 14px' }}>
-            <div style={{ display: 'flex', alignItems: 'flex-start', gap: 10, marginBottom: 10 }}>
-              <div style={{ width: 44, height: 44, borderRadius: '50%', background: '#1A5E30', flexShrink: 0, display: 'flex', alignItems: 'center', justifyContent: 'center', color: '#fff', fontFamily: '"Nunito", sans-serif', fontSize: 18, fontWeight: 700 }}>P</div>
-              <div style={{ flex: 1, minWidth: 0 }}>
-                <div style={{ fontFamily: '"Nunito", sans-serif', fontSize: 15, fontWeight: 700, color: 'var(--color-info-primary)' }}>Paigham</div>
-                <div style={{ fontFamily: '"Nunito", sans-serif', fontSize: 12, color: 'var(--color-info-secondary)' }}>Paigham HQ</div>
-              </div>
-              <div onClick={() => onToggleFollow && onToggleFollow('paigham')} className={`chip ${fPaigham.variant}`} style={{ marginLeft: 'auto' }}>{fPaigham.label}</div>
-            </div>
+      {/* Feed — scrolls UNDER the app bar (like the Home tab) */}
+      <div ref={feedRef} onScroll={recomputeDock} style={{ position: 'absolute', inset: 0, overflowY: 'auto', WebkitOverflowScrolling: 'touch', paddingTop: APP_BAR_H, paddingBottom: 90 }}>
+        {/* Post 1 — Paigham · Haj 2027 */}
+        <div style={{ borderBottom: '1px solid var(--color-neutral-border)', padding: '16px 16px 14px' }}>
+            <PostHeader letter="P" bg="#1A5E30" name="Paigham" sub="Paigham HQ" />
             <div style={{ fontFamily: '"Nunito", sans-serif', fontSize: 14, color: 'color-mix(in oklab, var(--color-info-primary) 85%, transparent)', marginBottom: 10, lineHeight: 1.5 }}>
               Haj 2027 registration is open. Please check the website. <span style={{ fontWeight: 700, color: 'var(--color-info-primary)', cursor: 'pointer' }}>Read more</span>
             </div>
@@ -752,66 +799,124 @@ function QaumScreen({
                 </div>
               </div>
             </div>
-            {/* Actions */}
-            <div style={{ display: 'flex', alignItems: 'center', gap: 12 }}>
-              <div onClick={() => onLike && onLike('post1')} style={{ width: 28, height: 28, borderRadius: '50%', background: likes.post1.liked ? 'rgba(224,80,96,0.15)' : 'var(--color-action-background)', display: 'flex', alignItems: 'center', justifyContent: 'center', cursor: 'pointer', transition: 'background 200ms' }}>
-                <span className="mi" style={{ fontSize: 14, color: likes.post1.liked ? '#E05060' : 'var(--color-info-secondary)', fontVariationSettings: `'FILL' ${likes.post1.liked ? 1 : 0}` }} data-i="favorite"></span>
-              </div>
-              <span style={{ fontFamily: '"Nunito", sans-serif', fontSize: 13, color: 'var(--color-info-secondary)' }}>{likes.post1.count}</span>
-              <span className="mi" style={{ fontSize: 20, color: 'var(--color-info-secondary)', transform: 'scaleX(-1)', cursor: 'pointer' }} data-i="reply"></span>
-              <span style={{ fontFamily: '"Nunito", sans-serif', fontSize: 12, color: 'var(--color-info-faint)', marginLeft: 'auto' }}>2d ago</span>
-            </div>
-          </div>
-        )}
+            <PostActions liked={likes.post1.liked} count={likes.post1.count} time="2d ago" onLike={() => onLike && onLike('post1')} />
+        </div>
 
-        {/* Post 2 */}
-        {showPost2 && (
-          <div style={{ borderBottom: '1px solid var(--color-neutral-border)', padding: '16px 16px 14px' }}>
-            <div style={{ display: 'flex', alignItems: 'flex-start', gap: 10, marginBottom: 10 }}>
-              <div style={{ width: 44, height: 44, borderRadius: '50%', background: '#2A3580', flexShrink: 0, display: 'flex', alignItems: 'center', justifyContent: 'center', color: '#fff', fontFamily: '"Nunito", sans-serif', fontSize: 18, fontWeight: 700 }}>D</div>
-              <div style={{ flex: 1, minWidth: 0 }}>
-                <div style={{ fontFamily: '"Nunito", sans-serif', fontSize: 15, fontWeight: 700, color: 'var(--color-info-primary)' }}>Dargah Masjid</div>
-                <div style={{ fontFamily: '"Nunito", sans-serif', fontSize: 12, color: 'var(--color-info-secondary)' }}>Molkalmuru - 577535</div>
-              </div>
-              <div onClick={() => onToggleFollow && onToggleFollow('dargah')} className={`chip ${fDargah.variant}`} style={{ marginLeft: 'auto' }}>{fDargah.label}</div>
-            </div>
-            {/* Audio player card */}
-            <div style={{ background: 'var(--color-surface-card)', borderRadius: 40, padding: '8px 14px', display: 'flex', alignItems: 'center', gap: 10, marginBottom: 10, border: '1px solid color-mix(in oklab, var(--color-action-primary) 18%, transparent)' }}>
-              <div onClick={onToggleAudio} style={{ width: 32, height: 32, borderRadius: '50%', background: 'var(--color-action-primary)', display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0, cursor: 'pointer' }}>
-                <span className="mi fill" style={{ fontSize: 18, color: 'var(--color-action-primary-inverse)', fontVariationSettings: `'FILL' 1` }} data-i={audioPlaying ? 'pause' : 'play_arrow'}></span>
-              </div>
-              <span style={{ fontFamily: '"Nunito", sans-serif', fontSize: 13, fontWeight: 600, color: 'var(--color-info-primary)', flexShrink: 0, width: 36 }}>{audioPlaying ? '0:12' : '1:34'}</span>
-              <div style={{ display: 'flex', alignItems: 'center', gap: 1.5, flex: 1, height: 28 }}>
-                {audioBars.map((b, idx) => (
-                  <div key={idx} style={{ width: 2, height: b.h, background: b.bg, borderRadius: 1 }} />
-                ))}
-              </div>
-            </div>
-            {/* Actions */}
-            <div style={{ display: 'flex', alignItems: 'center', gap: 12 }}>
-              <div onClick={() => onLike && onLike('post2')} style={{ width: 28, height: 28, borderRadius: '50%', background: likes.post2.liked ? 'rgba(224,80,96,0.15)' : 'var(--color-action-background)', display: 'flex', alignItems: 'center', justifyContent: 'center', cursor: 'pointer', transition: 'background 200ms' }}>
-                <span className="mi" style={{ fontSize: 14, color: likes.post2.liked ? '#E05060' : 'var(--color-info-secondary)', fontVariationSettings: `'FILL' ${likes.post2.liked ? 1 : 0}` }} data-i="favorite"></span>
-              </div>
-              <span style={{ fontFamily: '"Nunito", sans-serif', fontSize: 13, color: 'var(--color-info-secondary)' }}>{likes.post2.count}</span>
-              <span className="mi" style={{ fontSize: 20, color: 'var(--color-info-secondary)', transform: 'scaleX(-1)', cursor: 'pointer' }} data-i="reply"></span>
-              <span style={{ fontFamily: '"Nunito", sans-serif', fontSize: 12, color: 'var(--color-info-faint)', marginLeft: 'auto' }}>9mo ago</span>
-            </div>
+        {/* Post 2 — Paigham · Milad-un-Nabi (gives scroll room above the audio post) */}
+        <div style={{ borderBottom: '1px solid var(--color-neutral-border)', padding: '16px 16px 14px' }}>
+          <PostHeader letter="P" bg="#1A5E30" name="Paigham" sub="Paigham HQ" />
+          <div style={{ fontFamily: '"Nunito", sans-serif', fontSize: 14, color: 'color-mix(in oklab, var(--color-info-primary) 85%, transparent)', marginBottom: 10, lineHeight: 1.5 }}>
+            Let us celebrate 1500th Milad-un-Nabi ﷺ by spreading love and charity. <span style={{ fontWeight: 700, color: 'var(--color-info-primary)', cursor: 'pointer' }}>Show more</span>
+          </div>
+          <div style={{ borderRadius: 14, overflow: 'hidden', marginBottom: 10, background: 'linear-gradient(150deg,#F7EFD8,#EADFC0)', padding: '22px 16px', textAlign: 'center' }}>
+            <div style={{ fontFamily: 'var(--font-title)', fontSize: 12, letterSpacing: '.14em', color: '#9A7B33', marginBottom: 6 }}>PAIGHAM CELEBRATES &amp; WISHES</div>
+            <div style={{ fontFamily: 'var(--font-title)', fontSize: 30, lineHeight: 1.05, color: '#8A6B2E' }}>Milad un-Nabi</div>
+            <div style={{ fontFamily: '"Nunito", sans-serif', fontSize: 12, fontWeight: 700, color: '#9A7B33', marginTop: 8 }}>12 Rabiʼ al-Awwal · 1447 H</div>
+          </div>
+          <PostActions liked={likes.post3.liked} count={likes.post3.count} time="6mo ago" onLike={() => onLike && onLike('post3')} />
+        </div>
+
+        {/* Post 3 — Dargah Masjid · voice note (the playing/inline audio post) */}
+        <div style={{ borderBottom: '1px solid var(--color-neutral-border)', padding: '16px 16px 14px' }}>
+          <PostHeader letter="D" bg="#2A3580" name="Dargah Masjid" sub="Molkalmuru - 577535" />
+          {/* Audio player — DS .aplayer molecule (voice note), inline in the post */}
+          <div ref={inlineRef} style={{ marginBottom: 10 }}>
+            <QaumAudioPlayer playing={audioPlaying} progress={audioProgress} onToggle={onToggleAudio} />
+          </div>
+          <PostActions liked={likes.post2.liked} count={likes.post2.count} time="9mo ago" onLike={() => onLike && onLike('post2')} />
+        </div>
+
+        {/* Post 4 — Paigham · Islamic New Year (scroll room below the audio post) */}
+        <div style={{ borderBottom: '1px solid var(--color-neutral-border)', padding: '16px 16px 14px' }}>
+          <PostHeader letter="P" bg="#1A5E30" name="Paigham" sub="Paigham HQ" />
+          <div style={{ fontFamily: '"Nunito", sans-serif', fontSize: 14, color: 'color-mix(in oklab, var(--color-info-primary) 85%, transparent)', marginBottom: 10, lineHeight: 1.5 }}>
+            Crescent of Muharram Ul Haraam 1447 H has been sighted. <span style={{ fontWeight: 700, color: 'var(--color-info-primary)', cursor: 'pointer' }}>Show more</span>
+          </div>
+          <div style={{ borderRadius: 14, overflow: 'hidden', marginBottom: 10, background: 'linear-gradient(160deg,#DCE6EC,#C4D2DB)', padding: '22px 16px', textAlign: 'center' }}>
+            <div style={{ fontFamily: 'var(--font-title)', fontSize: 26, lineHeight: 1.05, color: '#3A4A55' }}>Islamic New Year</div>
+            <div style={{ fontFamily: '"Nunito", sans-serif', fontSize: 12, fontWeight: 800, letterSpacing: '.08em', color: '#54646F', marginTop: 8 }}>1 MUHARRAM 1447 H</div>
+            <div style={{ fontFamily: '"Nunito", sans-serif', fontSize: 11, fontWeight: 700, color: '#7A8A94', marginTop: 3 }}>27 JUNE 2025</div>
+          </div>
+          <PostActions liked={true} count={10} time="12mo ago" />
+        </div>
+
+        {/* Post 5 — Paigham · text announcement (more scroll room) */}
+        <div style={{ borderBottom: '1px solid var(--color-neutral-border)', padding: '16px 16px 14px' }}>
+          <PostHeader letter="P" bg="#1A5E30" name="Paigham" sub="Paigham HQ" />
+          <div style={{ fontFamily: '"Nunito", sans-serif', fontSize: 14, color: 'color-mix(in oklab, var(--color-info-primary) 85%, transparent)', marginBottom: 10, lineHeight: 1.5 }}>
+            Important Announcement. Jumuʼah timings for this week have been updated across all masjids. <span style={{ fontWeight: 700, color: 'var(--color-info-primary)', cursor: 'pointer' }}>Show more</span>
+          </div>
+          <PostActions liked={false} count={5} time="5mo ago" />
+        </div>
+
+        {/* Post 6 — Paigham · Ramadan (extra scroll room below so the player can dock to the top) */}
+        <div style={{ padding: '16px 16px 20px' }}>
+          <PostHeader letter="P" bg="#1A5E30" name="Paigham" sub="Paigham HQ" />
+          <div style={{ fontFamily: '"Nunito", sans-serif', fontSize: 14, color: 'color-mix(in oklab, var(--color-info-primary) 85%, transparent)', marginBottom: 10, lineHeight: 1.5 }}>
+            Prophet Muhammad ﷺ used to recite the following duʼa in Rajab and Shaʼban. <span style={{ fontWeight: 700, color: 'var(--color-info-primary)', cursor: 'pointer' }}>Show more</span>
+          </div>
+          <div style={{ borderRadius: 14, overflow: 'hidden', marginBottom: 10, background: 'linear-gradient(160deg,#E7EEE9,#CFDDD3)', padding: '26px 16px', textAlign: 'center' }}>
+            <div style={{ fontFamily: 'var(--font-title)', fontSize: 22, color: '#3C5245' }}>58 days to go</div>
+            <div style={{ fontFamily: 'var(--font-title)', fontSize: 26, letterSpacing: '.02em', color: '#2E4638', marginTop: 2 }}>COMING SOON</div>
+            <div style={{ fontFamily: '"Nunito", sans-serif', fontSize: 12, fontWeight: 800, letterSpacing: '.1em', color: '#5A7264', marginTop: 8 }}>RAMADAAN 2026</div>
+          </div>
+          <PostActions liked={true} count={6} time="6mo ago" />
+        </div>
+      </div>
+
+      {/* App bar — DS .app-bar (transparent, progressive blur), same as the Home tab.
+          When the player docks UP, it pins into the app bar's bottom edge (like the Dua
+          tab bar), so the bar grows to hold the title + the mini player. */}
+      <div className="app-bar" style={{ flexDirection: 'column', alignItems: 'stretch', gap: 0, height: effectiveDock === 'top' ? APP_BAR_H + 58 : APP_BAR_H, padding: '54px 14px 10px' }}>
+        <div className="ab-title" style={{ paddingLeft: 4 }}>Qaum</div>
+        {effectiveDock === 'top' && (
+          <div style={{ marginTop: 12 }}>
+            <QaumAudioPlayer playing={audioPlaying} progress={audioProgress} onToggle={onToggleAudio} onClose={onCloseAudio} />
           </div>
         )}
       </div>
+
+      {/* Bottom dock — floats above the nav bar with a gap between them. */}
+      {effectiveDock === 'bottom' && (
+        <QaumAudioPlayer
+          playing={audioPlaying}
+          progress={audioProgress}
+          onToggle={onToggleAudio}
+          onClose={onCloseAudio}
+          className="dock-bottom"
+          style={{ bottom: dockBottomOffset }}
+        />
+      )}
     </div>
   );
 }
 
 // 3. QURAN SCREEN
+// Surah card row — shared by the Surah list and the grouped Juz list.
+// `meta` is the ayah count ("7 ayahs") in the Surah tab, or the ayah range
+// ("142 - 252 ayahs") in the Juz tab.
+function SurahRow({ n, name, tr, meta, arabic, place, onClick }) {
+  return (
+    <div className="qrow" onClick={onClick} style={{ cursor: onClick ? 'pointer' : 'default' }}>
+      <div className="qrow-num">{n}</div>
+      <div className="qrow-body">
+        <div className="qrow-name">{name}</div>
+        <div className="qrow-sub">{tr}</div>
+        <div className="qrow-meta">{meta}</div>
+      </div>
+      <div className="qrow-trail">
+        <div className="qrow-ar">{arabic}</div>
+        <div className="qrow-place">{place}</div>
+      </div>
+    </div>
+  );
+}
+
 function QuranScreen({
   activeTab = 0, // 0 = Surah, 1 = Juz
   onSelectTab,
-  onOpenReader,
-  onSelectSurah,
-  onSelectJuz,
-  selectedSurahIdx = 0,
-  selectedJuzIdx = 0
+  onSelectSurah, // (idx) => open reader from the Surah list
+  onSelectJuz    // (juzIdx) => open reader from the Juz list
 }) {
   const tabs = [
     { label: 'Surah', index: 0 },
@@ -823,93 +928,75 @@ function QuranScreen({
     { n: 2,  name: "Al-Baqara",    tr: "The Cow",           ayahs: 286, place: "Madinah", arabic: "سُورَةُ الْبَقَرَةِ" },
     { n: 3,  name: "Aal-i-Imraan", tr: "Family of Imran",   ayahs: 200, place: "Madinah", arabic: "سُورَةُ الِعِمْرَانِ" },
     { n: 4,  name: "An-Nisaa",     tr: "The Women",         ayahs: 176, place: "Madinah", arabic: "سُورَةُ النِّسَاءِ" },
-    { n: 5,  name: "Al-Maaida",    tr: "The Table Spread",  ayahs: 120, place: "Madinah", arabic: "سُورَةُ الْمَائِدَةِ" }
+    { n: 5,  name: "Al-Maaida",    tr: "The Table Spread",  ayahs: 120, place: "Madinah", arabic: "سُورَةُ الْمَائِدَةِ" },
+    { n: 6,  name: "Al-An'aam",    tr: "The Cattle",        ayahs: 165, place: "Makkah",  arabic: "سُورَةُ الْأَنْعَامِ" },
+    { n: 7,  name: "Al-A'raaf",    tr: "The Heights",       ayahs: 206, place: "Makkah",  arabic: "سُورَةُ الْأَعْرَافِ" }
   ];
 
-  const juzList = [
-    { n: 1, title: "Juz 1", name: "Alif Lam Meem" },
-    { n: 2, title: "Juz 2", name: "Sayaqool" },
-    { n: 3, title: "Juz 3", name: "Tilkal Rusul" }
+  // Juz tab: surahs grouped under each Juz, each with its ayah range for that Juz.
+  const juzData = [
+    { title: "Juz 1", surahs: [
+      { n: 1, name: "Al-Faatiha", tr: "The Opener", range: "1 - 7 ayahs",   arabic: "سُورَةُ الْفَاتِحَةِ", place: "Makkah" },
+      { n: 2, name: "Al-Baqara",  tr: "The Cow",    range: "1 - 141 ayahs", arabic: "سُورَةُ الْبَقَرَةِ",  place: "Madinah" }
+    ]},
+    { title: "Juz 2", surahs: [
+      { n: 2, name: "Al-Baqara", tr: "The Cow", range: "142 - 252 ayahs", arabic: "سُورَةُ الْبَقَرَةِ", place: "Madinah" }
+    ]},
+    { title: "Juz 3", surahs: [
+      { n: 2, name: "Al-Baqara",     tr: "The Cow",         range: "253 - 286 ayahs", arabic: "سُورَةُ الْبَقَرَةِ",  place: "Madinah" },
+      { n: 3, name: "Aal-i-Imraan",  tr: "Family of Imran", range: "1 - 92 ayahs",    arabic: "سُورَةُ الِعِمْرَانِ", place: "Madinah" }
+    ]},
+    { title: "Juz 4", surahs: [
+      { n: 3, name: "Aal-i-Imraan", tr: "Family of Imran", range: "93 - 200 ayahs", arabic: "سُورَةُ الِعِمْرَانِ", place: "Madinah" },
+      { n: 4, name: "An-Nisaa",     tr: "The Women",       range: "1 - 23 ayahs",   arabic: "سُورَةُ النِّسَاءِ",  place: "Madinah" }
+    ]}
   ];
 
+  const QURAN_APPBAR_H = 150;
   return (
-    <div style={{ width: '100%', height: '100%', display: 'flex', flexDirection: 'column', overflow: 'hidden', background: 'var(--color-surface-primary)' }}>
-      {/* AppBar */}
-      <div style={{ flexShrink: 0, padding: '54px 18px 12px', background: 'var(--color-surface-primary)' }}>
-        <div style={{ fontFamily: '"Nunito", sans-serif', fontSize: 26, fontWeight: 800, color: 'var(--color-info-primary)' }}>Quran</div>
-      </div>
+    <div style={{ position: 'relative', width: '100%', height: '100%', overflow: 'hidden', background: 'var(--color-surface-primary)' }}>
 
-      {/* Tabs */}
-      <div style={{ flexShrink: 0, padding: '0 16px 14px', background: 'var(--color-surface-primary)' }}>
-        <div style={{ display: 'flex', background: 'var(--color-action-background)', borderRadius: 16, padding: 4, gap: 2 }}>
-          {tabs.map((t, idx) => {
-            const active = activeTab === t.index;
-            return (
-              <div key={idx} onClick={() => onSelectTab && onSelectTab(t.index)} style={{ flex: 1, textAlign: 'center', background: active ? 'var(--color-surface-primary)' : 'transparent', borderRadius: 12, padding: '8px 0', cursor: 'pointer', transition: 'background 200ms' }}>
-                <span style={{ fontFamily: '"Nunito", sans-serif', fontSize: 14, fontWeight: 700, color: active ? 'var(--color-action-primary)' : 'var(--color-info-secondary)' }}>{t.label}</span>
+      {/* List content — scrolls UNDER the app bar. The app-bar offset lives on the
+          inner div, NOT as padding on the scroller: sticky offsets resolve against the
+          scroller's content edge, so scroller padding would push the pinned Juz headers
+          down by that amount. */}
+      <div style={{ position: 'absolute', inset: 0, overflowY: 'auto', WebkitOverflowScrolling: 'touch' }}>
+        <div style={{ padding: `${QURAN_APPBAR_H + 4}px 16px 90px` }}>
+        {activeTab === 0 ? (
+          /* Surah tab — flat list of surah cards (name · translation · ayah count) */
+          <div style={{ display: 'flex', flexDirection: 'column', gap: 8 }}>
+            {surahs.map((s, idx) => (
+              <SurahRow key={idx} n={s.n} name={s.name} tr={s.tr} meta={`${s.ayahs} ayahs`} arabic={s.arabic} place={s.place} onClick={() => onSelectSurah && onSelectSurah(idx)} />
+            ))}
+          </div>
+        ) : (
+          /* Juz tab — grouped by Juz; the title lives INSIDE the group card (like the
+             reference app) and sticks below the app bar while its group scrolls, so the
+             pinned title always names the Juz currently under the finger. */
+          <div style={{ display: 'flex', flexDirection: 'column', gap: 16 }}>
+            {juzData.map((j, ji) => (
+              <div key={ji} style={{ background: 'color-mix(in oklab, var(--color-info-primary) 3%, var(--color-surface-primary))', border: '1px solid var(--color-neutral-border)', borderRadius: 20 }}>
+                <div style={{ position: 'sticky', top: QURAN_APPBAR_H, zIndex: 2, background: 'color-mix(in oklab, var(--color-info-primary) 3%, var(--color-surface-primary))', borderRadius: '20px 20px 0 0', padding: '12px 16px 8px', fontFamily: '"Nunito", sans-serif', fontSize: 18, fontWeight: 800, color: 'var(--color-info-primary)' }}>{j.title}</div>
+                <div style={{ padding: '0 8px 8px', display: 'flex', flexDirection: 'column', gap: 8 }}>
+                  {j.surahs.map((s, si) => (
+                    <SurahRow key={si} n={s.n} name={s.name} tr={s.tr} meta={s.range} arabic={s.arabic} place={s.place} onClick={() => onSelectJuz && onSelectJuz(ji)} />
+                  ))}
+                </div>
               </div>
-            );
-          })}
+            ))}
+          </div>
+        )}
         </div>
       </div>
 
-      {/* List content */}
-      <div style={{ flex: 1, overflowY: 'auto', WebkitOverflowScrolling: 'touch', padding: '0 16px 16px' }}>
-        {activeTab === 0 ? (
-          <div style={{ display: 'flex', flexDirection: 'column', gap: 8 }}>
-            {/* Continue card */}
-            <div onClick={onOpenReader} style={{ background: 'var(--color-action-primary)', borderRadius: 16, padding: '14px 16px', display: 'flex', alignItems: 'center', gap: 12, cursor: 'pointer', boxShadow: 'var(--shadow-button)' }}>
-              <div style={{ width: 40, height: 40, borderRadius: '50%', background: 'rgba(255,255,255,0.22)', flexShrink: 0, display: 'flex', alignItems: 'center', justifycontent: 'center', justifyContent: 'center' }}>
-                <span className="mi fill" style={{ fontSize: 22, color: 'var(--color-action-primary-inverse)', fontVariationSettings: `'FILL' 1` }} data-i="play_arrow"></span>
-              </div>
-              <div style={{ flex: 1, minWidth: 0 }}>
-                <div style={{ fontFamily: '"Nunito", sans-serif', fontSize: 10, fontWeight: 800, letterSpacing: '.08em', textTransform: 'uppercase', color: 'rgba(255,255,255,0.8)' }}>Continue reading</div>
-                <div style={{ fontFamily: '"Nunito", sans-serif', fontSize: 16, fontWeight: 800, color: 'var(--color-action-primary-inverse)', marginTop: 1 }}>Al-Kahf</div>
-                <div style={{ display: 'flex', alignItems: 'center', gap: 8, marginTop: 6 }}>
-                  <div style={{ flex: 1, height: 4, borderRadius: 2, background: 'rgba(255,255,255,0.25)', overflow: 'hidden' }}>
-                    <div style={{ width: '40%', height: '100%', borderRadius: 2, background: '#FFFFFF' }} />
-                  </div>
-                  <span style={{ fontFamily: '"Nunito", sans-serif', fontSize: 11, fontWeight: 700, color: 'rgba(255,255,255,0.8)' }}>Ayah 45 of 110</span>
-                </div>
-              </div>
-              <span className="mi" style={{ fontSize: 20, color: 'var(--color-action-primary-inverse)' }} data-i="chevron_right"></span>
-            </div>
-
-            {/* Surah List */}
-            {surahs.map((s, idx) => {
-              const active = selectedSurahIdx === idx;
-              return (
-                <div key={idx} onClick={() => onSelectSurah && onSelectSurah(idx)} style={{ background: active ? 'color-mix(in oklab, var(--color-action-primary) 8%, var(--color-surface-card))' : 'var(--color-surface-card)', border: `1px solid ${active ? 'var(--color-action-primary)' : 'var(--color-neutral-border)'}`, borderRadius: 16, padding: '14px 16px', display: 'flex', alignItems: 'center', gap: 12, cursor: 'pointer', transition: 'background 200ms, border-color 200ms' }}>
-                  <div style={{ width: 40, height: 40, borderRadius: '50%', background: 'var(--color-action-primary)', flexShrink: 0, display: 'flex', alignItems: 'center', justifyContent: 'center' }}><span style={{ fontFamily: '"Nunito", sans-serif', fontSize: 15, fontWeight: 700, color: 'var(--color-action-primary-inverse)' }}>{s.n}</span></div>
-                  <div style={{ flex: 1, minWidth: 0 }}>
-                    <div style={{ fontFamily: '"Nunito", sans-serif', fontSize: 16, fontWeight: 700, color: 'var(--color-info-primary)' }}>{s.name}</div>
-                    <div style={{ fontFamily: '"Nunito", sans-serif', fontSize: 12, color: 'var(--color-info-secondary)' }}>{s.tr}</div>
-                  </div>
-                  <div style={{ textAlign: 'right' }}>
-                    <div style={{ fontFamily: 'sans-serif', fontSize: 18, color: 'var(--color-info-primary)', direction: 'rtl' }}>{s.arabic}</div>
-                    <div style={{ fontFamily: '"Nunito", sans-serif', fontSize: 11, color: 'var(--color-status-disabled-alt)', marginTop: 2 }}>{s.place}</div>
-                  </div>
-                </div>
-              );
-            })}
-          </div>
-        ) : (
-          <div style={{ display: 'flex', flexDirection: 'column', gap: 8 }}>
-            {juzList.map((j, idx) => {
-              const active = selectedJuzIdx === idx;
-              return (
-                <div key={idx} onClick={() => onSelectJuz && onSelectJuz(idx)} style={{ background: active ? 'color-mix(in oklab, var(--color-action-primary) 8%, var(--color-surface-card))' : 'var(--color-surface-card)', border: `1px solid ${active ? 'var(--color-action-primary)' : 'var(--color-neutral-border)'}`, borderRadius: 16, padding: '14px 16px', display: 'flex', alignItems: 'center', gap: 12, cursor: 'pointer', transition: 'background 200ms, border-color 200ms' }}>
-                  <div style={{ width: 40, height: 40, borderRadius: '50%', background: 'var(--color-action-primary)', flexShrink: 0, display: 'flex', alignItems: 'center', justifyContent: 'center' }}><span style={{ fontFamily: '"Nunito", sans-serif', fontSize: 15, fontWeight: 700, color: 'var(--color-action-primary-inverse)' }}>{j.n}</span></div>
-                  <div style={{ flex: 1, minWidth: 0 }}>
-                    <div style={{ fontFamily: '"Nunito", sans-serif', fontSize: 16, fontWeight: 700, color: 'var(--color-info-primary)' }}>{j.title}</div>
-                    <div style={{ fontFamily: '"Nunito", sans-serif', fontSize: 12, color: 'var(--color-info-secondary)' }}>{j.name}</div>
-                  </div>
-                  <span className="mi" style={{ fontSize: 20, color: 'var(--color-status-disabled-alt)' }} data-i="chevron_right"></span>
-                </div>
-              );
-            })}
-          </div>
-        )}
+      {/* App bar — DS .app-bar with the Surah/Juz segmented tabs pinned in (like the Dua tab bar) */}
+      <div className="app-bar" style={{ flexDirection: 'column', alignItems: 'stretch', gap: 0, height: QURAN_APPBAR_H, padding: '54px 16px 10px' }}>
+        <div className="ab-title" style={{ paddingLeft: 2 }}>Quran</div>
+        <div className="tbar" style={{ marginTop: 12 }}>
+          {tabs.map((t, idx) => (
+            <div key={idx} className={`tab ${activeTab === t.index ? 'active' : ''}`} onClick={() => onSelectTab && onSelectTab(t.index)}>{t.label}</div>
+          ))}
+        </div>
       </div>
     </div>
   );
@@ -923,8 +1010,6 @@ function SalaahScreen({
   onMasjidSheetToggle,
   showMasjidSheet = false,
   onSelectMasjid,
-  dateOffset = 0,
-  onDateChange,
   prayersAlert = { Fajr: false, Zohar: true, Asr: false, Maghrib: true, Isha: false },
   prayersChecked = { Fajr: true, Zohar: true, Asr: true, Maghrib: false, Isha: false },
   onToggleCheck,
@@ -937,54 +1022,48 @@ function SalaahScreen({
     { name: 'Maghrib', azaan: '6:49 PM', iqama: '6:52 PM' },
     { name: 'Isha', azaan: '8:05 PM', iqama: '8:30 PM' }
   ];
-
-  const dateTitles = ["Today, 07 Jul", "Tomorrow, 08 Jul", "Wed, 09 Jul"];
-  const dateSubs = ["11 Muharram 1448 AH", "12 Muharram 1448 AH", "13 Muharram 1448 AH"];
-  const dateIdx = Math.min(Math.max(0, dateOffset), 2);
-
-  // Month grid headers
-  const months = [
-    { label: 'Jan' }, { label: 'Feb' }, { label: 'Mar' }, { label: 'Apr' },
-    { label: 'May' }, { label: 'Jun' }, { label: 'Jul' }, { label: 'Aug' },
-    { label: 'Sep' }, { label: 'Oct' }, { label: 'Nov' }, { label: 'Dec' }, { label: '..' }
+  const sunTimes = [
+    { label: 'Sehri', time: '4:31 AM' },
+    { label: 'Sunrise', time: '5:55 AM' },
+    { label: 'Iftaar', time: '6:49 PM' }
   ];
 
-  const rows = [
-    { day: 'Sun', cells: [{ bg: 'var(--color-action-primary)' }, { bg: 'transparent' }, { bg: 'rgba(0, 201, 80, 0.25)' }, { bg: 'transparent' }, { bg: 'rgba(0, 201, 80, 0.45)' }, { bg: 'rgba(0, 201, 80, 0.15)' }, { bg: 'var(--color-action-primary)' }, { bg: 'transparent' }, { bg: 'transparent' }, { bg: 'rgba(0, 201, 80, 0.65)' }, { bg: 'var(--color-action-primary)' }, { bg: 'transparent' }, { bg: 'transparent' }] },
-    { day: 'Mon', cells: [{ bg: 'rgba(0, 201, 80, 0.15)' }, { bg: 'var(--color-action-primary)' }, { bg: 'transparent' }, { bg: 'rgba(0, 201, 80, 0.35)' }, { bg: 'transparent' }, { bg: 'rgba(0, 201, 80, 0.45)' }, { bg: 'transparent' }, { bg: 'rgba(0, 201, 80, 0.55)' }, { bg: 'var(--color-action-primary)' }, { bg: 'transparent' }, { bg: 'transparent' }, { bg: 'rgba(0, 201, 80, 0.65)' }, { bg: 'var(--color-action-primary)' }] },
-    { day: 'Tue', cells: [{ bg: 'var(--color-action-primary)' }, { bg: 'rgba(0, 201, 80, 0.25)' }, { bg: 'transparent' }, { bg: 'transparent' }, { bg: 'rgba(0, 201, 80, 0.65)' }, { bg: 'var(--color-action-primary)' }, { bg: 'transparent' }, { bg: 'transparent' }, { bg: 'rgba(0, 201, 80, 0.15)' }, { bg: 'var(--color-action-primary)' }, { bg: 'transparent' }, { bg: 'rgba(0, 201, 80, 0.35)' }, { bg: 'transparent' }] }
-  ];
+  // ── GitHub-style attendance heatmap ─────────────────────────────────────
+  // Continuous weekday(row) × week(column) grid over the Hijri year, labelled by
+  // month. The grid ENDS at "today" (in the current month), so there are no future
+  // columns to scroll into; on mount we pin the scroll to the far right (this month).
+  const DAY_LABELS = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
+  const HIJRI = ['Muh', 'Saf', 'Rab1', 'Rab2', 'Jum1', 'Jum2', 'Raj', 'Shb', 'Ram', 'Shw', 'DhQ', 'DhH'];
+  const START_DOW = 2;                     // year's first day lands on Tue
+  const MONTH_LEN = 30;
+  const TODAY = 11 * MONTH_LEN + 20;       // ~20 Dhul Hijjah → current month is the end
+  const TOTAL = TODAY + 1;
+  const LVL = [5, 4, 0, 3, 5, 2, 5, 1, 4, 0, 5, 3, 5, 2, 4, 0, 5, 3, 1, 5, 4, 2, 5, 0];
+  const numCols = Math.ceil((START_DOW + TOTAL) / 7);
+  const grid = Array.from({ length: 7 }, () => new Array(numCols).fill(undefined));
+  for (let d = 0; d < TOTAL; d++) {
+    const slot = START_DOW + d;
+    grid[slot % 7][Math.floor(slot / 7)] = LVL[d % LVL.length];
+  }
+  const monthLabelByCol = {};
+  HIJRI.forEach((lbl, m) => { monthLabelByCol[Math.floor((START_DOW + m * MONTH_LEN) / 7)] = lbl; });
+  const cols = Array.from({ length: numCols }, (_, i) => i);
+  const CELL = 12, GAP = 3, LABEL_H = 14;
+  const cellBg = (v) => (v === undefined || v === 0)
+    ? 'color-mix(in oklab, var(--color-info-primary) 7%, transparent)'
+    : `color-mix(in oklab, var(--color-action-primary) ${({ 1: 25, 2: 45, 3: 65, 4: 85, 5: 100 })[v]}%, transparent)`;
 
+  const heatRef = React.useRef(null);
+  React.useEffect(() => { const el = heatRef.current; if (el) el.scrollLeft = el.scrollWidth; }, []);
+
+  const SAL_APPBAR_H = 96;
   return (
-    <div style={{ width: '100%', height: '100%', display: 'flex', flexDirection: 'column', overflow: 'hidden', background: 'var(--color-surface-primary)', position: 'relative' }}>
-      {/* AppBar */}
-      <div onClick={onMasjidSheetToggle} style={{ flexShrink: 0, display: 'flex', alignItems: 'center', gap: 12, padding: '54px 18px 10px', cursor: 'pointer' }}>
-        <div style={{ width: 44, height: 44, borderRadius: '50%', background: '#1A5E30', flexShrink: 0, display: 'flex', alignItems: 'center', justifyContent: 'center', color: '#fff', fontFamily: '"Nunito", sans-serif', fontSize: 18, fontWeight: 700 }}>{masjidLetter}</div>
-        <div style={{ flex: 1 }}>
-          <div style={{ display: 'flex', alignItems: 'center', gap: 4 }}>
-            <span style={{ fontFamily: '"Nunito", sans-serif', fontSize: 17, fontWeight: 700, color: 'var(--color-info-primary)' }}>{masjidName}</span>
-            <span className="mi" style={{ fontSize: 18, color: 'var(--color-info-secondary)' }} data-i="keyboard_arrow_down"></span>
-          </div>
-          <div style={{ fontFamily: '"Nunito", sans-serif', fontSize: 12, color: 'var(--color-info-secondary)' }}>{masjidSub}</div>
-        </div>
-      </div>
+    <div style={{ position: 'relative', width: '100%', height: '100%', overflow: 'hidden', background: 'var(--color-surface-primary)' }}>
 
-      {/* Date navigation */}
-      <div style={{ flexShrink: 0, display: 'flex', alignItems: 'center', justifycontent: 'space-between', padding: '0 16px 12px', justifyContent: 'space-between' }}>
-        <div onClick={() => onDateChange && onDateChange(-1)} style={{ width: 32, height: 32, borderRadius: '50%', background: 'var(--color-action-background)', display: 'flex', alignItems: 'center', justifyContent: 'center', cursor: 'pointer', opacity: dateIdx > 0 ? 1 : 0.4 }}>
-          <span className="mi" style={{ fontSize: 20, color: 'var(--color-info-primary)' }} data-i="chevron_left"></span>
-        </div>
-        <div style={{ textAlign: 'center' }}>
-          <div style={{ fontFamily: '"Nunito", sans-serif', fontSize: 16, fontWeight: 700, color: 'var(--color-info-primary)' }}>{dateTitles[dateIdx]}</div>
-          <div style={{ fontFamily: '"Nunito", sans-serif', fontSize: 12, color: 'var(--color-info-secondary)' }}>{dateSubs[dateIdx]}</div>
-        </div>
-        <div onClick={() => onDateChange && onDateChange(1)} style={{ width: 32, height: 32, borderRadius: '50%', background: 'var(--color-action-background)', display: 'flex', alignItems: 'center', justifyContent: 'center', cursor: 'pointer', opacity: dateIdx < 2 ? 1 : 0.4 }}>
-          <span className="mi" style={{ fontSize: 20, color: 'var(--color-info-primary)' }} data-i="chevron_right"></span>
-        </div>
-      </div>
+      {/* Scrollable content — scrolls under the app bar */}
+      <div style={{ position: 'absolute', inset: 0, overflowY: 'auto', WebkitOverflowScrolling: 'touch', paddingTop: SAL_APPBAR_H, paddingBottom: 80 }}>
+        <div style={{ padding: '4px 16px 16px', display: 'flex', flexDirection: 'column', gap: 20 }}>
 
-      {/* Scrollable Content */}
-      <div style={{ flex: 1, overflowY: 'auto', WebkitOverflowScrolling: 'touch', padding: '0 16px 16px', display: 'flex', flexDirection: 'column', gap: 16, paddingBottom: 80 }}>
         {/* Timings card */}
         <div style={{ background: 'color-mix(in oklab, var(--color-action-primary) 5%, var(--color-surface-primary))', border: '1px solid color-mix(in oklab, var(--color-action-primary) 25%, transparent)', borderRadius: 20, overflow: 'hidden' }}>
           <div style={{ display: 'flex', padding: '12px 16px 8px', borderBottom: '1px solid var(--color-neutral-border)' }}>
@@ -998,70 +1077,114 @@ function SalaahScreen({
             const alertOn = prayersAlert[p.name];
             return (
               <div key={idx} style={{ display: 'flex', alignItems: 'center', padding: '14px 16px', borderBottom: '1px solid color-mix(in oklab, var(--color-info-primary) 6%, transparent)' }}>
-                <div onClick={() => onToggleCheck && onToggleCheck(p.name)} style={{ width: 22, height: 22, borderRadius: '50%', border: '2px solid var(--color-action-primary)', background: checked ? 'var(--color-action-primary)' : 'transparent', flexShrink: 0, marginRight: 10, cursor: 'pointer', display: 'flex', alignItems: 'center', justifyContent: 'center', boxSizing: 'border-box' }}>
-                  <span className="mi" style={{ fontSize: 13, color: 'var(--color-action-primary-inverse)', opacity: checked ? 1 : 0 }} data-i="check"></span>
+                <div onClick={() => onToggleCheck && onToggleCheck(p.name)} className={`cb small ${checked ? 'on' : ''}`} style={{ marginRight: 10 }}>
+                  {checked && <span className="mi" data-i="check"></span>}
                 </div>
                 <span style={{ fontFamily: '"Nunito", sans-serif', fontSize: 15, fontWeight: 600, color: 'var(--color-info-primary)', flex: 1 }}>{p.name}</span>
                 <span style={{ fontFamily: '"Nunito", sans-serif', fontSize: 14, color: 'var(--color-info-secondary)', width: 80, textAlign: 'center' }}>{p.azaan}</span>
-                <div style={{ width: 100, display: 'flex', alignItems: 'center', justifycontent: 'flex-end', gap: 6, justifyContent: 'flex-end' }}>
+                <div style={{ width: 100, display: 'flex', alignItems: 'center', gap: 8, justifyContent: 'flex-end' }}>
                   <span style={{ fontFamily: '"Nunito", sans-serif', fontSize: 14, color: 'var(--color-info-primary)' }}>{p.iqama}</span>
-                  <span onClick={() => onToggleAlert && onToggleAlert(p.name)} className={`mi ${alertOn ? 'fill' : ''}`} style={{ fontSize: 18, color: alertOn ? 'var(--color-action-primary)' : 'var(--color-info-faint)', cursor: 'pointer' }} data-i={alertOn ? 'notifications' : 'notifications_none'}></span>
+                  <span onClick={() => onToggleAlert && onToggleAlert(p.name)} className={`mi ${alertOn ? 'fill' : ''}`} style={{ fontSize: 18, color: alertOn ? 'var(--color-action-primary)' : 'var(--color-info-faint)', cursor: 'pointer' }} data-i="campaign"></span>
                 </div>
               </div>
             );
           })}
-        </div>
 
-        {/* Calendar visual tracker */}
-        <div>
-          <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 12 }}>
-            <span style={{ fontFamily: '"Nunito", sans-serif', fontSize: 15, fontWeight: 700, color: 'var(--color-info-primary)' }}>Salaah History</span>
-            <span style={{ fontFamily: '"Nunito", sans-serif', fontSize: 12, color: 'var(--color-action-primary)', textDecoration: 'underline', cursor: 'pointer' }}>Toggle Calendar</span>
-          </div>
-
-          <div style={{ display: 'grid', gridTemplateColumns: '36px repeat(13,1fr)', gap: 3, marginBottom: 4 }}>
-            <div />
-            {months.map((m, idx) => (
-              <div key={idx} style={{ textAlign: 'center', fontFamily: '"Nunito", sans-serif', fontSize: 9, color: 'var(--color-info-secondary)' }}>{m.label}</div>
-            ))}
-          </div>
-
-          <div style={{ display: 'flex', flexdirection: 'column', gap: 3, flexDirection: 'column' }}>
-            {rows.map((r, idx) => (
-              <div key={idx} style={{ display: 'grid', gridTemplateColumns: '36px repeat(13,1fr)', gap: 3 }}>
-                <div style={{ fontFamily: '"Nunito", sans-serif', fontSize: 9, color: 'var(--color-info-secondary)', display: 'flex', alignItems: 'center' }}>{r.day}</div>
-                {r.cells.map((c, cIdx) => (
-                  <div key={cIdx} style={{ height: 14, borderRadius: 3, background: c.bg }} />
-                ))}
+          {/* Sehri · Sunrise · Iftaar */}
+          <div style={{ display: 'flex', padding: '14px 16px 16px' }}>
+            {sunTimes.map((s, idx) => (
+              <div key={idx} style={{ flex: 1, textAlign: 'center' }}>
+                <div style={{ fontFamily: '"Nunito", sans-serif', fontSize: 13, color: 'var(--color-info-secondary)', marginBottom: 2 }}>{s.label}</div>
+                <div style={{ fontFamily: '"Nunito", sans-serif', fontSize: 16, fontWeight: 700, color: 'var(--color-info-primary)' }}>{s.time}</div>
               </div>
             ))}
           </div>
+        </div>
+
+        {/* Attendance heatmap (GitHub-style, Hijri month-wise) */}
+        <div>
+          <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'baseline', marginBottom: 14, gap: 8 }}>
+            <span style={{ fontFamily: 'var(--font-title)', fontSize: 19, color: 'var(--color-info-primary)', letterSpacing: '-0.3px' }}>Muharram - Dhul Hijjah 1446</span>
+            <span style={{ fontFamily: '"Nunito", sans-serif', fontSize: 13, fontWeight: 600, color: 'var(--color-action-primary)', textDecoration: 'underline', cursor: 'pointer', whiteSpace: 'nowrap' }}>⇄ English</span>
+          </div>
+
+          <div style={{ display: 'flex', gap: 6 }}>
+            {/* weekday labels (fixed) */}
+            <div style={{ display: 'flex', flexDirection: 'column', flexShrink: 0 }}>
+              <div style={{ height: LABEL_H + GAP }} />
+              {DAY_LABELS.map((d, i) => (
+                <div key={i} style={{ height: CELL, marginBottom: i === 6 ? 0 : GAP, display: 'flex', alignItems: 'center', fontFamily: '"Nunito", sans-serif', fontSize: 9, color: 'var(--color-info-secondary)' }}>{d}</div>
+              ))}
+            </div>
+
+            {/* scrollable weeks */}
+            <div ref={heatRef} style={{ overflowX: 'auto', flex: 1 }}>
+              <div style={{ width: 'max-content' }}>
+                {/* month labels */}
+                <div style={{ display: 'flex', gap: GAP, height: LABEL_H, marginBottom: GAP }}>
+                  {cols.map((c) => (
+                    <div key={c} style={{ width: CELL, flexShrink: 0, fontFamily: '"Nunito", sans-serif', fontSize: 9, color: 'var(--color-info-secondary)', whiteSpace: 'nowrap', overflow: 'visible' }}>{monthLabelByCol[c] || ''}</div>
+                  ))}
+                </div>
+                {/* weekday rows */}
+                {grid.map((rowCells, r) => (
+                  <div key={r} style={{ display: 'flex', gap: GAP, marginBottom: r === 6 ? 0 : GAP }}>
+                    {rowCells.map((v, c) => (
+                      <div key={c} style={{ width: CELL, height: CELL, flexShrink: 0, borderRadius: 3, background: cellBg(v) }} />
+                    ))}
+                  </div>
+                ))}
+              </div>
+            </div>
+          </div>
+
+          {/* legend */}
+          <div style={{ display: 'flex', justifyContent: 'flex-end', alignItems: 'center', gap: 4, marginTop: 10 }}>
+            <span style={{ fontFamily: '"Nunito", sans-serif', fontSize: 11, color: 'var(--color-info-secondary)', marginRight: 2 }}>0</span>
+            {[0, 1, 2, 3, 4, 5].map((l) => (
+              <div key={l} style={{ width: 12, height: 12, borderRadius: 3, background: cellBg(l) }} />
+            ))}
+            <span style={{ fontFamily: '"Nunito", sans-serif', fontSize: 11, color: 'var(--color-info-secondary)', marginLeft: 2 }}>5 times</span>
+          </div>
+        </div>
+
         </div>
       </div>
 
-      {/* Masjid Switcher Modal Sheet overlay */}
+      {/* App bar — DS .app-bar (progressive blur); masjid selector pinned in */}
+      <div className="app-bar" style={{ alignItems: 'center', height: SAL_APPBAR_H, padding: '54px 16px 10px' }} onClick={onMasjidSheetToggle}>
+        <div style={{ width: 44, height: 44, borderRadius: '50%', background: 'var(--color-action-secondary)', flexShrink: 0, display: 'flex', alignItems: 'center', justifyContent: 'center', color: '#fff', fontFamily: 'var(--font-title)', fontSize: 20 }}>{masjidLetter}</div>
+        <div style={{ flex: 1, minWidth: 0, cursor: 'pointer' }}>
+          <div style={{ display: 'flex', alignItems: 'center', gap: 4 }}>
+            <span style={{ fontFamily: 'var(--font-title)', fontSize: 22, color: 'var(--color-info-primary)', letterSpacing: '-0.3px' }}>{masjidName}</span>
+            <span className="mi" style={{ fontSize: 20, color: 'var(--color-info-secondary)' }} data-i="keyboard_arrow_down"></span>
+          </div>
+          <div style={{ fontFamily: '"Nunito", sans-serif', fontSize: 13, color: 'var(--color-info-secondary)' }}>{masjidSub}</div>
+        </div>
+      </div>
+
+      {/* Masjid switcher — DS bottom-sheet dialog */}
       {showMasjidSheet && (
-        <div style={{ position: 'absolute', inset: 0, background: 'rgba(0,0,0,0.5)', zIndex: 100, display: 'flex', alignItems: 'flex-end' }}>
-          <div style={{ width: '100%', background: 'var(--color-surface-primary)', borderRadius: '24px 24px 0 0', padding: 20, boxSizing: 'border-box' }}>
-            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 16 }}>
-              <span style={{ fontFamily: '"Nunito", sans-serif', fontSize: 18, fontWeight: 800, color: 'var(--color-info-primary)' }}>Switch Masjid</span>
+        <div className="dlg-scrim sheet" onClick={onMasjidSheetToggle}>
+          <div className="dlg" onClick={(e) => e.stopPropagation()}>
+            <div className="dlg-handle" />
+            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+              <span className="dlg-title">Switch Masjid</span>
               <span onClick={onMasjidSheetToggle} className="mi" style={{ fontSize: 24, color: 'var(--color-info-faint)', cursor: 'pointer' }} data-i="close"></span>
             </div>
-            <div style={{ display: 'flex', flexDirection: 'column', gap: 12 }}>
-              <div onClick={() => onSelectMasjid && onSelectMasjid('Masjid E Bilal')} style={{ display: 'flex', gap: 10, padding: 10, background: 'var(--color-action-background)', borderRadius: 12, cursor: 'pointer' }}>
-                <div style={{ width: 32, height: 32, borderRadius: '50%', background: '#1A5E30', color: '#fff', fontSize: 14, fontWeight: 700, display: 'flex', alignItems: 'center', justifyContent: 'center' }}>B</div>
-                <div>
-                  <div style={{ fontFamily: '"Nunito", sans-serif', fontSize: 14, fontWeight: 700, color: 'var(--color-info-primary)' }}>Masjid E Bilal</div>
-                  <div style={{ fontFamily: '"Nunito", sans-serif', fontSize: 11, color: 'var(--color-info-secondary)' }}>Bannerghatta Road, Bengaluru</div>
+            <div className="dlg-body" style={{ display: 'flex', flexDirection: 'column', gap: 8 }}>
+              {[
+                { letter: 'B', name: 'Masjid E Bilal', sub: 'Bannerghatta Road, Bengaluru', bg: 'var(--color-action-secondary)' },
+                { letter: 'Q', name: 'Masjid E Quba', sub: 'Jayanagar, Bengaluru', bg: 'var(--color-action-primary)' }
+              ].map((m, idx) => (
+                <div key={idx} onClick={() => onSelectMasjid && onSelectMasjid(m.name)} style={{ display: 'flex', gap: 12, alignItems: 'center', padding: 12, background: m.name === masjidName ? 'var(--color-action-background)' : 'transparent', borderRadius: 12, cursor: 'pointer' }}>
+                  <div style={{ width: 36, height: 36, borderRadius: '50%', background: m.bg, color: '#fff', fontFamily: 'var(--font-title)', fontSize: 16, display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0 }}>{m.letter}</div>
+                  <div>
+                    <div style={{ fontFamily: '"Nunito", sans-serif', fontSize: 15, fontWeight: 700, color: 'var(--color-info-primary)' }}>{m.name}</div>
+                    <div style={{ fontFamily: '"Nunito", sans-serif', fontSize: 12, color: 'var(--color-info-secondary)' }}>{m.sub}</div>
+                  </div>
                 </div>
-              </div>
-              <div onClick={() => onSelectMasjid && onSelectMasjid('Masjid E Quba')} style={{ display: 'flex', gap: 10, padding: 10, background: 'transparent', borderRadius: 12, cursor: 'pointer' }}>
-                <div style={{ width: 32, height: 32, borderRadius: '50%', background: '#2C3580', color: '#fff', fontSize: 14, fontWeight: 700, display: 'flex', alignItems: 'center', justifyContent: 'center' }}>Q</div>
-                <div>
-                  <div style={{ fontFamily: '"Nunito", sans-serif', fontSize: 14, fontWeight: 700, color: 'var(--color-info-primary)' }}>Masjid E Quba</div>
-                  <div style={{ fontFamily: '"Nunito", sans-serif', fontSize: 11, color: 'var(--color-info-secondary)' }}>Jayanagar, Bengaluru</div>
-                </div>
-              </div>
+              ))}
             </div>
           </div>
         </div>

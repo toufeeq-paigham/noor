@@ -22,6 +22,19 @@ const PRAYER_FRAMES = [
   { id: 'home-isha', name: 'Home — Isha View', tab: 0, component: 'HomeScreen', props: { prayer: 'Isha' } }
 ];
 
+// Qaum audio-player variations. Appended at the END of the global frame index space
+// (13,14,15) so the existing indices 0-12 + hash deep-links stay stable.
+const QAUM_EXTRA_FRAMES = [
+  { id: 'qaum-playing', name: 'Qaum — Audio Playing', tab: 1, component: 'QaumScreen', props: { audioPlaying: true, audioProgress: 1 } },
+  { id: 'qaum-dock-top', name: 'Qaum — Player Docked (Top)', tab: 1, component: 'QaumScreen', props: { audioPlaying: true, audioProgress: 5, dock: 'top' } },
+  { id: 'qaum-dock-bottom', name: 'Qaum — Player Docked (Bottom)', tab: 1, component: 'QaumScreen', props: { audioPlaying: true, audioProgress: 9, dock: 'bottom', dockBottomOffset: 12 } }
+];
+
+// Quran Juz view — appended at global index 16 (keeps indices 0-15 stable).
+const QURAN_EXTRA_FRAMES = [
+  { id: 'quran-juz', name: 'Quran — Juz View', tab: 2, component: 'QuranScreen', props: { activeTab: 1 } }
+];
+
 function renderFrame(f, i, active, onSelectFrame) {
   const { HomeScreen, QaumScreen, QuranScreen, SalaahScreen, ProfileScreen, BottomNav } = window;
   const isActive = active === i;
@@ -76,10 +89,12 @@ function QaumRow({ active = 0, onSelectFrame }) {
   return (
     <div>
       <div className="poc-row-label">
-        <span className="mi" data-i="group"></span> 03 · Qaum Tab — Community Feed · 1 Screen
+        <span className="mi" data-i="group"></span> 03 · Qaum Tab — Community Feed &amp; Audio Player · 4 states
       </div>
       <div className="poc-board">
-        {STORYBOARD_FRAMES.slice(4, 5).map((f, i) => renderFrame(f, 4 + i, active, onSelectFrame))}
+        {/* Base feed (idle audio) at global index 4, then the audio-player variations at 13-15 */}
+        {renderFrame(STORYBOARD_FRAMES[4], 4, active, onSelectFrame)}
+        {QAUM_EXTRA_FRAMES.map((f, i) => renderFrame(f, 13 + i, active, onSelectFrame))}
       </div>
     </div>
   );
@@ -89,10 +104,11 @@ function QuranRow({ active = 0, onSelectFrame }) {
   return (
     <div>
       <div className="poc-row-label">
-        <span className="mi" data-i="menu_book"></span> 04 · Quran Tab — Surah Listing · 1 Screen
+        <span className="mi" data-i="menu_book"></span> 04 · Quran Tab — Surah &amp; Juz · 2 states
       </div>
       <div className="poc-board">
-        {STORYBOARD_FRAMES.slice(5, 6).map((f, i) => renderFrame(f, 5 + i, active, onSelectFrame))}
+        {renderFrame(STORYBOARD_FRAMES[5], 5, active, onSelectFrame)}
+        {QURAN_EXTRA_FRAMES.map((f, i) => renderFrame(f, 16 + i, active, onSelectFrame))}
       </div>
     </div>
   );

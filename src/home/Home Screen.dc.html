@@ -105,8 +105,12 @@
                       on-bell-tap="{{ toggleNotif }}"
                       notif-on="{{ homeNotifOn }}"
                       go-quran="{{ switchToTab2 }}"
-                      go-dua="{{ switchToTab2 }}"
-                      go-masjids="{{ switchToTab3 }}"
+                      go-dua="{{ goDua }}"
+                      go-sehri="{{ goSehri }}"
+                      go-masjids="{{ goMasjids }}"
+                      go-hijri="{{ goHijri }}"
+                      go-asma="{{ goAsma }}"
+                      go-zakaat="{{ goZakaat }}"
                       prayer="{{ homeActivePrayer }}"
                       user-name="{{ homeGuest ? 'Guest' : 'Toufeeq Ahamed' }}"
                       masjid-name="{{ homeGuest ? 'Bangalore (Approx.)' : 'Masjid E Bilal' }}"
@@ -123,15 +127,13 @@
           <!-- TAB 1: QAUM SCREEN -->
           <sc-if value="{{ isQaumTab }}">
             <x-import component="QaumScreen" from="./storyboards/screens.jsx"
-                      active-filter="{{ qaumFilter }}"
-                      on-select-filter="{{ setQaumFilter }}"
                       likes="{{ qaumLikes }}"
                       on-like="{{ toggleQaumLike }}"
-                      follows="{{ qaumFollows }}"
-                      on-toggle-follow="{{ toggleQaumFollow }}"
                       audio-playing="{{ qaumAudioPlaying }}"
                       audio-progress="{{ qaumAudioProgress }}"
                       on-toggle-audio="{{ toggleQaumAudio }}"
+                      dock="{{ qaumDock }}"
+                      on-close-audio="{{ closeQaumAudio }}"
                       hint-size="100%,100%">
             </x-import>
           </sc-if>
@@ -141,11 +143,8 @@
             <x-import component="QuranScreen" from="./storyboards/screens.jsx"
                       active-tab="{{ quranTab }}"
                       on-select-tab="{{ setQuranTab }}"
-                      on-open-reader="{{ noop }}"
-                      on-select-surah="{{ selectQuranSurah }}"
-                      on-select-juz="{{ selectQuranJuz }}"
-                      selected-surah-idx="{{ quranSelectedSurah }}"
-                      selected-juz-idx="{{ quranSelectedJuz }}"
+                      on-select-surah="{{ goReaderSurah }}"
+                      on-select-juz="{{ goReaderJuz }}"
                       hint-size="100%,100%">
             </x-import>
           </sc-if>
@@ -159,8 +158,6 @@
                       on-masjid-sheet-toggle="{{ toggleSalaahMasjidSheet }}"
                       show-masjid-sheet="{{ salaahShowMasjidSheet }}"
                       on-select-masjid="{{ selectSalaahMasjid }}"
-                      date-offset="{{ salaahDateOffset }}"
-                      on-date-change="{{ changeSalaahDate }}"
                       prayers-alert="{{ salaahPrayersAlert }}"
                       prayers-checked="{{ salaahPrayersChecked }}"
                       on-toggle-check="{{ toggleSalaahCheck }}"
@@ -224,23 +221,19 @@ class Component extends DCLogic {
     homeNotifOn: true,
     
     // Qaum tab state
-    qaumFilter: 0,
     qaumLikes: { post1: { liked: true, count: 4 }, post2: { liked: false, count: 2 }, post3: { liked: true, count: 8 } },
-    qaumFollows: { paigham: true, dargah: false },
     qaumAudioPlaying: false,
-    qaumAudioProgress: 4,
+    qaumAudioProgress: 0,
+    qaumDock: 'none',
 
     // Quran tab state
     quranTab: 0,
-    quranSelectedSurah: 0,
-    quranSelectedJuz: 0,
 
     // Salaah tab state
     salaahShowMasjidSheet: false,
     salaahMasjidLetter: "B",
     salaahMasjidName: "Masjid E Bilal",
     salaahMasjidSub: "Bannerghatta Road, Bengaluru",
-    salaahDateOffset: 0,
     salaahPrayersAlert: { Fajr: false, Zohar: true, Asr: false, Maghrib: true, Isha: false },
     salaahPrayersChecked: { Fajr: true, Zohar: true, Asr: true, Maghrib: false, Isha: false },
 
@@ -271,7 +264,7 @@ class Component extends DCLogic {
       { activeTab: 0, homeHeroSel: null, homeActivePrayer: 'Asr', homeGuest: true, homeLoginNudge: true, homePrivacyConsent: false, homeAttPrompt: false },
       { activeTab: 0, homeHeroSel: null, homeActivePrayer: 'Asr', homeGuest: true, homeLoginNudge: false, homePrivacyConsent: true, homeAttPrompt: false },
       { activeTab: 0, homeHeroSel: null, homeActivePrayer: 'Asr', homeGuest: true, homeLoginNudge: true, homePrivacyConsent: false, homeAttPrompt: true },
-      { activeTab: 1 },
+      { activeTab: 1, qaumAudioPlaying: false, qaumAudioProgress: 0, qaumDock: 'none' },
       { activeTab: 2 },
       { activeTab: 3 },
       { activeTab: 4 },
@@ -279,8 +272,15 @@ class Component extends DCLogic {
       { activeTab: 0, homeHeroSel: null, homeActivePrayer: 'Zohar', homeGuest: false, homeLoginNudge: false, homePrivacyConsent: false, homeAttPrompt: false },
       { activeTab: 0, homeHeroSel: null, homeActivePrayer: 'Asr', homeGuest: false, homeLoginNudge: false, homePrivacyConsent: false, homeAttPrompt: false },
       { activeTab: 0, homeHeroSel: null, homeActivePrayer: 'Maghrib', homeGuest: false, homeLoginNudge: false, homePrivacyConsent: false, homeAttPrompt: false },
-      { activeTab: 0, homeHeroSel: null, homeActivePrayer: 'Isha', homeGuest: false, homeLoginNudge: false, homePrivacyConsent: false, homeAttPrompt: false }
+      { activeTab: 0, homeHeroSel: null, homeActivePrayer: 'Isha', homeGuest: false, homeLoginNudge: false, homePrivacyConsent: false, homeAttPrompt: false },
+      // 13-15 · Qaum audio-player variations
+      { activeTab: 1, qaumAudioPlaying: true, qaumAudioProgress: 1, qaumDock: 'none' },
+      { activeTab: 1, qaumAudioPlaying: true, qaumAudioProgress: 5, qaumDock: 'top' },
+      { activeTab: 1, qaumAudioPlaying: true, qaumAudioProgress: 9, qaumDock: 'bottom' },
+      // 16 · Quran Juz view
+      { activeTab: 2, quranTab: 1 }
     ];
+    clearInterval(this._audioTimer);
     this.setState({
       ...states[idx],
       activeFrameIndex: idx
@@ -333,10 +333,8 @@ class Component extends DCLogic {
       homePrayers: { Fajr: true, Zohar: true, Asr: true, Maghrib: true, Isha: false },
       homeSehriNote: false,
       homeSlide: 0,
-      qaumFilter: 0,
       quranTab: 0,
       salaahShowMasjidSheet: false,
-      salaahDateOffset: 0,
       profileInviteCopied: false,
       profileLogoutOpen: false,
       profilePendingFriends: [{ name: 'Suhail Ahmed', letter: 'S' }, { name: 'Syed Imran', letter: 'S' }]
@@ -389,16 +387,10 @@ class Component extends DCLogic {
   toggleNotif = () => this.setState(s => ({ homeNotifOn: !s.homeNotifOn }));
 
   // Qaum handlers
-  setQaumFilter = (idx) => this.setState({ qaumFilter: idx });
-  
   toggleQaumLike = (key) => this.setState(s => {
     const cur = s.qaumLikes[key];
     return { qaumLikes: { ...s.qaumLikes, [key]: { liked: !cur.liked, count: cur.count + (cur.liked ? -1 : 1) } } };
   });
-
-  toggleQaumFollow = (key) => this.setState(s => ({
-    qaumFollows: { ...s.qaumFollows, [key]: !s.qaumFollows[key] }
-  }));
 
   toggleQaumAudio = () => {
     this.setState(s => {
@@ -407,14 +399,14 @@ class Component extends DCLogic {
         clearInterval(this._audioTimer);
         this._audioTimer = setInterval(() => {
           this.setState(st => {
-            const nextProg = (st.qaumAudioProgress + 1) % 23;
-            if (nextProg === 0) {
+            const nextProg = st.qaumAudioProgress + 1;
+            if (nextProg >= 22) {
               clearInterval(this._audioTimer);
-              return { qaumAudioPlaying: false, qaumAudioProgress: 4 };
+              return { qaumAudioPlaying: false, qaumAudioProgress: 0 };
             }
             return { qaumAudioProgress: nextProg };
           });
-        }, 300);
+        }, 1000);
       } else {
         clearInterval(this._audioTimer);
       }
@@ -422,10 +414,39 @@ class Component extends DCLogic {
     });
   };
 
+  closeQaumAudio = () => {
+    clearInterval(this._audioTimer);
+    this.setState({ qaumAudioPlaying: false, qaumAudioProgress: 0, qaumDock: 'none' });
+  };
+
   // Quran handlers
   setQuranTab = (idx) => this.setState({ quranTab: idx });
-  selectQuranSurah = (idx) => this.setState({ quranSelectedSurah: idx });
-  selectQuranJuz = (idx) => this.setState({ quranSelectedJuz: idx });
+  goReaderSurah = () => { window.location.href = '../Quran.dc.html#surah'; };
+  goReaderJuz = () => { window.location.href = '../Quran.dc.html#juz'; };
+
+  goHijri = () => {
+    window.location.href = '../hijri/Hijri.dc.html#calendar';
+  };
+
+  goAsma = () => {
+    window.location.href = '../asma-ul-husna/Asma ul Husna.dc.html';
+  };
+
+  goZakaat = () => {
+    window.location.href = '../zakaat/Zakaat.dc.html#calculate';
+  };
+
+  goDua = () => {
+    window.location.href = '../dua-dikhr/Dua & Dikhr.dc.html#categories';
+  };
+
+  goMasjids = () => {
+    window.location.href = '../masjid-explore/Explore Masjids.dc.html#map';
+  };
+
+  goSehri = () => {
+    window.location.href = '../sehri/Sehri.dc.html#permission';
+  };
 
   // Salaah handlers
   toggleSalaahMasjidSheet = () => this.setState(s => ({ salaahShowMasjidSheet: !s.salaahShowMasjidSheet }));
@@ -440,11 +461,6 @@ class Component extends DCLogic {
       salaahShowMasjidSheet: false
     });
   };
-
-  changeSalaahDate = (offset) => this.setState(s => {
-    const nextOffset = Math.min(Math.max(0, s.salaahDateOffset + offset), 2);
-    return { salaahDateOffset: nextOffset };
-  });
 
   toggleSalaahCheck = (name) => this.setState(s => ({
     salaahPrayersChecked: { ...s.salaahPrayersChecked, [name]: !s.salaahPrayersChecked[name] }
@@ -511,25 +527,27 @@ class Component extends DCLogic {
       toggleNotif: this.toggleNotif,
       switchToTab2: this.switchToTab2,
       switchToTab3: this.switchToTab3,
+      goHijri: this.goHijri,
+      goAsma: this.goAsma,
+      goDua: this.goDua,
+      goSehri: this.goSehri,
+      goMasjids: this.goMasjids,
+      goZakaat: this.goZakaat,
 
       // Qaum Screen props
-      qaumFilter: s.qaumFilter,
-      setQaumFilter: this.setQaumFilter,
       qaumLikes: s.qaumLikes,
       toggleQaumLike: this.toggleQaumLike,
-      qaumFollows: s.qaumFollows,
-      toggleQaumFollow: this.toggleQaumFollow,
       qaumAudioPlaying: s.qaumAudioPlaying,
       qaumAudioProgress: s.qaumAudioProgress,
       toggleQaumAudio: this.toggleQaumAudio,
+      qaumDock: s.qaumDock,
+      closeQaumAudio: this.closeQaumAudio,
 
       // Quran Screen props
       quranTab: s.quranTab,
       setQuranTab: this.setQuranTab,
-      quranSelectedSurah: s.quranSelectedSurah,
-      selectQuranSurah: this.selectQuranSurah,
-      quranSelectedJuz: s.quranSelectedJuz,
-      selectQuranJuz: this.selectQuranJuz,
+      goReaderSurah: this.goReaderSurah,
+      goReaderJuz: this.goReaderJuz,
 
       // Salaah Screen props
       salaahMasjidLetter: s.salaahMasjidLetter,
@@ -538,8 +556,6 @@ class Component extends DCLogic {
       toggleSalaahMasjidSheet: this.toggleSalaahMasjidSheet,
       salaahShowMasjidSheet: s.salaahShowMasjidSheet,
       selectSalaahMasjid: this.selectSalaahMasjid,
-      salaahDateOffset: s.salaahDateOffset,
-      changeSalaahDate: this.changeSalaahDate,
       salaahPrayersAlert: s.salaahPrayersAlert,
       salaahPrayersChecked: s.salaahPrayersChecked,
       toggleSalaahCheck: this.toggleSalaahCheck,
