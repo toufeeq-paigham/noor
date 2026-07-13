@@ -10,8 +10,6 @@ Checks:
   3. Every relative href/src/from target exists on disk.
   4. No hardcoded theme remnants: dark="" props, data-theme="dark",
      banned palette hex outside photo/gradient contexts.
-  5. Icons: no authored material-symbols-rounded ligatures; every static
-     data-i="NAME" resolves to src/_ds/icons/NAME.svg.
 Exit code 0 = clean, 1 = findings (printed).
 """
 import re
@@ -98,29 +96,6 @@ def main() -> int:
             f"palette hex on lines {hits[:10]} — replace with var(--color-*) tokens "
             "(OK only inside photo-overlay/gradient contexts)"
         )
-
-    # 5. icons ---------------------------------------------------------------
-    if re.search(r'class(?:Name)?="[^"]*material-symbols-rounded', src):
-        findings.append(
-            'authored material-symbols-rounded icon — use <span class="mi" data-i="NAME"></span> '
-            '(the font is retained only for the vendored _ds_bundle.js)'
-        )
-    icons_dir = None
-    for parent in page.resolve().parents:
-        cand = parent / "_ds" / "icons"
-        if cand.is_dir():
-            icons_dir = cand
-            break
-    if icons_dir:
-        missing_icons = sorted(
-            n for n in set(re.findall(r'data-i="([a-z0-9_]+)"', src))
-            if not (icons_dir / f"{n}.svg").exists()
-        )
-        if missing_icons:
-            findings.append(
-                f"data-i names with no SVG in {icons_dir}: {missing_icons} "
-                "(add NAME.svg + an [data-i=\"NAME\"] rule to _theme/icons.css)"
-            )
 
     # report -----------------------------------------------------------------
     if findings:

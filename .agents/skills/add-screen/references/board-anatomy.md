@@ -134,6 +134,23 @@ class Component extends DCLogic {
 </html>
 ```
 
+### Pre-loading cross-section components
+
+If the board imports components from another section (e.g. `HomeScreen` from
+`../home/storyboards/screens.jsx`), add hidden pre-load imports **above** the
+page header, with dependencies ordered leaf-first (e.g. `PromptCard` before
+`BottomNav` before `HomeScreen`):
+
+```html
+<div style="display: none">
+  <x-import component="PromptCard" from="../_theme/components.jsx" hint-size="0,0"></x-import>
+  <x-import component="BottomNav" from="../home/storyboards/nav-bar.jsx" hint-size="0,0"></x-import>
+  <x-import component="HomeScreen" from="../home/storyboards/screens.jsx" hint-size="0,0"></x-import>
+</div>
+```
+
+This prevents React Error #130 ("Element type is invalid — got undefined").
+
 ## 2. A storyboard row — `<section>/storyboards/<flow>-row.jsx`
 
 ```jsx
@@ -152,7 +169,7 @@ function CategoriesRow({ active = -1 }) {
   return (
     <div>
       <div className="poc-row-label">
-        <span className="material-symbols-rounded">grid_view</span> 
+        <span className="mi" data-i="grid_view"></span>
         01 · Categories — Hisnul Muslim hub · {FRAMES.length} states
       </div>
       <div className="poc-board">
@@ -183,31 +200,54 @@ Object.assign(window, { CategoriesRow });
 
 Row labels are numbered in board order (`01 ·`, `02 ·`, …) and state the flow + frame count.
 Asset paths inside rows are relative to the BOARD page (`../uploads/…`).
+**Icons** in row labels must use `<span className="mi" data-i="icon_name"></span>` — never
+ligature text inside the span (that causes visible text overlap).
 
 ## 3. Shared screen components — `<section>/storyboards/screens.jsx`
 
-The shared component library declares React view components for every screen in the flow. They are mounted directly by both the interactive live device (`<Section>.dc.html`) and the static storyboard rows:
+The shared component library declares React view components for every screen in the flow. They are
+mounted directly by both the interactive live device (`<Section>.dc.html`) and the static storyboard
+rows. Every screen follows the **scroll-under-app-bar** shape: a `position:relative` root, a full-bleed
+absolute scroll layer padded down by the app-bar height, and a floating `<AppBar/>` (see the App bar
+section in `SKILL.md`).
 
 ```jsx
 // Shared section screen components.
 
-function CategoriesScreen({ activeTab = 'all', onSelectTab }) {
+const APPBAR_H = 96;         // title-only bar
+const APPBAR_H_TABS = 150;   // title bar + pinned tab row
+
+// One shared app bar for every screen — DS .app-bar (transparent, progressive blur), like Home.
+function AppBar({ title, onBack, tabs }) {
   return (
-    <div style={{ display: 'flex', flexDirection: 'column', height: '100%' }}>
-      {/* 
-        CRITICAL DESIGN SYSTEM RULES:
-        - NEVER write custom border-radii, backgrounds, or status color borders inline.
-        - Use design system CSS components from _theme/components.css (.btn, .input, .sw, etc.).
-        - Toggle classes like .error, .focused, or .success on inputs, and let CSS handle styling:
-          e.g., <div className={`input ${error ? 'error' : ''}`}>
-      */}
-      <div className="tbar">
-        <button className="btn" onClick={() => onSelectTab?.('all')}>All</button>
-        <button className="btn" onClick={() => onSelectTab?.('fav')}>Favorites</button>
+    <div className="app-bar" style={{ flexDirection:'column', alignItems:'stretch', gap:0,
+         height: tabs ? APPBAR_H_TABS : APPBAR_H, padding:'52px 16px 10px' }}>
+      <div style={{ display:'flex', alignItems:'center', gap:14 }}>
+        <button className="ib ib-tonal md" onClick={onBack} aria-label="Back"><span className="mi" data-i="arrow_back"></span></button>
+        <div className="ab-title">{title}</div>
       </div>
-      <div className="list">
-        {/* Render categories here */}
+      {tabs ? <div style={{ marginTop:12 }}>{tabs}</div> : null}
+    </div>
+  );
+}
+
+function CategoriesScreen({ activeTab = 'dua', onSelectTab, onSelectCategory, onBack }) {
+  // A tab bar is PINNED inside the app bar (never scrolls) — pass it as the `tabs` prop.
+  const tabBar = (
+    <div className="tbar">
+      <div className={`tab ${activeTab === 'dua' ? 'active' : ''}`} onClick={() => onSelectTab?.('dua')}>DU'A</div>
+      <div className={`tab ${activeTab === 'fav' ? 'active' : ''}`} onClick={() => onSelectTab?.('fav')}>FAVOURITES</div>
+    </div>
+  );
+  return (
+    <div style={{ position:'relative', width:'100%', height:'100%', overflow:'hidden', background:'var(--color-surface-primary)' }}>
+      {/* Scroll layer runs full-bleed UNDER the app bar; paddingTop clears it (tabs → use APPBAR_H_TABS). */}
+      <div style={{ position:'absolute', inset:0, overflowY:'auto', WebkitOverflowScrolling:'touch', paddingTop: APPBAR_H_TABS }}>
+        <div style={{ padding:'4px 16px 24px' }}>
+          {/* Render categories here — DS component classes only, no inline component clones. */}
+        </div>
       </div>
+      <AppBar title="Hisnul Muslim" onBack={onBack} tabs={tabBar} />
     </div>
   );
 }
@@ -218,13 +258,12 @@ Object.assign(window, { CategoriesScreen });
 
 ## Index registration
 
-In `Index.dc.html`'s `data` array, the section's flows become cards deep-linking into the board:
+In `Index.dc.html`'s `data` array, add **one single card for the section** (not one per flow row),
+deep-linking to the board's entry anchor:
 
 ```js
-{ id: 'content', num: '04', title: 'Content & tools', items: [
-  { name: 'Dua Categories', file: 'dua-dikhr/Dua & Dikhr.dc.html',           icon: 'grid_view',  meta: 'Board row · 2 states' },
-  { name: 'Dua Chapters',   file: 'dua-dikhr/Dua & Dikhr.dc.html#chapters',  icon: 'list',       meta: 'Board row · chapter list' },
-  { name: 'Dua Detail',     file: 'dua-dikhr/Dua & Dikhr.dc.html#detail',    icon: 'menu_book',  meta: 'Board row · reader + audio' },
+{ id: 'content', num: '05', title: 'Content & tools', items: [
+  { name: 'Dua & Dikhr', file: 'dua-dikhr/Dua & Dikhr.dc.html#categories', icon: 'volunteer_activism', meta: 'Section board · Hisnul Muslim · 5 states' },
 ]},
 ```
 
