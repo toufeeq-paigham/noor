@@ -3,6 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="noor-subtitle" content="Organisms — complex, modular assemblies of molecules and atoms that handle critical flows and layouts.">
 <script src="../../support.js"></script>
 <script src="../../_theme/chrome.js"></script>
 </head>
@@ -43,26 +44,6 @@
 
 <div class="cp-wrap">
 
-  <!-- Header -->
-  <div style="display:flex;align-items:flex-end;justify-content:space-between;gap:24px;flex-wrap:wrap;margin-bottom:32px">
-    <div>
-      <div style="font-family:var(--font-body);font-size:12px;font-weight:800;letter-spacing:.1em;text-transform:uppercase;color:var(--color-neutral-brand);margin-bottom:8px">Components · Page 06</div>
-      <div style="font-family:var(--font-title);font-size:40px;letter-spacing:-0.5px;color:var(--color-info-primary);line-height:1.1">Organisms</div>
-      <div style="font-family:var(--font-body);font-size:15px;color:var(--color-info-secondary);margin-top:6px;max-width:640px">
-        Organisms — complex, modular assemblies of molecules and atoms that handle critical flows and layouts.
-      </div>
-    </div>
-    <div style="display:flex;gap:10px">
-      <a href="../molecules/Molecules.dc.html" style="display:inline-flex;align-items:center;gap:8px;text-decoration:none;background:var(--color-surface-primary);border:1px solid var(--color-neutral-border);border-radius:999px;padding:10px 16px;box-shadow:var(--shadow-card)">
-        <span class="mi" style="font-size:18px;color:var(--color-action-primary)" data-i="bubble_chart"></span>
-        <span style="font-family:var(--font-body);font-size:13px;font-weight:700;color:var(--color-info-primary)">← Molecules</span>
-      </a>
-      <a href="../../Index.dc.html" style="display:inline-flex;align-items:center;gap:8px;text-decoration:none;background:var(--color-surface-primary);border:1px solid var(--color-neutral-border);border-radius:999px;padding:10px 16px;box-shadow:var(--shadow-card)">
-        <span class="mi" style="font-size:18px;color:var(--color-action-primary)" data-i="home"></span>
-        <span style="font-family:var(--font-body);font-size:13px;font-weight:700;color:var(--color-info-primary)">Index</span>
-      </a>
-    </div>
-  </div>
 
   <!-- 1. Dialog — ONE component for alerts + sheets (NoorUI AlertDialog / SheetDialog) -->
   <div class="cp-card">
@@ -123,7 +104,30 @@
                 title="Follow a Masjid"
                 description="Follow a masjid you trust for iqama times and community updates"
                 primary-action-text="Find a Masjid"
+                primary-action-icon="mosque"
                 hint-size="100%,auto">
+      </x-import>
+    </div>
+  </div>
+
+  <!-- RichNudgeSheet (rich one-time nudge bottom sheet) -->
+  <div class="cp-card">
+    <div class="cp-head">
+      <div class="cp-h">RichNudgeSheet</div>
+      <div class="cp-sub">Illustration + brand title + "What you get" benefit list on a bottom sheet, with a floating corner close. Mirrors Compose <code>RichNudgeSheetContent.kt</code>; the follow-masjid and notification nudge sheets are content presets over this shell.</div>
+    </div>
+    <div class="dlg-stage" style="height:640px">
+      <button class="btn btn-filled" onClick="{{ openRichSheet }}">Open sheet</button>
+      <x-import component="RichNudgeSheet" from="../../_theme/components.jsx"
+                is-open="{{ richSheetOpen }}"
+                on-close="{{ closeRichSheet }}"
+                illustration="../../../images/follow_masjids.webp"
+                title="Pick your masjid, stay in sync"
+                description="Choose a masjid you trust—iqama times and community updates stay with you here."
+                benefits="{{ richBenefits }}"
+                primary-text="Find my masjid"
+                on-primary="{{ closeRichSheet }}"
+                hint-size="100%,100%">
       </x-import>
     </div>
   </div>
@@ -261,6 +265,7 @@ class Component extends DCLogic {
   state = {
     alertOpen: false,
     sheetOpen: false,
+    richSheetOpen: false,
     apPlaying: false,
     apProgress: 5   // seconds, of apTotal
   };
@@ -274,6 +279,8 @@ class Component extends DCLogic {
   closeAlert = () => this.setState({ alertOpen: false });
   openSheet = () => this.setState({ sheetOpen: true });
   closeSheet = () => this.setState({ sheetOpen: false });
+  openRichSheet = () => this.setState({ richSheetOpen: true });
+  closeRichSheet = () => this.setState({ richSheetOpen: false });
 
   // Build the bar list for a given fraction (0..1) played.
   _bars(frac) {
@@ -320,6 +327,14 @@ class Component extends DCLogic {
       closeSheet: this.closeSheet,
       sheetPrimary: { text: 'Enable', onClick: this.closeSheet },
       sheetSecondary: { text: 'Not now', onClick: this.closeSheet },
+      richSheetOpen: s.richSheetOpen,
+      openRichSheet: this.openRichSheet,
+      closeRichSheet: this.closeRichSheet,
+      richBenefits: [
+        { icon: 'explore', title: 'Explore before you follow.', caption: 'Browse nearby masjids on the map, then pick the one you trust.' },
+        { icon: 'schedule', title: 'Iqama times that match your masjid.', caption: 'Prayer times reflect the schedule from the masjid you follow.' },
+        { icon: 'campaign', title: 'Updates in one place.', caption: 'Hear what matters from your masjid inside the app.' }
+      ],
       toggleAp: this.toggleAp,
       apIcon: s.apPlaying ? 'pause' : 'play_arrow',
       apTime: this._fmt(s.apProgress),

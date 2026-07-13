@@ -191,7 +191,9 @@
    docked to the bottom edge). This REPLACES the old iOS-native system prompt. */
 .dlg-scrim{position:absolute;inset:0;z-index:200;display:flex;justify-content:center;align-items:center;padding:20px;box-sizing:border-box;background:var(--color-surface-scrim);backdrop-filter:blur(2px);-webkit-backdrop-filter:blur(2px);animation:noor-dlg-fade .2s ease-out}
 .dlg-scrim.sheet{align-items:flex-end;padding:0}
-.dlg{width:320px;max-width:92%;max-height:90%;overflow-y:auto;box-sizing:border-box;display:flex;flex-direction:column;padding:var(--size-2xl);background:color-mix(in oklab,var(--color-surface-primary) 88%,transparent);backdrop-filter:blur(20px);-webkit-backdrop-filter:blur(20px);border:1px solid var(--color-neutral-border);border-radius:var(--radius-huge);box-shadow:0 24px 60px -20px rgba(9,9,11,.5);animation:noor-dlg-pop .22s cubic-bezier(.2,.8,.2,1)}
+.dlg{position:relative;width:320px;max-width:92%;max-height:90%;overflow-y:auto;box-sizing:border-box;display:flex;flex-direction:column;padding:var(--size-2xl);background:color-mix(in oklab,var(--color-surface-primary) 88%,transparent);backdrop-filter:blur(20px);-webkit-backdrop-filter:blur(20px);border:1px solid var(--color-neutral-border);border-radius:var(--radius-huge);box-shadow:0 24px 60px -20px rgba(9,9,11,.5);animation:noor-dlg-pop .22s cubic-bezier(.2,.8,.2,1)}
+/* Floating close, pinned to the sheet's top-right corner (mirrors RichNudgeSheetContent.kt TopEnd) */
+.dlg-close{position:absolute;top:var(--size-md);right:var(--size-md);z-index:1}
 .dlg-scrim.sheet .dlg{width:100%;max-width:100%;border-radius:var(--radius-huge) var(--radius-huge) 0 0;box-shadow:0 -12px 40px -12px rgba(9,9,11,.35);animation:noor-dlg-slide .28s cubic-bezier(.2,.8,.2,1)}
 .dlg-handle{width:40px;height:4px;flex-shrink:0;border-radius:var(--radius-xs);background:var(--color-neutral-border);margin:2px auto 14px}
 .dlg-title{font-family:var(--font-title);font-size:22px;line-height:1.15;letter-spacing:-.3px;color:var(--color-info-primary)}

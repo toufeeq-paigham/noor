@@ -6,10 +6,15 @@ function PromptCard({
   title,
   description,
   primaryActionText,
+  primaryActionIcon,   // optional leading icon name (e.g. 'mosque'), mirrors PromptCard.kt primaryActionIcon
   onPrimaryAction,
   onDismiss,
   style = {}
 }) {
+  // Prop-less mounts (the loader `<x-import hint-size="0,0">` pattern that
+  // pulls this file into scope) must not paint an empty card shell.
+  if (!title && !description) return null;
+
   let gradientScheme = 'var(--gradient-tangerine)';
   let titleColor = 'var(--color-info-primary)';
   let borderColor = 'color-mix(in oklab, var(--color-action-secondary) 25%, transparent)';
@@ -68,8 +73,24 @@ function PromptCard({
         lineHeight: 1.45
       }}>{description}</div>
       
-      {primaryActionText && onPrimaryAction && (
-        <button className="btn btn-filled" onClick={onPrimaryAction} style={{ width: '100%', marginTop: 18 }}>{primaryActionText}</button>
+      {primaryActionText && (
+        <button
+          className="btn btn-filled"
+          onClick={onPrimaryAction}
+          style={{
+            width: '100%',
+            marginTop: 18,
+            // Warning variant uses a contained status-warning button (PromptCard.kt: TonalButton
+            // Contained, Noor.colors.status.warning); error/success keep the filled primary.
+            ...(variant === 'warning' ? {
+              background: 'var(--color-status-warning)',
+              boxShadow: '0 8px 20px -8px color-mix(in oklab, var(--color-status-warning) 60%, transparent)'
+            } : {})
+          }}
+        >
+          {primaryActionIcon && <span className="mi fill" style={{ fontSize: 18 }} data-i={primaryActionIcon}></span>}
+          {primaryActionText}
+        </button>
       )}
     </div>
   );
@@ -155,6 +176,7 @@ function Dialog({
   primary,                   // { text, onClick }
   secondary,                 // { text, onClick }
   children,                  // optional content slot
+  cornerClose,               // optional () => void — floating close button pinned to the sheet's top-right corner
   dismissOnScrim = true
 }) {
   if (!isOpen) return null;
@@ -170,6 +192,11 @@ function Dialog({
       onTouchMove={(e) => e.stopPropagation()}
     >
       <div className="dlg" onClick={(e) => e.stopPropagation()}>
+        {cornerClose && (
+          <button className="ib ib-tonal primary sm dlg-close" onClick={cornerClose} aria-label="Close">
+            <span className="mi" data-i="close"></span>
+          </button>
+        )}
         {isSheet && <div className="dlg-handle" />}
         {title && <div className="dlg-title">{title}</div>}
         {description && <div className="dlg-desc">{description}</div>}
@@ -185,4 +212,55 @@ function Dialog({
   );
 }
 
-Object.assign(window, { PromptCard, BottomSheet, Dialog });
+// ── RichNudgeSheet — one-time nudge bottom sheet ──
+// Mirrors NoorUI RichNudgeSheetContent.kt: illustration header, brand serif title +
+// description, a "What you get" benefit list, a floating corner close, and a
+// primary/secondary action row. Built on the Dialog sheet. Feature-specific presets
+// (follow-masjid, notification) supply the illustration/title/benefits/copy.
+//   benefits: [{ icon, title, caption }]  ·  header is either `illustration` (image URL) or
+//   `icon` (a glyph in a tinted circle, e.g. the ATT pre-prompt) · showClose toggles the corner ×.
+function RichNudgeSheet({ isOpen, onClose, illustration, icon, title, description, benefits = [], primaryText, onPrimary, secondaryText = 'Not now', showClose = true }) {
+  return (
+    <Dialog
+      mode="sheet"
+      isOpen={isOpen}
+      onClose={onClose}
+      cornerClose={showClose ? onClose : undefined}
+      primary={{ text: primaryText, onClick: onPrimary }}
+      secondary={{ text: secondaryText, onClick: onClose }}
+    >
+      <div>
+        {/* Header — illustration image, or an icon in a tinted circle */}
+        {illustration ? (
+          <img src={illustration} style={{ display: 'block', width: 180, maxWidth: '62%', margin: '8px auto 16px' }} />
+        ) : icon ? (
+          <div style={{ width: 88, height: 88, borderRadius: '50%', background: 'color-mix(in oklab, var(--color-action-primary) 10%, transparent)', display: 'flex', alignItems: 'center', justifyContent: 'center', margin: '8px auto 16px' }}>
+            <span className="mi" style={{ fontSize: 44, color: 'var(--color-action-primary)' }} data-i={icon}></span>
+          </div>
+        ) : null}
+
+        {/* Brand serif title + description (centered) */}
+        <div style={{ fontFamily: 'var(--font-title)', fontSize: 26, color: 'var(--color-neutral-brand)', textAlign: 'center', lineHeight: 1.2 }}>{title}</div>
+        <div style={{ fontFamily: '"Nunito", sans-serif', fontSize: 14, color: 'var(--color-info-secondary)', textAlign: 'center', margin: '8px 8px 20px', lineHeight: 1.45 }}>{description}</div>
+
+        {/* What you get */}
+        <div style={{ fontFamily: 'var(--font-title)', fontSize: 20, color: 'var(--color-info-primary)', marginBottom: 14 }}>What you get</div>
+        <div style={{ display: 'flex', flexDirection: 'column', gap: 14 }}>
+          {benefits.map((b, i) => (
+            <div key={i} style={{ display: 'flex', gap: 14, alignItems: 'flex-start' }}>
+              <div style={{ width: 44, height: 44, borderRadius: '50%', background: 'color-mix(in oklab, var(--color-action-primary) 12%, transparent)', display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0 }}>
+                <span className="mi" style={{ fontSize: 22, color: 'var(--color-action-primary)' }} data-i={b.icon}></span>
+              </div>
+              <div>
+                <div style={{ fontFamily: '"Nunito", sans-serif', fontSize: 16, fontWeight: 700, color: 'var(--color-info-primary)' }}>{b.title}</div>
+                <div style={{ fontFamily: '"Nunito", sans-serif', fontSize: 13, color: 'var(--color-info-secondary)', marginTop: 2, lineHeight: 1.4 }}>{b.caption}</div>
+              </div>
+            </div>
+          ))}
+        </div>
+      </div>
+    </Dialog>
+  );
+}
+
+Object.assign(window, { PromptCard, BottomSheet, Dialog, RichNudgeSheet });

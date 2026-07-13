@@ -1,16 +1,16 @@
 # Graph Report - noor  (2026-07-13)
 
 ## Corpus Check
-- 48 files · ~2,801,593 words
+- 50 files · ~2,822,039 words
 - Verdict: corpus is large enough that graph structure adds value.
 
 ## Summary
-- 587 nodes · 613 edges · 54 communities (27 shown, 27 thin omitted)
+- 615 nodes · 641 edges · 56 communities (27 shown, 29 thin omitted)
 - Extraction: 100% EXTRACTED · 0% INFERRED · 0% AMBIGUOUS
 - Token cost: 0 input · 0 output
 
 ## Graph Freshness
-- Built from commit: `ea241bc9`
+- Built from commit: `ebbc527c`
 - Run `git rev-parse HEAD` and compare to check if the graph is stale.
 - Run `graphify update .` after code changes (no API cost).
 
@@ -65,6 +65,8 @@
 - [[_COMMUNITY_Community 51|Community 51]]
 - [[_COMMUNITY_Community 52|Community 52]]
 - [[_COMMUNITY_Community 53|Community 53]]
+- [[_COMMUNITY_Community 54|Community 54]]
+- [[_COMMUNITY_Community 55|Community 55]]
 
 ## God Nodes (most connected - your core abstractions)
 1. `tokenKinds` - 141 edges
@@ -84,7 +86,7 @@
 ## Import Cycles
 - None detected.
 
-## Communities (54 total, 27 thin omitted)
+## Communities (56 total, 29 thin omitted)
 
 ### Community 0 - "Community 0"
 Cohesion: 0.01
@@ -107,8 +109,8 @@ Cohesion: 0.18
 Nodes (10): overrides, plugins, rules, no-restricted-imports, no-restricted-syntax, react/forbid-elements, x-omelette, components (+2 more)
 
 ### Community 6 - "Community 6"
-Cohesion: 0.42
-Nodes (10): apply(), buildChrome(), getMode(), initCanvas(), initPan(), initScrollPan(), isInteractive(), resolved() (+2 more)
+Cohesion: 0.22
+Nodes (13): apply(), buildChrome(), buildDrawer(), closeDrawer(), getMode(), initCanvas(), initPan(), initScrollPan() (+5 more)
 
 ### Community 7 - "Community 7"
 Cohesion: 0.42
@@ -163,35 +165,35 @@ Cohesion: 0.40
 Nodes (4): assertions, eval_id, eval_name, prompt
 
 ### Community 33 - "Community 33"
-Cohesion: 0.18
+Cohesion: 0.13
 Nodes (4): QAUM_AMP, QaumAudioPlayer(), qaumBars(), qaumTime()
 
 ### Community 34 - "Community 34"
-Cohesion: 0.18
-Nodes (7): PRAYER_FRAMES, QAUM_EXTRA_FRAMES, QaumRow(), QURAN_EXTRA_FRAMES, QuranRow(), renderFrame(), STORYBOARD_FRAMES
+Cohesion: 0.21
+Nodes (9): HomeRow(), PRAYER_FRAMES, QAUM_EXTRA_FRAMES, QaumRow(), QURAN_EXTRA_FRAMES, QuranRow(), renderFrame(), SalaahRow() (+1 more)
 
 ### Community 39 - "Community 39"
 Cohesion: 0.22
 Nodes (7): AUDIO_AMP, audioBars(), DUA_CATEGORIES, DUA_DETAIL, DUA_LIST, DuaDetailScreen(), fmtTime()
 
 ### Community 46 - "Community 46"
-Cohesion: 0.70
-Nodes (4): compress_image(), compress_pdf(), process_file(), compress_files.sh script
+Cohesion: 0.18
+Nodes (8): GUEST_STATES, GuestRow, NO_MASJID_STATES, NO_TRACK, NoMasjidRow, NOTIF_STATES, NotifRow, NUDGE_STATES
 
 ## Knowledge Gaps
-- **312 isolated node(s):** `eval_id`, `eval_name`, `prompt`, `assertions`, `eval_id` (+307 more)
+- **322 isolated node(s):** `eval_id`, `eval_name`, `prompt`, `assertions`, `eval_id` (+317 more)
   These have ≤1 connection - possible missing edges or undocumented components.
-- **27 thin communities (<3 nodes) omitted from report** — run `graphify query` to explore isolated nodes.
+- **29 thin communities (<3 nodes) omitted from report** — run `graphify query` to explore isolated nodes.
 
 ## Suggested Questions
 _Questions this graph is uniquely positioned to answer:_
 
 - **Why does `tokenKinds` connect `Community 0` to `Community 5`?**
-  _High betweenness centrality (0.066) - this node is a cross-community bridge._
+  _High betweenness centrality (0.060) - this node is a cross-community bridge._
 - **Why does `x-omelette` connect `Community 5` to `Community 0`?**
   _High betweenness centrality (0.008) - this node is a cross-community bridge._
 - **What connects `eval_id`, `eval_name`, `prompt` to the rest of the system?**
-  _312 weakly-connected nodes found - possible documentation gaps or missing edges._
+  _322 weakly-connected nodes found - possible documentation gaps or missing edges._
 - **Should `Community 0` be split into smaller, more focused modules?**
   _Cohesion score 0.014184397163120567 - nodes in this community are weakly interconnected._
 - **Should `Community 1` be split into smaller, more focused modules?**
