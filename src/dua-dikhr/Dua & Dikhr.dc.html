@@ -1,0 +1,286 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="../support.js"></script>
+<script src="../_theme/chrome.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+  <link rel="stylesheet" href="../_ds/noor-design-system-46f42e91-1858-412f-bdb6-560a6cc3df9f/colors_and_type.css">
+  <link rel="stylesheet" href="../_theme/poc.css">
+  <link rel="stylesheet" href="../_theme/components.css">
+  <link rel="stylesheet" href="../_theme/icons.css">
+  <script src="../_ds/noor-design-system-46f42e91-1858-412f-bdb6-560a6cc3df9f/_ds_bundle.js"></script>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Rounded:opsz,wght,FILL,GRAD@24,400,0..1,0&amp;display=block">
+  <style>
+    @font-face{font-family:'AlQuranIndoPak';src:url('../_ds/noor-design-system-46f42e91-1858-412f-bdb6-560a6cc3df9f/fonts/AlQuran-IndoPak.ttf') format('truetype')}
+    body{background:var(--canvas-bg);padding:36px 32px 90px;min-height:100vh;box-sizing:border-box}
+    ::-webkit-scrollbar{display:none}*{-ms-overflow-style:none;scrollbar-width:none}
+
+    /* Transition animations */
+    @keyframes stepin { from{transform:translateX(28px);opacity:0} to{transform:translateX(0);opacity:1} }
+    @keyframes stepback { from{transform:translateX(-28px);opacity:0} to{transform:translateX(0);opacity:1} }
+    .step-fwd { animation:stepin .35s cubic-bezier(.2,.8,.2,1) }
+    .step-back { animation:stepback .35s cubic-bezier(.2,.8,.2,1) }
+
+    /* Dua layout classes (shared between live prototype and static frames) */
+    .cat-card{position:relative;height:160px;border-radius:16px;overflow:hidden;cursor:pointer}
+    .cat-scrim{position:absolute;inset:0;background:linear-gradient(to top,rgba(0,0,0,0.55) 0%,transparent 60%)}
+    .cat-label{position:absolute;left:12px;right:12px;bottom:12px;font-family:var(--font-body);font-size:15px;font-weight:700;color:#fff;line-height:1.3}
+
+    .dua-item{background:color-mix(in oklab,var(--color-action-primary) 5%,var(--color-surface-primary));border:1px solid color-mix(in oklab,var(--color-action-primary) 22%,transparent);border-radius:16px;padding:14px 16px;display:flex;align-items:center;gap:14px;cursor:pointer;transition:background 160ms}
+    .dua-item:hover{background:color-mix(in oklab,var(--color-action-primary) 9%,var(--color-surface-primary))}
+    .dua-num{width:38px;height:38px;border-radius:50%;background:var(--color-action-primary);flex-shrink:0;display:flex;align-items:center;justify-content:center;font-family:var(--font-body);font-size:15px;font-weight:800;color:#fff}
+    .dua-item-title{font-family:var(--font-body);font-size:16px;font-weight:600;color:var(--color-info-primary)}
+
+    .dua-block{padding:20px 20px 16px;border-bottom:1px solid var(--color-neutral-border)}
+    .dua-ar{text-align:right;direction:rtl;font-family:'AlQuranIndoPak',serif;font-size:25px;color:var(--color-info-primary);line-height:2.1;margin-bottom:14px}
+    .dua-tr{font-family:var(--font-body);font-size:14px;font-style:italic;color:var(--color-action-primary);margin-bottom:8px;line-height:1.65}
+    .dua-en{font-family:var(--font-body);font-size:14px;color:var(--color-info-secondary);margin-bottom:8px;line-height:1.6}
+    .dua-src{font-family:var(--font-body);font-size:11px;color:var(--color-info-faint);margin-bottom:14px;line-height:1.5}
+    .dua-acts{display:flex;align-items:center;gap:16px}
+  </style>
+</helmet>
+
+<!-- Pre-load Home components for storyboard row and live device (hidden from rendering) -->
+<div style="display: none">
+  <x-import component="PromptCard" from="../_theme/components.jsx" hint-size="0,0"></x-import>
+  <x-import component="BottomNav" from="../home/storyboards/nav-bar.jsx" hint-size="0,0"></x-import>
+  <x-import component="HomeScreen" from="../home/storyboards/screens.jsx" hint-size="0,0"></x-import>
+</div>
+
+<!-- ── Page header ── -->
+<x-import component="BoardHeader" from="../_theme/board.jsx"
+          title="Dua &amp; Dikhr — Hisnul Muslim → Chapters → Reader"
+          subtitle="One board, one flow. The device on the right runs the interactive prototype; the board follows its state."
+          hint-size="1440px,92px"></x-import>
+
+<!-- ── Stage ── -->
+<div class="poc-stage">
+
+  <!-- Storyboard frames -->
+  <div class="poc-frames">
+    <x-import component="DuaRow" from="./storyboards/dua-row.jsx"
+              active="{{ duaActive }}"
+              on-select-frame="{{ selectFrame }}"
+              hint-size="920px,620px">
+    </x-import>
+  </div>
+
+  <!-- Live interactive device -->
+  <x-import component="BoardLive" from="../_theme/board.jsx"
+            restart="{{ restart }}"
+            hint="Tap the Dua &amp; Dikhr card on the Home Screen to open Hisnul Muslim."
+            hint-size="400px,900px">
+    <x-import component="IOSDevice" from="../ios-frame.jsx" hint-size="402px,874px">
+      <div style="width:100%;height:100%;position:relative;overflow:hidden">
+
+        <!-- ════ STAGE · HOME ════ -->
+        <sc-if value="{{ isHomeStage }}">
+          <div class="{{ stepAnim }}" style="position:absolute;inset:0;display:flex;flex-direction:column">
+            <div style="flex:1;position:relative;overflow:hidden">
+              <x-import component="HomeScreen" from="../home/storyboards/screens.jsx"
+                        go-dua="{{ goCategoriesStage }}"
+                        go-hijri="{{ goHijri }}"
+                        go-asma="{{ goAsma }}"
+                        hint-size="100%,100%">
+              </x-import>
+            </div>
+            <x-import component="BottomNav" from="../home/storyboards/nav-bar.jsx"
+                      active-index="0"
+                      hint-size="100%,84px">
+            </x-import>
+          </div>
+        </sc-if>
+
+        <!-- ════ STAGE · CATEGORIES ════ -->
+        <sc-if value="{{ isCategoriesStage }}">
+          <div class="{{ stepAnim }}" style="position:absolute;inset:0">
+            <x-import component="CategoriesScreen" from="./storyboards/screens.jsx"
+                      active-tab="{{ catTab }}"
+                      on-select-tab="{{ selectTab }}"
+                      on-select-category="{{ openCategory }}"
+                      on-back="{{ goHomeStage }}"
+                      hint-size="100%,100%">
+            </x-import>
+          </div>
+        </sc-if>
+
+        <!-- ════ STAGE · LIST ════ -->
+        <sc-if value="{{ isListStage }}">
+          <div class="{{ stepAnim }}" style="position:absolute;inset:0">
+            <x-import component="DuaListScreen" from="./storyboards/screens.jsx"
+                      category-name="{{ categoryName }}"
+                      on-select-dua="{{ openDua }}"
+                      on-back="{{ goCategoriesBack }}"
+                      hint-size="100%,100%">
+            </x-import>
+          </div>
+        </sc-if>
+
+        <!-- ════ STAGE · DETAIL ════ -->
+        <sc-if value="{{ isDetailStage }}">
+          <div class="{{ stepAnim }}" style="position:absolute;inset:0">
+            <x-import component="DuaDetailScreen" from="./storyboards/screens.jsx"
+                      title="{{ duaTitle }}"
+                      favorites="{{ favorites }}"
+                      audio-idx="{{ audioIdx }}"
+                      audio-playing="{{ apPlaying }}"
+                      audio-progress="{{ apProgress }}"
+                      on-toggle-fav="{{ toggleFav }}"
+                      on-toggle-audio="{{ toggleAudio }}"
+                      on-toggle-ap="{{ toggleAp }}"
+                      on-close-audio="{{ closeAudio }}"
+                      on-back="{{ goListBack }}"
+                      hint-size="100%,100%">
+            </x-import>
+          </div>
+        </sc-if>
+
+      </div>
+    </x-import>
+  </x-import>
+
+</div>
+</x-dc>
+
+<script type="text/x-dc" data-dc-script>
+class Component extends DCLogic {
+  state = {
+    stage: (location.hash === '#detail' ? 'detail'
+          : location.hash === '#list' ? 'list'
+          : location.hash === '#categories' ? 'categories' : 'home'),
+    stepDir: 'fwd',
+    catTab: 'dua',        // 'dua' | 'fav'
+    categoryIdx: 0,       // index into DUA_CATEGORIES
+    duaIdx: 0,            // index into DUA_LIST
+    favorites: {},        // { [duaBlockIdx]: true }
+    audioIdx: -1,         // dua block loaded in the player (-1 = none)
+    apPlaying: false,     // is the player currently playing
+    apProgress: 0         // seconds elapsed
+  };
+
+  get apTotal() { return window.AUDIO_TOTAL || 23; }
+
+  _stopAudio() { clearInterval(this._apTimer); this._apTimer = null; }
+
+  _startAudio() {
+    this._stopAudio();
+    this._apTimer = setInterval(() => {
+      this.setState(s => {
+        if (s.apProgress + 1 >= this.apTotal) { this._stopAudio(); return { apPlaying: false, apProgress: 0 }; }
+        return { apProgress: s.apProgress + 1 };
+      });
+    }, 1000);
+  }
+
+  componentWillUnmount() { this._stopAudio(); }
+
+  goCategoriesStage = () => { this._stopAudio(); this.setState({ stage: 'categories', stepDir: 'fwd', audioIdx: -1, apPlaying: false, apProgress: 0 }); };
+  goHomeStage = () => { this._stopAudio(); this.setState({ stage: 'home', stepDir: 'back', audioIdx: -1, apPlaying: false, apProgress: 0 }); };
+
+  goHijri = () => {
+    this._stopAudio();
+    window.location.href = '../hijri/Hijri.dc.html#calendar';
+  };
+
+  goAsma = () => {
+    this._stopAudio();
+    window.location.href = '../asma-ul-husna/Asma ul Husna.dc.html';
+  };
+
+  selectTab = (tab) => this.setState({ catTab: tab });
+
+  openCategory = (i) => this.setState({ stage: 'list', categoryIdx: i, stepDir: 'fwd' });
+  goCategoriesBack = () => this.setState({ stage: 'categories', stepDir: 'back' });
+
+  openDua = (i) => { this._stopAudio(); this.setState({ stage: 'detail', duaIdx: i, audioIdx: -1, apPlaying: false, apProgress: 0, stepDir: 'fwd' }); };
+  goListBack = () => { this._stopAudio(); this.setState({ stage: 'list', audioIdx: -1, apPlaying: false, apProgress: 0, stepDir: 'back' }); };
+
+  toggleFav = (i) => this.setState(s => ({ favorites: { ...s.favorites, [i]: !s.favorites[i] } }));
+
+  // Per-dua play button: load + play that dua, or toggle if it's already loaded.
+  toggleAudio = (i) => {
+    const s = this.state;
+    if (s.audioIdx === i) { this.toggleAp(); return; }
+    this.setState({ audioIdx: i, apPlaying: true, apProgress: 0 });
+    this._startAudio();
+  };
+
+  // Docked player play/pause.
+  toggleAp = () => {
+    this.setState(s => {
+      const playing = !s.apPlaying;
+      if (playing) this._startAudio(); else this._stopAudio();
+      return { apPlaying: playing };
+    });
+  };
+
+  closeAudio = () => { this._stopAudio(); this.setState({ audioIdx: -1, apPlaying: false, apProgress: 0 }); };
+
+  selectFrame = (i) => {
+    this._stopAudio();
+    if (i === 0) { this.setState({ stage: 'home', stepDir: 'back', audioIdx: -1, apPlaying: false, apProgress: 0 }); return; }
+    if (i === 1) { this.setState({ stage: 'categories', catTab: 'dua', stepDir: 'none', audioIdx: -1, apPlaying: false, apProgress: 0 }); return; }
+    if (i === 2) { this.setState({ stage: 'list', categoryIdx: 0, stepDir: 'none', audioIdx: -1, apPlaying: false, apProgress: 0 }); return; }
+    if (i === 3) { this.setState({ stage: 'detail', duaIdx: 0, audioIdx: -1, apPlaying: false, apProgress: 0, stepDir: 'none' }); return; }
+    if (i === 4) { this.setState({ stage: 'detail', duaIdx: 0, audioIdx: 0, apPlaying: true, apProgress: 4, stepDir: 'none' }); this._startAudio(); return; }
+  };
+
+  restart = () => { this._stopAudio(); this.setState({
+    stage: 'home', stepDir: 'back', catTab: 'dua', categoryIdx: 0, duaIdx: 0, favorites: {}, audioIdx: -1, apPlaying: false, apProgress: 0
+  }); };
+
+  renderVals() {
+    const s = this.state;
+    const CATS = window.DUA_CATEGORIES || [];
+    const LIST = window.DUA_LIST || [];
+    const categoryName = (CATS[s.categoryIdx] && CATS[s.categoryIdx].name) || 'All';
+    // Reader always shows the "When waking up" content; title tracks the tapped chapter.
+    const duaTitle = LIST[s.duaIdx] || 'When waking up';
+
+    // Map live state → storyboard frame index
+    let duaActive = -1;
+    if (s.stage === 'home') duaActive = 0;
+    else if (s.stage === 'categories') duaActive = 1;
+    else if (s.stage === 'list') duaActive = 2;
+    else if (s.stage === 'detail') duaActive = s.audioIdx >= 0 ? 4 : 3;
+
+    return {
+      isHomeStage: s.stage === 'home',
+      isCategoriesStage: s.stage === 'categories',
+      isListStage: s.stage === 'list',
+      isDetailStage: s.stage === 'detail',
+      stepAnim: s.stepDir === 'fwd' ? 'step-fwd' : s.stepDir === 'back' ? 'step-back' : '',
+      catTab: s.catTab,
+      categoryName,
+      duaTitle,
+      favorites: s.favorites,
+      audioIdx: s.audioIdx,
+      apPlaying: s.apPlaying,
+      apProgress: s.apProgress,
+      duaActive,
+      goCategoriesStage: this.goCategoriesStage,
+      goHomeStage: this.goHomeStage,
+      selectTab: this.selectTab,
+      openCategory: this.openCategory,
+      goCategoriesBack: this.goCategoriesBack,
+      openDua: this.openDua,
+      goListBack: this.goListBack,
+      toggleFav: this.toggleFav,
+      toggleAudio: this.toggleAudio,
+      toggleAp: this.toggleAp,
+      closeAudio: this.closeAudio,
+      goHijri: this.goHijri,
+      goAsma: this.goAsma,
+      selectFrame: this.selectFrame,
+      restart: this.restart
+    };
+  }
+}
+</script>
+</body>
+</html>
