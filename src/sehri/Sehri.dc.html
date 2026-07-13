@@ -1,0 +1,199 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="../support.js"></script>
+<script src="../_theme/chrome.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+  <link rel="stylesheet" href="../_ds/noor-design-system-46f42e91-1858-412f-bdb6-560a6cc3df9f/colors_and_type.css">
+  <link rel="stylesheet" href="../_theme/poc.css">
+  <link rel="stylesheet" href="../_theme/components.css">
+  <link rel="stylesheet" href="../_theme/icons.css">
+  <script src="../_ds/noor-design-system-46f42e91-1858-412f-bdb6-560a6cc3df9f/_ds_bundle.js"></script>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Rounded:opsz,wght,FILL,GRAD@24,400,0..1,0&amp;display=block">
+  <style>
+    body{background:var(--canvas-bg);padding:36px 32px 90px;min-height:100vh;box-sizing:border-box}
+    ::-webkit-scrollbar{display:none}*{-ms-overflow-style:none;scrollbar-width:none}
+    @keyframes stepin { from{transform:translateX(28px);opacity:0} to{transform:translateX(0);opacity:1} }
+    @keyframes stepback { from{transform:translateX(-28px);opacity:0} to{transform:translateX(0);opacity:1} }
+    .step-fwd { animation:stepin .35s cubic-bezier(.2,.8,.2,1) }
+    .step-back { animation:stepback .35s cubic-bezier(.2,.8,.2,1) }
+  </style>
+</helmet>
+
+<!-- Pre-load Home components for the storyboard entry frame + live device home stage -->
+<div style="display: none">
+  <x-import component="PromptCard" from="../_theme/components.jsx" hint-size="0,0"></x-import>
+  <x-import component="BottomNav" from="../home/storyboards/nav-bar.jsx" hint-size="0,0"></x-import>
+  <x-import component="HomeScreen" from="../home/storyboards/screens.jsx" hint-size="0,0"></x-import>
+</div>
+
+<!-- ── Page header (shared board chrome) ── -->
+<x-import component="BoardHeader" from="../_theme/board.jsx"
+          title="Find Sehri — Locations Map"
+          subtitle="Find nearby Sehri (Suhoor) distribution points during Ramadhan: grant location, browse the map with a card carousel, toggle the list, and get directions or call ahead."
+          hint-size="1440px,92px"></x-import>
+
+<!-- ── Board ── -->
+<div class="poc-stage">
+
+  <!-- Storyboard row: static frames, ring follows the live device -->
+  <div class="poc-frames">
+    <x-import component="SehriRow" from="./storyboards/sehri-row.jsx"
+              active="{{ sehriActive }}"
+              on-select-frame="{{ selectFrame }}"
+              hint-size="1500px,600px"></x-import>
+  </div>
+
+  <!-- Live device — one continuous prototype -->
+  <x-import component="BoardLive" from="../_theme/board.jsx"
+            restart="{{ restart }}"
+            hint="Tap the Sehri card on the Home Screen to find nearby Sehri locations."
+            hint-size="400px,900px">
+    <x-import component="IOSDevice" from="../ios-frame.jsx" hint-size="402px,874px">
+      <div style="width:100%;height:100%;position:relative;overflow:hidden;background:var(--color-surface-primary)">
+
+        <!-- ════ STAGE · HOME ════ -->
+        <sc-if value="{{ isHomeStage }}">
+          <div class="{{ stepAnim }}" style="position:absolute;inset:0;display:flex;flex-direction:column">
+            <div style="flex:1;position:relative;overflow:hidden">
+              <x-import component="HomeScreen" from="../home/storyboards/screens.jsx"
+                        go-sehri="{{ goPermission }}"
+                        go-hijri="{{ goHijri }}"
+                        go-dua="{{ goDua }}"
+                        hint-size="100%,100%">
+              </x-import>
+            </div>
+            <x-import component="BottomNav" from="../home/storyboards/nav-bar.jsx"
+                      active-index="0"
+                      hint-size="100%,84px">
+            </x-import>
+          </div>
+        </sc-if>
+
+        <!-- ════ STAGE · PERMISSION ════ -->
+        <sc-if value="{{ isPermissionStage }}">
+          <div class="{{ stepAnim }}" style="position:absolute;inset:0">
+            <x-import component="SehriMapScreen" from="./storyboards/screens.jsx"
+                      selected-idx="{{ selectedIdx }}"
+                      permission="{{ permOn }}"
+                      on-select-point="{{ selectPoint }}"
+                      on-open-list="{{ onOpenList }}"
+                      on-back="{{ goHomeStage }}"
+                      on-allow-once="{{ grantLocation }}"
+                      on-allow-while-using="{{ grantLocation }}"
+                      on-deny="{{ goHomeStage }}"
+                      hint-size="100%,100%">
+            </x-import>
+          </div>
+        </sc-if>
+
+        <!-- ════ STAGE · MAP ════ -->
+        <sc-if value="{{ isMapStage }}">
+          <div class="{{ stepAnim }}" style="position:absolute;inset:0">
+            <x-import component="SehriMapScreen" from="./storyboards/screens.jsx"
+                      selected-idx="{{ selectedIdx }}"
+                      on-select-point="{{ selectPoint }}"
+                      on-open-list="{{ onOpenList }}"
+                      on-back="{{ goHomeStage }}"
+                      hint-size="100%,100%">
+            </x-import>
+          </div>
+        </sc-if>
+
+        <!-- ════ STAGE · LIST ════ -->
+        <sc-if value="{{ isListStage }}">
+          <div class="{{ stepAnim }}" style="position:absolute;inset:0">
+            <x-import component="SehriListScreen" from="./storyboards/screens.jsx"
+                      on-open-map="{{ onOpenMap }}"
+                      on-back="{{ goHomeStage }}"
+                      hint-size="100%,100%">
+            </x-import>
+          </div>
+        </sc-if>
+
+      </div>
+    </x-import>
+  </x-import>
+
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script>
+class Component extends DCLogic {
+  state = {
+    stage: (location.hash === '#map' ? 'map'
+          : location.hash === '#list' ? 'list'
+          : location.hash === '#permission' ? 'permission' : 'home'),  // 'home' | 'permission' | 'map' | 'list'
+    stepDir: 'fwd',
+    selectedIdx: 0,
+  };
+
+  selectPoint = (i) => this.setState({ selectedIdx: i });
+
+  // Home → tap Sehri card → location permission over the map.
+  goPermission = () => this.setState({ stage: 'permission', stepDir: 'fwd', selectedIdx: 0 });
+  // Permission granted → reveal the map.
+  grantLocation = () => this.setState({ stage: 'map', stepDir: 'fwd' });
+
+  goHomeStage = () => this.setState({ stage: 'home', stepDir: 'back' });
+  onOpenList = () => this.setState({ stage: 'list', stepDir: 'fwd' });
+  onOpenMap = () => this.setState({ stage: 'map', stepDir: 'back' });
+
+  goHijri = () => { window.location.href = '../hijri/Hijri.dc.html#calendar'; };
+  goDua = () => { window.location.href = '../dua-dikhr/Dua & Dikhr.dc.html#categories'; };
+
+  // Storyboard frame click → drive the live device to the matching state.
+  selectFrame = (i) => {
+    if (i === 0) return this.setState({ stage: 'home', stepDir: 'back' });
+    if (i === 1) return this.setState({ stage: 'permission', stepDir: 'fwd', selectedIdx: 0 });
+    if (i === 2) return this.setState({ stage: 'map', stepDir: 'fwd', selectedIdx: 0 });
+    if (i === 3) return this.setState({ stage: 'map', stepDir: 'fwd', selectedIdx: 1 });
+    if (i === 4) return this.setState({ stage: 'list', stepDir: 'fwd' });
+  };
+
+  restart = () => this.setState({ stage: 'home', stepDir: 'back', selectedIdx: 0 });
+
+  renderVals() {
+    const s = this.state;
+    const isHome = s.stage === 'home';
+    const isPermission = s.stage === 'permission';
+    const isMap = s.stage === 'map';
+    const isList = s.stage === 'list';
+
+    // Ring — matches sehri-row.jsx FRAMES (0 home · 1 permission · 2 map[0] · 3 map[1] · 4 list).
+    let sehriActive = -1;
+    if (isHome) sehriActive = 0;
+    else if (isPermission) sehriActive = 1;
+    else if (isMap) sehriActive = s.selectedIdx === 0 ? 2 : 3;
+    else if (isList) sehriActive = 4;
+
+    return {
+      isHomeStage: isHome,
+      isPermissionStage: isPermission,
+      isMapStage: isMap,
+      isListStage: isList,
+      stepAnim: s.stepDir === 'back' ? 'step-back' : 'step-fwd',
+      sehriActive,
+      selectedIdx: s.selectedIdx,
+      permOn: true,
+
+      selectPoint: this.selectPoint,
+      selectFrame: this.selectFrame,
+      goPermission: this.goPermission,
+      grantLocation: this.grantLocation,
+      goHomeStage: this.goHomeStage,
+      onOpenList: this.onOpenList,
+      onOpenMap: this.onOpenMap,
+      goHijri: this.goHijri,
+      goDua: this.goDua,
+      restart: this.restart,
+    };
+  }
+}
+</script>
+</body>
+</html>
