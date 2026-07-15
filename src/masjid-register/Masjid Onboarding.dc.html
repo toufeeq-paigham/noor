@@ -1,0 +1,344 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="../support.js"></script>
+<script src="../_theme/chrome.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+  <link rel="stylesheet" href="../_ds/noor-design-system-46f42e91-1858-412f-bdb6-560a6cc3df9f/colors_and_type.css">
+  <link rel="stylesheet" href="../_theme/poc.css">
+  <link rel="stylesheet" href="../_theme/components.css">
+  <script src="../_ds/noor-design-system-46f42e91-1858-412f-bdb6-560a6cc3df9f/_ds_bundle.js"></script>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Rounded:opsz,wght,FILL,GRAD@24,400,0..1,0&amp;display=block">
+  <link rel="stylesheet" href="../_theme/icons.css">
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Noto+Nastaliq+Urdu:wght@700&amp;display=swap">
+  <style>
+    body{background:var(--canvas-bg);padding:36px 32px 90px;min-height:100vh;box-sizing:border-box}
+    ::-webkit-scrollbar{display:none}*{-ms-overflow-style:none;scrollbar-width:none}
+    @keyframes spin { to { transform: rotate(360deg) } }
+    @keyframes pulse { 0%,100% { opacity: 1 } 50% { opacity: .4 } }
+    @keyframes stepin { from{transform:translateX(28px);opacity:0} to{transform:translateX(0);opacity:1} }
+    @keyframes stepback { from{transform:translateX(-28px);opacity:0} to{transform:translateX(0);opacity:1} }
+    .step-fwd { animation:stepin .35s cubic-bezier(.2,.8,.2,1) }
+    .step-back { animation:stepback .35s cubic-bezier(.2,.8,.2,1) }
+  </style>
+</helmet>
+
+<!-- Preload cross-section deps then the screen libraries (deps first → prevents React #130).
+     The 3 entry tabs reuse the REAL shared Home/Salaah/Profile screens. -->
+<div style="display:none">
+  <x-import component="PromptCard" from="../_theme/components.jsx" hint-size="0,0"></x-import>
+  <x-import component="Dialog" from="../_theme/components.jsx" hint-size="0,0"></x-import>
+  <x-import component="RichNudgeSheet" from="../_theme/components.jsx" hint-size="0,0"></x-import>
+  <x-import component="BottomNav" from="../home/storyboards/nav-bar.jsx" hint-size="0,0"></x-import>
+  <x-import component="HomeScreen" from="../home/storyboards/screens.jsx" hint-size="0,0"></x-import>
+  <x-import component="MyMasjidsSheet" from="./storyboards/screens.jsx" hint-size="0,0"></x-import>
+</div>
+
+<!-- ── Board header ── -->
+<x-import component="BoardHeader" from="../_theme/board.jsx"
+          title="Masjid Onboarding — My Masjids & Register"
+          subtitle="My Masjids is a bottom sheet, opened by tapping the masjid name on the Home, Salaah or Profile tab. From there: the 8-step registration wizard → verification outcome. Tap any frame to run it live."
+          hint-size="1440px,92px"></x-import>
+
+<!-- ── Board ── -->
+<div class="poc-stage">
+  <div class="poc-frames">
+    <x-import component="EntryRow" from="./storyboards/entry-row.jsx" active="{{ entryActive }}" on-select-frame="{{ selectFrame }}" hint-size="1000px,600px"></x-import>
+    <x-import component="SheetRow" from="./storyboards/sheet-row.jsx" active="{{ sheetActive }}" on-select-frame="{{ selectFrame }}" hint-size="800px,600px"></x-import>
+    <x-import component="WizardRow" from="./storyboards/wizard-row.jsx" active="{{ wizardActive }}" on-select-frame="{{ selectFrame }}" hint-size="1400px,600px"></x-import>
+    <x-import component="OutcomeRow" from="./storyboards/outcome-row.jsx" active="{{ outcomeActive }}" on-select-frame="{{ selectFrame }}" hint-size="1000px,600px"></x-import>
+  </div>
+
+  <!-- Live device — one continuous prototype -->
+  <x-import component="BoardLive" from="../_theme/board.jsx" restart="{{ restart }}" hint-size="400px,900px">
+    <x-import component="IOSDevice" from="../ios-frame.jsx" hint-size="402px,874px">
+      <div style="width:100%;height:100%;position:relative;overflow:hidden;background:var(--color-surface-primary)">
+        <div class="{{ stepAnim }}" style="width:100%;height:100%;position:relative">
+          <sc-if value="{{ isHomeStep }}">
+            <x-import component="HomeScreen" from="../home/storyboards/screens.jsx"
+                      prayer="{{ homePrayer }}" masjid-name="{{ masjidName }}" user-name="{{ userName }}"
+                      on-masjid-tap="{{ openSheet }}" hint-size="100%,100%"></x-import>
+          </sc-if>
+          <sc-if value="{{ isSalaahStep }}">
+            <x-import component="SalaahScreen" from="../home/storyboards/screens.jsx"
+                      masjid-name="{{ masjidName }}" on-masjid-sheet-toggle="{{ openSheet }}" hint-size="100%,100%"></x-import>
+          </sc-if>
+          <sc-if value="{{ isProfileStep }}">
+            <x-import component="ProfileScreen" from="../home/storyboards/screens.jsx"
+                      user-name="{{ userName }}" masjid-name="{{ masjidName }}"
+                      on-my-masjids="{{ openSheet }}" on-register="{{ startWizard }}" hint-size="100%,100%"></x-import>
+          </sc-if>
+          <sc-if value="{{ isWizardStep }}">
+            <x-import component="WizardScreen" from="./storyboards/screens.jsx" data="{{ wizardData }}" hint-size="100%,100%"></x-import>
+          </sc-if>
+          <sc-if value="{{ isOutcomeStep }}">
+            <x-import component="OutcomeScreen" from="./storyboards/screens.jsx" data="{{ outcomeData }}" hint-size="100%,100%"></x-import>
+          </sc-if>
+        </div>
+
+        <sc-if value="{{ isEntryStep }}">
+          <x-import component="BottomNav" from="../home/storyboards/nav-bar.jsx" active-index="{{ navActive }}" on-select="{{ selectNav }}" hint-size="100%,84px"></x-import>
+        </sc-if>
+
+        <!-- Device-level My Masjids bottom sheet -->
+        <x-import component="MyMasjidsSheet" from="./storyboards/screens.jsx" data="{{ myMasjidsData }}" hint-size="0,0"></x-import>
+      </div>
+    </x-import>
+  </x-import>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script>
+class Component extends DCLogic {
+  state = {
+    step: 'home',            // home | salaah | profile | <wizard steps> | submitting | pending | rejected
+    sheetOpen: false,
+    sheetTab: 'manage',
+    history: [],
+    branch: null,
+    pincode: '',
+    selectedMasjidId: null,
+    masjidName: 'Dargha Masjid 3',
+    address: '', city: '', stateVal: '', pinDropped: false,
+    contactName: 'Salim Shaikh',
+    role: '', maslak: '',
+    roleSheetOpen: false, maslakSheetOpen: false,
+    photoTaken: false, selfieTaken: false, cameraDenied: false,
+    primaryMasjidId: 'dargha',
+    userName: 'Salim Shaikh',
+    stepDir: 'fwd',
+  };
+
+  WIZARD_STEPS = ['pincode','searching','claimList','claimEmpty','register','contact','role','maslak','photo','selfie','review'];
+  ENTRY_STEPS = ['home','salaah','profile'];
+  STEP_PROGRESS = { pincode:1, searching:1, claimList:2, claimEmpty:2, register:2, contact:3, role:4, maslak:5, photo:6, selfie:7, review:8 };
+  SAMPLE = { pincode:'400016', masjidName:'Masjid-e-Noor', address:'Kabutar Khana', city:'Mumbai', stateVal:'Maharashtra', pinDropped:true, contactName:'Salim Shaikh', role:'Chairman', maslak:'Ahle Hadith', photoTaken:true, selfieTaken:true, cameraDenied:false };
+
+  get MANAGE() { return window.MASJID_MANAGE_DATA || []; }
+  get FOLLOW() { return window.MASJID_FOLLOW_DATA || []; }
+  get CLAIM() { return window.MASJID_CLAIM_DATA || []; }
+  get ROLES() { return window.MASJID_ROLE_LIST || []; }
+  get MASLAKS() { return window.MASJID_MASLAK_LIST || []; }
+
+  componentWillUnmount() { clearTimeout(this._t); }
+
+  resetWizard() {
+    return { branch:null, pincode:'', selectedMasjidId:null, address:'', city:'', stateVal:'', pinDropped:false,
+      contactName:'Salim Shaikh', role:'', maslak:'', roleSheetOpen:false, maslakSheetOpen:false, photoTaken:false, selfieTaken:false, cameraDenied:false };
+  }
+
+  componentDidMount() {
+    const h = (location.hash || '').slice(1);
+    const map = {
+      'entry':0, 'home':0, 'salaah':1, 'profile':2,
+      'my-masjids':3, 'my-masjids-profile':3, 'my-masjids-home':5, 'my-masjids-salaah':6,
+      'register':7, 'wizard':7, 'pending':17
+    };
+    if (map[h] !== undefined) this.selectFrame(map[h]);
+  }
+
+  goTo(step) { this.setState(s => ({ history: [...s.history, s.step], step, stepDir: 'fwd', sheetOpen: false })); }
+  goBack = () => {
+    const s = this.state;
+    if (s.roleSheetOpen || s.maslakSheetOpen) { this.setState({ roleSheetOpen:false, maslakSheetOpen:false }); return; }
+    const h = [...s.history];
+    const prev = h.pop();
+    this.setState({ history: h, step: prev !== undefined ? prev : 'home', stepDir: 'back' });
+  };
+
+  restart = () => this.setState({ step:'home', sheetOpen:false, sheetTab:'manage', history:[], primaryMasjidId:'dargha', masjidName:'Dargha Masjid 3', stepDir:'back', ...this.resetWizard() });
+
+  // Jump to any storyboard frame's state (index = global frame index).
+  selectFrame = (i) => {
+    const S = this.SAMPLE, R = this.resetWizard();
+    const map = {
+      0: { step:'home', sheetOpen:false },
+      1: { step:'salaah', sheetOpen:false },
+      2: { step:'profile', sheetOpen:false },
+      3: { step:'profile', sheetOpen:true, sheetTab:'manage' },
+      4: { step:'profile', sheetOpen:true, sheetTab:'follow' },
+      5: { ...R, step:'pincode', sheetOpen:false },
+      6: { ...R, step:'searching', pincode:'400001', sheetOpen:false },
+      7: { ...R, step:'claimList', branch:'claim', pincode:'400001', sheetOpen:false },
+      8: { ...R, step:'claimEmpty', pincode:'560001', sheetOpen:false },
+      9: { ...S, step:'register', branch:'register', sheetOpen:false },
+      10: { ...S, step:'contact', branch:'register', sheetOpen:false },
+      11: { ...S, step:'role', branch:'register', sheetOpen:false },
+      12: { ...S, step:'maslak', branch:'register', sheetOpen:false },
+      13: { ...S, step:'photo', branch:'register', photoTaken:false, sheetOpen:false },
+      14: { ...S, step:'selfie', branch:'register', sheetOpen:false },
+      15: { ...S, step:'review', branch:'register', sheetOpen:false },
+      16: { ...S, step:'submitting', branch:'register', sheetOpen:false },
+      17: { ...S, step:'pending', branch:'register', sheetOpen:false },
+      18: { ...S, step:'rejected', branch:'register', sheetOpen:false }
+    };
+    clearTimeout(this._t);
+    this.setState({ history: [], stepDir: 'fwd', roleSheetOpen:false, maslakSheetOpen:false, ...(map[i] || { step:'home', sheetOpen:false }) });
+  };
+
+  // ── entry tabs + sheet ──
+  selectNav = (i) => { const t = { 0:'home', 3:'salaah', 4:'profile' }[i]; if (t) this.setState({ step:t, sheetOpen:false, history:[] }); };
+  openSheet = () => this.setState({ sheetOpen:true, sheetTab:'manage' });
+  closeSheet = () => this.setState({ sheetOpen:false });
+  setSheetTab = (t) => this.setState({ sheetTab:t });
+  selectPrimary = (id) => {
+    const m = this.MANAGE.concat(this.FOLLOW).find(x => x.id === id);
+    this.setState({ primaryMasjidId:id, masjidName: m ? m.name : this.state.masjidName });
+    clearTimeout(this._t); this._t = setTimeout(() => this.setState({ sheetOpen:false }), 420);
+  };
+  goExplore = () => { window.location.href = '../masjid-explore/Explore Masjids.dc.html#map'; };
+
+  startWizard = () => this.setState(s => ({ history: [...s.history, s.step], step:'pincode', stepDir:'fwd', sheetOpen:false, ...this.resetWizard() }));
+
+  // ── wizard field handlers ──
+  onPincodeChange = (e) => this.setState({ pincode: e.target.value.replace(/\D/g, '').slice(0, 6) });
+  onMasjidNameChange = (e) => this.setState({ masjidName: e.target.value });
+  onAddressChange = (e) => this.setState({ address: e.target.value });
+  onCityChange = (e) => this.setState({ city: e.target.value });
+  onStateChange = (e) => this.setState({ stateVal: e.target.value });
+  onContactNameChange = (e) => this.setState({ contactName: e.target.value });
+  togglePin = () => this.setState(s => ({ pinDropped: !s.pinDropped }));
+  selectMasjid = (id) => this.setState({ selectedMasjidId: id });
+  goRegisterManually = () => { this.setState({ branch:'register', role: this.state.role || 'Chairman' }); this.goTo('register'); };
+
+  openRoleSheet = () => this.setState({ roleSheetOpen: true });
+  openMaslakSheet = () => this.setState({ maslakSheetOpen: true });
+  closeSheets = () => this.setState({ roleSheetOpen: false, maslakSheetOpen: false });
+  selectRole = (r) => this.setState({ role: r, roleSheetOpen: false });
+  selectMaslak = (m) => this.setState({ maslak: m, maslakSheetOpen: false });
+
+  takePhoto = () => this.setState({ photoTaken: true });
+  removePhoto = () => this.setState({ photoTaken: false });
+  takeSelfie = () => this.setState({ selfieTaken: true });
+  retakeSelfie = () => this.setState({ selfieTaken: false });
+  toggleCameraDenied = () => this.setState(s => ({ cameraDenied: !s.cameraDenied }));
+
+  editRegister = () => this.goTo('register');
+  editContact = () => this.goTo('contact');
+  editRole = () => this.goTo('role');
+  editMaslak = () => this.goTo('maslak');
+  editPhoto = () => this.goTo('photo');
+  editSelfie = () => this.goTo('selfie');
+
+  submit = () => { this.goTo('submitting'); clearTimeout(this._t); this._t = setTimeout(() => this.setState({ step:'pending' }), 1300); };
+  doneHome = () => { window.location.href = '../home/Home Screen.dc.html'; };
+  togglePreview = () => this.setState(s => ({ step: s.step === 'pending' ? 'rejected' : 'pending' }));
+  reapply = () => this.goTo('contact');
+  contactSupport = () => {};
+
+  ctaFor(step) {
+    const s = this.state;
+    switch (step) {
+      case 'pincode': {
+        const valid = /^\d{6}$/.test(s.pincode);
+        return { label:'Continue', disabled:!valid, onClick: () => {
+          if (!valid) return;
+          this.goTo('searching');
+          const target = s.pincode;
+          clearTimeout(this._t);
+          this._t = setTimeout(() => this.setState(st => ({ history:[...st.history, 'searching'], branch: target==='400001'?'claim':null, step: target==='400001'?'claimList':'claimEmpty' })), 1100);
+        }};
+      }
+      case 'searching': return { label:'Continue', disabled:true, onClick: () => {} };
+      case 'claimList': { const valid = s.selectedMasjidId != null; return { label:'Continue', disabled:!valid, onClick: () => { if (!valid) return; this.setState({ branch:'claim', role:'' }); this.goTo('contact'); } }; }
+      case 'claimEmpty': return { label:'Register manually', disabled:false, onClick: this.goRegisterManually };
+      case 'register': { const valid = s.masjidName.trim().length>=3 && s.address.trim() && s.city.trim() && s.stateVal.trim() && s.pinDropped; return { label:'Continue', disabled:!valid, onClick: () => valid && this.goTo('contact') }; }
+      case 'contact': { const valid = s.contactName.trim().length>=2; return { label:'Continue', disabled:!valid, onClick: () => valid && this.goTo('role') }; }
+      case 'role': return { label:'Continue', disabled:!s.role, onClick: () => s.role && this.goTo('maslak') };
+      case 'maslak': return { label:'Continue', disabled:!s.maslak, onClick: () => s.maslak && this.goTo('photo') };
+      case 'photo': return { label: s.photoTaken?'Continue':'Skip for now', disabled:false, onClick: () => this.goTo('selfie') };
+      case 'selfie': return { label:'Continue', disabled:!s.selfieTaken, onClick: () => s.selfieTaken && this.goTo('review') };
+      case 'review': return { label:'Submit for verification', disabled:false, onClick: this.submit };
+      default: return { label:'Continue', disabled:false, onClick: () => {} };
+    }
+  }
+
+  renderVals() {
+    const s = this.state;
+    const isEntry = this.ENTRY_STEPS.includes(s.step);
+    const isWizard = this.WIZARD_STEPS.includes(s.step);
+    const isOutcome = ['submitting','pending','rejected'].includes(s.step);
+
+    const navActive = { home:0, salaah:3, profile:4 }[s.step] || 0;
+
+    // ring index for the current state
+    const wizardIdxMap = { pincode:5, searching:6, claimList:7, claimEmpty:8, register:9, contact:10, role:11, maslak:12, photo:13, selfie:14, review:15 };
+    const outcomeIdxMap = { submitting:16, pending:17, rejected:18 };
+    let entryActive = -1, sheetActive = -1, wizardActive = -1, outcomeActive = -1;
+    if (isEntry && s.sheetOpen) sheetActive = s.sheetTab === 'follow' ? 4 : 3;
+    else if (isEntry) entryActive = { home:0, salaah:1, profile:2 }[s.step];
+    else if (isWizard) wizardActive = wizardIdxMap[s.step];
+    else if (isOutcome) outcomeActive = outcomeIdxMap[s.step];
+
+    const manageTiles = this.MANAGE.map(m => ({ ...m, isPrimary: m.id === s.primaryMasjidId, onSelect: () => this.selectPrimary(m.id) }));
+    const followRows = this.FOLLOW.map((f, i) => ({ ...f, showHeader: i === 0 || this.FOLLOW[i-1].city !== f.city, checked: f.id === s.primaryMasjidId, onToggle: () => this.selectPrimary(f.id) }));
+    const claimResults = this.CLAIM.map(m => ({ ...m, selected: s.selectedMasjidId === m.id, onSelect: () => this.selectMasjid(m.id) }));
+    const roleOptions = this.ROLES.map(r => ({ name:r, selected: s.role === r, onSelect: () => this.selectRole(r) }));
+    const maslakOptions = this.MASLAKS.map(m => ({ name:m, selected: s.maslak === m, onSelect: () => this.selectMaslak(m) }));
+
+    const masjidLocked = s.branch === 'claim';
+    const sel = this.CLAIM.find(m => m.id === s.selectedMasjidId);
+    const masjidSummaryName = masjidLocked ? (sel ? sel.name : '') : (s.masjidName || '—');
+    const masjidSummaryAddr = masjidLocked ? (sel ? sel.addr : '') : ([s.address, s.city, s.stateVal].filter(Boolean).join(', ') || '—');
+    const cta = this.ctaFor(s.step);
+
+    return {
+      isEntryStep: isEntry,
+      isHomeStep: s.step === 'home',
+      isSalaahStep: s.step === 'salaah',
+      isProfileStep: s.step === 'profile',
+      isWizardStep: isWizard,
+      isOutcomeStep: isOutcome,
+
+      entryActive,
+      sheetActive,
+      wizardActive,
+      outcomeActive,
+      selectFrame: this.selectFrame,
+      restart: this.restart,
+      stepAnim: s.stepDir === 'back' ? 'step-back' : 'step-fwd',
+
+      navActive,
+      selectNav: this.selectNav,
+      masjidName: s.masjidName, userName: s.userName,
+      homePrayer: 'Asr',
+      openSheet: this.openSheet,
+      startWizard: this.startWizard,
+
+      myMasjidsData: { isOpen: isEntry && s.sheetOpen, tab: s.sheetTab, onTab: this.setSheetTab, manageTiles, followRows, onClose: this.closeSheet, onRegister: this.startWizard, onExplore: this.goExplore, onFind: this.goExplore },
+
+      wizardData: {
+        step: s.step,
+        progressIndex: this.STEP_PROGRESS[s.step] || 1,
+        onBack: this.goBack,
+        ctaLabel: cta.label, ctaDisabled: cta.disabled, ctaOnClick: cta.onClick,
+        showSkipLink: s.step === 'photo' && !s.photoTaken,
+        pincode: s.pincode, onPincodeChange: this.onPincodeChange,
+        claimResults, onRegisterManually: this.goRegisterManually,
+        masjidName: s.masjidName, address: s.address, city: s.city, stateVal: s.stateVal,
+        onMasjidNameChange: this.onMasjidNameChange, onAddressChange: this.onAddressChange, onCityChange: this.onCityChange, onStateChange: this.onStateChange,
+        pinDropped: s.pinDropped, onTogglePin: this.togglePin,
+        contactName: s.contactName, onContactNameChange: this.onContactNameChange,
+        roleDisplay: s.role || 'Select your role', roleFilled: !!s.role, onOpenRoleSheet: this.openRoleSheet, roleSheetOpen: s.roleSheetOpen, roleOptions,
+        maslakDisplay: s.maslak || 'Select maslak', maslakFilled: !!s.maslak, onOpenMaslakSheet: this.openMaslakSheet, maslakSheetOpen: s.maslakSheetOpen, maslakOptions,
+        onCloseSheets: this.closeSheets,
+        photoTaken: s.photoTaken, onTakePhoto: this.takePhoto, onRetakePhoto: this.removePhoto, onRemovePhoto: this.removePhoto,
+        cameraDenied: s.cameraDenied, selfieTaken: s.selfieTaken, onTakeSelfie: this.takeSelfie, onRetakeSelfie: this.retakeSelfie, onToggleCameraDenied: this.toggleCameraDenied,
+        masjidLocked, masjidSummaryName, masjidSummaryAddr, role: s.role, maslak: s.maslak,
+        onEditRegister: this.editRegister, onEditContact: this.editContact, onEditRole: this.editRole, onEditMaslak: this.editMaslak, onEditPhoto: this.editPhoto, onEditSelfie: this.editSelfie
+      },
+
+      outcomeData: {
+        variant: s.step, contactName: s.contactName, masjidSummaryName, role: s.role, submittedDate: '5 Jul 2026',
+        onDone: this.doneHome, onReapply: this.reapply, onContactSupport: this.contactSupport, onTogglePreview: this.togglePreview
+      }
+    };
+  }
+}
+</script>
+</body>
+</html>

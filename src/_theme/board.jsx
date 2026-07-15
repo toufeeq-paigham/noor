@@ -17,19 +17,13 @@
 //     </x-import>
 //   </div>
 
-// ── Page header: breadcrumb · title · subtitle ──────────────────────────────
-function BoardHeader({ title, subtitle, crumb = 'Section board', indexHref = '../Index.dc.html' }) {
-  return (
-    <div style={{ maxWidth: 1440, margin: '0 0 26px' }}>
-      <div style={{ fontFamily: 'var(--font-body)', fontSize: 11, fontWeight: 700, letterSpacing: '.1em', textTransform: 'uppercase', color: 'var(--canvas-label)', marginBottom: 6 }}>
-        <a href={indexHref} style={{ color: 'inherit', textDecoration: 'none' }}>Noor</a> · {crumb}
-      </div>
-      <div style={{ fontFamily: 'var(--font-title)', fontSize: 30, letterSpacing: '-0.5px', color: 'var(--color-info-primary)' }}>{title}</div>
-      {subtitle ? (
-        <div style={{ fontFamily: 'var(--font-body)', fontSize: 14, color: 'var(--color-info-secondary)', marginTop: 4 }}>{subtitle}</div>
-      ) : null}
-    </div>
-  );
+// ── Page header: pushes title + subtitle into the top app bar (chrome.js) ───
+function BoardHeader({ title, subtitle }) {
+  React.useEffect(() => {
+    if (window.NoorSetChromeTitle) window.NoorSetChromeTitle(title);
+    if (window.NoorSetChromeSubtitle) window.NoorSetChromeSubtitle(subtitle || '');
+  }, [title, subtitle]);
+  return null;
 }
 
 // ── Floating interactive pane: .poc-live › scaled device slot ───────────────

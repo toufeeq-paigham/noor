@@ -79,14 +79,14 @@
       { name: 'Quran', file: 'Quran.dc.html#home', icon: 'auto_stories', meta: 'Section board · Home → index → reader · 6 states' }
     ]},
     { id: 'masjid', num: '04', title: 'Masjid', items: [
-      { name: 'Masjid Onboarding', file: 'Masjid Onboarding.dc.html', icon: 'add_home_work', meta: 'Flow · wizard + switcher sheet' },
+      { name: 'Masjid Onboarding', file: 'masjid-register/Masjid Onboarding.dc.html#entry', icon: 'add_home_work', meta: 'Section board · My Masjids sheet · wizard · outcome · 19 states' },
       { name: 'Explore Masjids', file: 'masjid-explore/Explore Masjids.dc.html#map', icon: 'travel_explore', meta: 'Section board · map · list · pincode · QR · 10 states' }
     ]},
     { id: 'content', num: '05', title: 'Content & tools', items: [
       { name: 'Find Sehri', file: 'sehri/Sehri.dc.html#map', icon: 'restaurant', meta: 'Section board · Home → permission → map · list · 5 states' },
       { name: 'Dua & Dikhr', file: 'dua-dikhr/Dua & Dikhr.dc.html#categories', icon: 'volunteer_activism', meta: 'Section board · Hisnul Muslim · 5 states' },
       { name: 'Asma ul Husna', file: 'asma-ul-husna/Asma ul Husna.dc.html', icon: 'auto_awesome', meta: 'Section board · grid + detail' },
-      { name: 'Qibla', file: 'Qibla Screen.dc.html', icon: 'explore', meta: 'Screen · interactive' },
+      { name: 'Qibla', file: 'qibla/Qibla.dc.html#permissions', icon: 'explore', meta: 'Section board · permissions → AR compass · 5 states' },
       { name: 'Hijri', file: 'hijri/Hijri.dc.html', icon: 'calendar_month', meta: 'Section board · month grid · 3 states' },
       { name: 'Zakaat', file: 'zakaat/Zakaat.dc.html', icon: 'savings', meta: 'Section board · 6-step calculator' }
     ]}

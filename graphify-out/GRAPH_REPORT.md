@@ -1,16 +1,16 @@
-# Graph Report - noor  (2026-07-13)
+# Graph Report - noor  (2026-07-15)
 
 ## Corpus Check
-- 50 files · ~2,822,039 words
+- 58 files · ~2,834,110 words
 - Verdict: corpus is large enough that graph structure adds value.
 
 ## Summary
-- 615 nodes · 641 edges · 56 communities (27 shown, 29 thin omitted)
+- 667 nodes · 691 edges · 64 communities (30 shown, 34 thin omitted)
 - Extraction: 100% EXTRACTED · 0% INFERRED · 0% AMBIGUOUS
 - Token cost: 0 input · 0 output
 
 ## Graph Freshness
-- Built from commit: `ebbc527c`
+- Built from commit: `29cc6c78`
 - Run `git rev-parse HEAD` and compare to check if the graph is stale.
 - Run `graphify update .` after code changes (no API cost).
 
@@ -67,6 +67,14 @@
 - [[_COMMUNITY_Community 53|Community 53]]
 - [[_COMMUNITY_Community 54|Community 54]]
 - [[_COMMUNITY_Community 55|Community 55]]
+- [[_COMMUNITY_Community 56|Community 56]]
+- [[_COMMUNITY_Community 57|Community 57]]
+- [[_COMMUNITY_Community 58|Community 58]]
+- [[_COMMUNITY_Community 59|Community 59]]
+- [[_COMMUNITY_Community 60|Community 60]]
+- [[_COMMUNITY_Community 61|Community 61]]
+- [[_COMMUNITY_Community 62|Community 62]]
+- [[_COMMUNITY_Community 63|Community 63]]
 
 ## God Nodes (most connected - your core abstractions)
 1. `tokenKinds` - 141 edges
@@ -86,7 +94,7 @@
 ## Import Cycles
 - None detected.
 
-## Communities (56 total, 29 thin omitted)
+## Communities (64 total, 34 thin omitted)
 
 ### Community 0 - "Community 0"
 Cohesion: 0.01
@@ -180,20 +188,32 @@ Nodes (7): AUDIO_AMP, audioBars(), DUA_CATEGORIES, DUA_DETAIL, DUA_LIST, DuaDeta
 Cohesion: 0.18
 Nodes (8): GUEST_STATES, GuestRow, NO_MASJID_STATES, NO_TRACK, NoMasjidRow, NOTIF_STATES, NotifRow, NUDGE_STATES
 
+### Community 56 - "Community 56"
+Cohesion: 0.12
+Nodes (7): CLAIM_DATA, FOLLOW_DATA, MANAGE_DATA, MASLAK_LIST, ROLE_LIST, WIZARD_SUB, WIZARD_TITLE
+
+### Community 58 - "Community 58"
+Cohesion: 0.43
+Nodes (5): buildFollowRows(), buildManageTiles(), frame(), sheetFrames(), SheetRow()
+
+### Community 60 - "Community 60"
+Cohesion: 0.60
+Nodes (3): buildClaimResults(), wizardFrames(), WizardRow()
+
 ## Knowledge Gaps
-- **322 isolated node(s):** `eval_id`, `eval_name`, `prompt`, `assertions`, `eval_id` (+317 more)
+- **334 isolated node(s):** `eval_id`, `eval_name`, `prompt`, `assertions`, `eval_id` (+329 more)
   These have ≤1 connection - possible missing edges or undocumented components.
-- **29 thin communities (<3 nodes) omitted from report** — run `graphify query` to explore isolated nodes.
+- **34 thin communities (<3 nodes) omitted from report** — run `graphify query` to explore isolated nodes.
 
 ## Suggested Questions
 _Questions this graph is uniquely positioned to answer:_
 
 - **Why does `tokenKinds` connect `Community 0` to `Community 5`?**
-  _High betweenness centrality (0.060) - this node is a cross-community bridge._
+  _High betweenness centrality (0.051) - this node is a cross-community bridge._
 - **Why does `x-omelette` connect `Community 5` to `Community 0`?**
-  _High betweenness centrality (0.008) - this node is a cross-community bridge._
+  _High betweenness centrality (0.006) - this node is a cross-community bridge._
 - **What connects `eval_id`, `eval_name`, `prompt` to the rest of the system?**
-  _322 weakly-connected nodes found - possible documentation gaps or missing edges._
+  _334 weakly-connected nodes found - possible documentation gaps or missing edges._
 - **Should `Community 0` be split into smaller, more focused modules?**
   _Cohesion score 0.014184397163120567 - nodes in this community are weakly interconnected._
 - **Should `Community 1` be split into smaller, more focused modules?**

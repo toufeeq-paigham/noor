@@ -10,8 +10,8 @@
    and src/components/{atoms,molecules,organisms}/*):
      PRIMITIVES  .surf
      ATOMS       .btn .ib · .badge .chip · .input .phone .otp · .sw .cb · .ind .dot
-     MOLECULES   .tbar .tab · .dd-menu .dd-item .chev · .rx-* .em
-     ORGANISMS   .app-bar .ab-* · .nb-bar .nb-*
+     MOLECULES   .tbar .tab · .nb-bar .nb-* · .dd-menu .dd-item .chev · .rx-* .em
+     ORGANISMS   .app-bar .ab-*
    ============================================================ */
 
 /* ── Buttons ── */
@@ -73,13 +73,20 @@
 .field{margin-bottom:12px;position:relative}
 .flabel{font-family:var(--font-body);font-size:13px;font-weight:500;color:var(--color-info-primary);margin-bottom:4px}
 .input{position:relative;background:var(--color-input-background);border-radius:16px;min-height:46px;padding:2px;box-sizing:border-box}
-.input .inner{display:flex;align-items:center;gap:8px;padding:11px 16px;border-radius:14px;border:1px solid var(--color-input-border-disabled);box-sizing:border-box}
+.input .inner{display:flex;align-items:center;gap:8px;min-height:42px;padding:0 16px;border-radius:14px;border:1px solid var(--color-input-border-disabled);box-sizing:border-box}
 .input .val{flex:1;font-family:var(--font-body);font-size:16px;color:var(--color-input-text);min-width:0;white-space:nowrap;overflow:hidden}
 .input .ph{color:var(--color-input-placeholder)}
 .input .mi{color:var(--color-input-placeholder);font-size:20px}
+/* Editable usage: screens put a real <input class="val"> in .inner (preview pages use a span). */
+.input .inner input.val{border:none;outline:none;background:transparent;padding:0;margin:0}
+.input .inner input.val::placeholder{color:var(--color-input-placeholder);opacity:1}
 .input.focused{border:1px solid color-mix(in oklab,var(--color-input-border-focused) 50%,transparent)}
 .input.error{border:1px solid color-mix(in oklab,var(--color-input-border-error) 50%,transparent)}
 .input.disabled{opacity:.6}
+/* Code variant — fixed-length numeric entry (pincode · PIN · passcode): large, bold,
+   letter-spaced, tabular figures so every digit reads distinctly. NOT for free text. */
+.input.code .inner{min-height:48px}
+.input.code .val{font-size:22px;font-weight:700;letter-spacing:4px;font-variant-numeric:tabular-nums}
 .helper{font-family:var(--font-body);font-size:13px;line-height:20px;color:var(--color-info-tertiary);margin-top:4px}
 .helper.err{color:var(--color-input-text-error)}
 .phone .inner{padding:0;gap:0;min-height:42px;box-sizing:border-box}
@@ -87,13 +94,13 @@
 .phone.error{border:none}
 .phone .prefix{display:flex;align-items:center;gap:6px;flex-shrink:0;padding:0 12px 0 14px;font-size:16px;color:var(--color-input-text);font-family:var(--font-body)}
 .phone .divider{width:1px;align-self:stretch;margin:8px 0;background:var(--color-input-border-disabled)}
-.phone .entry{flex:1;padding:0 14px;display:flex;align-items:center;font-family:var(--font-body);font-size:16px;color:var(--color-input-text)}
+.phone .entry{flex:1;padding:0 14px;display:flex;align-items:center;font-family:var(--font-body);font-size:16px;font-variant-numeric:tabular-nums;color:var(--color-input-text)}
 .phone .halo{position:absolute;top:0;bottom:0;right:0;left:81px;border-radius:0 16px 16px 0;border:1px solid transparent;pointer-events:none}
 .phone.focused .halo{border-color:color-mix(in oklab,var(--color-input-border-focused) 50%,transparent)}
 .phone.error .halo{border-color:color-mix(in oklab,var(--color-input-border-error) 50%,transparent)}
 .otp{position:relative;background:var(--color-input-background);border-radius:16px;padding:2px;display:flex;box-sizing:border-box}
-.otp .cells{display:flex;flex:1;border-radius:14px;border:1px solid var(--color-input-border-disabled);overflow:hidden}
-.otp .cell{flex:1;height:46px;display:flex;align-items:center;justify-content:center;font-family:var(--font-body);font-size:18px;color:var(--color-input-text)}
+.otp .cells{display:flex;flex:1;min-height:42px;box-sizing:border-box;border-radius:14px;border:1px solid var(--color-input-border-disabled);overflow:hidden}
+.otp .cell{flex:1;display:flex;align-items:center;justify-content:center;font-family:var(--font-body);font-size:18px;font-variant-numeric:tabular-nums;color:var(--color-input-text)}
 .otp .cell + .cell{border-left:1px solid var(--color-input-border-disabled)}
 /* .otp .halo left/width per active cell (set inline): the halo is flush with the
    capsule's outer edge so its corner curve overlays the capsule's own —

@@ -2617,7 +2617,7 @@
       "label": "QAUM_AMP",
       "file_type": "code",
       "source_file": "src/home/storyboards/screens.jsx",
-      "source_location": "L464",
+      "source_location": "L469",
       "id": "storyboards_screens_qaum_amp",
       "community": 33,
       "norm_label": "qaum_amp"
@@ -2626,7 +2626,7 @@
       "label": "qaumBars()",
       "file_type": "code",
       "source_file": "src/home/storyboards/screens.jsx",
-      "source_location": "L466",
+      "source_location": "L471",
       "id": "storyboards_screens_qaumbars",
       "community": 33,
       "norm_label": "qaumbars()"
@@ -2635,7 +2635,7 @@
       "label": "qaumTime()",
       "file_type": "code",
       "source_file": "src/home/storyboards/screens.jsx",
-      "source_location": "L470",
+      "source_location": "L475",
       "id": "storyboards_screens_qaumtime",
       "community": 33,
       "norm_label": "qaumtime()"
@@ -2644,7 +2644,7 @@
       "label": "QaumAudioPlayer()",
       "file_type": "code",
       "source_file": "src/home/storyboards/screens.jsx",
-      "source_location": "L476",
+      "source_location": "L481",
       "id": "storyboards_screens_qaumaudioplayer",
       "community": 33,
       "norm_label": "qaumaudioplayer()"
@@ -2653,7 +2653,7 @@
       "label": "PostHeader()",
       "file_type": "code",
       "source_file": "src/home/storyboards/screens.jsx",
-      "source_location": "L499",
+      "source_location": "L504",
       "id": "storyboards_screens_postheader",
       "community": 33,
       "norm_label": "postheader()"
@@ -2662,7 +2662,7 @@
       "label": "PostActions()",
       "file_type": "code",
       "source_file": "src/home/storyboards/screens.jsx",
-      "source_location": "L510",
+      "source_location": "L515",
       "id": "storyboards_screens_postactions",
       "community": 33,
       "norm_label": "postactions()"
@@ -2671,7 +2671,7 @@
       "label": "QaumScreen()",
       "file_type": "code",
       "source_file": "src/home/storyboards/screens.jsx",
-      "source_location": "L524",
+      "source_location": "L529",
       "id": "storyboards_screens_qaumscreen",
       "community": 33,
       "norm_label": "qaumscreen()"
@@ -2680,7 +2680,7 @@
       "label": "SurahRow()",
       "file_type": "code",
       "source_file": "src/home/storyboards/screens.jsx",
-      "source_location": "L743",
+      "source_location": "L748",
       "id": "storyboards_screens_surahrow",
       "community": 33,
       "norm_label": "surahrow()"
@@ -2689,7 +2689,7 @@
       "label": "QuranScreen()",
       "file_type": "code",
       "source_file": "src/home/storyboards/screens.jsx",
-      "source_location": "L760",
+      "source_location": "L765",
       "id": "storyboards_screens_quranscreen",
       "community": 33,
       "norm_label": "quranscreen()"
@@ -2698,7 +2698,7 @@
       "label": "SalaahScreen()",
       "file_type": "code",
       "source_file": "src/home/storyboards/screens.jsx",
-      "source_location": "L851",
+      "source_location": "L856",
       "id": "storyboards_screens_salaahscreen",
       "community": 33,
       "norm_label": "salaahscreen()"
@@ -2707,7 +2707,7 @@
       "label": "ProfileScreen()",
       "file_type": "code",
       "source_file": "src/home/storyboards/screens.jsx",
-      "source_location": "L1147",
+      "source_location": "L1152",
       "id": "storyboards_screens_profilescreen",
       "community": 33,
       "norm_label": "profilescreen()"
@@ -2716,7 +2716,7 @@
       "label": "MasjidNudgeSheet()",
       "file_type": "code",
       "source_file": "src/home/storyboards/screens.jsx",
-      "source_location": "L1235",
+      "source_location": "L1244",
       "id": "storyboards_screens_masjidnudgesheet",
       "community": 33,
       "norm_label": "masjidnudgesheet()"
@@ -2725,7 +2725,7 @@
       "label": "NotificationNudgeSheet()",
       "file_type": "code",
       "source_file": "src/home/storyboards/screens.jsx",
-      "source_location": "L1258",
+      "source_location": "L1267",
       "id": "storyboards_screens_notificationnudgesheet",
       "community": 33,
       "norm_label": "notificationnudgesheet()"
@@ -2734,7 +2734,7 @@
       "label": "PrivacyNudgeSheet()",
       "file_type": "code",
       "source_file": "src/home/storyboards/screens.jsx",
-      "source_location": "L1282",
+      "source_location": "L1291",
       "id": "storyboards_screens_privacynudgesheet",
       "community": 33,
       "norm_label": "privacynudgesheet()"
@@ -2743,7 +2743,7 @@
       "label": "AttDialog()",
       "file_type": "code",
       "source_file": "src/home/storyboards/screens.jsx",
-      "source_location": "L1305",
+      "source_location": "L1314",
       "id": "storyboards_screens_attdialog",
       "community": 33,
       "norm_label": "attdialog()"
@@ -3163,6 +3163,357 @@
       "norm_label": "pincodescreen()"
     },
     {
+      "label": "entry-row.jsx",
+      "file_type": "code",
+      "source_file": "src/masjid-register/storyboards/entry-row.jsx",
+      "source_location": "L1",
+      "id": "storyboards_entry_row",
+      "community": 59,
+      "norm_label": "entry-row.jsx"
+    },
+    {
+      "label": "NAV",
+      "file_type": "code",
+      "source_file": "src/masjid-register/storyboards/entry-row.jsx",
+      "source_location": "L6",
+      "id": "storyboards_entry_row_nav",
+      "community": 59,
+      "norm_label": "nav"
+    },
+    {
+      "label": "noop()",
+      "file_type": "code",
+      "source_file": "src/masjid-register/storyboards/entry-row.jsx",
+      "source_location": "L7",
+      "id": "storyboards_entry_row_noop",
+      "community": 59,
+      "norm_label": "noop()"
+    },
+    {
+      "label": "ENTRY_FRAMES",
+      "file_type": "code",
+      "source_file": "src/masjid-register/storyboards/entry-row.jsx",
+      "source_location": "L9",
+      "id": "storyboards_entry_row_entry_frames",
+      "community": 59,
+      "norm_label": "entry_frames"
+    },
+    {
+      "label": "frame()",
+      "file_type": "code",
+      "source_file": "src/masjid-register/storyboards/entry-row.jsx",
+      "source_location": "L15",
+      "id": "storyboards_entry_row_frame",
+      "community": 59,
+      "norm_label": "frame()"
+    },
+    {
+      "label": "EntryRow()",
+      "file_type": "code",
+      "source_file": "src/masjid-register/storyboards/entry-row.jsx",
+      "source_location": "L36",
+      "id": "storyboards_entry_row_entryrow",
+      "community": 59,
+      "norm_label": "entryrow()"
+    },
+    {
+      "label": "outcome-row.jsx",
+      "file_type": "code",
+      "source_file": "src/masjid-register/storyboards/outcome-row.jsx",
+      "source_location": "L1",
+      "id": "storyboards_outcome_row",
+      "community": 61,
+      "norm_label": "outcome-row.jsx"
+    },
+    {
+      "label": "OUTCOME_FRAMES",
+      "file_type": "code",
+      "source_file": "src/masjid-register/storyboards/outcome-row.jsx",
+      "source_location": "L5",
+      "id": "storyboards_outcome_row_outcome_frames",
+      "community": 61,
+      "norm_label": "outcome_frames"
+    },
+    {
+      "label": "frame()",
+      "file_type": "code",
+      "source_file": "src/masjid-register/storyboards/outcome-row.jsx",
+      "source_location": "L11",
+      "id": "storyboards_outcome_row_frame",
+      "community": 61,
+      "norm_label": "frame()"
+    },
+    {
+      "label": "OutcomeRow()",
+      "file_type": "code",
+      "source_file": "src/masjid-register/storyboards/outcome-row.jsx",
+      "source_location": "L30",
+      "id": "storyboards_outcome_row_outcomerow",
+      "community": 61,
+      "norm_label": "outcomerow()"
+    },
+    {
+      "label": "screens.jsx",
+      "file_type": "code",
+      "source_file": "src/masjid-register/storyboards/screens.jsx",
+      "source_location": "L1",
+      "id": "src_masjid_register_storyboards_screens_jsx_storyboards_screens",
+      "community": 56,
+      "norm_label": "screens.jsx"
+    },
+    {
+      "label": "MANAGE_DATA",
+      "file_type": "code",
+      "source_file": "src/masjid-register/storyboards/screens.jsx",
+      "source_location": "L14",
+      "id": "storyboards_screens_manage_data",
+      "community": 56,
+      "norm_label": "manage_data"
+    },
+    {
+      "label": "FOLLOW_DATA",
+      "file_type": "code",
+      "source_file": "src/masjid-register/storyboards/screens.jsx",
+      "source_location": "L18",
+      "id": "storyboards_screens_follow_data",
+      "community": 56,
+      "norm_label": "follow_data"
+    },
+    {
+      "label": "CLAIM_DATA",
+      "file_type": "code",
+      "source_file": "src/masjid-register/storyboards/screens.jsx",
+      "source_location": "L25",
+      "id": "storyboards_screens_claim_data",
+      "community": 56,
+      "norm_label": "claim_data"
+    },
+    {
+      "label": "ROLE_LIST",
+      "file_type": "code",
+      "source_file": "src/masjid-register/storyboards/screens.jsx",
+      "source_location": "L30",
+      "id": "storyboards_screens_role_list",
+      "community": 56,
+      "norm_label": "role_list"
+    },
+    {
+      "label": "MASLAK_LIST",
+      "file_type": "code",
+      "source_file": "src/masjid-register/storyboards/screens.jsx",
+      "source_location": "L31",
+      "id": "storyboards_screens_maslak_list",
+      "community": 56,
+      "norm_label": "maslak_list"
+    },
+    {
+      "label": "Field()",
+      "file_type": "code",
+      "source_file": "src/masjid-register/storyboards/screens.jsx",
+      "source_location": "L37",
+      "id": "storyboards_screens_field",
+      "community": 56,
+      "norm_label": "field()"
+    },
+    {
+      "label": "TextInput()",
+      "file_type": "code",
+      "source_file": "src/masjid-register/storyboards/screens.jsx",
+      "source_location": "L48",
+      "id": "storyboards_screens_textinput",
+      "community": 56,
+      "norm_label": "textinput()"
+    },
+    {
+      "label": "MyMasjidsSheet()",
+      "file_type": "code",
+      "source_file": "src/masjid-register/storyboards/screens.jsx",
+      "source_location": "L64",
+      "id": "storyboards_screens_mymasjidssheet",
+      "community": 56,
+      "norm_label": "mymasjidssheet()"
+    },
+    {
+      "label": "WIZARD_TITLE",
+      "file_type": "code",
+      "source_file": "src/masjid-register/storyboards/screens.jsx",
+      "source_location": "L140",
+      "id": "storyboards_screens_wizard_title",
+      "community": 56,
+      "norm_label": "wizard_title"
+    },
+    {
+      "label": "WIZARD_SUB",
+      "file_type": "code",
+      "source_file": "src/masjid-register/storyboards/screens.jsx",
+      "source_location": "L141",
+      "id": "storyboards_screens_wizard_sub",
+      "community": 56,
+      "norm_label": "wizard_sub"
+    },
+    {
+      "label": "OptionSheet()",
+      "file_type": "code",
+      "source_file": "src/masjid-register/storyboards/screens.jsx",
+      "source_location": "L143",
+      "id": "storyboards_screens_optionsheet",
+      "community": 56,
+      "norm_label": "optionsheet()"
+    },
+    {
+      "label": "PickerField()",
+      "file_type": "code",
+      "source_file": "src/masjid-register/storyboards/screens.jsx",
+      "source_location": "L162",
+      "id": "storyboards_screens_pickerfield",
+      "community": 56,
+      "norm_label": "pickerfield()"
+    },
+    {
+      "label": "ReviewRow()",
+      "file_type": "code",
+      "source_file": "src/masjid-register/storyboards/screens.jsx",
+      "source_location": "L173",
+      "id": "storyboards_screens_reviewrow",
+      "community": 56,
+      "norm_label": "reviewrow()"
+    },
+    {
+      "label": "WizardBody()",
+      "file_type": "code",
+      "source_file": "src/masjid-register/storyboards/screens.jsx",
+      "source_location": "L185",
+      "id": "storyboards_screens_wizardbody",
+      "community": 56,
+      "norm_label": "wizardbody()"
+    },
+    {
+      "label": "WizardScreen()",
+      "file_type": "code",
+      "source_file": "src/masjid-register/storyboards/screens.jsx",
+      "source_location": "L437",
+      "id": "storyboards_screens_wizardscreen",
+      "community": 56,
+      "norm_label": "wizardscreen()"
+    },
+    {
+      "label": "OutcomeScreen()",
+      "file_type": "code",
+      "source_file": "src/masjid-register/storyboards/screens.jsx",
+      "source_location": "L470",
+      "id": "storyboards_screens_outcomescreen",
+      "community": 56,
+      "norm_label": "outcomescreen()"
+    },
+    {
+      "label": "sheet-row.jsx",
+      "file_type": "code",
+      "source_file": "src/masjid-register/storyboards/sheet-row.jsx",
+      "source_location": "L1",
+      "id": "storyboards_sheet_row",
+      "community": 58,
+      "norm_label": "sheet-row.jsx"
+    },
+    {
+      "label": "noop()",
+      "file_type": "code",
+      "source_file": "src/masjid-register/storyboards/sheet-row.jsx",
+      "source_location": "L5",
+      "id": "storyboards_sheet_row_noop",
+      "community": 58,
+      "norm_label": "noop()"
+    },
+    {
+      "label": "buildManageTiles()",
+      "file_type": "code",
+      "source_file": "src/masjid-register/storyboards/sheet-row.jsx",
+      "source_location": "L7",
+      "id": "storyboards_sheet_row_buildmanagetiles",
+      "community": 58,
+      "norm_label": "buildmanagetiles()"
+    },
+    {
+      "label": "buildFollowRows()",
+      "file_type": "code",
+      "source_file": "src/masjid-register/storyboards/sheet-row.jsx",
+      "source_location": "L10",
+      "id": "storyboards_sheet_row_buildfollowrows",
+      "community": 58,
+      "norm_label": "buildfollowrows()"
+    },
+    {
+      "label": "sheetFrames()",
+      "file_type": "code",
+      "source_file": "src/masjid-register/storyboards/sheet-row.jsx",
+      "source_location": "L15",
+      "id": "storyboards_sheet_row_sheetframes",
+      "community": 58,
+      "norm_label": "sheetframes()"
+    },
+    {
+      "label": "frame()",
+      "file_type": "code",
+      "source_file": "src/masjid-register/storyboards/sheet-row.jsx",
+      "source_location": "L22",
+      "id": "storyboards_sheet_row_frame",
+      "community": 58,
+      "norm_label": "frame()"
+    },
+    {
+      "label": "SheetRow()",
+      "file_type": "code",
+      "source_file": "src/masjid-register/storyboards/sheet-row.jsx",
+      "source_location": "L44",
+      "id": "storyboards_sheet_row_sheetrow",
+      "community": 58,
+      "norm_label": "sheetrow()"
+    },
+    {
+      "label": "wizard-row.jsx",
+      "file_type": "code",
+      "source_file": "src/masjid-register/storyboards/wizard-row.jsx",
+      "source_location": "L1",
+      "id": "storyboards_wizard_row",
+      "community": 60,
+      "norm_label": "wizard-row.jsx"
+    },
+    {
+      "label": "buildClaimResults()",
+      "file_type": "code",
+      "source_file": "src/masjid-register/storyboards/wizard-row.jsx",
+      "source_location": "L5",
+      "id": "storyboards_wizard_row_buildclaimresults",
+      "community": 60,
+      "norm_label": "buildclaimresults()"
+    },
+    {
+      "label": "wizardFrames()",
+      "file_type": "code",
+      "source_file": "src/masjid-register/storyboards/wizard-row.jsx",
+      "source_location": "L10",
+      "id": "storyboards_wizard_row_wizardframes",
+      "community": 60,
+      "norm_label": "wizardframes()"
+    },
+    {
+      "label": "frame()",
+      "file_type": "code",
+      "source_file": "src/masjid-register/storyboards/wizard-row.jsx",
+      "source_location": "L26",
+      "id": "storyboards_wizard_row_frame",
+      "community": 60,
+      "norm_label": "frame()"
+    },
+    {
+      "label": "WizardRow()",
+      "file_type": "code",
+      "source_file": "src/masjid-register/storyboards/wizard-row.jsx",
+      "source_location": "L45",
+      "id": "storyboards_wizard_row_wizardrow",
+      "community": 60,
+      "norm_label": "wizardrow()"
+    },
+    {
       "label": "states-row.jsx",
       "file_type": "code",
       "source_file": "src/nudge-states/storyboards/states-row.jsx",
@@ -3494,6 +3845,123 @@
       "id": "storyboards_screens_successscreen",
       "community": 54,
       "norm_label": "successscreen()"
+    },
+    {
+      "label": "ar-row.jsx",
+      "file_type": "code",
+      "source_file": "src/qibla/storyboards/ar-row.jsx",
+      "source_location": "L1",
+      "id": "storyboards_ar_row",
+      "community": 62,
+      "norm_label": "ar-row.jsx"
+    },
+    {
+      "label": "AR_FRAMES",
+      "file_type": "code",
+      "source_file": "src/qibla/storyboards/ar-row.jsx",
+      "source_location": "L6",
+      "id": "storyboards_ar_row_ar_frames",
+      "community": 62,
+      "norm_label": "ar_frames"
+    },
+    {
+      "label": "ARRow()",
+      "file_type": "code",
+      "source_file": "src/qibla/storyboards/ar-row.jsx",
+      "source_location": "L12",
+      "id": "storyboards_ar_row_arrow",
+      "community": 62,
+      "norm_label": "arrow()"
+    },
+    {
+      "label": "screens.jsx",
+      "file_type": "code",
+      "source_file": "src/qibla/storyboards/screens.jsx",
+      "source_location": "L1",
+      "id": "src_qibla_storyboards_screens_jsx_storyboards_screens",
+      "community": 57,
+      "norm_label": "screens.jsx"
+    },
+    {
+      "label": "bpt()",
+      "file_type": "code",
+      "source_file": "src/qibla/storyboards/screens.jsx",
+      "source_location": "L24",
+      "id": "storyboards_screens_bpt",
+      "community": 57,
+      "norm_label": "bpt()"
+    },
+    {
+      "label": "CompassDial()",
+      "file_type": "code",
+      "source_file": "src/qibla/storyboards/screens.jsx",
+      "source_location": "L34",
+      "id": "storyboards_screens_compassdial",
+      "community": 57,
+      "norm_label": "compassdial()"
+    },
+    {
+      "label": "QiblaTopBar()",
+      "file_type": "code",
+      "source_file": "src/qibla/storyboards/screens.jsx",
+      "source_location": "L105",
+      "id": "storyboards_screens_qiblatopbar",
+      "community": 57,
+      "norm_label": "qiblatopbar()"
+    },
+    {
+      "label": "PreviewChips()",
+      "file_type": "code",
+      "source_file": "src/qibla/storyboards/screens.jsx",
+      "source_location": "L118",
+      "id": "storyboards_screens_previewchips",
+      "community": 57,
+      "norm_label": "previewchips()"
+    },
+    {
+      "label": "InitialQiblaScreen()",
+      "file_type": "code",
+      "source_file": "src/qibla/storyboards/screens.jsx",
+      "source_location": "L137",
+      "id": "storyboards_screens_initialqiblascreen",
+      "community": 57,
+      "norm_label": "initialqiblascreen()"
+    },
+    {
+      "label": "SmartQiblaScreen()",
+      "file_type": "code",
+      "source_file": "src/qibla/storyboards/screens.jsx",
+      "source_location": "L169",
+      "id": "storyboards_screens_smartqiblascreen",
+      "community": 57,
+      "norm_label": "smartqiblascreen()"
+    },
+    {
+      "label": "setup-row.jsx",
+      "file_type": "code",
+      "source_file": "src/qibla/storyboards/setup-row.jsx",
+      "source_location": "L1",
+      "id": "storyboards_setup_row",
+      "community": 63,
+      "norm_label": "setup-row.jsx"
+    },
+    {
+      "label": "SETUP_FRAMES",
+      "file_type": "code",
+      "source_file": "src/qibla/storyboards/setup-row.jsx",
+      "source_location": "L6",
+      "id": "storyboards_setup_row_setup_frames",
+      "community": 63,
+      "norm_label": "setup_frames"
+    },
+    {
+      "label": "SetupRow()",
+      "file_type": "code",
+      "source_file": "src/qibla/storyboards/setup-row.jsx",
+      "source_location": "L11",
+      "id": "storyboards_setup_row_setuprow",
+      "community": 63,
+      "norm_label": "setuprow()"
     },
     {
       "label": "quran-reader.jsx",
@@ -7790,9 +8258,9 @@
       "source_file": "src/_theme/chrome.js",
       "source_location": "L155",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "theme_chrome",
-      "target": "theme_chrome_builddrawer",
-      "confidence_score": 1.0
+      "target": "theme_chrome_builddrawer"
     },
     {
       "relation": "contains",
@@ -7800,9 +8268,9 @@
       "source_file": "src/_theme/chrome.js",
       "source_location": "L152",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "theme_chrome",
-      "target": "theme_chrome_closedrawer",
-      "confidence_score": 1.0
+      "target": "theme_chrome_closedrawer"
     },
     {
       "relation": "contains",
@@ -7860,9 +8328,9 @@
       "source_file": "src/_theme/chrome.js",
       "source_location": "L127",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "theme_chrome",
-      "target": "theme_chrome_navitemfor",
-      "confidence_score": 1.0
+      "target": "theme_chrome_navitemfor"
     },
     {
       "relation": "contains",
@@ -7870,9 +8338,9 @@
       "source_file": "src/_theme/chrome.js",
       "source_location": "L151",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "theme_chrome",
-      "target": "theme_chrome_opendrawer",
-      "confidence_score": 1.0
+      "target": "theme_chrome_opendrawer"
     },
     {
       "relation": "contains",
@@ -7890,9 +8358,9 @@
       "source_file": "src/_theme/chrome.js",
       "source_location": "L142",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "theme_chrome",
-      "target": "theme_chrome_setchromesubtitle",
-      "confidence_score": 1.0
+      "target": "theme_chrome_setchromesubtitle"
     },
     {
       "relation": "contains",
@@ -7900,9 +8368,9 @@
       "source_file": "src/_theme/chrome.js",
       "source_location": "L137",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "theme_chrome",
-      "target": "theme_chrome_setchrometitle",
-      "confidence_score": 1.0
+      "target": "theme_chrome_setchrometitle"
     },
     {
       "relation": "contains",
@@ -7930,9 +8398,9 @@
       "source_file": "src/_theme/chrome.js",
       "source_location": "L153",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "theme_chrome",
-      "target": "theme_chrome_toggledrawer",
-      "confidence_score": 1.0
+      "target": "theme_chrome_toggledrawer"
     },
     {
       "relation": "calls",
@@ -8040,9 +8508,9 @@
       "source_file": "src/_theme/chrome.js",
       "source_location": "L320",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "theme_chrome_buildchrome",
-      "target": "theme_chrome_navitemfor",
-      "confidence_score": 1.0
+      "target": "theme_chrome_navitemfor"
     },
     {
       "relation": "calls",
@@ -8051,9 +8519,9 @@
       "source_file": "src/_theme/chrome.js",
       "source_location": "L205",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "theme_chrome_builddrawer",
-      "target": "theme_chrome_closedrawer",
-      "confidence_score": 1.0
+      "target": "theme_chrome_closedrawer"
     },
     {
       "relation": "calls",
@@ -8062,9 +8530,9 @@
       "source_file": "src/_theme/chrome.js",
       "source_location": "L344",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "theme_chrome_buildchrome",
-      "target": "theme_chrome_builddrawer",
-      "confidence_score": 1.0
+      "target": "theme_chrome_builddrawer"
     },
     {
       "relation": "calls",
@@ -8146,9 +8614,9 @@
       "source_file": "src/_theme/components.jsx",
       "source_location": "L222",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "theme_components",
-      "target": "theme_components_richnudgesheet",
-      "confidence_score": 1.0
+      "target": "theme_components_richnudgesheet"
     },
     {
       "relation": "contains",
@@ -8428,9 +8896,9 @@
       "source_file": "src/home/storyboards/screens.jsx",
       "source_location": "L1305",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "src_home_storyboards_screens_jsx_storyboards_screens",
-      "target": "storyboards_screens_attdialog",
-      "confidence_score": 1.0
+      "target": "storyboards_screens_attdialog"
     },
     {
       "relation": "contains",
@@ -8448,9 +8916,9 @@
       "source_file": "src/home/storyboards/screens.jsx",
       "source_location": "L1235",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "src_home_storyboards_screens_jsx_storyboards_screens",
-      "target": "storyboards_screens_masjidnudgesheet",
-      "confidence_score": 1.0
+      "target": "storyboards_screens_masjidnudgesheet"
     },
     {
       "relation": "contains",
@@ -8458,9 +8926,9 @@
       "source_file": "src/home/storyboards/screens.jsx",
       "source_location": "L1258",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "src_home_storyboards_screens_jsx_storyboards_screens",
-      "target": "storyboards_screens_notificationnudgesheet",
-      "confidence_score": 1.0
+      "target": "storyboards_screens_notificationnudgesheet"
     },
     {
       "relation": "contains",
@@ -8488,9 +8956,9 @@
       "source_file": "src/home/storyboards/screens.jsx",
       "source_location": "L1282",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "src_home_storyboards_screens_jsx_storyboards_screens",
-      "target": "storyboards_screens_privacynudgesheet",
-      "confidence_score": 1.0
+      "target": "storyboards_screens_privacynudgesheet"
     },
     {
       "relation": "contains",
@@ -8731,9 +9199,9 @@
       "source_file": "src/home/storyboards/tabs-row.jsx",
       "source_location": "L123",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "storyboards_tabs_row_homerow",
-      "target": "storyboards_tabs_row_renderframe",
-      "confidence_score": 1.0
+      "target": "storyboards_tabs_row_renderframe"
     },
     {
       "relation": "calls",
@@ -8764,9 +9232,9 @@
       "source_file": "src/home/storyboards/tabs-row.jsx",
       "source_location": "L165",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "storyboards_tabs_row_salaahrow",
-      "target": "storyboards_tabs_row_renderframe",
-      "confidence_score": 1.0
+      "target": "storyboards_tabs_row_renderframe"
     },
     {
       "relation": "contains",
@@ -9128,12 +9596,407 @@
     {
       "relation": "contains",
       "confidence": "EXTRACTED",
+      "source_file": "src/masjid-register/storyboards/entry-row.jsx",
+      "source_location": "L9",
+      "weight": 1.0,
+      "source": "storyboards_entry_row",
+      "target": "storyboards_entry_row_entry_frames",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "src/masjid-register/storyboards/entry-row.jsx",
+      "source_location": "L36",
+      "weight": 1.0,
+      "source": "storyboards_entry_row",
+      "target": "storyboards_entry_row_entryrow",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "src/masjid-register/storyboards/entry-row.jsx",
+      "source_location": "L15",
+      "weight": 1.0,
+      "source": "storyboards_entry_row",
+      "target": "storyboards_entry_row_frame",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "src/masjid-register/storyboards/entry-row.jsx",
+      "source_location": "L6",
+      "weight": 1.0,
+      "source": "storyboards_entry_row",
+      "target": "storyboards_entry_row_nav",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "src/masjid-register/storyboards/entry-row.jsx",
+      "source_location": "L7",
+      "weight": 1.0,
+      "source": "storyboards_entry_row",
+      "target": "storyboards_entry_row_noop",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "src/masjid-register/storyboards/outcome-row.jsx",
+      "source_location": "L11",
+      "weight": 1.0,
+      "source": "storyboards_outcome_row",
+      "target": "storyboards_outcome_row_frame",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "src/masjid-register/storyboards/outcome-row.jsx",
+      "source_location": "L5",
+      "weight": 1.0,
+      "source": "storyboards_outcome_row",
+      "target": "storyboards_outcome_row_outcome_frames",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "src/masjid-register/storyboards/outcome-row.jsx",
+      "source_location": "L30",
+      "weight": 1.0,
+      "source": "storyboards_outcome_row",
+      "target": "storyboards_outcome_row_outcomerow",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "src/masjid-register/storyboards/screens.jsx",
+      "source_location": "L25",
+      "weight": 1.0,
+      "source": "src_masjid_register_storyboards_screens_jsx_storyboards_screens",
+      "target": "storyboards_screens_claim_data",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "src/masjid-register/storyboards/screens.jsx",
+      "source_location": "L37",
+      "weight": 1.0,
+      "source": "src_masjid_register_storyboards_screens_jsx_storyboards_screens",
+      "target": "storyboards_screens_field",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "src/masjid-register/storyboards/screens.jsx",
+      "source_location": "L18",
+      "weight": 1.0,
+      "source": "src_masjid_register_storyboards_screens_jsx_storyboards_screens",
+      "target": "storyboards_screens_follow_data",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "src/masjid-register/storyboards/screens.jsx",
+      "source_location": "L14",
+      "weight": 1.0,
+      "source": "src_masjid_register_storyboards_screens_jsx_storyboards_screens",
+      "target": "storyboards_screens_manage_data",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "src/masjid-register/storyboards/screens.jsx",
+      "source_location": "L31",
+      "weight": 1.0,
+      "source": "src_masjid_register_storyboards_screens_jsx_storyboards_screens",
+      "target": "storyboards_screens_maslak_list",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "src/masjid-register/storyboards/screens.jsx",
+      "source_location": "L64",
+      "weight": 1.0,
+      "source": "src_masjid_register_storyboards_screens_jsx_storyboards_screens",
+      "target": "storyboards_screens_mymasjidssheet",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "src/masjid-register/storyboards/screens.jsx",
+      "source_location": "L143",
+      "weight": 1.0,
+      "source": "src_masjid_register_storyboards_screens_jsx_storyboards_screens",
+      "target": "storyboards_screens_optionsheet",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "src/masjid-register/storyboards/screens.jsx",
+      "source_location": "L470",
+      "weight": 1.0,
+      "source": "src_masjid_register_storyboards_screens_jsx_storyboards_screens",
+      "target": "storyboards_screens_outcomescreen",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "src/masjid-register/storyboards/screens.jsx",
+      "source_location": "L162",
+      "weight": 1.0,
+      "source": "src_masjid_register_storyboards_screens_jsx_storyboards_screens",
+      "target": "storyboards_screens_pickerfield",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "src/masjid-register/storyboards/screens.jsx",
+      "source_location": "L173",
+      "weight": 1.0,
+      "source": "src_masjid_register_storyboards_screens_jsx_storyboards_screens",
+      "target": "storyboards_screens_reviewrow",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "src/masjid-register/storyboards/screens.jsx",
+      "source_location": "L30",
+      "weight": 1.0,
+      "source": "src_masjid_register_storyboards_screens_jsx_storyboards_screens",
+      "target": "storyboards_screens_role_list",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "src/masjid-register/storyboards/screens.jsx",
+      "source_location": "L48",
+      "weight": 1.0,
+      "source": "src_masjid_register_storyboards_screens_jsx_storyboards_screens",
+      "target": "storyboards_screens_textinput",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "src/masjid-register/storyboards/screens.jsx",
+      "source_location": "L141",
+      "weight": 1.0,
+      "source": "src_masjid_register_storyboards_screens_jsx_storyboards_screens",
+      "target": "storyboards_screens_wizard_sub",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "src/masjid-register/storyboards/screens.jsx",
+      "source_location": "L140",
+      "weight": 1.0,
+      "source": "src_masjid_register_storyboards_screens_jsx_storyboards_screens",
+      "target": "storyboards_screens_wizard_title",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "src/masjid-register/storyboards/screens.jsx",
+      "source_location": "L185",
+      "weight": 1.0,
+      "source": "src_masjid_register_storyboards_screens_jsx_storyboards_screens",
+      "target": "storyboards_screens_wizardbody",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "src/masjid-register/storyboards/screens.jsx",
+      "source_location": "L437",
+      "weight": 1.0,
+      "source": "src_masjid_register_storyboards_screens_jsx_storyboards_screens",
+      "target": "storyboards_screens_wizardscreen",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "src/masjid-register/storyboards/sheet-row.jsx",
+      "source_location": "L10",
+      "weight": 1.0,
+      "source": "storyboards_sheet_row",
+      "target": "storyboards_sheet_row_buildfollowrows",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "src/masjid-register/storyboards/sheet-row.jsx",
+      "source_location": "L7",
+      "weight": 1.0,
+      "source": "storyboards_sheet_row",
+      "target": "storyboards_sheet_row_buildmanagetiles",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "src/masjid-register/storyboards/sheet-row.jsx",
+      "source_location": "L22",
+      "weight": 1.0,
+      "source": "storyboards_sheet_row",
+      "target": "storyboards_sheet_row_frame",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "src/masjid-register/storyboards/sheet-row.jsx",
+      "source_location": "L5",
+      "weight": 1.0,
+      "source": "storyboards_sheet_row",
+      "target": "storyboards_sheet_row_noop",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "src/masjid-register/storyboards/sheet-row.jsx",
+      "source_location": "L15",
+      "weight": 1.0,
+      "source": "storyboards_sheet_row",
+      "target": "storyboards_sheet_row_sheetframes",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "src/masjid-register/storyboards/sheet-row.jsx",
+      "source_location": "L44",
+      "weight": 1.0,
+      "source": "storyboards_sheet_row",
+      "target": "storyboards_sheet_row_sheetrow",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "calls",
+      "context": "call",
+      "confidence": "EXTRACTED",
+      "source_file": "src/masjid-register/storyboards/sheet-row.jsx",
+      "source_location": "L25",
+      "weight": 1.0,
+      "source": "storyboards_sheet_row_frame",
+      "target": "storyboards_sheet_row_buildmanagetiles",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "calls",
+      "context": "call",
+      "confidence": "EXTRACTED",
+      "source_file": "src/masjid-register/storyboards/sheet-row.jsx",
+      "source_location": "L25",
+      "weight": 1.0,
+      "source": "storyboards_sheet_row_frame",
+      "target": "storyboards_sheet_row_buildfollowrows",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "calls",
+      "context": "call",
+      "confidence": "EXTRACTED",
+      "source_file": "src/masjid-register/storyboards/sheet-row.jsx",
+      "source_location": "L45",
+      "weight": 1.0,
+      "source": "storyboards_sheet_row_sheetrow",
+      "target": "storyboards_sheet_row_sheetframes",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "src/masjid-register/storyboards/wizard-row.jsx",
+      "source_location": "L5",
+      "weight": 1.0,
+      "source": "storyboards_wizard_row",
+      "target": "storyboards_wizard_row_buildclaimresults",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "src/masjid-register/storyboards/wizard-row.jsx",
+      "source_location": "L26",
+      "weight": 1.0,
+      "source": "storyboards_wizard_row",
+      "target": "storyboards_wizard_row_frame",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "src/masjid-register/storyboards/wizard-row.jsx",
+      "source_location": "L10",
+      "weight": 1.0,
+      "source": "storyboards_wizard_row",
+      "target": "storyboards_wizard_row_wizardframes",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "src/masjid-register/storyboards/wizard-row.jsx",
+      "source_location": "L45",
+      "weight": 1.0,
+      "source": "storyboards_wizard_row",
+      "target": "storyboards_wizard_row_wizardrow",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "calls",
+      "context": "call",
+      "confidence": "EXTRACTED",
+      "source_file": "src/masjid-register/storyboards/wizard-row.jsx",
+      "source_location": "L14",
+      "weight": 1.0,
+      "source": "storyboards_wizard_row_wizardframes",
+      "target": "storyboards_wizard_row_buildclaimresults",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "calls",
+      "context": "call",
+      "confidence": "EXTRACTED",
+      "source_file": "src/masjid-register/storyboards/wizard-row.jsx",
+      "source_location": "L46",
+      "weight": 1.0,
+      "source": "storyboards_wizard_row_wizardrow",
+      "target": "storyboards_wizard_row_wizardframes",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
       "source_file": "src/nudge-states/storyboards/states-row.jsx",
       "source_location": "L13",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "storyboards_states_row",
-      "target": "storyboards_states_row_guest_states",
-      "confidence_score": 1.0
+      "target": "storyboards_states_row_guest_states"
     },
     {
       "relation": "contains",
@@ -9141,9 +10004,9 @@
       "source_file": "src/nudge-states/storyboards/states-row.jsx",
       "source_location": "L96",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "storyboards_states_row",
-      "target": "storyboards_states_row_guestrow",
-      "confidence_score": 1.0
+      "target": "storyboards_states_row_guestrow"
     },
     {
       "relation": "contains",
@@ -9151,9 +10014,9 @@
       "source_file": "src/nudge-states/storyboards/states-row.jsx",
       "source_location": "L83",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "storyboards_states_row",
-      "target": "storyboards_states_row_makerow",
-      "confidence_score": 1.0
+      "target": "storyboards_states_row_makerow"
     },
     {
       "relation": "contains",
@@ -9161,9 +10024,9 @@
       "source_file": "src/nudge-states/storyboards/states-row.jsx",
       "source_location": "L23",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "storyboards_states_row",
-      "target": "storyboards_states_row_no_masjid_states",
-      "confidence_score": 1.0
+      "target": "storyboards_states_row_no_masjid_states"
     },
     {
       "relation": "contains",
@@ -9171,9 +10034,9 @@
       "source_file": "src/nudge-states/storyboards/states-row.jsx",
       "source_location": "L11",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "storyboards_states_row",
-      "target": "storyboards_states_row_no_track",
-      "confidence_score": 1.0
+      "target": "storyboards_states_row_no_track"
     },
     {
       "relation": "contains",
@@ -9181,9 +10044,9 @@
       "source_file": "src/nudge-states/storyboards/states-row.jsx",
       "source_location": "L97",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "storyboards_states_row",
-      "target": "storyboards_states_row_nomasjidrow",
-      "confidence_score": 1.0
+      "target": "storyboards_states_row_nomasjidrow"
     },
     {
       "relation": "contains",
@@ -9191,9 +10054,9 @@
       "source_file": "src/nudge-states/storyboards/states-row.jsx",
       "source_location": "L31",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "storyboards_states_row",
-      "target": "storyboards_states_row_notif_states",
-      "confidence_score": 1.0
+      "target": "storyboards_states_row_notif_states"
     },
     {
       "relation": "contains",
@@ -9201,9 +10064,9 @@
       "source_file": "src/nudge-states/storyboards/states-row.jsx",
       "source_location": "L98",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "storyboards_states_row",
-      "target": "storyboards_states_row_notifrow",
-      "confidence_score": 1.0
+      "target": "storyboards_states_row_notifrow"
     },
     {
       "relation": "contains",
@@ -9211,9 +10074,9 @@
       "source_file": "src/nudge-states/storyboards/states-row.jsx",
       "source_location": "L40",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "storyboards_states_row",
-      "target": "storyboards_states_row_nudge_states",
-      "confidence_score": 1.0
+      "target": "storyboards_states_row_nudge_states"
     },
     {
       "relation": "contains",
@@ -9221,9 +10084,9 @@
       "source_file": "src/nudge-states/storyboards/states-row.jsx",
       "source_location": "L43",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "storyboards_states_row",
-      "target": "storyboards_states_row_rendernudgeframe",
-      "confidence_score": 1.0
+      "target": "storyboards_states_row_rendernudgeframe"
     },
     {
       "relation": "contains",
@@ -9401,9 +10264,9 @@
       "source_file": "src/personal-details/storyboards/details-row.jsx",
       "source_location": "L7",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "storyboards_details_row",
-      "target": "storyboards_details_row_details_states",
-      "confidence_score": 1.0
+      "target": "storyboards_details_row_details_states"
     },
     {
       "relation": "contains",
@@ -9411,9 +10274,9 @@
       "source_file": "src/personal-details/storyboards/details-row.jsx",
       "source_location": "L14",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "storyboards_details_row",
-      "target": "storyboards_details_row_detailsrow",
-      "confidence_score": 1.0
+      "target": "storyboards_details_row_detailsrow"
     },
     {
       "relation": "contains",
@@ -9421,9 +10284,9 @@
       "source_file": "src/personal-details/storyboards/screens.jsx",
       "source_location": "L7",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "src_personal_details_storyboards_screens_jsx_storyboards_screens",
-      "target": "storyboards_screens_almostthereappbar",
-      "confidence_score": 1.0
+      "target": "storyboards_screens_almostthereappbar"
     },
     {
       "relation": "contains",
@@ -9431,9 +10294,9 @@
       "source_file": "src/personal-details/storyboards/screens.jsx",
       "source_location": "L79",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "src_personal_details_storyboards_screens_jsx_storyboards_screens",
-      "target": "storyboards_screens_confetti",
-      "confidence_score": 1.0
+      "target": "storyboards_screens_confetti"
     },
     {
       "relation": "contains",
@@ -9441,9 +10304,9 @@
       "source_file": "src/personal-details/storyboards/screens.jsx",
       "source_location": "L78",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "src_personal_details_storyboards_screens_jsx_storyboards_screens",
-      "target": "storyboards_screens_confetti_colors",
-      "confidence_score": 1.0
+      "target": "storyboards_screens_confetti_colors"
     },
     {
       "relation": "contains",
@@ -9451,9 +10314,9 @@
       "source_file": "src/personal-details/storyboards/screens.jsx",
       "source_location": "L17",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "src_personal_details_storyboards_screens_jsx_storyboards_screens",
-      "target": "storyboards_screens_gendercard",
-      "confidence_score": 1.0
+      "target": "storyboards_screens_gendercard"
     },
     {
       "relation": "contains",
@@ -9461,9 +10324,9 @@
       "source_file": "src/personal-details/storyboards/screens.jsx",
       "source_location": "L34",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "src_personal_details_storyboards_screens_jsx_storyboards_screens",
-      "target": "storyboards_screens_personaldetailsscreen",
-      "confidence_score": 1.0
+      "target": "storyboards_screens_personaldetailsscreen"
     },
     {
       "relation": "contains",
@@ -9471,8 +10334,119 @@
       "source_file": "src/personal-details/storyboards/screens.jsx",
       "source_location": "L103",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "src_personal_details_storyboards_screens_jsx_storyboards_screens",
-      "target": "storyboards_screens_successscreen",
+      "target": "storyboards_screens_successscreen"
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "src/qibla/storyboards/ar-row.jsx",
+      "source_location": "L6",
+      "weight": 1.0,
+      "source": "storyboards_ar_row",
+      "target": "storyboards_ar_row_ar_frames",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "src/qibla/storyboards/ar-row.jsx",
+      "source_location": "L12",
+      "weight": 1.0,
+      "source": "storyboards_ar_row",
+      "target": "storyboards_ar_row_arrow",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "src/qibla/storyboards/screens.jsx",
+      "source_location": "L24",
+      "weight": 1.0,
+      "source": "src_qibla_storyboards_screens_jsx_storyboards_screens",
+      "target": "storyboards_screens_bpt",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "src/qibla/storyboards/screens.jsx",
+      "source_location": "L34",
+      "weight": 1.0,
+      "source": "src_qibla_storyboards_screens_jsx_storyboards_screens",
+      "target": "storyboards_screens_compassdial",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "src/qibla/storyboards/screens.jsx",
+      "source_location": "L137",
+      "weight": 1.0,
+      "source": "src_qibla_storyboards_screens_jsx_storyboards_screens",
+      "target": "storyboards_screens_initialqiblascreen",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "src/qibla/storyboards/screens.jsx",
+      "source_location": "L118",
+      "weight": 1.0,
+      "source": "src_qibla_storyboards_screens_jsx_storyboards_screens",
+      "target": "storyboards_screens_previewchips",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "src/qibla/storyboards/screens.jsx",
+      "source_location": "L105",
+      "weight": 1.0,
+      "source": "src_qibla_storyboards_screens_jsx_storyboards_screens",
+      "target": "storyboards_screens_qiblatopbar",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "src/qibla/storyboards/screens.jsx",
+      "source_location": "L169",
+      "weight": 1.0,
+      "source": "src_qibla_storyboards_screens_jsx_storyboards_screens",
+      "target": "storyboards_screens_smartqiblascreen",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "calls",
+      "context": "call",
+      "confidence": "EXTRACTED",
+      "source_file": "src/qibla/storyboards/screens.jsx",
+      "source_location": "L46",
+      "weight": 1.0,
+      "source": "storyboards_screens_compassdial",
+      "target": "storyboards_screens_bpt",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "src/qibla/storyboards/setup-row.jsx",
+      "source_location": "L6",
+      "weight": 1.0,
+      "source": "storyboards_setup_row",
+      "target": "storyboards_setup_row_setup_frames",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "src/qibla/storyboards/setup-row.jsx",
+      "source_location": "L11",
+      "weight": 1.0,
+      "source": "storyboards_setup_row",
+      "target": "storyboards_setup_row_setuprow",
       "confidence_score": 1.0
     },
     {
@@ -12044,5 +13018,5 @@
     }
   ],
   "hyperedges": [],
-  "built_at_commit": "ebbc527c19d1f37d2577774b5fa4fccf0470e0af"
+  "built_at_commit": "29cc6c78f7dbac63c71a9fcb2658324d76021169"
 }

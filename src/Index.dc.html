@@ -3,6 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="noor-subtitle" content="Every screen of the Paigham app as an interactive, theme-aware prototype.">
 <script src="./support.js"></script>
 <script src="./_theme/chrome.js"></script>
 </head>
@@ -36,9 +37,8 @@
   <div style="display:flex;align-items:flex-end;justify-content:space-between;gap:24px;flex-wrap:wrap;margin-bottom:14px">
     <div>
       <div style="display:flex;align-items:center;gap:12px;margin-bottom:14px">
-        <div style="width:44px;height:44px;border-radius:14px;background:var(--color-action-primary);display:flex;align-items:center;justify-content:center;box-shadow:var(--shadow-button)">
-          <span class="mi fill" style="font-size:24px;color:var(--color-action-primary-inverse);font-variation-settings:'FILL' 1" data-i="mosque"></span>
-        </div>
+        <img src="../images/logo.webp" alt="Paigham logo" style="width:44px;height:44px;object-fit:contain;display:block">
+
         <div style="font-family:var(--font-body);font-size:12px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--canvas-label)">Paigham · Design POC</div>
       </div>
       <div style="font-family:var(--font-title);font-size:44px;letter-spacing:-0.5px;color:var(--color-info-primary);line-height:1.1">Noor</div>
@@ -102,39 +102,10 @@
 class Component extends DCLogic {
   state = { filter: 'all' };
 
-  data = [
-    { id: 'foundations', num: '00', title: 'Foundation', items: [
-      { name: 'Primitives', file: 'foundation/Primitives.dc.html', icon: 'widgets', meta: 'Page 01 · surfaces, states, motion' },
-      { name: 'Tokens', file: 'foundation/Tokens.dc.html', icon: 'palette', meta: 'Page 02 · color, type, spacing' },
-      { name: 'Theme', file: 'foundation/Theme.dc.html', icon: 'dark_mode', meta: 'Page 03 · light & dark modes' },
-    ]},
-    { id: 'components', num: '01', title: 'Components', items: [
-      { name: 'Atoms', file: 'components/atoms/Atoms.dc.html', icon: 'widgets', meta: 'Page 04 · button, icon, input, toggles, chip, surface' },
-      { name: 'Molecules', file: 'components/molecules/Molecules.dc.html', icon: 'bubble_chart', meta: 'Page 05 · fields, search, list, OTP, tabs, snackbar' },
-      { name: 'Organisms', file: 'components/organisms/Organisms.dc.html', icon: 'dashboard', meta: 'Page 06 · dialog, sheet, nudge, bars, picker' },
-    ]},
-    { id: 'onboarding', num: '02', title: 'Onboarding', items: [
-      { name: 'Intro', file: 'onboarding/Onboarding.dc.html#intro', icon: 'waving_hand', meta: 'Board row · 3 slides' },
-      { name: 'Login', file: 'onboarding/Onboarding.dc.html#login', icon: 'login', meta: 'Board row · phone → OTP · 7 states' },
-    ]},
-    { id: 'core', num: '03', title: 'Core app', items: [
-      { name: 'Home Screen', file: 'home/Home Screen.dc.html', icon: 'splitscreen', meta: 'Section board · 5 tabs · 7 variations' },
-      { name: 'Quran', file: 'Quran.dc.html#home', icon: 'auto_stories', meta: 'Section board · Home → index → reader · 6 states' },
-    ]},
-    { id: 'masjid', num: '04', title: 'Masjid', items: [
-      { name: 'Masjid Onboarding', file: 'Masjid Onboarding.dc.html', icon: 'add_home_work', meta: 'Flow · wizard + switcher sheet' },
-      { name: 'Explore Masjids', file: 'masjid-explore/Explore Masjids.dc.html#map', icon: 'travel_explore', meta: 'Section board · map · list · pincode · QR · 10 states' },
-      { name: 'Following Masjids', file: 'Following Masjids.dc.html', icon: 'favorite', meta: 'Screen · interactive' },
-    ]},
-    { id: 'content', num: '05', title: 'Content & tools', items: [
-      { name: 'Find Sehri', file: 'sehri/Sehri.dc.html#map', icon: 'restaurant', meta: 'Section board · Home → permission → map · list · 5 states' },
-      { name: 'Dua & Dikhr', file: 'dua-dikhr/Dua & Dikhr.dc.html#categories', icon: 'volunteer_activism', meta: 'Section board · Hisnul Muslim · 5 states' },
-      { name: 'Asma ul Husna', file: 'asma-ul-husna/Asma ul Husna.dc.html', icon: 'auto_awesome', meta: 'Section board · grid + detail' },
-      { name: 'Qibla', file: 'Qibla Screen.dc.html', icon: 'explore', meta: 'Screen · interactive' },
-      { name: 'Hijri', file: 'hijri/Hijri.dc.html', icon: 'calendar_month', meta: 'Section board · month grid · 3 states' },
-      { name: 'Zakaat', file: 'zakaat/Zakaat.dc.html', icon: 'savings', meta: 'Section board · 6-step calculator' },
-    ]},
-  ];
+  // Single source of truth lives in _theme/chrome.js (window.NoorSiteMap),
+  // shared with the left nav drawer. chrome.js loads in <head> before this
+  // component mounts, so the reference is always populated.
+  data = window.NoorSiteMap || [];
 
   chipDefs = [
     { id: 'all', label: 'All pages' },

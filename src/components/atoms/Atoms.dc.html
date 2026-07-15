@@ -3,6 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="noor-subtitle" content="The atomic elements of the Noor interface — basic, self-contained controls that cannot be broken down further.">
 <script src="../../support.js"></script>
 <script src="../../_theme/chrome.js"></script>
 </head>
@@ -35,27 +36,6 @@
 </helmet>
 
 <div class="cp-wrap">
-
-  <!-- Header -->
-  <div style="display:flex;align-items:flex-end;justify-content:space-between;gap:24px;flex-wrap:wrap;margin-bottom:32px">
-    <div>
-      <div style="font-family:var(--font-body);font-size:12px;font-weight:800;letter-spacing:.1em;text-transform:uppercase;color:var(--color-neutral-brand);margin-bottom:8px">Components · Page 04</div>
-      <div style="font-family:var(--font-title);font-size:40px;letter-spacing:-0.5px;color:var(--color-info-primary);line-height:1.1">Atoms</div>
-      <div style="font-family:var(--font-body);font-size:15px;color:var(--color-info-secondary);margin-top:6px;max-width:640px">
-        The atomic elements of the Noor interface — basic, self-contained controls that cannot be broken down further.
-      </div>
-    </div>
-    <div style="display:flex;gap:10px">
-      <a href="../../foundation/Theme.dc.html" style="display:inline-flex;align-items:center;gap:8px;text-decoration:none;background:var(--color-surface-primary);border:1px solid var(--color-neutral-border);border-radius:999px;padding:10px 16px;box-shadow:var(--shadow-card)">
-        <span class="mi" style="font-size:18px;color:var(--color-action-primary)" data-i="dark_mode"></span>
-        <span style="font-family:var(--font-body);font-size:13px;font-weight:700;color:var(--color-info-primary)">← Theme</span>
-      </a>
-      <a href="../../Index.dc.html" style="display:inline-flex;align-items:center;gap:8px;text-decoration:none;background:var(--color-surface-primary);border:1px solid var(--color-neutral-border);border-radius:999px;padding:10px 16px;box-shadow:var(--shadow-card)">
-        <span class="mi" style="font-size:18px;color:var(--color-action-primary)" data-i="home"></span>
-        <span style="font-family:var(--font-body);font-size:13px;font-weight:700;color:var(--color-info-primary)">Index</span>
-      </a>
-    </div>
-  </div>
 
   <!-- 1. Buttons -->
   <div class="cp-card">
@@ -162,7 +142,7 @@
   <div class="cp-card">
     <div class="cp-head">
       <div class="cp-h">Input</div>
-      <div class="cp-sub">The bare text-field control in its four states. Labels, helper text, phone prefix and OTP are molecules built on this atom.</div>
+      <div class="cp-sub">The bare text-field control in its four states, plus a <code>.code</code> variant for fixed-length numeric entry (pincode · PIN). Labels, helper text and the phone prefix are molecules built on this atom; the segmented OTP field is a sibling molecule sharing its height and tokens.</div>
     </div>
     <div class="cp-grid2">
       <div>
@@ -180,6 +160,13 @@
       <div>
         <div class="lbl" style="margin-bottom:6px">Disabled</div>
         <div class="input disabled"><div class="inner"><span class="val ph">MSJ-04421</span></div></div>
+      </div>
+    </div>
+    <div style="margin-top:18px">
+      <div class="lbl" style="margin-bottom:6px">Code — fixed-length numeric (pincode · PIN · passcode) · <code>.code</code></div>
+      <div class="cp-grid2">
+        <div class="input code"><div class="inner"><span class="val ph">6-digit pincode</span></div></div>
+        <div class="input code focused"><div class="inner"><span class="val">400016</span></div></div>
       </div>
     </div>
   </div>

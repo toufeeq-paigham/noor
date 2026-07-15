@@ -3,6 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="noor-subtitle" content="Molecular components — combinations of atoms bonded together to form simple, functional UI units.">
 <script src="../../support.js"></script>
 <script src="../../_theme/chrome.js"></script>
 </head>
@@ -30,27 +31,6 @@
 </helmet>
 
 <div class="cp-wrap">
-
-  <!-- Header -->
-  <div style="display:flex;align-items:flex-end;justify-content:space-between;gap:24px;flex-wrap:wrap;margin-bottom:32px">
-    <div>
-      <div style="font-family:var(--font-body);font-size:12px;font-weight:800;letter-spacing:.1em;text-transform:uppercase;color:var(--color-neutral-brand);margin-bottom:8px">Components · Page 05</div>
-      <div style="font-family:var(--font-title);font-size:40px;letter-spacing:-0.5px;color:var(--color-info-primary);line-height:1.1">Molecules</div>
-      <div style="font-family:var(--font-body);font-size:15px;color:var(--color-info-secondary);margin-top:6px;max-width:640px">
-        Molecular components — combinations of atoms bonded together to form simple, functional UI units.
-      </div>
-    </div>
-    <div style="display:flex;gap:10px">
-      <a href="../atoms/Atoms.dc.html" style="display:inline-flex;align-items:center;gap:8px;text-decoration:none;background:var(--color-surface-primary);border:1px solid var(--color-neutral-border);border-radius:999px;padding:10px 16px;box-shadow:var(--shadow-card)">
-        <span class="mi" style="font-size:18px;color:var(--color-action-primary)" data-i="widgets"></span>
-        <span style="font-family:var(--font-body);font-size:13px;font-weight:700;color:var(--color-info-primary)">← Atoms</span>
-      </a>
-      <a href="../../Index.dc.html" style="display:inline-flex;align-items:center;gap:8px;text-decoration:none;background:var(--color-surface-primary);border:1px solid var(--color-neutral-border);border-radius:999px;padding:10px 16px;box-shadow:var(--shadow-card)">
-        <span class="mi" style="font-size:18px;color:var(--color-action-primary)" data-i="home"></span>
-        <span style="font-family:var(--font-body);font-size:13px;font-weight:700;color:var(--color-info-primary)">Index</span>
-      </a>
-    </div>
-  </div>
 
   <!-- 1. SearchBar -->
   <div class="cp-card">
@@ -282,6 +262,26 @@
           <sc-for list="{{ tabs2 }}" as="t" hint-placeholder-count="2">
             <div class="tab {{ t.cls }}" onClick="{{ t.onSelect }}">{{ t.label }}</div>
           </sc-for>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 8. NavigationBar -->
+  <div class="cp-card">
+    <div class="cp-head">
+      <div class="cp-h">NavigationBar</div>
+      <div class="cp-sub">Segmented bottom tab bar — a row of nav-item atoms with an active glow, the app-level sibling of the TabBar segmented control.</div>
+    </div>
+    <div class="nb-scaffold" style="height:80px">
+      <div class="nb-bar" style="position:relative">
+        <div class="nb-glow" style="left:40%"></div>
+        <div class="nb-nav">
+          <div class="nb-item"><span class="mi" data-i="home"></span><span>Home</span></div>
+          <div class="nb-item"><span class="mi" data-i="group"></span><span>Qaum</span></div>
+          <div class="nb-item active"><span class="mi" data-i="menu_book"></span><span>Quran</span></div>
+          <div class="nb-item"><span class="mi" data-i="mosque"></span><span>Salaah</span></div>
+          <div class="nb-item"><span class="mi" data-i="person"></span><span>Profile</span></div>
         </div>
       </div>
     </div>

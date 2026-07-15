@@ -111,9 +111,11 @@
                       go-hijri="{{ goHijri }}"
                       go-asma="{{ goAsma }}"
                       go-zakaat="{{ goZakaat }}"
+                      go-qibla="{{ goQibla }}"
                       prayer="{{ homeActivePrayer }}"
                       user-name="{{ homeUserName }}"
                       masjid-name="{{ homeMasjidLabel }}"
+                      on-masjid-tap="{{ goMyMasjids }}"
                       login-nudge="{{ homeLoginNudge }}"
                       on-close-login-nudge="{{ closeLoginNudge }}"
                       on-sign-in-tap="{{ triggerSignIn }}"
@@ -167,7 +169,7 @@
                       masjid-letter="{{ salaahMasjidLetter }}"
                       masjid-name="{{ salaahMasjidName }}"
                       masjid-sub="{{ salaahMasjidSub }}"
-                      on-masjid-sheet-toggle="{{ toggleSalaahMasjidSheet }}"
+                      on-masjid-sheet-toggle="{{ goMyMasjids }}"
                       show-masjid-sheet="{{ salaahShowMasjidSheet }}"
                       on-select-masjid="{{ selectSalaahMasjid }}"
                       prayers-alert="{{ salaahPrayersAlert }}"
@@ -196,6 +198,8 @@
           <sc-if value="{{ isProfileTab }}">
             <x-import component="ProfileScreen" from="./storyboards/screens.jsx"
                       user-name="Toufeeq"
+                      masjid-name="{{ homeMasjidLabel }}"
+                      on-my-masjids="{{ goMyMasjids }}"
                       logout-open="{{ profileLogoutOpen }}"
                       on-toggle-logout-sheet="{{ toggleProfileLogoutSheet }}"
                       on-confirm-logout="{{ resetToDefault }}"
@@ -643,6 +647,10 @@ class Component extends DCLogic {
     window.location.href = '../zakaat/Zakaat.dc.html#calculate';
   };
 
+  goQibla = () => {
+    window.location.href = '../qibla/Qibla.dc.html#permissions';
+  };
+
   goDua = () => {
     window.location.href = '../dua-dikhr/Dua & Dikhr.dc.html#categories';
   };
@@ -650,6 +658,13 @@ class Component extends DCLogic {
   goMasjids = () => {
     // Guest carries into the explore board (follow attempts prompt sign-in there).
     window.location.href = '../masjid-explore/Explore Masjids.dc.html' + (this.state.homeGuest ? '#map-guest' : '#map');
+  };
+
+  // Tap the masjid name on Home / Salaah / Profile → open the My Masjids sheet on the
+  // Masjid Onboarding board, deep-linked to the tab you came from.
+  goMyMasjids = () => {
+    const seg = this.state.activeTab === 3 ? 'salaah' : this.state.activeTab === 4 ? 'profile' : 'home';
+    window.location.href = '../masjid-register/Masjid Onboarding.dc.html#my-masjids-' + seg;
   };
 
   goSehri = () => {
@@ -730,7 +745,9 @@ class Component extends DCLogic {
       goDua: this.goDua,
       goSehri: this.goSehri,
       goMasjids: this.goMasjids,
+      goMyMasjids: this.goMyMasjids,
       goZakaat: this.goZakaat,
+      goQibla: this.goQibla,
 
       // Qaum Screen props
       qaumLikes: s.qaumLikes,

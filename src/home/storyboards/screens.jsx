@@ -24,9 +24,11 @@ function HomeScreen({
   goQuran,
   goDua,
   goMasjids,
+  onMasjidTap,              // tap the masjid name in the header → open My Masjids (masjid-register board)
   goHijri,
   goAsma,
   goZakaat,
+  goQibla,
   prayer = 'Maghrib',
   loginNudge = false,
   onCloseLoginNudge,
@@ -114,7 +116,10 @@ function HomeScreen({
         {/* Title & Subtitle */}
         <div style={{ flex: 1, minWidth: 0 }}>
           <div style={{ fontFamily: '"Nunito", sans-serif', fontSize: 17, fontWeight: 700, color: theme.appBarTitle }}>Salaam, {userName}</div>
-          <div style={{ fontFamily: '"Nunito", sans-serif', fontSize: 12, color: theme.appBarSubtitle, marginTop: 1 }}>{masjidName}</div>
+          <div onClick={onMasjidTap} style={{ display: 'inline-flex', alignItems: 'center', gap: 3, fontFamily: '"Nunito", sans-serif', fontSize: 12, color: theme.appBarSubtitle, marginTop: 1, cursor: onMasjidTap ? 'pointer' : 'default' }}>
+            {masjidName}
+            {onMasjidTap && <span className="mi" style={{ fontSize: 15, color: theme.appBarSubtitle }} data-i="unfold_more"></span>}
+          </div>
         </div>
         {/* Bell icon button */}
         <div onClick={onBellTap} style={{ position: 'relative', width: 40, height: 40, borderRadius: '50%', background: theme.bellBtnBg, border: `1.5px solid ${theme.bellBtnBorder}`, display: 'flex', alignItems: 'center', justifyContent: 'center', cursor: 'pointer', flexShrink: 0 }}>
@@ -321,7 +326,7 @@ function HomeScreen({
               {[
                 { img: '../../images/zakaat.webp', label: 'Zakaat', onClick: goZakaat },
                 { img: '../../images/hijri.webp', label: 'Hijri', onClick: goHijri },
-                { img: '../../images/qibla.png', label: 'Qibla' },
+                { img: '../../images/qibla.png', label: 'Qibla', onClick: goQibla },
                 { img: '../../images/99Names.webp', label: '99 Names', onClick: goAsma }
               ].map((t, idx) => (
                 <div key={idx} onClick={t.onClick} style={{ background: 'transparent', borderRadius: 16, padding: '8px 4px', display: 'flex', flexDirection: 'column', alignItems: 'center', gap: 8, cursor: 'pointer' }}>
@@ -1148,6 +1153,8 @@ function ProfileScreen({
   userName = "Toufeeq",
   phone = "+91 87928 13003",
   version = "1.0.0",
+  masjidName = "Masjid E Bilal",
+  onMyMasjids,             // tap the My Masjids row → open My Masjids sheet (masjid-register board)
   onRegister,
   onInvite,
   onApprove,
@@ -1169,7 +1176,9 @@ function ProfileScreen({
   );
 
   const cards = [
-    [{ icon: 'add', label: 'Register a Masjid', onClick: onRegister }],
+    onMyMasjids
+      ? [{ icon: 'mosque', label: 'My Masjids', value: masjidName, onClick: onMyMasjids }, { icon: 'add', label: 'Register a Masjid', onClick: onRegister }]
+      : [{ icon: 'add', label: 'Register a Masjid', onClick: onRegister }],
     [
       { icon: 'group', label: 'Invite your Friends', onClick: onInvite },
       { icon: 'check_circle', label: 'Approve Friends', onClick: onApprove }
