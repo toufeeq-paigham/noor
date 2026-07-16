@@ -62,7 +62,8 @@
     { id: 'foundations', num: '00', title: 'Foundation', items: [
       { name: 'Primitives', file: 'foundation/Primitives.dc.html', icon: 'widgets', meta: 'Page 01 · surfaces, states, motion' },
       { name: 'Tokens', file: 'foundation/Tokens.dc.html', icon: 'palette', meta: 'Page 02 · color, type, spacing' },
-      { name: 'Theme', file: 'foundation/Theme.dc.html', icon: 'dark_mode', meta: 'Page 03 · light & dark modes' }
+      { name: 'Theme', file: 'foundation/Theme.dc.html', icon: 'dark_mode', meta: 'Page 03 · light & dark modes' },
+      { name: 'Font Lab', file: 'foundation/FontLab.dc.html', icon: 'format_quote', meta: 'Lab · title/body pairing candidates' }
     ]},
     { id: 'components', num: '01', title: 'Components', items: [
       { name: 'Atoms', file: 'components/atoms/Atoms.dc.html', icon: 'widgets', meta: 'Page 04 · button, icon, input, toggles, chip, surface' },
@@ -214,7 +215,7 @@
       'display:flex;align-items:center;justify-content:space-between;padding:0 20px;box-sizing:border-box;',
       'background:color-mix(in oklab,var(--color-surface-primary,#fff) 72%,transparent);',
       'backdrop-filter:blur(18px) saturate(160%);-webkit-backdrop-filter:blur(18px) saturate(160%);',
-      'border-bottom:1px solid var(--color-neutral-border,#E4E4E7);font-family:var(--font-body,Nunito,sans-serif)}',
+      'border-bottom:1px solid var(--color-neutral-border,#E4E4E7);font-family:var(--font-body,"Plus Jakarta Sans",sans-serif)}',
       /* reserve space so page content clears the fixed bar */
       'body{padding-top:64px !important}',
       '#noor-chrome .noor-chrome-left{display:flex;align-items:center;gap:6px;min-width:0;overflow:hidden}',
@@ -245,7 +246,7 @@
       'border:1px solid color-mix(in oklab,var(--color-neutral-border,#E4E4E7) 55%,transparent);border-radius:24px;',
       'box-shadow:0 28px 64px -16px rgba(0,0,0,.34),0 10px 28px -12px rgba(0,0,0,.20);',
       'transform:translateX(calc(-100% - 22px));opacity:0;',
-      'transition:transform .36s cubic-bezier(.2,.9,.25,1),opacity .28s ease;display:flex;flex-direction:column;font-family:var(--font-body,Nunito,sans-serif)}',
+      'transition:transform .36s cubic-bezier(.2,.9,.25,1),opacity .28s ease;display:flex;flex-direction:column;font-family:var(--font-body,"Plus Jakarta Sans",sans-serif)}',
       'html.noor-nav-open #noor-nav{transform:translateX(0);opacity:1}',
       '#noor-nav .nn-list{flex:1;overflow-y:auto;padding:6px 10px 22px;overscroll-behavior:contain}',
       '#noor-nav .nn-sec{font-size:11px;font-weight:800;letter-spacing:.08em;text-transform:uppercase;color:var(--color-info-secondary,#71717B);padding:16px 12px 6px}',

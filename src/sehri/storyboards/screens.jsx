@@ -107,13 +107,13 @@ function MapCanvas({ points, selectedIdx, onSelectPoint }) {
 function StatusTab({ tag }) {
   const free = tag.kind === 'free';
   return (
-    <div style={{ position: 'absolute', top: 0, right: 0, background: free ? '#00C950' : '#C9AD7B', color: free ? '#fff' : '#1A2030', fontFamily: '"Nunito",sans-serif', fontSize: 13, fontWeight: 800, padding: '6px 14px', borderRadius: '0 18px 0 14px' }}>{tag.label}</div>
+    <div style={{ position: 'absolute', top: 0, right: 0, background: free ? '#00C950' : '#C9AD7B', color: free ? '#fff' : '#1A2030', fontFamily: 'var(--font-body)', fontSize: 13, fontWeight: 800, padding: '6px 14px', borderRadius: '0 18px 0 14px' }}>{tag.label}</div>
   );
 }
 
 // A single detail row: leading icon + text (areas / eligibility / timing).
 function DetailRow({ icon, children, clamp }) {
-  const textStyle = { fontFamily: '"Nunito",sans-serif', fontSize: 14, fontWeight: 600, color: 'var(--color-info-primary)', lineHeight: 1.35, minWidth: 0 };
+  const textStyle = { fontFamily: 'var(--font-body)', fontSize: 14, fontWeight: 600, color: 'var(--color-info-primary)', lineHeight: 1.35, minWidth: 0 };
   if (clamp) {
     Object.assign(textStyle, { display: '-webkit-box', WebkitLineClamp: 2, WebkitBoxOrient: 'vertical', overflow: 'hidden' });
   }
@@ -134,7 +134,7 @@ function SehriCard({ p, onCall, onNavigate }) {
       {/* Heading */}
       <div style={{ paddingRight: 64 }}>
         <div style={{ fontFamily: 'var(--font-title)', fontSize: 22, color: 'var(--color-info-primary)', letterSpacing: '-0.3px' }}>{p.name}</div>
-        <div style={{ fontFamily: '"Nunito",sans-serif', fontSize: 13, color: 'var(--color-info-secondary)', marginTop: 3 }}>{p.org}</div>
+        <div style={{ fontFamily: 'var(--font-body)', fontSize: 13, color: 'var(--color-info-secondary)', marginTop: 3 }}>{p.org}</div>
       </div>
 
       <div style={{ height: 1, background: 'var(--color-neutral-border)', margin: '13px 0' }} />
@@ -160,7 +160,7 @@ function SehriCard({ p, onCall, onNavigate }) {
 function LocationPermissionSheet({ onAllowOnce, onAllowWhileUsing, onDeny }) {
   const btn = {
     display: 'flex', alignItems: 'center', justifyContent: 'center', width: '100%', height: 52,
-    borderRadius: 14, fontFamily: '"Nunito",sans-serif', fontSize: 16, fontWeight: 700,
+    borderRadius: 14, fontFamily: 'var(--font-body)', fontSize: 16, fontWeight: 700,
     background: 'rgba(120,120,128,0.24)', color: 'var(--color-info-primary)', cursor: 'pointer',
   };
   return (
@@ -174,14 +174,14 @@ function LocationPermissionSheet({ onAllowOnce, onAllowWhileUsing, onDeny }) {
           </div>
         </div>
 
-        <div style={{ fontFamily: '"Nunito",sans-serif', fontSize: 20, fontWeight: 800, color: 'var(--color-info-primary)', lineHeight: 1.25 }}>Allow &ldquo;Paigham&rdquo; to use your location?</div>
-        <div style={{ fontFamily: '"Nunito",sans-serif', fontSize: 14, color: 'var(--color-info-secondary)', marginTop: 8, lineHeight: 1.45 }}>Location access is needed to find nearby Sehri distribution points and show the Qibla direction accurately.</div>
+        <div style={{ fontFamily: 'var(--font-body)', fontSize: 20, fontWeight: 800, color: 'var(--color-info-primary)', lineHeight: 1.25 }}>Allow &ldquo;Paigham&rdquo; to use your location?</div>
+        <div style={{ fontFamily: 'var(--font-body)', fontSize: 14, color: 'var(--color-info-secondary)', marginTop: 8, lineHeight: 1.45 }}>Location access is needed to find nearby Sehri distribution points and show the Qibla direction accurately.</div>
 
         {/* Mini map preview */}
         <div style={{ position: 'relative', height: 128, borderRadius: 14, overflow: 'hidden', margin: '16px 0', background: '#26405c', backgroundImage: 'repeating-linear-gradient(48deg, rgba(255,255,255,0.06) 0 1px, transparent 1px 22px), repeating-linear-gradient(-40deg, rgba(255,255,255,0.05) 0 1px, transparent 1px 26px)' }}>
           <div style={{ position: 'absolute', top: 8, left: 8, display: 'inline-flex', alignItems: 'center', gap: 5, background: 'rgba(0,0,0,0.5)', borderRadius: 360, padding: '4px 10px' }}>
             <span className="mi fill" style={{ fontSize: 13, color: '#4AA3FF', fontVariationSettings: "'FILL' 1" }} data-i="near_me"></span>
-            <span style={{ fontFamily: '"Nunito",sans-serif', fontSize: 12, fontWeight: 800, color: '#4AA3FF' }}>Precise: On</span>
+            <span style={{ fontFamily: 'var(--font-body)', fontSize: 12, fontWeight: 800, color: '#4AA3FF' }}>Precise: On</span>
           </div>
           <div style={{ position: 'absolute', left: '50%', top: '54%', transform: 'translate(-50%,-50%)', width: 16, height: 16, borderRadius: '50%', background: '#4A8AFF', border: '3px solid #fff', boxShadow: '0 0 0 6px rgba(74,138,255,0.22)' }} />
         </div>

@@ -50,11 +50,11 @@ function Keypad({ onPress }) {
             }}
           >
             <span style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', lineHeight: 1 }}>
-              <span style={{ fontFamily: '"Nunito", sans-serif', fontSize: 22, fontWeight: 600, color: 'var(--color-info-primary)' }}>
+              <span style={{ fontFamily: 'var(--font-body)', fontSize: 22, fontWeight: 600, color: 'var(--color-info-primary)' }}>
                 {k.label}
               </span>
               <span style={{
-                fontFamily: '"Nunito", sans-serif', fontSize: 9, fontWeight: 700,
+                fontFamily: 'var(--font-body)', fontSize: 9, fontWeight: 700,
                 letterSpacing: '.12em', color: 'var(--color-info-secondary)', height: 10, marginTop: 2
               }}>
                 {k.sub}
@@ -116,10 +116,10 @@ function IntroScreen({
       )}
 
       <div style={{ position: 'absolute', left: 28, right: 28, top: '50%', transform: 'translateY(-58%)', textAlign: 'center' }}>
-        <div style={{ fontFamily: '"DM Serif Display", Georgia, serif', fontSize: 40, lineHeight: 1.12, color: '#FFFFFF', letterSpacing: '-0.5px', marginBottom: 14, textWrap: 'balance' }}>
+        <div style={{ fontFamily: 'var(--font-title)', fontSize: 40, lineHeight: 1.12, color: '#FFFFFF', letterSpacing: '-0.5px', marginBottom: 14, textWrap: 'balance' }}>
           {slide.title}
         </div>
-        <div style={{ fontFamily: '"Nunito", sans-serif', fontSize: 16, lineHeight: 1.6, color: 'rgba(255,255,255,0.88)', fontWeight: 400, textWrap: 'balance' }}>
+        <div style={{ fontFamily: 'var(--font-body)', fontSize: 16, lineHeight: 1.6, color: 'rgba(255,255,255,0.88)', fontWeight: 400, textWrap: 'balance' }}>
           {slide.sub}
         </div>
       </div>
@@ -135,7 +135,7 @@ function IntroScreen({
         <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', gap: 2, marginTop: 12 }}>
           {dots}
         </div>
-        <div style={{ textAlign: 'center', marginTop: 10, fontFamily: '"Nunito", sans-serif', fontSize: 12, lineHeight: 1.6, color: 'rgba(255,255,255,0.8)' }}>
+        <div style={{ textAlign: 'center', marginTop: 10, fontFamily: 'var(--font-body)', fontSize: 12, lineHeight: 1.6, color: 'rgba(255,255,255,0.8)' }}>
           By continuing, you agree to our <span style={{ color: 'var(--color-action-primary)', textDecoration: 'underline', textUnderlineOffset: 2 }}>Terms and Conditions</span> and <span style={{ color: 'var(--color-action-primary)', textDecoration: 'underline', textUnderlineOffset: 2 }}>Privacy Policy</span>
         </div>
       </div>
@@ -163,10 +163,10 @@ function PhoneScreen({
 
       <div style={{ display: 'flex', flexDirection: 'column', flex: 1, minHeight: 0 }}>
         <div style={{ marginTop: 38 }}>
-          <div style={{ fontFamily: '"DM Serif Display", Georgia, serif', fontSize: 38, lineHeight: 1.15, color: 'var(--color-info-primary)', letterSpacing: '-0.5px', marginBottom: 12 }}>
+          <div style={{ fontFamily: 'var(--font-title)', fontSize: 38, lineHeight: 1.15, color: 'var(--color-info-primary)', letterSpacing: '-0.5px', marginBottom: 12 }}>
             Let's get started
           </div>
-          <div style={{ fontFamily: '"Nunito", sans-serif', fontSize: 16, lineHeight: 1.55, color: 'var(--color-info-secondary)', fontWeight: 400 }}>
+          <div style={{ fontFamily: 'var(--font-body)', fontSize: 16, lineHeight: 1.55, color: 'var(--color-info-secondary)', fontWeight: 400 }}>
             Enter your phone number to receive a verification code.
           </div>
         </div>
@@ -190,7 +190,7 @@ function PhoneScreen({
           
           <div style={{ height: 20, marginTop: 6 }}>
             {phoneError && (
-              <span style={{ fontFamily: '"Nunito", sans-serif', fontSize: 13, color: 'var(--color-input-text-error)', fontWeight: 600 }}>
+              <span style={{ fontFamily: 'var(--font-body)', fontSize: 13, color: 'var(--color-input-text-error)', fontWeight: 600 }}>
                 Please enter a valid 10-digit number
               </span>
             )}
@@ -290,10 +290,10 @@ function OtpScreen({
 
       <div style={{ display: 'flex', flexDirection: 'column', flex: 1, minHeight: 0 }}>
         <div style={{ marginTop: 32 }}>
-          <div style={{ fontFamily: '"DM Serif Display", Georgia, serif', fontSize: 38, lineHeight: 1.15, color: 'var(--color-info-primary)', letterSpacing: '-0.5px', marginBottom: 12 }}>
+          <div style={{ fontFamily: 'var(--font-title)', fontSize: 38, lineHeight: 1.15, color: 'var(--color-info-primary)', letterSpacing: '-0.5px', marginBottom: 12 }}>
             Enter OTP
           </div>
-          <div style={{ fontFamily: '"Nunito", sans-serif', fontSize: 16, lineHeight: 1.55, color: 'var(--color-info-secondary)', fontWeight: 400 }}>
+          <div style={{ fontFamily: 'var(--font-body)', fontSize: 16, lineHeight: 1.55, color: 'var(--color-info-secondary)', fontWeight: 400 }}>
             Please enter the OTP sent to your phone number<br />
             <span style={{ fontWeight: 700, color: 'var(--color-info-primary)' }}>+91 {phoneFmt}</span>{' '}
             <span onClick={onEditPhone} style={{ fontWeight: 700, color: 'var(--color-action-primary)', cursor: 'pointer', fontSize: 14 }}>· Edit</span>
@@ -316,25 +316,25 @@ function OtpScreen({
 
         <div style={{ height: 22, marginTop: 16, display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 8 }}>
           {otpError && (
-            <span style={{ fontFamily: '"Nunito", sans-serif', fontSize: 13, fontWeight: 700, color: 'var(--color-status-error)' }}>
+            <span style={{ fontFamily: 'var(--font-body)', fontSize: 13, fontWeight: 700, color: 'var(--color-status-error)' }}>
               Incorrect OTP — use the code from the SMS above
             </span>
           )}
           {verifying && (
             <span style={{ display: 'inline-flex', alignItems: 'center', gap: 8 }}>
               <span style={{ display: 'inline-block', width: 14, height: 14, border: '2px solid var(--color-action-primary)', borderTopColor: 'transparent', borderRadius: '50%', animation: 'spin .7s linear infinite' }} />
-              <span style={{ fontFamily: '"Nunito", sans-serif', fontSize: 13, fontWeight: 700, color: 'var(--color-info-secondary)' }}>Verifying…</span>
+              <span style={{ fontFamily: 'var(--font-body)', fontSize: 13, fontWeight: 700, color: 'var(--color-info-secondary)' }}>Verifying…</span>
             </span>
           )}
           {success && (
             <span style={{ display: 'inline-flex', alignItems: 'center', gap: 6 }}>
               <span className="mi fill" style={{ fontSize: 18, color: 'var(--color-action-primary)', fontVariationSettings: "'FILL' 1" }} data-i="check_circle"></span>
-              <span style={{ fontFamily: '"Nunito", sans-serif', fontSize: 13, fontWeight: 700, color: 'var(--color-action-primary)' }}>Verified — taking you home</span>
+              <span style={{ fontFamily: 'var(--font-body)', fontSize: 13, fontWeight: 700, color: 'var(--color-action-primary)' }}>Verified — taking you home</span>
             </span>
           )}
         </div>
 
-        <div style={{ marginTop: 8, textAlign: 'center', fontFamily: '"Nunito", sans-serif', fontSize: 15, color: 'var(--color-info-secondary)' }}>
+        <div style={{ marginTop: 8, textAlign: 'center', fontFamily: 'var(--font-body)', fontSize: 15, color: 'var(--color-info-secondary)' }}>
           {resendIn > 0 && !success && (
             <span>Resend OTP in <span style={{ fontWeight: 700, color: 'var(--color-info-primary)' }}>{resendIn}s</span></span>
           )}

@@ -101,7 +101,7 @@ function MapCanvas({ masjids, selectedIdx, onSelectMasjid }) {
       })}
 
       {/* cluster badge (imagery decoration) */}
-      <div style={{ position: 'absolute', left: '20%', top: '72%', transform: 'translate(-50%,-50%)', width: 30, height: 30, borderRadius: '50%', background: '#E05040', display: 'flex', alignItems: 'center', justifyContent: 'center', boxShadow: '0 2px 8px rgba(0,0,0,0.4)', color: '#fff', fontFamily: '"Nunito",sans-serif', fontSize: 13, fontWeight: 800 }}>2</div>
+      <div style={{ position: 'absolute', left: '20%', top: '72%', transform: 'translate(-50%,-50%)', width: 30, height: 30, borderRadius: '50%', background: '#E05040', display: 'flex', alignItems: 'center', justifyContent: 'center', boxShadow: '0 2px 8px rgba(0,0,0,0.4)', color: '#fff', fontFamily: 'var(--font-body)', fontSize: 13, fontWeight: 800 }}>2</div>
     </div>
   );
 }
@@ -112,10 +112,10 @@ function MasjidCard({ m, following, onToggleFollow, onNavigate, showFollow = tru
   return (
     <div className="surf" style={{ borderRadius: 18 }}>
       <div style={{ display: 'flex', alignItems: 'center', gap: 12, marginBottom: 12 }}>
-        <div style={{ width: 42, height: 42, borderRadius: '50%', background: 'var(--color-action-primary)', display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0, fontFamily: '"Nunito",sans-serif', fontSize: 17, fontWeight: 800, color: 'var(--color-action-primary-inverse)' }}>{m.letter}</div>
+        <div style={{ width: 42, height: 42, borderRadius: '50%', background: 'var(--color-action-primary)', display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0, fontFamily: 'var(--font-body)', fontSize: 17, fontWeight: 800, color: 'var(--color-action-primary-inverse)' }}>{m.letter}</div>
         <div style={{ flex: 1, minWidth: 0 }}>
-          <div style={{ fontFamily: '"Nunito",sans-serif', fontSize: 15, fontWeight: 800, color: 'var(--color-info-primary)', overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>{m.name}</div>
-          <div style={{ fontFamily: '"Nunito",sans-serif', fontSize: 12, color: 'var(--color-info-secondary)', marginTop: 1 }}>{m.area} · {m.pin} · {m.dist}</div>
+          <div style={{ fontFamily: 'var(--font-body)', fontSize: 15, fontWeight: 800, color: 'var(--color-info-primary)', overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>{m.name}</div>
+          <div style={{ fontFamily: 'var(--font-body)', fontSize: 12, color: 'var(--color-info-secondary)', marginTop: 1 }}>{m.area} · {m.pin} · {m.dist}</div>
         </div>
         {showFollow ? (
           <button className="btn btn-tonal sm" onClick={onToggleFollow} style={following ? { color: 'var(--color-action-primary)', borderColor: 'color-mix(in oklab, var(--color-action-primary) 30%, transparent)', background: 'color-mix(in oklab, var(--color-action-primary) 12%, transparent)' } : null}>
@@ -126,8 +126,8 @@ function MasjidCard({ m, following, onToggleFollow, onNavigate, showFollow = tru
       </div>
       <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', gap: 12 }}>
         <div style={{ minWidth: 0 }}>
-          <div style={{ fontFamily: '"Nunito",sans-serif', fontSize: 15, fontWeight: 800, color: 'var(--color-action-primary)' }}>{m.prayer}</div>
-          <div style={{ fontFamily: '"Nunito",sans-serif', fontSize: 12, color: 'var(--color-info-secondary)', marginTop: 1 }}>Azaan {m.azaan} · Iqama {m.iqama}</div>
+          <div style={{ fontFamily: 'var(--font-body)', fontSize: 15, fontWeight: 800, color: 'var(--color-action-primary)' }}>{m.prayer}</div>
+          <div style={{ fontFamily: 'var(--font-body)', fontSize: 12, color: 'var(--color-info-secondary)', marginTop: 1 }}>Azaan {m.azaan} · Iqama {m.iqama}</div>
         </div>
         <button className="ib ib-tonal primary md" onClick={onNavigate} aria-label="Directions">
           <span className="mi" data-i="near_me"></span>
@@ -180,7 +180,7 @@ function ExploreMapScreen({
             <span className="mi" data-i="format_list_bulleted"></span>
           </button>
         </div>
-        <div style={{ fontFamily: '"Nunito",sans-serif', fontSize: 13, color: 'var(--color-info-secondary)', marginTop: 2, marginBottom: 14 }}>{guest ? 'Sign in to follow masjids and get prayer time notifications' : 'Follow masjids to get prayer time notifications'}</div>
+        <div style={{ fontFamily: 'var(--font-body)', fontSize: 13, color: 'var(--color-info-secondary)', marginTop: 2, marginBottom: 14 }}>{guest ? 'Sign in to follow masjids and get prayer time notifications' : 'Follow masjids to get prayer time notifications'}</div>
 
         {/* Carousel — transform track, dots + pins drive the index */}
         <div style={{ overflow: 'hidden' }}>
@@ -244,7 +244,7 @@ function ExploreListScreen({
         <div style={{ display: 'flex', alignItems: 'flex-start', justifyContent: 'space-between', gap: 12, padding: '0 16px', marginBottom: 16 }}>
           <div style={{ minWidth: 0 }}>
             <div style={{ fontFamily: 'var(--font-title)', fontSize: 26, color: '#fff', letterSpacing: '-0.3px', textShadow: '0 1px 6px rgba(0,0,0,0.55)' }}>{NEARBY_COUNT} Masjids Nearby</div>
-            <div style={{ fontFamily: '"Nunito",sans-serif', fontSize: 13, color: 'rgba(255,255,255,0.72)', marginTop: 3, textShadow: '0 1px 5px rgba(0,0,0,0.5)' }}>{guest ? 'Sign in to follow masjids and get prayer time notifications' : 'Follow masjids to get prayer time notifications'}</div>
+            <div style={{ fontFamily: 'var(--font-body)', fontSize: 13, color: 'rgba(255,255,255,0.72)', marginTop: 3, textShadow: '0 1px 5px rgba(0,0,0,0.5)' }}>{guest ? 'Sign in to follow masjids and get prayer time notifications' : 'Follow masjids to get prayer time notifications'}</div>
           </div>
           <button
             className="ib md"
@@ -341,7 +341,7 @@ function QRScreen({
       {/* Hint (scanning) */}
       {scanning && (
         <div style={{ position: 'absolute', left: 0, right: 0, top: '46%', marginTop: FRAME / 2 + 34, textAlign: 'center', padding: '0 32px' }}>
-          <span style={{ fontFamily: '"Nunito",sans-serif', fontSize: 15, fontWeight: 600, color: 'rgba(255,255,255,0.82)', textShadow: '0 1px 5px rgba(0,0,0,0.5)' }}>Align QR code within the frame</span>
+          <span style={{ fontFamily: 'var(--font-body)', fontSize: 15, fontWeight: 600, color: 'rgba(255,255,255,0.82)', textShadow: '0 1px 5px rgba(0,0,0,0.5)' }}>Align QR code within the frame</span>
         </div>
       )}
 
@@ -352,7 +352,7 @@ function QRScreen({
             <div style={{ width: 38, height: 4, borderRadius: 2, background: 'var(--color-info-faint)' }} />
           </div>
           <div style={{ fontFamily: 'var(--font-title)', fontSize: 26, color: 'var(--color-info-primary)', letterSpacing: '-0.3px' }}>{masjid.name}</div>
-          <div style={{ fontFamily: '"Nunito",sans-serif', fontSize: 13, color: 'var(--color-info-secondary)', marginTop: 3, marginBottom: 14 }}>{masjid.area} · {masjid.pin}</div>
+          <div style={{ fontFamily: 'var(--font-body)', fontSize: 13, color: 'var(--color-info-secondary)', marginTop: 3, marginBottom: 14 }}>{masjid.area} · {masjid.pin}</div>
 
           <MasjidCard m={masjid} showFollow={false} onNavigate={() => {}} />
 
@@ -393,8 +393,8 @@ function PincodeKeypad({ onPress }) {
         }
         return (
           <div key={i} className="kp-key" onClick={() => onPress && onPress(k.label)} style={{ height: 50, borderRadius: 12, background: 'var(--color-action-background)', display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', cursor: 'pointer', userSelect: 'none' }}>
-            <span style={{ fontFamily: '"Nunito",sans-serif', fontSize: 22, fontWeight: 600, color: 'var(--color-info-primary)', lineHeight: 1 }}>{k.label}</span>
-            <span style={{ fontFamily: '"Nunito",sans-serif', fontSize: 9, fontWeight: 700, letterSpacing: '.12em', color: 'var(--color-info-secondary)', height: 10, marginTop: 2 }}>{k.sub}</span>
+            <span style={{ fontFamily: 'var(--font-body)', fontSize: 22, fontWeight: 600, color: 'var(--color-info-primary)', lineHeight: 1 }}>{k.label}</span>
+            <span style={{ fontFamily: 'var(--font-body)', fontSize: 9, fontWeight: 700, letterSpacing: '.12em', color: 'var(--color-info-secondary)', height: 10, marginTop: 2 }}>{k.sub}</span>
           </div>
         );
       })}
@@ -435,7 +435,7 @@ function PincodeScreen({
             <span className="mi" style={{ fontSize: 46, color: 'var(--color-action-primary)' }} data-i="travel_explore"></span>
           </div>
           <div style={{ fontFamily: 'var(--font-title)', fontSize: 26, color: 'var(--color-info-primary)', letterSpacing: '-0.3px', marginBottom: 10 }}>Search Masjids by Pincode</div>
-          <div style={{ fontFamily: '"Nunito",sans-serif', fontSize: 15, lineHeight: 1.5, color: 'var(--color-info-secondary)' }}>Enter a 6-digit pincode to find masjids in your desired area. You can explore prayer times, events, and community updates.</div>
+          <div style={{ fontFamily: 'var(--font-body)', fontSize: 15, lineHeight: 1.5, color: 'var(--color-info-secondary)' }}>Enter a 6-digit pincode to find masjids in your desired area. You can explore prayer times, events, and community updates.</div>
         </div>
       )}
 
@@ -446,7 +446,7 @@ function PincodeScreen({
             {results.length ? results.map(({ m, idx }) => (
               <MasjidCard key={idx} m={m} following={!!followed[idx]} onToggleFollow={() => onToggleFollow && onToggleFollow(idx)} onNavigate={() => {}} />
             )) : (
-              <div style={{ textAlign: 'center', padding: '32px 16px', fontFamily: '"Nunito",sans-serif', fontSize: 15, color: 'var(--color-info-secondary)' }}>No masjids found for {query}</div>
+              <div style={{ textAlign: 'center', padding: '32px 16px', fontFamily: 'var(--font-body)', fontSize: 15, color: 'var(--color-info-secondary)' }}>No masjids found for {query}</div>
             )}
           </div>
         </div>
@@ -456,7 +456,7 @@ function PincodeScreen({
       {showSuggestions && (
         <div className="surf" style={{ position: 'absolute', top: 100, left: 16, right: 16, zIndex: 15, padding: 0, borderRadius: 18, overflow: 'hidden', maxHeight: `calc(100% - 100px - ${PINCODE_KEYPAD_H}px)`, overflowY: 'auto' }}>
           {suggestions.map((sug, i) => (
-            <div key={sug} onClick={() => onPickSuggestion && onPickSuggestion(sug)} style={{ padding: '15px 18px', cursor: 'pointer', fontFamily: '"Nunito",sans-serif', fontSize: 17, color: 'var(--color-info-primary)', borderTop: i === 0 ? 'none' : '1px solid var(--color-neutral-border)' }}>{sug}</div>
+            <div key={sug} onClick={() => onPickSuggestion && onPickSuggestion(sug)} style={{ padding: '15px 18px', cursor: 'pointer', fontFamily: 'var(--font-body)', fontSize: 17, color: 'var(--color-info-primary)', borderTop: i === 0 ? 'none' : '1px solid var(--color-neutral-border)' }}>{sug}</div>
           ))}
         </div>
       )}

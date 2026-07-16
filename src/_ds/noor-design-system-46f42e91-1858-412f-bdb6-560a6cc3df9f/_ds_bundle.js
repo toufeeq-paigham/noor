@@ -1073,8 +1073,8 @@ const NOOR = {
   disabled: 'var(--color-status-disabled)',
   disabledAlt: 'var(--color-status-disabled-alt)',
   // fonts
-  title: '"DM Serif Display", Georgia, serif',
-  body: '"Nunito", system-ui, -apple-system, "Segoe UI", sans-serif',
+  title: 'var(--font-title)',
+  body: 'var(--font-body)',
   arabic: '"AlQuran IndoPak", "QWBW Surah", serif',
   // radii
   r2xl: 16,

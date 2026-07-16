@@ -1,6 +1,7 @@
 /* ============================================================
    Noor Design System — Colors & Type
-   Source of truth: noor/src/commonMain/kotlin/app/paigham/noor/tokens/
+   Source of truth: this file + the foundation pages; mirrored by
+   paigham-app core/noor tokens (Colors.kt, Typography.kt, Fonts.kt).
    Light theme by default. Add data-theme="dark" on <html> for dark.
    ============================================================ */
 
@@ -30,6 +31,34 @@
   font-family: "Nunito";
   src: url("fonts/Nunito-Italic.ttf") format("truetype-variations");
   font-weight: 200 1000;
+  font-style: italic;
+  font-display: swap;
+}
+@font-face {
+  font-family: "Fraunces";
+  src: url("fonts/Fraunces.ttf") format("truetype-variations");
+  font-weight: 100 900;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: "Fraunces";
+  src: url("fonts/Fraunces-Italic.ttf") format("truetype-variations");
+  font-weight: 100 900;
+  font-style: italic;
+  font-display: swap;
+}
+@font-face {
+  font-family: "Plus Jakarta Sans";
+  src: url("fonts/PlusJakartaSans.ttf") format("truetype-variations");
+  font-weight: 200 800;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: "Plus Jakarta Sans";
+  src: url("fonts/PlusJakartaSans-Italic.ttf") format("truetype-variations");
+  font-weight: 200 800;
   font-style: italic;
   font-display: swap;
 }
@@ -133,6 +162,7 @@
   --color-info-primary: var(--noor-jet-black);
   --color-info-primary-inverse: var(--noor-pure-white);
   --color-info-secondary: var(--noor-slate-gray);
+  --color-info-secondary-inverse: var(--noor-slate-gray);
   --color-info-tertiary: var(--noor-slate-gray);
 
   /* status */
@@ -148,6 +178,7 @@
   --color-neutral-white: var(--noor-pure-white);
   --color-neutral-brand: var(--noor-brand);
   --color-neutral-border: var(--noor-gainsboro);
+  --color-neutral-transparent: var(--noor-transparent);
 
   color-scheme: light;
 }
@@ -183,6 +214,7 @@
   --color-info-primary: var(--noor-snow-white);
   --color-info-primary-inverse: var(--noor-jet-black);
   --color-info-secondary: var(--noor-ash-gray);
+  --color-info-secondary-inverse: var(--noor-onyx-gray);
   --color-info-tertiary: var(--noor-ash-gray);
 
   --color-status-error: var(--noor-coral-red);
@@ -196,6 +228,7 @@
   --color-neutral-white: var(--noor-snow-white);
   --color-neutral-brand: var(--noor-brand);
   --color-neutral-border: var(--noor-white-a10);
+  --color-neutral-transparent: var(--noor-transparent);
 
   color-scheme: dark;
 }
@@ -234,23 +267,23 @@
 
 /* ============================================================
    Typography — mirrors TypographyDefaults
-   Title family: DM Serif Display (display serif)
-   Body family: Nunito (humanist sans)
+   Title family: Fraunces (variable serif, optical sizing)
+   Body family: Plus Jakarta Sans (geometric sans)
    Arabic: AlQuran IndoPak or QWBW Surah
    ============================================================ */
 :root {
-  --font-title: "DM Serif Display", "Cormorant Garamond", "Playfair Display", Georgia, serif;
-  --font-body: "Nunito", system-ui, -apple-system, "Segoe UI", sans-serif;
+  --font-title: "Fraunces", Georgia, serif;
+  --font-body: "Plus Jakarta Sans", system-ui, -apple-system, "Segoe UI", sans-serif;
   --font-arabic: "AlQuran IndoPak", "QWBW Surah", "Amiri Quran", "Scheherazade New", serif;
 
-  /* Title sizes (DM Serif Display, normal weight, slight negative tracking) */
+  /* Title sizes (Fraunces, normal weight, slight negative tracking) */
   --title-h1-size: 32px;   --title-h1-lh: 40px;   --title-h1-tracking: -0.5px;
   --title-h2-size: 28px;   --title-h2-lh: 36px;   --title-h2-tracking: -0.5px;
   --title-h3-size: 24px;   --title-h3-lh: 32px;   --title-h3-tracking: -0.5px;
   --title-h4-size: 22px;   --title-h4-lh: 28px;   --title-h4-tracking: 0;
   --title-h5-size: 20px;   --title-h5-lh: 24px;   --title-h5-tracking: 0;
 
-  /* Body sizes (Nunito, range of weights) */
+  /* Body sizes (Plus Jakarta Sans, range of weights) */
   --body-h1-size: 32px;    --body-h1-lh: 40px;    --body-h1-tracking: -0.5px;
   --body-h2-size: 28px;    --body-h2-lh: 36px;    --body-h2-tracking: -0.5px;
   --body-h3-size: 24px;    --body-h3-lh: 32px;
@@ -313,7 +346,7 @@ html, body {
 }
 
 /* ============================================================
-   Gradient schemes — mirrors GradientDefaults.light
+   Gradient schemes — mirrors GradientDefaults (light + dark)
    Use as `background: var(--gradient-emerald);` on a container.
    ============================================================ */
 :root {
@@ -354,6 +387,48 @@ html, body {
       rgba(254, 154, 0, 0.26) 0%,
       rgba(255, 185, 0, 0.14) 35%,
       rgba(201, 173, 123, 0.06) 60%,
+      transparent 82%); /* @kind color */
+}
+
+/* Dark re-point — mirrors GradientDefaults.dark (brighter stops, dark-tuned hues:
+   coral shifts to hot-pink, sapphire's mid-stop to amethyst). Undertone fades to
+   the dark surface instead of snow. */
+[data-theme="dark"] {
+  --gradient-emerald: linear-gradient(155deg, rgba(0,150,137,0.12) 0%, rgba(24,24,27,0) 55%),
+      radial-gradient(120% 100% at 12% -10%,
+      rgba(0, 188, 125, 0.26) 0%,
+      rgba(0, 150, 137, 0.14) 35%,
+      rgba(0, 130, 54, 0.06) 60%,
+      transparent 82%); /* @kind color */
+  --gradient-brand: linear-gradient(155deg, rgba(254,154,0,0.10) 0%, rgba(24,24,27,0) 55%),
+      radial-gradient(120% 100% at 12% -10%,
+      rgba(201, 173, 123, 0.30) 0%,
+      rgba(255, 185, 0, 0.16) 35%,
+      rgba(254, 154, 0, 0.07) 60%,
+      transparent 82%); /* @kind color */
+  --gradient-sapphire: linear-gradient(155deg, rgba(0,150,137,0.11) 0%, rgba(24,24,27,0) 55%),
+      radial-gradient(120% 100% at 12% -10%,
+      rgba(20, 71, 230, 0.26) 0%,
+      rgba(173, 70, 255, 0.14) 35%,
+      rgba(16, 78, 100, 0.07) 60%,
+      transparent 82%); /* @kind color */
+  --gradient-coral: linear-gradient(155deg, rgba(254,154,0,0.10) 0%, rgba(24,24,27,0) 55%),
+      radial-gradient(120% 100% at 12% -10%,
+      rgba(255, 32, 86, 0.24) 0%,
+      rgba(255, 100, 103, 0.13) 35%,
+      rgba(245, 73, 0, 0.06) 60%,
+      transparent 82%); /* @kind color */
+  --gradient-amethyst: linear-gradient(155deg, rgba(20,71,230,0.10) 0%, rgba(24,24,27,0) 55%),
+      radial-gradient(120% 100% at 12% -10%,
+      rgba(173, 70, 255, 0.26) 0%,
+      rgba(20, 71, 230, 0.14) 35%,
+      rgba(0, 188, 125, 0.06) 60%,
+      transparent 82%); /* @kind color */
+  --gradient-tangerine: linear-gradient(155deg, rgba(255,185,0,0.11) 0%, rgba(24,24,27,0) 55%),
+      radial-gradient(120% 100% at 12% -10%,
+      rgba(254, 154, 0, 0.28) 0%,
+      rgba(255, 185, 0, 0.16) 35%,
+      rgba(201, 173, 123, 0.07) 60%,
       transparent 82%); /* @kind color */
 }
 

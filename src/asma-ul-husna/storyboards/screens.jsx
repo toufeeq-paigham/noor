@@ -50,7 +50,7 @@ function GridScreen({ onSelectName, onBack }) {
               }}
             >
               <div style={{ fontFamily: "'AlQuranIndoPak',serif", fontSize: 18, color: n.color, direction: 'rtl', lineHeight: 1.8 }}>{n.ar}</div>
-              <div style={{ fontFamily: "'Nunito',sans-serif", fontSize: 11, fontWeight: 600, color: n.color.replace('0.9', '0.8') }}>{n.latin}</div>
+              <div style={{ fontFamily: 'var(--font-body)', fontSize: 11, fontWeight: 600, color: n.color.replace('0.9', '0.8') }}>{n.latin}</div>
             </div>
           ))}
         </div>
@@ -88,8 +88,8 @@ function DetailScreen({ selectedIdx = 6, onPrev, onNext, onBack }) {
         }}>
           <div style={{ fontFamily: "'AlQuranIndoPak',serif", fontSize: 42, color: name.color, direction: 'rtl', lineHeight: 1.6, marginBottom: 20 }}>{name.ar}</div>
           <div style={{ width: '60%', height: 1, background: `rgba(${glowRgb},0.3)`, margin: '0 auto 20px' }}></div>
-          <div style={{ fontFamily: "'Nunito',sans-serif", fontSize: 22, fontWeight: 700, color: 'var(--color-action-primary)', marginBottom: 12 }}>{name.latin}</div>
-          <div style={{ fontFamily: "'Nunito',sans-serif", fontSize: 16, color: 'var(--color-info-secondary)', lineHeight: 1.6 }}>{name.meaning}</div>
+          <div style={{ fontFamily: 'var(--font-body)', fontSize: 22, fontWeight: 700, color: 'var(--color-action-primary)', marginBottom: 12 }}>{name.latin}</div>
+          <div style={{ fontFamily: 'var(--font-body)', fontSize: 16, color: 'var(--color-info-secondary)', lineHeight: 1.6 }}>{name.meaning}</div>
         </div>
       </div>
 
@@ -112,7 +112,7 @@ function DetailScreen({ selectedIdx = 6, onPrev, onNext, onBack }) {
           background: 'var(--color-surface-secondary)', borderRadius: 20,
           padding: '8px 18px', border: '1px solid var(--color-neutral-border)'
         }}>
-          <span style={{ fontFamily: "'Nunito',sans-serif", fontSize: 14, fontWeight: 600, color: 'var(--color-info-secondary)' }}>{selectedIdx + 1} / {NAMES.length}</span>
+          <span style={{ fontFamily: 'var(--font-body)', fontSize: 14, fontWeight: 600, color: 'var(--color-info-secondary)' }}>{selectedIdx + 1} / {NAMES.length}</span>
         </div>
         <button
           onClick={onNext}

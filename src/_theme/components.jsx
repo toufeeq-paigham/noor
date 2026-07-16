@@ -41,7 +41,7 @@ function PromptCard({
     }}>
       <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', gap: 12 }}>
         <div style={{
-          fontFamily: '"Nunito", sans-serif',
+          fontFamily: 'var(--font-body)',
           fontSize: 18,
           fontWeight: 700,
           color: titleColor,
@@ -66,7 +66,7 @@ function PromptCard({
       </div>
       
       <div style={{
-        fontFamily: '"Nunito", sans-serif',
+        fontFamily: 'var(--font-body)',
         fontSize: 13,
         color: 'var(--color-info-primary)',
         marginTop: 6,
@@ -241,7 +241,7 @@ function RichNudgeSheet({ isOpen, onClose, illustration, icon, title, descriptio
 
         {/* Brand serif title + description (centered) */}
         <div style={{ fontFamily: 'var(--font-title)', fontSize: 26, color: 'var(--color-neutral-brand)', textAlign: 'center', lineHeight: 1.2 }}>{title}</div>
-        <div style={{ fontFamily: '"Nunito", sans-serif', fontSize: 14, color: 'var(--color-info-secondary)', textAlign: 'center', margin: '8px 8px 20px', lineHeight: 1.45 }}>{description}</div>
+        <div style={{ fontFamily: 'var(--font-body)', fontSize: 14, color: 'var(--color-info-secondary)', textAlign: 'center', margin: '8px 8px 20px', lineHeight: 1.45 }}>{description}</div>
 
         {/* What you get */}
         <div style={{ fontFamily: 'var(--font-title)', fontSize: 20, color: 'var(--color-info-primary)', marginBottom: 14 }}>What you get</div>
@@ -252,8 +252,8 @@ function RichNudgeSheet({ isOpen, onClose, illustration, icon, title, descriptio
                 <span className="mi" style={{ fontSize: 22, color: 'var(--color-action-primary)' }} data-i={b.icon}></span>
               </div>
               <div>
-                <div style={{ fontFamily: '"Nunito", sans-serif', fontSize: 16, fontWeight: 700, color: 'var(--color-info-primary)' }}>{b.title}</div>
-                <div style={{ fontFamily: '"Nunito", sans-serif', fontSize: 13, color: 'var(--color-info-secondary)', marginTop: 2, lineHeight: 1.4 }}>{b.caption}</div>
+                <div style={{ fontFamily: 'var(--font-body)', fontSize: 16, fontWeight: 700, color: 'var(--color-info-primary)' }}>{b.title}</div>
+                <div style={{ fontFamily: 'var(--font-body)', fontSize: 13, color: 'var(--color-info-secondary)', marginTop: 2, lineHeight: 1.4 }}>{b.caption}</div>
               </div>
             </div>
           ))}

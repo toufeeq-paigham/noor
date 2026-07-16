@@ -1,0 +1,199 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="noor-subtitle" content="Title/body pairing candidates rendered on the same Noor screen sample — judge weights, 20px titles, tabular numerals, and Arabic harmony side by side.">
+<script src="../support.js"></script>
+<script src="../_theme/chrome.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+  <link rel="stylesheet" href="../_ds/noor-design-system-46f42e91-1858-412f-bdb6-560a6cc3df9f/colors_and_type.css">
+  <link rel="stylesheet" href="../_theme/poc.css">
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Rounded:opsz,wght,FILL,GRAD@24,400,0..1,0&amp;display=block">
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Nunito+Sans:opsz,wght@6..12,300..1000&amp;display=swap">
+  <link rel="stylesheet" href="../_theme/icons.css">
+  <link rel="stylesheet" href="../_theme/components.css">
+  <style>
+    /* Candidate fonts not in the DS bundle — Lora/Inter are the exact TTFs the
+       app ships (copied from paigham-app core/noor composeResources). */
+    @font-face{font-family:"Lora";src:url("../_ds/noor-design-system-46f42e91-1858-412f-bdb6-560a6cc3df9f/fonts/Lora.ttf") format("truetype-variations");font-weight:400 700;font-style:normal;font-display:swap}
+    @font-face{font-family:"Lora";src:url("../_ds/noor-design-system-46f42e91-1858-412f-bdb6-560a6cc3df9f/fonts/Lora_Italic.ttf") format("truetype-variations");font-weight:400 700;font-style:italic;font-display:swap}
+    @font-face{font-family:"Inter";src:url("../_ds/noor-design-system-46f42e91-1858-412f-bdb6-560a6cc3df9f/fonts/Inter.ttf") format("truetype-variations");font-weight:100 900;font-style:normal;font-display:swap}
+    @font-face{font-family:"Inter";src:url("../_ds/noor-design-system-46f42e91-1858-412f-bdb6-560a6cc3df9f/fonts/Inter_Italic.ttf") format("truetype-variations");font-weight:100 900;font-style:italic;font-display:swap}
+
+    body{background:var(--canvas-bg);padding:56px 40px 120px;min-height:100vh;box-sizing:border-box}
+    ::-webkit-scrollbar{display:none}*{-ms-overflow-style:none;scrollbar-width:none}
+    .fl-wrap{max-width:1280px;margin:0 auto}
+    .fl-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(460px,1fr));gap:24px}
+    .fl-card{background:var(--color-surface-primary);border:1px solid var(--color-neutral-border);border-radius:18px;box-shadow:var(--shadow-card);overflow:hidden}
+    .fl-head{display:flex;align-items:center;gap:10px;padding:16px 20px;border-bottom:1px solid var(--color-neutral-border)}
+    .fl-pair{flex:1;min-width:0}
+    .fl-pair-name{font-family:ui-monospace,SFMono-Regular,Menlo,monospace;font-size:13px;font-weight:700;color:var(--color-info-primary)}
+    .fl-pair-src{font-family:var(--font-body);font-size:11px;color:var(--color-info-secondary);margin-top:2px}
+    .fl-body{padding:20px}
+    .fl-note{font-family:var(--font-body);font-size:12px;line-height:1.5;color:var(--color-info-secondary);padding:12px 20px;border-top:1px solid var(--color-neutral-border)}
+    .fl-lbl{font-family:ui-monospace,Menlo,monospace;font-size:10px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;color:var(--color-info-faint);margin:18px 0 8px}
+    .fl-lbl:first-child{margin-top:0}
+
+    /* sample blocks — all type below reads the column-scoped --font-title/--font-body */
+    .s-title{font-family:var(--font-title);font-size:28px;line-height:36px;letter-spacing:-.5px;font-weight:400;color:var(--color-info-primary)}
+    .s-sub{font-family:var(--font-body);font-size:14px;line-height:20px;color:var(--color-info-secondary);margin-top:4px}
+    .s-weights{display:flex;align-items:baseline;gap:16px;flex-wrap:wrap}
+    .s-w{font-family:var(--font-title);font-size:20px;line-height:24px;color:var(--color-info-primary)}
+    .s-w small{display:block;font-family:ui-monospace,Menlo,monospace;font-size:9px;color:var(--color-info-faint);margin-top:2px}
+    .s-times{display:flex;border:1px solid var(--color-neutral-border);border-radius:14px;overflow:hidden}
+    .s-time{flex:1;text-align:center;padding:10px 4px}
+    .s-time + .s-time{border-left:1px solid var(--color-neutral-border)}
+    .s-time-name{font-family:var(--font-body);font-size:11px;color:var(--color-info-secondary)}
+    .s-time-val{font-family:var(--font-body);font-size:15px;font-weight:700;font-variant-numeric:tabular-nums;color:var(--color-info-primary);margin-top:2px}
+    .s-time.now .s-time-val{color:var(--color-action-primary)}
+    .s-ayah{font-family:var(--font-arabic);font-size:24px;line-height:1.9;direction:rtl;text-align:right;color:var(--color-info-primary)}
+    .s-trans{font-family:var(--font-body);font-size:16px;line-height:24px;color:var(--color-info-primary);margin-top:8px}
+    .s-ref{font-family:var(--font-body);font-size:12px;color:var(--color-info-secondary);margin-top:6px}
+    .s-body{font-family:var(--font-body);font-size:14px;line-height:20px;color:var(--color-info-primary)}
+    .s-caption{font-family:var(--font-body);font-size:12px;line-height:16px;font-variant-numeric:tabular-nums;color:var(--color-info-secondary);margin-top:6px}
+    .s-ui{display:flex;align-items:center;gap:10px;flex-wrap:wrap}
+  </style>
+</helmet>
+
+<div class="fl-wrap">
+
+  <div class="fl-grid">
+    <sc-for list="{{ pairs }}" as="p" hint-placeholder-count="4">
+      <div class="fl-card">
+        <div class="fl-head">
+          <div class="fl-pair">
+            <div class="fl-pair-name">{{ p.name }}</div>
+            <div class="fl-pair-src">{{ p.src }}</div>
+          </div>
+          <span class="chip {{ p.tagCls }}" style="cursor:default">{{ p.tag }}</span>
+        </div>
+
+        <div class="fl-body" style="--font-title:{{ p.title }};--font-body:{{ p.body }}">
+
+          <div class="fl-lbl">Screen header · title-h2 28/36</div>
+          <div class="s-title">Asr is in 42 minutes</div>
+          <div class="s-sub">Masjid-e-Quba · Jamaat at 4:45 PM</div>
+
+          <div class="fl-lbl">Title weights at 20px · exposes faux-bold &amp; small-size fragility</div>
+          <div class="s-weights">
+            <div class="s-w" style="font-weight:400">Maghrib<small>400</small></div>
+            <div class="s-w" style="font-weight:500">Maghrib<small>500</small></div>
+            <div class="s-w" style="font-weight:700">Maghrib<small>700</small></div>
+            <div class="s-w" style="font-style:italic">Maghrib<small>italic</small></div>
+          </div>
+
+          <div class="fl-lbl">Prayer strip · tabular numerals must align</div>
+          <div class="s-times">
+            <sc-for list="{{ p.times }}" as="t" hint-placeholder-count="5">
+              <div class="s-time {{ t.cls }}">
+                <div class="s-time-name">{{ t.name }}</div>
+                <div class="s-time-val">{{ t.val }}</div>
+              </div>
+            </sc-for>
+          </div>
+
+          <div class="fl-lbl">Ayah &amp; translation · harmony with Arabic</div>
+          <div class="surf" style="padding:14px 16px">
+            <div class="s-ayah">إِنَّ ٱلصَّلَوٰةَ كَانَتْ عَلَى ٱلْمُؤْمِنِينَ كِتَـٰبًا مَّوْقُوتًا</div>
+            <div class="s-trans">Indeed, prayer has been decreed upon the believers at specified times.</div>
+            <div class="s-ref">An-Nisāʾ · 4:103</div>
+          </div>
+
+          <div class="fl-lbl">Body &amp; numerals · body-s 14/20 · body-xs 12/16</div>
+          <div class="s-body">Your zakaat is calculated on gold, silver, savings and business assets held for one lunar year above the nisab threshold.</div>
+          <div class="s-caption">Zakaat due ₹12,480 · Nisab ₹87,300 · 18 Muharram 1448</div>
+
+          <div class="fl-lbl">Components</div>
+          <div class="s-ui" style="margin-bottom:12px">
+            <button class="btn btn-filled">Set reminder</button>
+            <button class="btn btn-tonal sm">Skip</button>
+            <span class="chip accent">Follow</span>
+            <span class="chip tonal">Duas</span>
+            <span class="chip outline">Following</span>
+          </div>
+          <div class="qrow">
+            <div class="qrow-num">1</div>
+            <div class="qrow-body">
+              <div class="qrow-name">Al-Fātiĥah</div>
+              <div class="qrow-sub">The Opener</div>
+              <div class="qrow-meta">7 ayahs · 1:1–1:7</div>
+            </div>
+            <div class="qrow-trail">
+              <div class="qrow-ar">الفاتحة</div>
+              <div class="qrow-place">Meccan</div>
+            </div>
+          </div>
+
+        </div>
+
+        <div class="fl-note">{{ p.note }}</div>
+      </div>
+    </sc-for>
+  </div>
+
+  <div style="text-align:center;font-family:var(--font-body);font-size:12px;color:var(--canvas-label);margin-top:40px">
+    Noor Design System · <a href="Theme.dc.html" style="color:var(--color-action-primary);text-decoration:none;font-weight:700">← Theme</a> · <a href="../Index.dc.html" style="color:var(--color-action-primary);text-decoration:none;font-weight:700">Index</a>
+  </div>
+
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script>
+class Component extends DCLogic {
+  state = {};
+
+  pairings = [
+    {
+      name: 'Lora + Inter',
+      src: 'Previous app pairing (replaced by Fraunces + Jakarta)',
+      tag: 'Previous', tagCls: 'outline',
+      title: "'Lora', Georgia, serif",
+      body: "'Inter', system-ui, sans-serif",
+      note: 'Lora: text serif with calligraphic roots, real 400–700 weights, holds at 20px. Inter: workhorse UI sans with strong tabular figures — but the most default-looking option.',
+    },
+    {
+      name: 'DM Serif Display + Nunito',
+      src: 'Previous POC pairing (replaced by Fraunces + Jakarta)',
+      tag: 'Previous', tagCls: 'outline',
+      title: "'DM Serif Display', Georgia, serif",
+      body: "'Nunito', system-ui, sans-serif",
+      note: 'DM Serif Display has one weight (400) — the 500/700 samples above are browser-synthesized faux-bold, and high stroke contrast gets brittle at 20px. Nunito is warm but its numerals wobble in dense numeric UI.',
+    },
+    {
+      name: 'Lora + Nunito Sans',
+      src: 'Candidate — not adopted',
+      tag: 'Candidate', tagCls: 'outline',
+      title: "'Lora', Georgia, serif",
+      body: "'Nunito Sans', system-ui, sans-serif",
+      note: 'The middle path: Lora titles unchanged, body swaps Inter for Nunito Sans — most of Nunito’s warmth without the rounded-numeral problems. Check the prayer strip and zakaat line closely.',
+    },
+    {
+      name: 'Fraunces + Plus Jakarta Sans',
+      src: 'Adopted — the DS pairing (--font-title / --font-body)',
+      tag: 'DS now', tagCls: 'accent',
+      title: "'Fraunces', Georgia, serif",
+      body: "'Plus Jakarta Sans', system-ui, sans-serif",
+      note: 'Fraunces is variable with optical sizing — characterful at 28px, sturdy at 20px, real weights throughout. Jakarta is a warm geometric body. The boldest rebrand of the four; judge whether the character fits Noor’s serenity.',
+    },
+  ];
+
+  times = [
+    { name: 'Fajr',    val: '05:04', cls: '' },
+    { name: 'Dhuhr',   val: '12:31', cls: '' },
+    { name: 'Asr',     val: '15:47', cls: 'now' },
+    { name: 'Maghrib', val: '18:12', cls: '' },
+    { name: 'Isha',    val: '19:26', cls: '' },
+  ];
+
+  renderVals() {
+    return {
+      pairs: this.pairings.map(p => ({ ...p, times: this.times })),
+    };
+  }
+}
+</script>
+</body>
+</html>

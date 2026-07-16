@@ -52,7 +52,7 @@ function ZakaatKeypad({ onPress }) {
             style={{
               height: 52, borderRadius: 14, border: 'none',
               background: 'var(--color-input-background)',
-              fontFamily: '"Nunito", sans-serif', fontSize: 22, fontWeight: 700, color: 'var(--color-info-primary)',
+              fontFamily: 'var(--font-body)', fontSize: 22, fontWeight: 700, color: 'var(--color-info-primary)',
               display: 'flex', alignItems: 'center', justifyContent: 'center',
               cursor: 'pointer'
             }}
@@ -80,10 +80,10 @@ function ZakaatEmptyScreen({ onCalculate, onBack }) {
       {/* Empty State Content */}
       <div style={{ flex: 1, display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', padding: '32px 24px', textAlign: 'center' }}>
         <span className="mi" style={{ fontSize: 72, color: 'var(--color-info-tertiary)', opacity: 0.35, marginBottom: 20 }} data-i="savings"></span>
-        <div style={{ fontFamily: '"DM Serif Display", Georgia, serif', fontSize: 28, color: 'var(--color-info-primary)', lineHeight: 1.2, marginBottom: 12 }}>
+        <div style={{ fontFamily: 'var(--font-title)', fontSize: 28, color: 'var(--color-info-primary)', lineHeight: 1.2, marginBottom: 12 }}>
           No Zakaats found
         </div>
-        <div style={{ fontFamily: '"Nunito", sans-serif', fontSize: 15, color: 'var(--color-info-secondary)', maxWidth: 280, margin: '0 auto 40px', lineHeight: 1.5 }}>
+        <div style={{ fontFamily: 'var(--font-body)', fontSize: 15, color: 'var(--color-info-secondary)', maxWidth: 280, margin: '0 auto 40px', lineHeight: 1.5 }}>
           Try calculating Zakaat to find it here
         </div>
         <button className="btn btn-filled lg" onClick={onCalculate} style={{ width: '100%' }}>
@@ -148,10 +148,10 @@ function ZakaatListScreen({ records = [], onCalculate, onEdit, onDelete, onBack 
                 }}
               >
                 <div>
-                  <div style={{ fontFamily: '"Nunito", sans-serif', fontSize: 17, fontWeight: 700, color: 'var(--color-info-primary)', marginBottom: 4 }}>
+                  <div style={{ fontFamily: 'var(--font-body)', fontSize: 17, fontWeight: 700, color: 'var(--color-info-primary)', marginBottom: 4 }}>
                     {r.name} - ₹{r.due.toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 })}
                   </div>
-                  <div style={{ fontFamily: '"Nunito", sans-serif', fontSize: 13, color: 'var(--color-info-secondary)' }}>
+                  <div style={{ fontFamily: 'var(--font-body)', fontSize: 13, color: 'var(--color-info-secondary)' }}>
                     Last calculated on: {r.date}
                   </div>
                 </div>
@@ -219,7 +219,7 @@ function ZakaatLoadingScreen() {
           borderTopColor: 'var(--color-action-primary)',
           animation: 'spin 1s linear infinite'
         }} />
-        <div style={{ fontFamily: '"Nunito", sans-serif', fontSize: 16, color: 'var(--color-info-primary)', fontWeight: 600 }}>
+        <div style={{ fontFamily: 'var(--font-body)', fontSize: 16, color: 'var(--color-info-primary)', fontWeight: 600 }}>
           Loading gold and silver rates...
         </div>
       </div>
@@ -318,14 +318,14 @@ function ZakaatStepScreen({
         {/* Step Card Container */}
         <div style={{ background: 'var(--color-surface-secondary)', borderRadius: 20, padding: 22, border: '1px solid var(--color-neutral-border)' }}>
           <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', marginBottom: 6 }}>
-            <div style={{ fontFamily: '"DM Serif Display", Georgia, serif', fontSize: 26, color: 'var(--color-info-primary)', lineHeight: 1.15, flex: 1 }}>
+            <div style={{ fontFamily: 'var(--font-title)', fontSize: 26, color: 'var(--color-info-primary)', lineHeight: 1.15, flex: 1 }}>
               {currentMeta.title}
             </div>
-            <span style={{ fontFamily: '"Nunito", sans-serif', fontSize: 13, color: 'var(--color-info-secondary)', marginTop: 6, flexShrink: 0 }}>
+            <span style={{ fontFamily: 'var(--font-body)', fontSize: 13, color: 'var(--color-info-secondary)', marginTop: 6, flexShrink: 0 }}>
               {step} / 6
             </span>
           </div>
-          <div style={{ fontFamily: '"Nunito", sans-serif', fontSize: 14, color: 'var(--color-info-secondary)', marginBottom: 22, lineHeight: 1.45 }}>
+          <div style={{ fontFamily: 'var(--font-body)', fontSize: 14, color: 'var(--color-info-secondary)', marginBottom: 22, lineHeight: 1.45 }}>
             {currentMeta.subtitle}
           </div>
 
@@ -352,10 +352,10 @@ function ZakaatStepScreen({
               >
                 <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: 10 }}>
                   <div style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
-                    <span style={{ fontFamily: '"Nunito", sans-serif', fontSize: 16, fontWeight: 700, color: 'var(--color-info-primary)' }}>{f.label}</span>
+                    <span style={{ fontFamily: 'var(--font-body)', fontSize: 16, fontWeight: 700, color: 'var(--color-info-primary)' }}>{f.label}</span>
                     {f.key === 'gold' && (
                       <div style={{ background: 'rgba(0,201,80,0.12)', borderRadius: 8, padding: '3px 10px' }}>
-                        <span style={{ fontFamily: '"Nunito", sans-serif', fontSize: 11, fontWeight: 600, color: 'var(--color-action-primary)' }}>24k Gold (995) ▾</span>
+                        <span style={{ fontFamily: 'var(--font-body)', fontSize: 11, fontWeight: 600, color: 'var(--color-action-primary)' }}>24k Gold (995) ▾</span>
                       </div>
                     )}
                   </div>
@@ -370,18 +370,18 @@ function ZakaatStepScreen({
                     cursor: 'pointer', border: isFocused ? '1.5px solid var(--color-action-primary)' : '1px solid transparent'
                   }}
                 >
-                  {f.prefix && <span style={{ fontFamily: '"Nunito", sans-serif', fontSize: 16, color: 'var(--color-info-primary)', marginRight: 4 }}>{f.prefix}</span>}
+                  {f.prefix && <span style={{ fontFamily: 'var(--font-body)', fontSize: 16, color: 'var(--color-info-primary)', marginRight: 4 }}>{f.prefix}</span>}
                   <div style={{ flex: 1, textAlign: 'right', display: 'flex', alignItems: 'center', justifyContent: 'flex-end' }}>
-                    <span style={{ fontFamily: '"Nunito", sans-serif', fontSize: 18, fontWeight: 600, color: val ? 'var(--color-info-primary)' : 'var(--color-status-disabled-alt)' }}>
+                    <span style={{ fontFamily: 'var(--font-body)', fontSize: 18, fontWeight: 600, color: val ? 'var(--color-info-primary)' : 'var(--color-status-disabled-alt)' }}>
                       {val || '0'}
                     </span>
                     {isFocused && <span style={{ width: 2, height: 20, background: 'var(--color-action-primary)', marginLeft: 3, display: 'inline-block', animation: 'blink 1s step-end infinite' }} />}
                   </div>
-                  {f.suffix && <span style={{ fontFamily: '"Nunito", sans-serif', fontSize: 15, color: 'var(--color-status-disabled-alt)', marginLeft: 8 }}>{f.suffix}</span>}
+                  {f.suffix && <span style={{ fontFamily: 'var(--font-body)', fontSize: 15, color: 'var(--color-status-disabled-alt)', marginLeft: 8 }}>{f.suffix}</span>}
                 </div>
 
                 {/* Subtext label */}
-                <div style={{ display: 'flex', justifyContent: 'space-between', marginTop: 8, fontFamily: '"Nunito", sans-serif', fontSize: 12, color: 'var(--color-info-secondary)' }}>
+                <div style={{ display: 'flex', justifyContent: 'space-between', marginTop: 8, fontFamily: 'var(--font-body)', fontSize: 12, color: 'var(--color-info-secondary)' }}>
                   <span>{f.subText}</span>
                   {rightLabel && <span>{rightLabel}</span>}
                 </div>
@@ -396,7 +396,7 @@ function ZakaatStepScreen({
           )}
 
           {step === 1 && (
-            <div style={{ marginTop: 12, fontFamily: '"Nunito", sans-serif', fontSize: 11, color: 'var(--color-info-secondary)' }}>
+            <div style={{ marginTop: 12, fontFamily: 'var(--font-body)', fontSize: 11, color: 'var(--color-info-secondary)' }}>
               * Gold and Silver rates are updated regularly
             </div>
           )}
@@ -517,14 +517,14 @@ function ZakaatSummaryScreen({ values = {}, onBack, onSave }) {
       paddingLeft: indent ? 28 : 16
     }}>
       <span style={{
-        fontFamily: '"Nunito", sans-serif', fontSize: indent ? 13 : 14,
+        fontFamily: 'var(--font-body)', fontSize: indent ? 13 : 14,
         color: indent ? 'var(--color-info-secondary)' : 'var(--color-info-primary)',
         fontWeight: indent ? 500 : 600
       }}>
         {lbl}
       </span>
       <span style={{
-        fontFamily: '"Nunito", sans-serif', fontSize: indent ? 13 : 14,
+        fontFamily: 'var(--font-body)', fontSize: indent ? 13 : 14,
         color: indent ? 'var(--color-info-secondary)' : 'var(--color-info-primary)',
         fontWeight: indent ? 500 : 700
       }}>
@@ -549,10 +549,10 @@ function ZakaatSummaryScreen({ values = {}, onBack, onSave }) {
         
         {/* Due amount header */}
         <div style={{ textAlign: 'center', padding: '20px 0 24px' }}>
-          <div style={{ fontFamily: '"Nunito", sans-serif', fontSize: 14, color: 'var(--color-info-secondary)', marginBottom: 6 }}>
+          <div style={{ fontFamily: 'var(--font-body)', fontSize: 14, color: 'var(--color-info-secondary)', marginBottom: 6 }}>
             Zakaat Due
           </div>
-          <div style={{ fontFamily: '"Nunito", sans-serif', fontSize: 44, fontWeight: 800, color: 'var(--color-action-primary)', lineHeight: 1 }}>
+          <div style={{ fontFamily: 'var(--font-body)', fontSize: 44, fontWeight: 800, color: 'var(--color-action-primary)', lineHeight: 1 }}>
             ₹{zakaatDue.toLocaleString(undefined, { minimumFractionDigits: 1, maximumFractionDigits: 1 })}
           </div>
         </div>
@@ -562,8 +562,8 @@ function ZakaatSummaryScreen({ values = {}, onBack, onSave }) {
           
           {/* Header Row */}
           <div style={{ display: 'flex', justifyContent: 'space-between', padding: 16, background: 'color-mix(in oklab, var(--color-info-primary) 5%, var(--color-surface-secondary))', borderBottom: '1px solid var(--color-neutral-border)' }}>
-            <span style={{ fontFamily: '"Nunito", sans-serif', fontSize: 15, fontWeight: 700, color: 'var(--color-info-primary)' }}>Total Assets</span>
-            <span style={{ fontFamily: '"Nunito", sans-serif', fontSize: 15, fontWeight: 700, color: 'var(--color-info-primary)' }}>
+            <span style={{ fontFamily: 'var(--font-body)', fontSize: 15, fontWeight: 700, color: 'var(--color-info-primary)' }}>Total Assets</span>
+            <span style={{ fontFamily: 'var(--font-body)', fontSize: 15, fontWeight: 700, color: 'var(--color-info-primary)' }}>
               ₹{totalAssets.toLocaleString(undefined, { minimumFractionDigits: 1, maximumFractionDigits: 1 })}
             </span>
           </div>
@@ -597,8 +597,8 @@ function ZakaatSummaryScreen({ values = {}, onBack, onSave }) {
 
           {/* Deductibles */}
           <div style={{ display: 'flex', justifyContent: 'space-between', padding: 16, background: 'color-mix(in oklab, var(--color-action-destructive) 5%, var(--color-surface-secondary))', borderTop: '1px solid var(--color-neutral-border)', borderBottom: '1px solid var(--color-neutral-border)' }}>
-            <span style={{ fontFamily: '"Nunito", sans-serif', fontSize: 14, fontWeight: 700, color: 'var(--color-info-primary)' }}>Deductibles</span>
-            <span style={{ fontFamily: '"Nunito", sans-serif', fontSize: 14, fontWeight: 700, color: 'var(--color-info-primary)' }}>
+            <span style={{ fontFamily: 'var(--font-body)', fontSize: 14, fontWeight: 700, color: 'var(--color-info-primary)' }}>Deductibles</span>
+            <span style={{ fontFamily: 'var(--font-body)', fontSize: 14, fontWeight: 700, color: 'var(--color-info-primary)' }}>
               ₹{deductiblesTotal.toLocaleString(undefined, { minimumFractionDigits: 1, maximumFractionDigits: 1 })}
             </span>
           </div>
@@ -610,13 +610,13 @@ function ZakaatSummaryScreen({ values = {}, onBack, onSave }) {
 
         {/* Disclaimer / Nisab info */}
         <div style={{ display: 'flex', flexDirection: 'column', gap: 10, padding: '0 8px' }}>
-          <div style={{ fontFamily: '"Nunito", sans-serif', fontSize: 13, color: 'var(--color-info-secondary)', lineHeight: 1.6 }}>
+          <div style={{ fontFamily: 'var(--font-body)', fontSize: 13, color: 'var(--color-info-secondary)', lineHeight: 1.6 }}>
             • Zakaat is due when your wealth reaches the nisab threshold and has been in your possession for one lunar year.
           </div>
-          <div style={{ fontFamily: '"Nunito", sans-serif', fontSize: 13, color: 'var(--color-info-secondary)', lineHeight: 1.6 }}>
+          <div style={{ fontFamily: 'var(--font-body)', fontSize: 13, color: 'var(--color-info-secondary)', lineHeight: 1.6 }}>
             • The nisab is approximately the value of 87.48 grams of gold or 612.36 grams of silver.
           </div>
-          <div style={{ fontFamily: '"Nunito", sans-serif', fontSize: 13, color: 'var(--color-info-secondary)', lineHeight: 1.6 }}>
+          <div style={{ fontFamily: 'var(--font-body)', fontSize: 13, color: 'var(--color-info-secondary)', lineHeight: 1.6 }}>
             • This calculation is based on the information you provided. For specific rulings, please consult with a qualified scholar.
           </div>
         </div>

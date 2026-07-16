@@ -13,7 +13,7 @@
 // The compass disc is a fixed dark instrument (like a real compass face) in both themes — its
 // internal marks are composited on the dark disc. All screen chrome uses semantic tokens.
 
-const FONT_B = '"Nunito", sans-serif';
+const FONT_B = 'var(--font-body)';
 const FONT_T = 'var(--font-title)';
 
 // Fixed Qibla bearing used for the mock (≈ WNW from India). Each state passes a screen-relative

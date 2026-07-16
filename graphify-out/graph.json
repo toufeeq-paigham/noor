@@ -2302,7 +2302,7 @@
       "label": "syncChrome()",
       "file_type": "code",
       "source_file": "src/_theme/chrome.js",
-      "source_location": "L113",
+      "source_location": "L114",
       "id": "theme_chrome_syncchrome",
       "community": 6,
       "norm_label": "syncchrome()"
@@ -2311,7 +2311,7 @@
       "label": "navItemFor()",
       "file_type": "code",
       "source_file": "src/_theme/chrome.js",
-      "source_location": "L127",
+      "source_location": "L128",
       "id": "theme_chrome_navitemfor",
       "community": 6,
       "norm_label": "navitemfor()"
@@ -2320,7 +2320,7 @@
       "label": "setChromeTitle()",
       "file_type": "code",
       "source_file": "src/_theme/chrome.js",
-      "source_location": "L137",
+      "source_location": "L138",
       "id": "theme_chrome_setchrometitle",
       "community": 6,
       "norm_label": "setchrometitle()"
@@ -2329,7 +2329,7 @@
       "label": "setChromeSubtitle()",
       "file_type": "code",
       "source_file": "src/_theme/chrome.js",
-      "source_location": "L142",
+      "source_location": "L143",
       "id": "theme_chrome_setchromesubtitle",
       "community": 6,
       "norm_label": "setchromesubtitle()"
@@ -2338,7 +2338,7 @@
       "label": "openDrawer()",
       "file_type": "code",
       "source_file": "src/_theme/chrome.js",
-      "source_location": "L151",
+      "source_location": "L152",
       "id": "theme_chrome_opendrawer",
       "community": 6,
       "norm_label": "opendrawer()"
@@ -2347,7 +2347,7 @@
       "label": "closeDrawer()",
       "file_type": "code",
       "source_file": "src/_theme/chrome.js",
-      "source_location": "L152",
+      "source_location": "L153",
       "id": "theme_chrome_closedrawer",
       "community": 6,
       "norm_label": "closedrawer()"
@@ -2356,7 +2356,7 @@
       "label": "toggleDrawer()",
       "file_type": "code",
       "source_file": "src/_theme/chrome.js",
-      "source_location": "L153",
+      "source_location": "L154",
       "id": "theme_chrome_toggledrawer",
       "community": 6,
       "norm_label": "toggledrawer()"
@@ -2365,7 +2365,7 @@
       "label": "buildDrawer()",
       "file_type": "code",
       "source_file": "src/_theme/chrome.js",
-      "source_location": "L155",
+      "source_location": "L156",
       "id": "theme_chrome_builddrawer",
       "community": 6,
       "norm_label": "builddrawer()"
@@ -2374,7 +2374,7 @@
       "label": "buildChrome()",
       "file_type": "code",
       "source_file": "src/_theme/chrome.js",
-      "source_location": "L209",
+      "source_location": "L210",
       "id": "theme_chrome_buildchrome",
       "community": 6,
       "norm_label": "buildchrome()"
@@ -2383,7 +2383,7 @@
       "label": "isInteractive()",
       "file_type": "code",
       "source_file": "src/_theme/chrome.js",
-      "source_location": "L363",
+      "source_location": "L364",
       "id": "theme_chrome_isinteractive",
       "community": 6,
       "norm_label": "isinteractive()"
@@ -2392,7 +2392,7 @@
       "label": "initCanvas()",
       "file_type": "code",
       "source_file": "src/_theme/chrome.js",
-      "source_location": "L374",
+      "source_location": "L375",
       "id": "theme_chrome_initcanvas",
       "community": 6,
       "norm_label": "initcanvas()"
@@ -2401,7 +2401,7 @@
       "label": "initScrollPan()",
       "file_type": "code",
       "source_file": "src/_theme/chrome.js",
-      "source_location": "L523",
+      "source_location": "L524",
       "id": "theme_chrome_initscrollpan",
       "community": 6,
       "norm_label": "initscrollpan()"
@@ -2410,7 +2410,7 @@
       "label": "initPan()",
       "file_type": "code",
       "source_file": "src/_theme/chrome.js",
-      "source_location": "L541",
+      "source_location": "L542",
       "id": "theme_chrome_initpan",
       "community": 6,
       "norm_label": "initpan()"
@@ -6599,9 +6599,9 @@
       "source_file": "firebase.json",
       "source_location": "L3",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "firebase_hosting",
-      "target": "firebase_hosting_site",
-      "confidence_score": 1.0
+      "target": "firebase_hosting_site"
     },
     {
       "relation": "contains",
@@ -13730,5 +13730,5 @@
     }
   ],
   "hyperedges": [],
-  "built_at_commit": "04297e5e118a1ca024a1c73b9816bc521da64ee1"
+  "built_at_commit": "151e813a007c49e30e38b47d4d8cebab14135c96"
 }

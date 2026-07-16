@@ -53,8 +53,8 @@ function QuranReaderScreen({
       {/* Surah info bar */}
       <div style={{ flexShrink: 0, padding: '6px 20px 12px', borderBottom: '1px solid var(--color-neutral-border)' }}>
         <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-          <span style={{ fontFamily: "'Nunito',sans-serif", fontSize: 14, fontWeight: 600, color: 'var(--color-info-primary)' }}>1. Al-Faatiha</span>
-          <span style={{ fontFamily: "'Nunito',sans-serif", fontSize: 13, color: 'var(--color-info-secondary)' }}>{metaText}</span>
+          <span style={{ fontFamily: 'var(--font-body)', fontSize: 14, fontWeight: 600, color: 'var(--color-info-primary)' }}>1. Al-Faatiha</span>
+          <span style={{ fontFamily: 'var(--font-body)', fontSize: 13, color: 'var(--color-info-secondary)' }}>{metaText}</span>
         </div>
       </div>
 
@@ -67,13 +67,13 @@ function QuranReaderScreen({
           }}>
             <div style={{ textAlign: 'right', direction: 'rtl', fontFamily: "'AlQuranIndoPak',serif", fontSize: arabicSize, color: 'var(--color-info-primary)', lineHeight: 2, marginBottom: 10 }}>{a.arabic}</div>
             {showTranslit ? (
-              <div style={{ fontFamily: "'Nunito',sans-serif", fontSize: 14, fontStyle: 'italic', color: 'var(--color-action-primary)', marginBottom: 6 }}>{a.translit}</div>
+              <div style={{ fontFamily: 'var(--font-body)', fontSize: 14, fontStyle: 'italic', color: 'var(--color-action-primary)', marginBottom: 6 }}>{a.translit}</div>
             ) : null}
             {showTranslation ? (
-              <div style={{ fontFamily: "'Nunito',sans-serif", fontSize: 14, color: 'var(--color-info-primary)', marginBottom: 8, lineHeight: 1.5 }}>{a.translation}</div>
+              <div style={{ fontFamily: 'var(--font-body)', fontSize: 14, color: 'var(--color-info-primary)', marginBottom: 8, lineHeight: 1.5 }}>{a.translation}</div>
             ) : null}
             <div style={{ display: 'inline-block', background: 'var(--color-action-background)', borderRadius: 6, padding: '2px 8px' }}>
-              <span style={{ fontFamily: "'Nunito',sans-serif", fontSize: 11, fontWeight: 600, color: 'var(--color-info-secondary)' }}>{'1:' + a.n}</span>
+              <span style={{ fontFamily: 'var(--font-body)', fontSize: 11, fontWeight: 600, color: 'var(--color-info-secondary)' }}>{'1:' + a.n}</span>
             </div>
           </div>
         ))}
@@ -88,20 +88,20 @@ function QuranReaderScreen({
             <div className="dlg-desc">Customize your Quran reading experience</div>
             <div className="dlg-body" style={{ display: 'flex', flexDirection: 'column', gap: 16 }}>
               <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-                <span style={{ fontFamily: "'Nunito',sans-serif", fontSize: 16, color: 'var(--color-info-primary)' }}>Quran Transliteration</span>
+                <span style={{ fontFamily: 'var(--font-body)', fontSize: 16, color: 'var(--color-info-primary)' }}>Quran Transliteration</span>
                 <div onClick={onToggleTranslit} className={`sw ${showTranslit ? 'on' : ''}`}></div>
               </div>
               <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-                <span style={{ fontFamily: "'Nunito',sans-serif", fontSize: 16, color: 'var(--color-info-primary)' }}>Quran Translation</span>
+                <span style={{ fontFamily: 'var(--font-body)', fontSize: 16, color: 'var(--color-info-primary)' }}>Quran Translation</span>
                 <div onClick={onToggleTranslation} className={`sw ${showTranslation ? 'on' : ''}`}></div>
               </div>
               <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-                <span style={{ fontFamily: "'Nunito',sans-serif", fontSize: 16, color: 'var(--color-info-primary)' }}>Arabic Text Size</span>
+                <span style={{ fontFamily: 'var(--font-body)', fontSize: 16, color: 'var(--color-info-primary)' }}>Arabic Text Size</span>
                 <div style={{ display: 'flex', alignItems: 'center', gap: 10 }}>
                   <button className="ib ib-tonal sm" onClick={onDecFont} aria-label="Decrease" style={{ opacity: arabicSize <= 22 ? 0.4 : 1 }}>
                     <span className="mi" data-i="remove"></span>
                   </button>
-                  <span style={{ fontFamily: "'Nunito',sans-serif", fontSize: 14, fontWeight: 700, color: 'var(--color-info-primary)', minWidth: 22, textAlign: 'center' }}>{arabicSize}</span>
+                  <span style={{ fontFamily: 'var(--font-body)', fontSize: 14, fontWeight: 700, color: 'var(--color-info-primary)', minWidth: 22, textAlign: 'center' }}>{arabicSize}</span>
                   <button className="ib ib-tonal sm" onClick={onIncFont} aria-label="Increase" style={{ opacity: arabicSize >= 36 ? 0.4 : 1 }}>
                     <span className="mi" data-i="add"></span>
                   </button>
