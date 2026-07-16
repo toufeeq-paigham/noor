@@ -105,8 +105,8 @@
     "semantic_hash": ""
   },
   "/Users/toufeeqahamed/Paigham/noor/src/onboarding/storyboards/intro-row.jsx": {
-    "mtime": 1783954965.135957,
-    "ast_hash": "88e3467cd01d95e7f355cec2fb10bf64",
+    "mtime": 1784181103.9673848,
+    "ast_hash": "62af1f2272aa0cd2b785603f82fd16bb",
     "semantic_hash": ""
   },
   "/Users/toufeeqahamed/Paigham/noor/src/onboarding/storyboards/otp-row.jsx": {
@@ -134,359 +134,14 @@
     "ast_hash": "10126c5f8c33d0a5f2ee8153a51aee4a",
     "semantic_hash": ""
   },
-  "/Users/toufeeqahamed/Paigham/noor/src/Masjid Onboarding.dc.html": {
-    "mtime": 1783943050.6055868,
-    "ast_hash": "3d3e8512b0338d9dce90105163a57d7e",
-    "semantic_hash": ""
-  },
   "/Users/toufeeqahamed/Paigham/noor/src/_ds/noor-design-system-46f42e91-1858-412f-bdb6-560a6cc3df9f/README.md": {
     "mtime": 1783248283.0,
     "ast_hash": "023c4141c6b981c198b05120a8dd0a8a",
     "semantic_hash": ""
   },
   "/Users/toufeeqahamed/Paigham/noor/src/onboarding/Onboarding.dc.html": {
-    "mtime": 1783953586.7318053,
-    "ast_hash": "fd2ed09a8d664f1903778eba5e716c4a",
-    "semantic_hash": ""
-  },
-  "/Users/toufeeqahamed/Paigham/noor/src/uploads/IMG_7542.PNG": {
-    "mtime": 1783248285.0,
-    "ast_hash": "b2880856a11a205cf7896014aad13621",
-    "semantic_hash": ""
-  },
-  "/Users/toufeeqahamed/Paigham/noor/src/uploads/IMG_7543.PNG": {
-    "mtime": 1783248285.0,
-    "ast_hash": "3fee0ec4a3068e2ea6d09894e9261bde",
-    "semantic_hash": ""
-  },
-  "/Users/toufeeqahamed/Paigham/noor/src/uploads/IMG_7544.PNG": {
-    "mtime": 1783248285.0,
-    "ast_hash": "edda4a969d92e2fe761ff4bf89d6be24",
-    "semantic_hash": ""
-  },
-  "/Users/toufeeqahamed/Paigham/noor/src/uploads/IMG_7545.PNG": {
-    "mtime": 1783248285.0,
-    "ast_hash": "02d57372ff19ea46b30916e573c32823",
-    "semantic_hash": ""
-  },
-  "/Users/toufeeqahamed/Paigham/noor/src/uploads/IMG_7546.PNG": {
-    "mtime": 1783248285.0,
-    "ast_hash": "e081430e4b8ddde75b4ff39d01752fba",
-    "semantic_hash": ""
-  },
-  "/Users/toufeeqahamed/Paigham/noor/src/uploads/IMG_7547.PNG": {
-    "mtime": 1783248285.0,
-    "ast_hash": "592004f31450f788e0f005f95a4bf654",
-    "semantic_hash": ""
-  },
-  "/Users/toufeeqahamed/Paigham/noor/src/uploads/IMG_7548.PNG": {
-    "mtime": 1783248285.0,
-    "ast_hash": "f8c332ce5de271ab914d367245d70036",
-    "semantic_hash": ""
-  },
-  "/Users/toufeeqahamed/Paigham/noor/src/uploads/IMG_7549.PNG": {
-    "mtime": 1783248285.0,
-    "ast_hash": "86f6e4484d3f13b515ed3aa97a505080",
-    "semantic_hash": ""
-  },
-  "/Users/toufeeqahamed/Paigham/noor/src/uploads/IMG_7550.PNG": {
-    "mtime": 1783248285.0,
-    "ast_hash": "5130b1a94dcd0fd37cd4874487cac65f",
-    "semantic_hash": ""
-  },
-  "/Users/toufeeqahamed/Paigham/noor/src/uploads/IMG_7551.PNG": {
-    "mtime": 1783248285.0,
-    "ast_hash": "accd08b94543fd25c849fc99c25cfe4a",
-    "semantic_hash": ""
-  },
-  "/Users/toufeeqahamed/Paigham/noor/src/uploads/IMG_7552.PNG": {
-    "mtime": 1783248285.0,
-    "ast_hash": "cd87d08b14d32f34e2bfc8455c5197f8",
-    "semantic_hash": ""
-  },
-  "/Users/toufeeqahamed/Paigham/noor/src/uploads/IMG_7553.PNG": {
-    "mtime": 1783248285.0,
-    "ast_hash": "b4164a425d16a8a2e8770b5af499d78e",
-    "semantic_hash": ""
-  },
-  "/Users/toufeeqahamed/Paigham/noor/src/uploads/IMG_7554.PNG": {
-    "mtime": 1783248285.0,
-    "ast_hash": "633cb7cdeeee29a306893f92362140d4",
-    "semantic_hash": ""
-  },
-  "/Users/toufeeqahamed/Paigham/noor/src/uploads/IMG_7555.PNG": {
-    "mtime": 1783248285.0,
-    "ast_hash": "5356a002fcd5ba1f1c86ca985030eddd",
-    "semantic_hash": ""
-  },
-  "/Users/toufeeqahamed/Paigham/noor/src/uploads/IMG_7556.PNG": {
-    "mtime": 1783248285.0,
-    "ast_hash": "ce71facffedbffb25b319c56019177f7",
-    "semantic_hash": ""
-  },
-  "/Users/toufeeqahamed/Paigham/noor/src/uploads/IMG_7557.PNG": {
-    "mtime": 1783248285.0,
-    "ast_hash": "612054bce2dbc223be5e92c5b7d2108e",
-    "semantic_hash": ""
-  },
-  "/Users/toufeeqahamed/Paigham/noor/src/uploads/IMG_7558.PNG": {
-    "mtime": 1783248285.0,
-    "ast_hash": "73527010a120295fe2d2c66b24e315e0",
-    "semantic_hash": ""
-  },
-  "/Users/toufeeqahamed/Paigham/noor/src/uploads/IMG_7559.PNG": {
-    "mtime": 1783248285.0,
-    "ast_hash": "5b90b110e88d029b84fb9f0218460409",
-    "semantic_hash": ""
-  },
-  "/Users/toufeeqahamed/Paigham/noor/src/uploads/IMG_7560.PNG": {
-    "mtime": 1783248285.0,
-    "ast_hash": "8592687cf6ae583ef333077ff6ae9d04",
-    "semantic_hash": ""
-  },
-  "/Users/toufeeqahamed/Paigham/noor/src/uploads/IMG_7561.PNG": {
-    "mtime": 1783248285.0,
-    "ast_hash": "5cc1a3154491bb5b86a495a124f419dd",
-    "semantic_hash": ""
-  },
-  "/Users/toufeeqahamed/Paigham/noor/src/uploads/IMG_7562.PNG": {
-    "mtime": 1783248285.0,
-    "ast_hash": "a3a3c5a8faf3271b7d8012994d9f0a57",
-    "semantic_hash": ""
-  },
-  "/Users/toufeeqahamed/Paigham/noor/src/uploads/IMG_7563.PNG": {
-    "mtime": 1783248285.0,
-    "ast_hash": "8446eb962c83143dc9bca01bd60c2fd4",
-    "semantic_hash": ""
-  },
-  "/Users/toufeeqahamed/Paigham/noor/src/uploads/IMG_7564.PNG": {
-    "mtime": 1783248285.0,
-    "ast_hash": "40aeb14d03326011d5462351fef1f249",
-    "semantic_hash": ""
-  },
-  "/Users/toufeeqahamed/Paigham/noor/src/uploads/IMG_7565.PNG": {
-    "mtime": 1783248285.0,
-    "ast_hash": "0aedb98b1acb0d6a833c0ebef3794c53",
-    "semantic_hash": ""
-  },
-  "/Users/toufeeqahamed/Paigham/noor/src/uploads/IMG_7566.PNG": {
-    "mtime": 1783248285.0,
-    "ast_hash": "b4619a644b2dcea82bf527441eab3fb9",
-    "semantic_hash": ""
-  },
-  "/Users/toufeeqahamed/Paigham/noor/src/uploads/IMG_7567.PNG": {
-    "mtime": 1783248285.0,
-    "ast_hash": "b69ab20452a913ac2842d652f0e800b6",
-    "semantic_hash": ""
-  },
-  "/Users/toufeeqahamed/Paigham/noor/src/uploads/IMG_7568.PNG": {
-    "mtime": 1783248286.0,
-    "ast_hash": "785489d3bc78f787ca7b68b1058e1cbc",
-    "semantic_hash": ""
-  },
-  "/Users/toufeeqahamed/Paigham/noor/src/uploads/IMG_7569.PNG": {
-    "mtime": 1783248286.0,
-    "ast_hash": "b9793224a2df0364cbe0a35052f6aff4",
-    "semantic_hash": ""
-  },
-  "/Users/toufeeqahamed/Paigham/noor/src/uploads/IMG_7570.PNG": {
-    "mtime": 1783248286.0,
-    "ast_hash": "c7c0f23d1fbf60829ea387be75cb6ab7",
-    "semantic_hash": ""
-  },
-  "/Users/toufeeqahamed/Paigham/noor/src/uploads/IMG_7571.PNG": {
-    "mtime": 1783248286.0,
-    "ast_hash": "a9e9ef4eab7b3de35a53c756fab6394f",
-    "semantic_hash": ""
-  },
-  "/Users/toufeeqahamed/Paigham/noor/src/uploads/IMG_7572.PNG": {
-    "mtime": 1783248286.0,
-    "ast_hash": "2d3c423db2a1d193d78be18074fb2b08",
-    "semantic_hash": ""
-  },
-  "/Users/toufeeqahamed/Paigham/noor/src/uploads/IMG_7573.PNG": {
-    "mtime": 1783248286.0,
-    "ast_hash": "ec5e732d3590b20727e1c934a45ecc86",
-    "semantic_hash": ""
-  },
-  "/Users/toufeeqahamed/Paigham/noor/src/uploads/IMG_7574.PNG": {
-    "mtime": 1783248286.0,
-    "ast_hash": "fba0824a94fe63d68b2e2ef06ea0a61e",
-    "semantic_hash": ""
-  },
-  "/Users/toufeeqahamed/Paigham/noor/src/uploads/IMG_7575.PNG": {
-    "mtime": 1783248286.0,
-    "ast_hash": "8663b94cc8bbc66bfeb7b6e8490e7b5c",
-    "semantic_hash": ""
-  },
-  "/Users/toufeeqahamed/Paigham/noor/src/uploads/IMG_7576.PNG": {
-    "mtime": 1783248286.0,
-    "ast_hash": "0e28cdc6c67f47e9a3f29f33fb92083f",
-    "semantic_hash": ""
-  },
-  "/Users/toufeeqahamed/Paigham/noor/src/uploads/IMG_7577.PNG": {
-    "mtime": 1783248286.0,
-    "ast_hash": "085ea292b4bc7df98a9b018ddad10f7c",
-    "semantic_hash": ""
-  },
-  "/Users/toufeeqahamed/Paigham/noor/src/uploads/IMG_7578.PNG": {
-    "mtime": 1783248286.0,
-    "ast_hash": "41622658075e2b890af4569b46567aa8",
-    "semantic_hash": ""
-  },
-  "/Users/toufeeqahamed/Paigham/noor/src/uploads/IMG_7579.PNG": {
-    "mtime": 1783248286.0,
-    "ast_hash": "24390129bf0b6f2a822fc91d80ee4b51",
-    "semantic_hash": ""
-  },
-  "/Users/toufeeqahamed/Paigham/noor/src/uploads/IMG_7580.PNG": {
-    "mtime": 1783248286.0,
-    "ast_hash": "c84afa64244f4647517f65c602598a2c",
-    "semantic_hash": ""
-  },
-  "/Users/toufeeqahamed/Paigham/noor/src/uploads/IMG_7581.PNG": {
-    "mtime": 1783248286.0,
-    "ast_hash": "641028133b409a7267e76061010b7868",
-    "semantic_hash": ""
-  },
-  "/Users/toufeeqahamed/Paigham/noor/src/uploads/IMG_7582.PNG": {
-    "mtime": 1783248286.0,
-    "ast_hash": "646c3c948c143b40a8b94ffe6d6da691",
-    "semantic_hash": ""
-  },
-  "/Users/toufeeqahamed/Paigham/noor/src/uploads/IMG_7583.PNG": {
-    "mtime": 1783248286.0,
-    "ast_hash": "2464b73448fe0e7ece93a01ddf9ed20e",
-    "semantic_hash": ""
-  },
-  "/Users/toufeeqahamed/Paigham/noor/src/uploads/IMG_7584.PNG": {
-    "mtime": 1783248286.0,
-    "ast_hash": "b9d0eecbde977a4347757330afffad2a",
-    "semantic_hash": ""
-  },
-  "/Users/toufeeqahamed/Paigham/noor/src/uploads/IMG_7585.PNG": {
-    "mtime": 1783248286.0,
-    "ast_hash": "7e86146173aa0e064317bd0e5c0d9f22",
-    "semantic_hash": ""
-  },
-  "/Users/toufeeqahamed/Paigham/noor/src/uploads/IMG_7586.PNG": {
-    "mtime": 1783248286.0,
-    "ast_hash": "c0d49b7b3652780e814577748b89df05",
-    "semantic_hash": ""
-  },
-  "/Users/toufeeqahamed/Paigham/noor/src/uploads/IMG_7587.PNG": {
-    "mtime": 1783248286.0,
-    "ast_hash": "81c215cc1feb49059e8d8d476b691452",
-    "semantic_hash": ""
-  },
-  "/Users/toufeeqahamed/Paigham/noor/src/uploads/IMG_7588.PNG": {
-    "mtime": 1783248286.0,
-    "ast_hash": "348a7a13b4185a2f936832f24adfde41",
-    "semantic_hash": ""
-  },
-  "/Users/toufeeqahamed/Paigham/noor/src/uploads/IMG_7589.PNG": {
-    "mtime": 1783248286.0,
-    "ast_hash": "9c973e2aefb14048b2cf7700e55ac808",
-    "semantic_hash": ""
-  },
-  "/Users/toufeeqahamed/Paigham/noor/src/uploads/IMG_7590.PNG": {
-    "mtime": 1783248286.0,
-    "ast_hash": "fe5a0b7102cf9f8e7be6b9577f121316",
-    "semantic_hash": ""
-  },
-  "/Users/toufeeqahamed/Paigham/noor/src/uploads/IMG_7593.PNG": {
-    "mtime": 1783248286.0,
-    "ast_hash": "9c505d5b38c306e2e05dac568dd3f6f8",
-    "semantic_hash": ""
-  },
-  "/Users/toufeeqahamed/Paigham/noor/src/uploads/IMG_7594.PNG": {
-    "mtime": 1783248286.0,
-    "ast_hash": "d15ddfb46d1ce1f6f7c0707d22cfdb8b",
-    "semantic_hash": ""
-  },
-  "/Users/toufeeqahamed/Paigham/noor/src/uploads/IMG_7595.PNG": {
-    "mtime": 1783248286.0,
-    "ast_hash": "84524983a4f1efbe9aa08e94e15ea59d",
-    "semantic_hash": ""
-  },
-  "/Users/toufeeqahamed/Paigham/noor/src/uploads/IMG_7596.PNG": {
-    "mtime": 1783248286.0,
-    "ast_hash": "b4afd55a42893fabc27fdc4099cf4064",
-    "semantic_hash": ""
-  },
-  "/Users/toufeeqahamed/Paigham/noor/src/uploads/IMG_7597.PNG": {
-    "mtime": 1783248286.0,
-    "ast_hash": "2098d6e86d1df7cbba64dc0283291cb3",
-    "semantic_hash": ""
-  },
-  "/Users/toufeeqahamed/Paigham/noor/src/uploads/draw-1e02ddbf-431b-4c95-8136-a9ae24c24c78.png": {
-    "mtime": 1783248286.0,
-    "ast_hash": "8066e21f11fd46e2b9ceab5e39afa68f",
-    "semantic_hash": ""
-  },
-  "/Users/toufeeqahamed/Paigham/noor/src/uploads/intro_ibadah.webp": {
-    "mtime": 1783248286.0,
-    "ast_hash": "0212018a22ed0845662621a4381d645a",
-    "semantic_hash": ""
-  },
-  "/Users/toufeeqahamed/Paigham/noor/src/uploads/intro_qaum.webp": {
-    "mtime": 1783248286.0,
-    "ast_hash": "1db841dd712c218b07558b13ef4edb08",
-    "semantic_hash": ""
-  },
-  "/Users/toufeeqahamed/Paigham/noor/src/uploads/intro_salaah.webp": {
-    "mtime": 1783248286.0,
-    "ast_hash": "2a470fc75ff8a46ab52ae8f8e66ffa69",
-    "semantic_hash": ""
-  },
-  "/Users/toufeeqahamed/Paigham/noor/src/uploads/maghrib_background.webp": {
-    "mtime": 1783248286.0,
-    "ast_hash": "f9aa20868c1038ed992c78948096c09b",
-    "semantic_hash": ""
-  },
-  "/Users/toufeeqahamed/Paigham/noor/src/uploads/maghrib_dua.webp": {
-    "mtime": 1783248286.0,
-    "ast_hash": "c5a54363f5b262fc1197b3e986096e52",
-    "semantic_hash": ""
-  },
-  "/Users/toufeeqahamed/Paigham/noor/src/uploads/maghrib_masjid.webp": {
-    "mtime": 1783248286.0,
-    "ast_hash": "6feec9d10de3625b2bec036f794bdcc6",
-    "semantic_hash": ""
-  },
-  "/Users/toufeeqahamed/Paigham/noor/src/uploads/maghrib_quran.webp": {
-    "mtime": 1783248286.0,
-    "ast_hash": "0acc98d585b38109a8bf0f5cc0033fd7",
-    "semantic_hash": ""
-  },
-  "/Users/toufeeqahamed/Paigham/noor/src/uploads/maghrib_sehri.webp": {
-    "mtime": 1783248286.0,
-    "ast_hash": "fc9f18fcdc4ab89de83da6fe9dd05d91",
-    "semantic_hash": ""
-  },
-  "/Users/toufeeqahamed/Paigham/noor/src/uploads/pasted-1782408184414-0.png": {
-    "mtime": 1783248286.0,
-    "ast_hash": "89e6c493316d7e211922c4434b7c947c",
-    "semantic_hash": ""
-  },
-  "/Users/toufeeqahamed/Paigham/noor/src/uploads/pasted-1782408192621-0.png": {
-    "mtime": 1783248287.0,
-    "ast_hash": "89e6c493316d7e211922c4434b7c947c",
-    "semantic_hash": ""
-  },
-  "/Users/toufeeqahamed/Paigham/noor/src/uploads/pasted-1782448827642-0.png": {
-    "mtime": 1783248287.0,
-    "ast_hash": "ace02be6efd17478ccd32cbc8b8fcc5b",
-    "semantic_hash": ""
-  },
-  "/Users/toufeeqahamed/Paigham/noor/src/uploads/pasted-1783246947693-0.png": {
-    "mtime": 1783248287.0,
-    "ast_hash": "349d01998b3266a7b500243c633a76f6",
-    "semantic_hash": ""
-  },
-  "/Users/toufeeqahamed/Paigham/noor/src/uploads/pasted-1783246962023-0.png": {
-    "mtime": 1783248287.0,
-    "ast_hash": "4a778c080089d854f534e3b0be8ce7e9",
+    "mtime": 1784181098.7209213,
+    "ast_hash": "c8de39a011d26b1dc772b5c6b133945e",
     "semantic_hash": ""
   },
   "/Users/toufeeqahamed/Paigham/noor/src/home/storyboards/screens.jsx": {
@@ -1372,6 +1027,41 @@
   "/Users/toufeeqahamed/Paigham/noor/images/kaaba.webp": {
     "mtime": 1784105714.511291,
     "ast_hash": "2dd80773b41d318d7c5e4be90cbdfbed",
+    "semantic_hash": ""
+  },
+  "/Users/toufeeqahamed/Paigham/noor/firebase.json": {
+    "mtime": 1784109243.7866173,
+    "ast_hash": "1a5c4fd89872abaade3233369101b70b",
+    "semantic_hash": ""
+  },
+  "/Users/toufeeqahamed/Paigham/noor/package.json": {
+    "mtime": 1784109250.432417,
+    "ast_hash": "f5d9906bb4d807212e47000f901897ca",
+    "semantic_hash": ""
+  },
+  "/Users/toufeeqahamed/Paigham/noor/tools/build.mjs": {
+    "mtime": 1784109234.3481874,
+    "ast_hash": "5f1330b1348a696c1c12d435cf93526e",
+    "semantic_hash": ""
+  },
+  "/Users/toufeeqahamed/Paigham/noor/tools/serve-dist.py": {
+    "mtime": 1784109261.4413042,
+    "ast_hash": "4708e86401b4129316d624e481dfe7f3",
+    "semantic_hash": ""
+  },
+  "/Users/toufeeqahamed/Paigham/noor/images/intro_ibadah.webp": {
+    "mtime": 1783248286.0,
+    "ast_hash": "0212018a22ed0845662621a4381d645a",
+    "semantic_hash": ""
+  },
+  "/Users/toufeeqahamed/Paigham/noor/images/intro_qaum.webp": {
+    "mtime": 1783248286.0,
+    "ast_hash": "1db841dd712c218b07558b13ef4edb08",
+    "semantic_hash": ""
+  },
+  "/Users/toufeeqahamed/Paigham/noor/images/intro_salaah.webp": {
+    "mtime": 1783248286.0,
+    "ast_hash": "2a470fc75ff8a46ab52ae8f8e66ffa69",
     "semantic_hash": ""
   }
 }

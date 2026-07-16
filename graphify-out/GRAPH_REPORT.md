@@ -1,16 +1,16 @@
-# Graph Report - noor  (2026-07-15)
+# Graph Report - noor  (2026-07-16)
 
 ## Corpus Check
-- 58 files · ~2,834,110 words
+- 62 files · ~221,035 words
 - Verdict: corpus is large enough that graph structure adds value.
 
 ## Summary
-- 667 nodes · 691 edges · 64 communities (30 shown, 34 thin omitted)
+- 705 nodes · 726 edges · 68 communities (33 shown, 35 thin omitted)
 - Extraction: 100% EXTRACTED · 0% INFERRED · 0% AMBIGUOUS
 - Token cost: 0 input · 0 output
 
 ## Graph Freshness
-- Built from commit: `29cc6c78`
+- Built from commit: `30b56845`
 - Run `git rev-parse HEAD` and compare to check if the graph is stale.
 - Run `graphify update .` after code changes (no API cost).
 
@@ -75,6 +75,10 @@
 - [[_COMMUNITY_Community 61|Community 61]]
 - [[_COMMUNITY_Community 62|Community 62]]
 - [[_COMMUNITY_Community 63|Community 63]]
+- [[_COMMUNITY_Community 64|Community 64]]
+- [[_COMMUNITY_Community 65|Community 65]]
+- [[_COMMUNITY_Community 66|Community 66]]
+- [[_COMMUNITY_Community 67|Community 67]]
 
 ## God Nodes (most connected - your core abstractions)
 1. `tokenKinds` - 141 edges
@@ -94,7 +98,7 @@
 ## Import Cycles
 - None detected.
 
-## Communities (64 total, 34 thin omitted)
+## Communities (68 total, 35 thin omitted)
 
 ### Community 0 - "Community 0"
 Cohesion: 0.01
@@ -200,20 +204,32 @@ Nodes (5): buildFollowRows(), buildManageTiles(), frame(), sheetFrames(), SheetR
 Cohesion: 0.60
 Nodes (3): buildClaimResults(), wizardFrames(), WizardRow()
 
+### Community 64 - "Community 64"
+Cohesion: 0.12
+Nodes (10): dirCount, DIST, IMAGES, pages, patchChrome(), rewrite(), ROOT, routeMap (+2 more)
+
+### Community 65 - "Community 65"
+Cohesion: 0.18
+Nodes (10): description, name, private, scripts, build, deploy, preview, serve (+2 more)
+
+### Community 66 - "Community 66"
+Cohesion: 0.33
+Nodes (5): hosting, headers, ignore, public, trailingSlash
+
 ## Knowledge Gaps
-- **334 isolated node(s):** `eval_id`, `eval_name`, `prompt`, `assertions`, `eval_id` (+329 more)
+- **355 isolated node(s):** `eval_id`, `eval_name`, `prompt`, `assertions`, `eval_id` (+350 more)
   These have ≤1 connection - possible missing edges or undocumented components.
-- **34 thin communities (<3 nodes) omitted from report** — run `graphify query` to explore isolated nodes.
+- **35 thin communities (<3 nodes) omitted from report** — run `graphify query` to explore isolated nodes.
 
 ## Suggested Questions
 _Questions this graph is uniquely positioned to answer:_
 
 - **Why does `tokenKinds` connect `Community 0` to `Community 5`?**
-  _High betweenness centrality (0.051) - this node is a cross-community bridge._
+  _High betweenness centrality (0.046) - this node is a cross-community bridge._
 - **Why does `x-omelette` connect `Community 5` to `Community 0`?**
   _High betweenness centrality (0.006) - this node is a cross-community bridge._
 - **What connects `eval_id`, `eval_name`, `prompt` to the rest of the system?**
-  _334 weakly-connected nodes found - possible documentation gaps or missing edges._
+  _355 weakly-connected nodes found - possible documentation gaps or missing edges._
 - **Should `Community 0` be split into smaller, more focused modules?**
   _Cohesion score 0.014184397163120567 - nodes in this community are weakly interconnected._
 - **Should `Community 1` be split into smaller, more focused modules?**

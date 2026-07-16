@@ -1,0 +1,13 @@
+{
+  "name": "noor-poc",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Noor — Paigham design POC. Static .dc.html pages; `build` emits a clean-URL dist/ for Firebase Hosting.",
+  "type": "module",
+  "scripts": {
+    "build": "node tools/build.mjs",
+    "serve": "npm run build && python3 tools/serve-dist.py 8475",
+    "deploy": "npm run build && firebase deploy --only hosting",
+    "preview": "npm run build && firebase hosting:channel:deploy preview"
+  }
+}

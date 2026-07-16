@@ -17,3 +17,5 @@ graphify-out/.graphify_*
 graphify-out/cost.json
 graphify-out/20*/
 .gstack/
+# design-tool scratch dumps (intro_* live in images/)
+src/uploads/

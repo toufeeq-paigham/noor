@@ -229,6 +229,159 @@
       "norm_label": "configurations"
     },
     {
+      "label": "firebase.json",
+      "file_type": "code",
+      "source_file": "firebase.json",
+      "source_location": "L1",
+      "id": "firebase",
+      "community": 66,
+      "norm_label": "firebase.json"
+    },
+    {
+      "label": "hosting",
+      "file_type": "code",
+      "source_file": "firebase.json",
+      "source_location": "L2",
+      "id": "firebase_hosting",
+      "community": 66,
+      "norm_label": "hosting"
+    },
+    {
+      "label": "public",
+      "file_type": "code",
+      "source_file": "firebase.json",
+      "source_location": "L3",
+      "id": "firebase_hosting_public",
+      "community": 66,
+      "norm_label": "public"
+    },
+    {
+      "label": "trailingSlash",
+      "file_type": "code",
+      "source_file": "firebase.json",
+      "source_location": "L4",
+      "id": "firebase_hosting_trailingslash",
+      "community": 66,
+      "norm_label": "trailingslash"
+    },
+    {
+      "label": "ignore",
+      "file_type": "code",
+      "source_file": "firebase.json",
+      "source_location": "L5",
+      "id": "firebase_hosting_ignore",
+      "community": 66,
+      "norm_label": "ignore"
+    },
+    {
+      "label": "headers",
+      "file_type": "code",
+      "source_file": "firebase.json",
+      "source_location": "L6",
+      "id": "firebase_hosting_headers",
+      "community": 66,
+      "norm_label": "headers"
+    },
+    {
+      "label": "package.json",
+      "file_type": "code",
+      "source_file": "package.json",
+      "source_location": "L1",
+      "id": "package",
+      "community": 65,
+      "norm_label": "package.json"
+    },
+    {
+      "label": "name",
+      "file_type": "code",
+      "source_file": "package.json",
+      "source_location": "L2",
+      "id": "package_name",
+      "community": 65,
+      "norm_label": "name"
+    },
+    {
+      "label": "version",
+      "file_type": "code",
+      "source_file": "package.json",
+      "source_location": "L3",
+      "id": "package_version",
+      "community": 65,
+      "norm_label": "version"
+    },
+    {
+      "label": "private",
+      "file_type": "code",
+      "source_file": "package.json",
+      "source_location": "L4",
+      "id": "package_private",
+      "community": 65,
+      "norm_label": "private"
+    },
+    {
+      "label": "description",
+      "file_type": "code",
+      "source_file": "package.json",
+      "source_location": "L5",
+      "id": "package_description",
+      "community": 65,
+      "norm_label": "description"
+    },
+    {
+      "label": "type",
+      "file_type": "code",
+      "source_file": "package.json",
+      "source_location": "L6",
+      "id": "package_type",
+      "community": 65,
+      "norm_label": "type"
+    },
+    {
+      "label": "scripts",
+      "file_type": "code",
+      "source_file": "package.json",
+      "source_location": "L7",
+      "id": "package_scripts",
+      "community": 65,
+      "norm_label": "scripts"
+    },
+    {
+      "label": "build",
+      "file_type": "code",
+      "source_file": "package.json",
+      "source_location": "L8",
+      "id": "package_scripts_build",
+      "community": 65,
+      "norm_label": "build"
+    },
+    {
+      "label": "serve",
+      "file_type": "code",
+      "source_file": "package.json",
+      "source_location": "L9",
+      "id": "package_scripts_serve",
+      "community": 65,
+      "norm_label": "serve"
+    },
+    {
+      "label": "deploy",
+      "file_type": "code",
+      "source_file": "package.json",
+      "source_location": "L10",
+      "id": "package_scripts_deploy",
+      "community": 65,
+      "norm_label": "deploy"
+    },
+    {
+      "label": "preview",
+      "file_type": "code",
+      "source_file": "package.json",
+      "source_location": "L11",
+      "id": "package_scripts_preview",
+      "community": 65,
+      "norm_label": "preview"
+    },
+    {
       "label": "_adherence.oxlintrc.json",
       "file_type": "code",
       "source_file": "src/_ds/noor-design-system-46f42e91-1858-412f-bdb6-560a6cc3df9f/_adherence.oxlintrc.json",
@@ -4759,6 +4912,195 @@
       "norm_label": "cleanup()"
     },
     {
+      "label": "build.mjs",
+      "file_type": "code",
+      "source_file": "tools/build.mjs",
+      "source_location": "L1",
+      "id": "tools_build",
+      "community": 64,
+      "norm_label": "build.mjs"
+    },
+    {
+      "label": "ROOT",
+      "file_type": "code",
+      "source_file": "tools/build.mjs",
+      "source_location": "L18",
+      "id": "tools_build_root",
+      "community": 64,
+      "norm_label": "root"
+    },
+    {
+      "label": "SRC",
+      "file_type": "code",
+      "source_file": "tools/build.mjs",
+      "source_location": "L19",
+      "id": "tools_build_src",
+      "community": 64,
+      "norm_label": "src"
+    },
+    {
+      "label": "IMAGES",
+      "file_type": "code",
+      "source_file": "tools/build.mjs",
+      "source_location": "L20",
+      "id": "tools_build_images",
+      "community": 64,
+      "norm_label": "images"
+    },
+    {
+      "label": "DIST",
+      "file_type": "code",
+      "source_file": "tools/build.mjs",
+      "source_location": "L21",
+      "id": "tools_build_dist",
+      "community": 64,
+      "norm_label": "dist"
+    },
+    {
+      "label": "posix()",
+      "file_type": "code",
+      "source_file": "tools/build.mjs",
+      "source_location": "L26",
+      "id": "tools_build_posix",
+      "community": 64,
+      "norm_label": "posix()"
+    },
+    {
+      "label": "slug()",
+      "file_type": "code",
+      "source_file": "tools/build.mjs",
+      "source_location": "L27",
+      "id": "tools_build_slug",
+      "community": 64,
+      "norm_label": "slug()"
+    },
+    {
+      "label": "resolveWeb()",
+      "file_type": "code",
+      "source_file": "tools/build.mjs",
+      "source_location": "L32",
+      "id": "tools_build_resolveweb",
+      "community": 64,
+      "norm_label": "resolveweb()"
+    },
+    {
+      "label": "walk()",
+      "file_type": "code",
+      "source_file": "tools/build.mjs",
+      "source_location": "L43",
+      "id": "tools_build_walk",
+      "community": 64,
+      "norm_label": "walk()"
+    },
+    {
+      "label": "pages",
+      "file_type": "code",
+      "source_file": "tools/build.mjs",
+      "source_location": "L53",
+      "id": "tools_build_pages",
+      "community": 64,
+      "norm_label": "pages"
+    },
+    {
+      "label": "dirCount",
+      "file_type": "code",
+      "source_file": "tools/build.mjs",
+      "source_location": "L54",
+      "id": "tools_build_dircount",
+      "community": 64,
+      "norm_label": "dircount"
+    },
+    {
+      "label": "routeMap",
+      "file_type": "code",
+      "source_file": "tools/build.mjs",
+      "source_location": "L59",
+      "id": "tools_build_routemap",
+      "community": 64,
+      "norm_label": "routemap"
+    },
+    {
+      "label": "warnings",
+      "file_type": "code",
+      "source_file": "tools/build.mjs",
+      "source_location": "L70",
+      "id": "tools_build_warnings",
+      "community": 64,
+      "norm_label": "warnings"
+    },
+    {
+      "label": "rewrite()",
+      "file_type": "code",
+      "source_file": "tools/build.mjs",
+      "source_location": "L73",
+      "id": "tools_build_rewrite",
+      "community": 64,
+      "norm_label": "rewrite()"
+    },
+    {
+      "label": "patchChrome()",
+      "file_type": "code",
+      "source_file": "tools/build.mjs",
+      "source_location": "L88",
+      "id": "tools_build_patchchrome",
+      "community": 64,
+      "norm_label": "patchchrome()"
+    },
+    {
+      "label": "baseFor()",
+      "file_type": "code",
+      "source_file": "tools/build.mjs",
+      "source_location": "L98",
+      "id": "tools_build_basefor",
+      "community": 64,
+      "norm_label": "basefor()"
+    },
+    {
+      "label": "write()",
+      "file_type": "code",
+      "source_file": "tools/build.mjs",
+      "source_location": "L107",
+      "id": "tools_build_write",
+      "community": 64,
+      "norm_label": "write()"
+    },
+    {
+      "label": "serve-dist.py",
+      "file_type": "code",
+      "source_file": "tools/serve-dist.py",
+      "source_location": "L1",
+      "id": "tools_serve_dist",
+      "community": 67,
+      "norm_label": "serve-dist.py"
+    },
+    {
+      "label": "Handler",
+      "file_type": "code",
+      "source_file": "tools/serve-dist.py",
+      "source_location": "L12",
+      "id": "tools_serve_dist_handler",
+      "community": 67,
+      "norm_label": "handler"
+    },
+    {
+      "label": ".__init__()",
+      "file_type": "code",
+      "source_file": "tools/serve-dist.py",
+      "source_location": "L13",
+      "id": "tools_serve_dist_handler_init",
+      "community": 67,
+      "norm_label": ".__init__()"
+    },
+    {
+      "label": ".end_headers()",
+      "file_type": "code",
+      "source_file": "tools/serve-dist.py",
+      "source_location": "L16",
+      "id": "tools_serve_dist_handler_end_headers",
+      "community": 67,
+      "norm_label": ".end_headers()"
+    },
+    {
       "label": "AGENTS.md",
       "file_type": "document",
       "source_file": ".agents/AGENTS.md",
@@ -6201,6 +6543,156 @@
       "confidence_score": 1.0,
       "source": "vscode_launch",
       "target": "vscode_launch_version"
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "firebase.json",
+      "source_location": "L2",
+      "weight": 1.0,
+      "source": "firebase",
+      "target": "firebase_hosting",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "firebase.json",
+      "source_location": "L6",
+      "weight": 1.0,
+      "source": "firebase_hosting",
+      "target": "firebase_hosting_headers",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "firebase.json",
+      "source_location": "L5",
+      "weight": 1.0,
+      "source": "firebase_hosting",
+      "target": "firebase_hosting_ignore",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "firebase.json",
+      "source_location": "L3",
+      "weight": 1.0,
+      "source": "firebase_hosting",
+      "target": "firebase_hosting_public",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "firebase.json",
+      "source_location": "L4",
+      "weight": 1.0,
+      "source": "firebase_hosting",
+      "target": "firebase_hosting_trailingslash",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "package.json",
+      "source_location": "L5",
+      "weight": 1.0,
+      "source": "package",
+      "target": "package_description",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "package.json",
+      "source_location": "L2",
+      "weight": 1.0,
+      "source": "package",
+      "target": "package_name",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "package.json",
+      "source_location": "L4",
+      "weight": 1.0,
+      "source": "package",
+      "target": "package_private",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "package.json",
+      "source_location": "L7",
+      "weight": 1.0,
+      "source": "package",
+      "target": "package_scripts",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "package.json",
+      "source_location": "L6",
+      "weight": 1.0,
+      "source": "package",
+      "target": "package_type",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "package.json",
+      "source_location": "L3",
+      "weight": 1.0,
+      "source": "package",
+      "target": "package_version",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "package.json",
+      "source_location": "L8",
+      "weight": 1.0,
+      "source": "package_scripts",
+      "target": "package_scripts_build",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "package.json",
+      "source_location": "L10",
+      "weight": 1.0,
+      "source": "package_scripts",
+      "target": "package_scripts_deploy",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "package.json",
+      "source_location": "L11",
+      "weight": 1.0,
+      "source": "package_scripts",
+      "target": "package_scripts_preview",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "package.json",
+      "source_location": "L9",
+      "weight": 1.0,
+      "source": "package_scripts",
+      "target": "package_scripts_serve",
+      "confidence_score": 1.0
     },
     {
       "relation": "contains",
@@ -9599,9 +10091,9 @@
       "source_file": "src/masjid-register/storyboards/entry-row.jsx",
       "source_location": "L9",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "storyboards_entry_row",
-      "target": "storyboards_entry_row_entry_frames",
-      "confidence_score": 1.0
+      "target": "storyboards_entry_row_entry_frames"
     },
     {
       "relation": "contains",
@@ -9609,9 +10101,9 @@
       "source_file": "src/masjid-register/storyboards/entry-row.jsx",
       "source_location": "L36",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "storyboards_entry_row",
-      "target": "storyboards_entry_row_entryrow",
-      "confidence_score": 1.0
+      "target": "storyboards_entry_row_entryrow"
     },
     {
       "relation": "contains",
@@ -9619,9 +10111,9 @@
       "source_file": "src/masjid-register/storyboards/entry-row.jsx",
       "source_location": "L15",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "storyboards_entry_row",
-      "target": "storyboards_entry_row_frame",
-      "confidence_score": 1.0
+      "target": "storyboards_entry_row_frame"
     },
     {
       "relation": "contains",
@@ -9629,9 +10121,9 @@
       "source_file": "src/masjid-register/storyboards/entry-row.jsx",
       "source_location": "L6",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "storyboards_entry_row",
-      "target": "storyboards_entry_row_nav",
-      "confidence_score": 1.0
+      "target": "storyboards_entry_row_nav"
     },
     {
       "relation": "contains",
@@ -9639,9 +10131,9 @@
       "source_file": "src/masjid-register/storyboards/entry-row.jsx",
       "source_location": "L7",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "storyboards_entry_row",
-      "target": "storyboards_entry_row_noop",
-      "confidence_score": 1.0
+      "target": "storyboards_entry_row_noop"
     },
     {
       "relation": "contains",
@@ -9649,9 +10141,9 @@
       "source_file": "src/masjid-register/storyboards/outcome-row.jsx",
       "source_location": "L11",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "storyboards_outcome_row",
-      "target": "storyboards_outcome_row_frame",
-      "confidence_score": 1.0
+      "target": "storyboards_outcome_row_frame"
     },
     {
       "relation": "contains",
@@ -9659,9 +10151,9 @@
       "source_file": "src/masjid-register/storyboards/outcome-row.jsx",
       "source_location": "L5",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "storyboards_outcome_row",
-      "target": "storyboards_outcome_row_outcome_frames",
-      "confidence_score": 1.0
+      "target": "storyboards_outcome_row_outcome_frames"
     },
     {
       "relation": "contains",
@@ -9669,9 +10161,9 @@
       "source_file": "src/masjid-register/storyboards/outcome-row.jsx",
       "source_location": "L30",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "storyboards_outcome_row",
-      "target": "storyboards_outcome_row_outcomerow",
-      "confidence_score": 1.0
+      "target": "storyboards_outcome_row_outcomerow"
     },
     {
       "relation": "contains",
@@ -9679,9 +10171,9 @@
       "source_file": "src/masjid-register/storyboards/screens.jsx",
       "source_location": "L25",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "src_masjid_register_storyboards_screens_jsx_storyboards_screens",
-      "target": "storyboards_screens_claim_data",
-      "confidence_score": 1.0
+      "target": "storyboards_screens_claim_data"
     },
     {
       "relation": "contains",
@@ -9689,9 +10181,9 @@
       "source_file": "src/masjid-register/storyboards/screens.jsx",
       "source_location": "L37",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "src_masjid_register_storyboards_screens_jsx_storyboards_screens",
-      "target": "storyboards_screens_field",
-      "confidence_score": 1.0
+      "target": "storyboards_screens_field"
     },
     {
       "relation": "contains",
@@ -9699,9 +10191,9 @@
       "source_file": "src/masjid-register/storyboards/screens.jsx",
       "source_location": "L18",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "src_masjid_register_storyboards_screens_jsx_storyboards_screens",
-      "target": "storyboards_screens_follow_data",
-      "confidence_score": 1.0
+      "target": "storyboards_screens_follow_data"
     },
     {
       "relation": "contains",
@@ -9709,9 +10201,9 @@
       "source_file": "src/masjid-register/storyboards/screens.jsx",
       "source_location": "L14",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "src_masjid_register_storyboards_screens_jsx_storyboards_screens",
-      "target": "storyboards_screens_manage_data",
-      "confidence_score": 1.0
+      "target": "storyboards_screens_manage_data"
     },
     {
       "relation": "contains",
@@ -9719,9 +10211,9 @@
       "source_file": "src/masjid-register/storyboards/screens.jsx",
       "source_location": "L31",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "src_masjid_register_storyboards_screens_jsx_storyboards_screens",
-      "target": "storyboards_screens_maslak_list",
-      "confidence_score": 1.0
+      "target": "storyboards_screens_maslak_list"
     },
     {
       "relation": "contains",
@@ -9729,9 +10221,9 @@
       "source_file": "src/masjid-register/storyboards/screens.jsx",
       "source_location": "L64",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "src_masjid_register_storyboards_screens_jsx_storyboards_screens",
-      "target": "storyboards_screens_mymasjidssheet",
-      "confidence_score": 1.0
+      "target": "storyboards_screens_mymasjidssheet"
     },
     {
       "relation": "contains",
@@ -9739,9 +10231,9 @@
       "source_file": "src/masjid-register/storyboards/screens.jsx",
       "source_location": "L143",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "src_masjid_register_storyboards_screens_jsx_storyboards_screens",
-      "target": "storyboards_screens_optionsheet",
-      "confidence_score": 1.0
+      "target": "storyboards_screens_optionsheet"
     },
     {
       "relation": "contains",
@@ -9749,9 +10241,9 @@
       "source_file": "src/masjid-register/storyboards/screens.jsx",
       "source_location": "L470",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "src_masjid_register_storyboards_screens_jsx_storyboards_screens",
-      "target": "storyboards_screens_outcomescreen",
-      "confidence_score": 1.0
+      "target": "storyboards_screens_outcomescreen"
     },
     {
       "relation": "contains",
@@ -9759,9 +10251,9 @@
       "source_file": "src/masjid-register/storyboards/screens.jsx",
       "source_location": "L162",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "src_masjid_register_storyboards_screens_jsx_storyboards_screens",
-      "target": "storyboards_screens_pickerfield",
-      "confidence_score": 1.0
+      "target": "storyboards_screens_pickerfield"
     },
     {
       "relation": "contains",
@@ -9769,9 +10261,9 @@
       "source_file": "src/masjid-register/storyboards/screens.jsx",
       "source_location": "L173",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "src_masjid_register_storyboards_screens_jsx_storyboards_screens",
-      "target": "storyboards_screens_reviewrow",
-      "confidence_score": 1.0
+      "target": "storyboards_screens_reviewrow"
     },
     {
       "relation": "contains",
@@ -9779,9 +10271,9 @@
       "source_file": "src/masjid-register/storyboards/screens.jsx",
       "source_location": "L30",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "src_masjid_register_storyboards_screens_jsx_storyboards_screens",
-      "target": "storyboards_screens_role_list",
-      "confidence_score": 1.0
+      "target": "storyboards_screens_role_list"
     },
     {
       "relation": "contains",
@@ -9789,9 +10281,9 @@
       "source_file": "src/masjid-register/storyboards/screens.jsx",
       "source_location": "L48",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "src_masjid_register_storyboards_screens_jsx_storyboards_screens",
-      "target": "storyboards_screens_textinput",
-      "confidence_score": 1.0
+      "target": "storyboards_screens_textinput"
     },
     {
       "relation": "contains",
@@ -9799,9 +10291,9 @@
       "source_file": "src/masjid-register/storyboards/screens.jsx",
       "source_location": "L141",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "src_masjid_register_storyboards_screens_jsx_storyboards_screens",
-      "target": "storyboards_screens_wizard_sub",
-      "confidence_score": 1.0
+      "target": "storyboards_screens_wizard_sub"
     },
     {
       "relation": "contains",
@@ -9809,9 +10301,9 @@
       "source_file": "src/masjid-register/storyboards/screens.jsx",
       "source_location": "L140",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "src_masjid_register_storyboards_screens_jsx_storyboards_screens",
-      "target": "storyboards_screens_wizard_title",
-      "confidence_score": 1.0
+      "target": "storyboards_screens_wizard_title"
     },
     {
       "relation": "contains",
@@ -9819,9 +10311,9 @@
       "source_file": "src/masjid-register/storyboards/screens.jsx",
       "source_location": "L185",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "src_masjid_register_storyboards_screens_jsx_storyboards_screens",
-      "target": "storyboards_screens_wizardbody",
-      "confidence_score": 1.0
+      "target": "storyboards_screens_wizardbody"
     },
     {
       "relation": "contains",
@@ -9829,9 +10321,9 @@
       "source_file": "src/masjid-register/storyboards/screens.jsx",
       "source_location": "L437",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "src_masjid_register_storyboards_screens_jsx_storyboards_screens",
-      "target": "storyboards_screens_wizardscreen",
-      "confidence_score": 1.0
+      "target": "storyboards_screens_wizardscreen"
     },
     {
       "relation": "contains",
@@ -9839,9 +10331,9 @@
       "source_file": "src/masjid-register/storyboards/sheet-row.jsx",
       "source_location": "L10",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "storyboards_sheet_row",
-      "target": "storyboards_sheet_row_buildfollowrows",
-      "confidence_score": 1.0
+      "target": "storyboards_sheet_row_buildfollowrows"
     },
     {
       "relation": "contains",
@@ -9849,9 +10341,9 @@
       "source_file": "src/masjid-register/storyboards/sheet-row.jsx",
       "source_location": "L7",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "storyboards_sheet_row",
-      "target": "storyboards_sheet_row_buildmanagetiles",
-      "confidence_score": 1.0
+      "target": "storyboards_sheet_row_buildmanagetiles"
     },
     {
       "relation": "contains",
@@ -9859,9 +10351,9 @@
       "source_file": "src/masjid-register/storyboards/sheet-row.jsx",
       "source_location": "L22",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "storyboards_sheet_row",
-      "target": "storyboards_sheet_row_frame",
-      "confidence_score": 1.0
+      "target": "storyboards_sheet_row_frame"
     },
     {
       "relation": "contains",
@@ -9869,9 +10361,9 @@
       "source_file": "src/masjid-register/storyboards/sheet-row.jsx",
       "source_location": "L5",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "storyboards_sheet_row",
-      "target": "storyboards_sheet_row_noop",
-      "confidence_score": 1.0
+      "target": "storyboards_sheet_row_noop"
     },
     {
       "relation": "contains",
@@ -9879,9 +10371,9 @@
       "source_file": "src/masjid-register/storyboards/sheet-row.jsx",
       "source_location": "L15",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "storyboards_sheet_row",
-      "target": "storyboards_sheet_row_sheetframes",
-      "confidence_score": 1.0
+      "target": "storyboards_sheet_row_sheetframes"
     },
     {
       "relation": "contains",
@@ -9889,9 +10381,9 @@
       "source_file": "src/masjid-register/storyboards/sheet-row.jsx",
       "source_location": "L44",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "storyboards_sheet_row",
-      "target": "storyboards_sheet_row_sheetrow",
-      "confidence_score": 1.0
+      "target": "storyboards_sheet_row_sheetrow"
     },
     {
       "relation": "calls",
@@ -9900,9 +10392,9 @@
       "source_file": "src/masjid-register/storyboards/sheet-row.jsx",
       "source_location": "L25",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "storyboards_sheet_row_frame",
-      "target": "storyboards_sheet_row_buildmanagetiles",
-      "confidence_score": 1.0
+      "target": "storyboards_sheet_row_buildmanagetiles"
     },
     {
       "relation": "calls",
@@ -9911,9 +10403,9 @@
       "source_file": "src/masjid-register/storyboards/sheet-row.jsx",
       "source_location": "L25",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "storyboards_sheet_row_frame",
-      "target": "storyboards_sheet_row_buildfollowrows",
-      "confidence_score": 1.0
+      "target": "storyboards_sheet_row_buildfollowrows"
     },
     {
       "relation": "calls",
@@ -9922,9 +10414,9 @@
       "source_file": "src/masjid-register/storyboards/sheet-row.jsx",
       "source_location": "L45",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "storyboards_sheet_row_sheetrow",
-      "target": "storyboards_sheet_row_sheetframes",
-      "confidence_score": 1.0
+      "target": "storyboards_sheet_row_sheetframes"
     },
     {
       "relation": "contains",
@@ -9932,9 +10424,9 @@
       "source_file": "src/masjid-register/storyboards/wizard-row.jsx",
       "source_location": "L5",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "storyboards_wizard_row",
-      "target": "storyboards_wizard_row_buildclaimresults",
-      "confidence_score": 1.0
+      "target": "storyboards_wizard_row_buildclaimresults"
     },
     {
       "relation": "contains",
@@ -9942,9 +10434,9 @@
       "source_file": "src/masjid-register/storyboards/wizard-row.jsx",
       "source_location": "L26",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "storyboards_wizard_row",
-      "target": "storyboards_wizard_row_frame",
-      "confidence_score": 1.0
+      "target": "storyboards_wizard_row_frame"
     },
     {
       "relation": "contains",
@@ -9952,9 +10444,9 @@
       "source_file": "src/masjid-register/storyboards/wizard-row.jsx",
       "source_location": "L10",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "storyboards_wizard_row",
-      "target": "storyboards_wizard_row_wizardframes",
-      "confidence_score": 1.0
+      "target": "storyboards_wizard_row_wizardframes"
     },
     {
       "relation": "contains",
@@ -9962,9 +10454,9 @@
       "source_file": "src/masjid-register/storyboards/wizard-row.jsx",
       "source_location": "L45",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "storyboards_wizard_row",
-      "target": "storyboards_wizard_row_wizardrow",
-      "confidence_score": 1.0
+      "target": "storyboards_wizard_row_wizardrow"
     },
     {
       "relation": "calls",
@@ -9973,9 +10465,9 @@
       "source_file": "src/masjid-register/storyboards/wizard-row.jsx",
       "source_location": "L14",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "storyboards_wizard_row_wizardframes",
-      "target": "storyboards_wizard_row_buildclaimresults",
-      "confidence_score": 1.0
+      "target": "storyboards_wizard_row_buildclaimresults"
     },
     {
       "relation": "calls",
@@ -9984,9 +10476,9 @@
       "source_file": "src/masjid-register/storyboards/wizard-row.jsx",
       "source_location": "L46",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "storyboards_wizard_row_wizardrow",
-      "target": "storyboards_wizard_row_wizardframes",
-      "confidence_score": 1.0
+      "target": "storyboards_wizard_row_wizardframes"
     },
     {
       "relation": "contains",
@@ -10344,9 +10836,9 @@
       "source_file": "src/qibla/storyboards/ar-row.jsx",
       "source_location": "L6",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "storyboards_ar_row",
-      "target": "storyboards_ar_row_ar_frames",
-      "confidence_score": 1.0
+      "target": "storyboards_ar_row_ar_frames"
     },
     {
       "relation": "contains",
@@ -10354,9 +10846,9 @@
       "source_file": "src/qibla/storyboards/ar-row.jsx",
       "source_location": "L12",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "storyboards_ar_row",
-      "target": "storyboards_ar_row_arrow",
-      "confidence_score": 1.0
+      "target": "storyboards_ar_row_arrow"
     },
     {
       "relation": "contains",
@@ -10364,9 +10856,9 @@
       "source_file": "src/qibla/storyboards/screens.jsx",
       "source_location": "L24",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "src_qibla_storyboards_screens_jsx_storyboards_screens",
-      "target": "storyboards_screens_bpt",
-      "confidence_score": 1.0
+      "target": "storyboards_screens_bpt"
     },
     {
       "relation": "contains",
@@ -10374,9 +10866,9 @@
       "source_file": "src/qibla/storyboards/screens.jsx",
       "source_location": "L34",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "src_qibla_storyboards_screens_jsx_storyboards_screens",
-      "target": "storyboards_screens_compassdial",
-      "confidence_score": 1.0
+      "target": "storyboards_screens_compassdial"
     },
     {
       "relation": "contains",
@@ -10384,9 +10876,9 @@
       "source_file": "src/qibla/storyboards/screens.jsx",
       "source_location": "L137",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "src_qibla_storyboards_screens_jsx_storyboards_screens",
-      "target": "storyboards_screens_initialqiblascreen",
-      "confidence_score": 1.0
+      "target": "storyboards_screens_initialqiblascreen"
     },
     {
       "relation": "contains",
@@ -10394,9 +10886,9 @@
       "source_file": "src/qibla/storyboards/screens.jsx",
       "source_location": "L118",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "src_qibla_storyboards_screens_jsx_storyboards_screens",
-      "target": "storyboards_screens_previewchips",
-      "confidence_score": 1.0
+      "target": "storyboards_screens_previewchips"
     },
     {
       "relation": "contains",
@@ -10404,9 +10896,9 @@
       "source_file": "src/qibla/storyboards/screens.jsx",
       "source_location": "L105",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "src_qibla_storyboards_screens_jsx_storyboards_screens",
-      "target": "storyboards_screens_qiblatopbar",
-      "confidence_score": 1.0
+      "target": "storyboards_screens_qiblatopbar"
     },
     {
       "relation": "contains",
@@ -10414,9 +10906,9 @@
       "source_file": "src/qibla/storyboards/screens.jsx",
       "source_location": "L169",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "src_qibla_storyboards_screens_jsx_storyboards_screens",
-      "target": "storyboards_screens_smartqiblascreen",
-      "confidence_score": 1.0
+      "target": "storyboards_screens_smartqiblascreen"
     },
     {
       "relation": "calls",
@@ -10425,9 +10917,9 @@
       "source_file": "src/qibla/storyboards/screens.jsx",
       "source_location": "L46",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "storyboards_screens_compassdial",
-      "target": "storyboards_screens_bpt",
-      "confidence_score": 1.0
+      "target": "storyboards_screens_bpt"
     },
     {
       "relation": "contains",
@@ -10435,9 +10927,9 @@
       "source_file": "src/qibla/storyboards/setup-row.jsx",
       "source_location": "L6",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "storyboards_setup_row",
-      "target": "storyboards_setup_row_setup_frames",
-      "confidence_score": 1.0
+      "target": "storyboards_setup_row_setup_frames"
     },
     {
       "relation": "contains",
@@ -10445,9 +10937,9 @@
       "source_file": "src/qibla/storyboards/setup-row.jsx",
       "source_location": "L11",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "storyboards_setup_row",
-      "target": "storyboards_setup_row_setuprow",
-      "confidence_score": 1.0
+      "target": "storyboards_setup_row_setuprow"
     },
     {
       "relation": "contains",
@@ -11758,6 +12250,207 @@
     {
       "relation": "contains",
       "confidence": "EXTRACTED",
+      "source_file": "tools/build.mjs",
+      "source_location": "L98",
+      "weight": 1.0,
+      "source": "tools_build",
+      "target": "tools_build_basefor",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "tools/build.mjs",
+      "source_location": "L54",
+      "weight": 1.0,
+      "source": "tools_build",
+      "target": "tools_build_dircount",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "tools/build.mjs",
+      "source_location": "L21",
+      "weight": 1.0,
+      "source": "tools_build",
+      "target": "tools_build_dist",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "tools/build.mjs",
+      "source_location": "L20",
+      "weight": 1.0,
+      "source": "tools_build",
+      "target": "tools_build_images",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "tools/build.mjs",
+      "source_location": "L53",
+      "weight": 1.0,
+      "source": "tools_build",
+      "target": "tools_build_pages",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "tools/build.mjs",
+      "source_location": "L88",
+      "weight": 1.0,
+      "source": "tools_build",
+      "target": "tools_build_patchchrome",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "tools/build.mjs",
+      "source_location": "L26",
+      "weight": 1.0,
+      "source": "tools_build",
+      "target": "tools_build_posix",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "tools/build.mjs",
+      "source_location": "L32",
+      "weight": 1.0,
+      "source": "tools_build",
+      "target": "tools_build_resolveweb",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "tools/build.mjs",
+      "source_location": "L73",
+      "weight": 1.0,
+      "source": "tools_build",
+      "target": "tools_build_rewrite",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "tools/build.mjs",
+      "source_location": "L18",
+      "weight": 1.0,
+      "source": "tools_build",
+      "target": "tools_build_root",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "tools/build.mjs",
+      "source_location": "L59",
+      "weight": 1.0,
+      "source": "tools_build",
+      "target": "tools_build_routemap",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "tools/build.mjs",
+      "source_location": "L27",
+      "weight": 1.0,
+      "source": "tools_build",
+      "target": "tools_build_slug",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "tools/build.mjs",
+      "source_location": "L19",
+      "weight": 1.0,
+      "source": "tools_build",
+      "target": "tools_build_src",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "tools/build.mjs",
+      "source_location": "L43",
+      "weight": 1.0,
+      "source": "tools_build",
+      "target": "tools_build_walk",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "tools/build.mjs",
+      "source_location": "L70",
+      "weight": 1.0,
+      "source": "tools_build",
+      "target": "tools_build_warnings",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "tools/build.mjs",
+      "source_location": "L107",
+      "weight": 1.0,
+      "source": "tools_build",
+      "target": "tools_build_write",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "calls",
+      "context": "call",
+      "confidence": "EXTRACTED",
+      "source_file": "tools/build.mjs",
+      "source_location": "L93",
+      "weight": 1.0,
+      "source": "tools_build_patchchrome",
+      "target": "tools_build_rewrite",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "tools/serve-dist.py",
+      "source_location": "L12",
+      "weight": 1.0,
+      "source": "tools_serve_dist",
+      "target": "tools_serve_dist_handler",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "method",
+      "confidence": "EXTRACTED",
+      "source_file": "tools/serve-dist.py",
+      "source_location": "L16",
+      "weight": 1.0,
+      "source": "tools_serve_dist_handler",
+      "target": "tools_serve_dist_handler_end_headers",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "method",
+      "confidence": "EXTRACTED",
+      "source_file": "tools/serve-dist.py",
+      "source_location": "L13",
+      "weight": 1.0,
+      "source": "tools_serve_dist_handler",
+      "target": "tools_serve_dist_handler_init",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
       "source_file": ".agents/AGENTS.md",
       "source_location": "L17",
       "weight": 1.0,
@@ -13018,5 +13711,5 @@
     }
   ],
   "hyperedges": [],
-  "built_at_commit": "29cc6c78f7dbac63c71a9fcb2658324d76021169"
+  "built_at_commit": "30b56845f6428e11433c299ab1b07f3c83fdf71d"
 }
