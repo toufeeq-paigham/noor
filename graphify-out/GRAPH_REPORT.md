@@ -1,16 +1,16 @@
 # Graph Report - noor  (2026-07-16)
 
 ## Corpus Check
-- 62 files · ~221,035 words
+- 62 files · ~221,037 words
 - Verdict: corpus is large enough that graph structure adds value.
 
 ## Summary
-- 705 nodes · 726 edges · 68 communities (33 shown, 35 thin omitted)
+- 706 nodes · 727 edges · 68 communities (33 shown, 35 thin omitted)
 - Extraction: 100% EXTRACTED · 0% INFERRED · 0% AMBIGUOUS
 - Token cost: 0 input · 0 output
 
 ## Graph Freshness
-- Built from commit: `30b56845`
+- Built from commit: `04297e5e`
 - Run `git rev-parse HEAD` and compare to check if the graph is stale.
 - Run `graphify update .` after code changes (no API cost).
 
@@ -213,11 +213,11 @@ Cohesion: 0.18
 Nodes (10): description, name, private, scripts, build, deploy, preview, serve (+2 more)
 
 ### Community 66 - "Community 66"
-Cohesion: 0.33
-Nodes (5): hosting, headers, ignore, public, trailingSlash
+Cohesion: 0.29
+Nodes (6): hosting, headers, ignore, public, site, trailingSlash
 
 ## Knowledge Gaps
-- **355 isolated node(s):** `eval_id`, `eval_name`, `prompt`, `assertions`, `eval_id` (+350 more)
+- **356 isolated node(s):** `eval_id`, `eval_name`, `prompt`, `assertions`, `eval_id` (+351 more)
   These have ≤1 connection - possible missing edges or undocumented components.
 - **35 thin communities (<3 nodes) omitted from report** — run `graphify query` to explore isolated nodes.
 
@@ -225,11 +225,11 @@ Nodes (5): hosting, headers, ignore, public, trailingSlash
 _Questions this graph is uniquely positioned to answer:_
 
 - **Why does `tokenKinds` connect `Community 0` to `Community 5`?**
-  _High betweenness centrality (0.046) - this node is a cross-community bridge._
+  _High betweenness centrality (0.045) - this node is a cross-community bridge._
 - **Why does `x-omelette` connect `Community 5` to `Community 0`?**
   _High betweenness centrality (0.006) - this node is a cross-community bridge._
 - **What connects `eval_id`, `eval_name`, `prompt` to the rest of the system?**
-  _355 weakly-connected nodes found - possible documentation gaps or missing edges._
+  _356 weakly-connected nodes found - possible documentation gaps or missing edges._
 - **Should `Community 0` be split into smaller, more focused modules?**
   _Cohesion score 0.014184397163120567 - nodes in this community are weakly interconnected._
 - **Should `Community 1` be split into smaller, more focused modules?**

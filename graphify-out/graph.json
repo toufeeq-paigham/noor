@@ -247,10 +247,19 @@
       "norm_label": "hosting"
     },
     {
-      "label": "public",
+      "label": "site",
       "file_type": "code",
       "source_file": "firebase.json",
       "source_location": "L3",
+      "id": "firebase_hosting_site",
+      "community": 66,
+      "norm_label": "site"
+    },
+    {
+      "label": "public",
+      "file_type": "code",
+      "source_file": "firebase.json",
+      "source_location": "L4",
       "id": "firebase_hosting_public",
       "community": 66,
       "norm_label": "public"
@@ -259,7 +268,7 @@
       "label": "trailingSlash",
       "file_type": "code",
       "source_file": "firebase.json",
-      "source_location": "L4",
+      "source_location": "L5",
       "id": "firebase_hosting_trailingslash",
       "community": 66,
       "norm_label": "trailingslash"
@@ -268,7 +277,7 @@
       "label": "ignore",
       "file_type": "code",
       "source_file": "firebase.json",
-      "source_location": "L5",
+      "source_location": "L6",
       "id": "firebase_hosting_ignore",
       "community": 66,
       "norm_label": "ignore"
@@ -277,7 +286,7 @@
       "label": "headers",
       "file_type": "code",
       "source_file": "firebase.json",
-      "source_location": "L6",
+      "source_location": "L7",
       "id": "firebase_hosting_headers",
       "community": 66,
       "norm_label": "headers"
@@ -6550,9 +6559,9 @@
       "source_file": "firebase.json",
       "source_location": "L2",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "firebase",
-      "target": "firebase_hosting",
-      "confidence_score": 1.0
+      "target": "firebase_hosting"
     },
     {
       "relation": "contains",
@@ -6560,9 +6569,9 @@
       "source_file": "firebase.json",
       "source_location": "L6",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "firebase_hosting",
-      "target": "firebase_hosting_headers",
-      "confidence_score": 1.0
+      "target": "firebase_hosting_headers"
     },
     {
       "relation": "contains",
@@ -6570,9 +6579,19 @@
       "source_file": "firebase.json",
       "source_location": "L5",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "firebase_hosting",
-      "target": "firebase_hosting_ignore",
-      "confidence_score": 1.0
+      "target": "firebase_hosting_ignore"
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "firebase.json",
+      "source_location": "L3",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "firebase_hosting",
+      "target": "firebase_hosting_public"
     },
     {
       "relation": "contains",
@@ -6581,7 +6600,7 @@
       "source_location": "L3",
       "weight": 1.0,
       "source": "firebase_hosting",
-      "target": "firebase_hosting_public",
+      "target": "firebase_hosting_site",
       "confidence_score": 1.0
     },
     {
@@ -6590,9 +6609,9 @@
       "source_file": "firebase.json",
       "source_location": "L4",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "firebase_hosting",
-      "target": "firebase_hosting_trailingslash",
-      "confidence_score": 1.0
+      "target": "firebase_hosting_trailingslash"
     },
     {
       "relation": "contains",
@@ -6600,9 +6619,9 @@
       "source_file": "package.json",
       "source_location": "L5",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "package",
-      "target": "package_description",
-      "confidence_score": 1.0
+      "target": "package_description"
     },
     {
       "relation": "contains",
@@ -6610,9 +6629,9 @@
       "source_file": "package.json",
       "source_location": "L2",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "package",
-      "target": "package_name",
-      "confidence_score": 1.0
+      "target": "package_name"
     },
     {
       "relation": "contains",
@@ -6620,9 +6639,9 @@
       "source_file": "package.json",
       "source_location": "L4",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "package",
-      "target": "package_private",
-      "confidence_score": 1.0
+      "target": "package_private"
     },
     {
       "relation": "contains",
@@ -6630,9 +6649,9 @@
       "source_file": "package.json",
       "source_location": "L7",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "package",
-      "target": "package_scripts",
-      "confidence_score": 1.0
+      "target": "package_scripts"
     },
     {
       "relation": "contains",
@@ -6640,9 +6659,9 @@
       "source_file": "package.json",
       "source_location": "L6",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "package",
-      "target": "package_type",
-      "confidence_score": 1.0
+      "target": "package_type"
     },
     {
       "relation": "contains",
@@ -6650,9 +6669,9 @@
       "source_file": "package.json",
       "source_location": "L3",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "package",
-      "target": "package_version",
-      "confidence_score": 1.0
+      "target": "package_version"
     },
     {
       "relation": "contains",
@@ -6660,9 +6679,9 @@
       "source_file": "package.json",
       "source_location": "L8",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "package_scripts",
-      "target": "package_scripts_build",
-      "confidence_score": 1.0
+      "target": "package_scripts_build"
     },
     {
       "relation": "contains",
@@ -6670,9 +6689,9 @@
       "source_file": "package.json",
       "source_location": "L10",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "package_scripts",
-      "target": "package_scripts_deploy",
-      "confidence_score": 1.0
+      "target": "package_scripts_deploy"
     },
     {
       "relation": "contains",
@@ -6680,9 +6699,9 @@
       "source_file": "package.json",
       "source_location": "L11",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "package_scripts",
-      "target": "package_scripts_preview",
-      "confidence_score": 1.0
+      "target": "package_scripts_preview"
     },
     {
       "relation": "contains",
@@ -6690,9 +6709,9 @@
       "source_file": "package.json",
       "source_location": "L9",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "package_scripts",
-      "target": "package_scripts_serve",
-      "confidence_score": 1.0
+      "target": "package_scripts_serve"
     },
     {
       "relation": "contains",
@@ -12253,9 +12272,9 @@
       "source_file": "tools/build.mjs",
       "source_location": "L98",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "tools_build",
-      "target": "tools_build_basefor",
-      "confidence_score": 1.0
+      "target": "tools_build_basefor"
     },
     {
       "relation": "contains",
@@ -12263,9 +12282,9 @@
       "source_file": "tools/build.mjs",
       "source_location": "L54",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "tools_build",
-      "target": "tools_build_dircount",
-      "confidence_score": 1.0
+      "target": "tools_build_dircount"
     },
     {
       "relation": "contains",
@@ -12273,9 +12292,9 @@
       "source_file": "tools/build.mjs",
       "source_location": "L21",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "tools_build",
-      "target": "tools_build_dist",
-      "confidence_score": 1.0
+      "target": "tools_build_dist"
     },
     {
       "relation": "contains",
@@ -12283,9 +12302,9 @@
       "source_file": "tools/build.mjs",
       "source_location": "L20",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "tools_build",
-      "target": "tools_build_images",
-      "confidence_score": 1.0
+      "target": "tools_build_images"
     },
     {
       "relation": "contains",
@@ -12293,9 +12312,9 @@
       "source_file": "tools/build.mjs",
       "source_location": "L53",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "tools_build",
-      "target": "tools_build_pages",
-      "confidence_score": 1.0
+      "target": "tools_build_pages"
     },
     {
       "relation": "contains",
@@ -12303,9 +12322,9 @@
       "source_file": "tools/build.mjs",
       "source_location": "L88",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "tools_build",
-      "target": "tools_build_patchchrome",
-      "confidence_score": 1.0
+      "target": "tools_build_patchchrome"
     },
     {
       "relation": "contains",
@@ -12313,9 +12332,9 @@
       "source_file": "tools/build.mjs",
       "source_location": "L26",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "tools_build",
-      "target": "tools_build_posix",
-      "confidence_score": 1.0
+      "target": "tools_build_posix"
     },
     {
       "relation": "contains",
@@ -12323,9 +12342,9 @@
       "source_file": "tools/build.mjs",
       "source_location": "L32",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "tools_build",
-      "target": "tools_build_resolveweb",
-      "confidence_score": 1.0
+      "target": "tools_build_resolveweb"
     },
     {
       "relation": "contains",
@@ -12333,9 +12352,9 @@
       "source_file": "tools/build.mjs",
       "source_location": "L73",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "tools_build",
-      "target": "tools_build_rewrite",
-      "confidence_score": 1.0
+      "target": "tools_build_rewrite"
     },
     {
       "relation": "contains",
@@ -12343,9 +12362,9 @@
       "source_file": "tools/build.mjs",
       "source_location": "L18",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "tools_build",
-      "target": "tools_build_root",
-      "confidence_score": 1.0
+      "target": "tools_build_root"
     },
     {
       "relation": "contains",
@@ -12353,9 +12372,9 @@
       "source_file": "tools/build.mjs",
       "source_location": "L59",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "tools_build",
-      "target": "tools_build_routemap",
-      "confidence_score": 1.0
+      "target": "tools_build_routemap"
     },
     {
       "relation": "contains",
@@ -12363,9 +12382,9 @@
       "source_file": "tools/build.mjs",
       "source_location": "L27",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "tools_build",
-      "target": "tools_build_slug",
-      "confidence_score": 1.0
+      "target": "tools_build_slug"
     },
     {
       "relation": "contains",
@@ -12373,9 +12392,9 @@
       "source_file": "tools/build.mjs",
       "source_location": "L19",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "tools_build",
-      "target": "tools_build_src",
-      "confidence_score": 1.0
+      "target": "tools_build_src"
     },
     {
       "relation": "contains",
@@ -12383,9 +12402,9 @@
       "source_file": "tools/build.mjs",
       "source_location": "L43",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "tools_build",
-      "target": "tools_build_walk",
-      "confidence_score": 1.0
+      "target": "tools_build_walk"
     },
     {
       "relation": "contains",
@@ -12393,9 +12412,9 @@
       "source_file": "tools/build.mjs",
       "source_location": "L70",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "tools_build",
-      "target": "tools_build_warnings",
-      "confidence_score": 1.0
+      "target": "tools_build_warnings"
     },
     {
       "relation": "contains",
@@ -12403,9 +12422,9 @@
       "source_file": "tools/build.mjs",
       "source_location": "L107",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "tools_build",
-      "target": "tools_build_write",
-      "confidence_score": 1.0
+      "target": "tools_build_write"
     },
     {
       "relation": "calls",
@@ -12414,9 +12433,9 @@
       "source_file": "tools/build.mjs",
       "source_location": "L93",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "tools_build_patchchrome",
-      "target": "tools_build_rewrite",
-      "confidence_score": 1.0
+      "target": "tools_build_rewrite"
     },
     {
       "relation": "contains",
@@ -12424,9 +12443,9 @@
       "source_file": "tools/serve-dist.py",
       "source_location": "L12",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "tools_serve_dist",
-      "target": "tools_serve_dist_handler",
-      "confidence_score": 1.0
+      "target": "tools_serve_dist_handler"
     },
     {
       "relation": "method",
@@ -12434,9 +12453,9 @@
       "source_file": "tools/serve-dist.py",
       "source_location": "L16",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "tools_serve_dist_handler",
-      "target": "tools_serve_dist_handler_end_headers",
-      "confidence_score": 1.0
+      "target": "tools_serve_dist_handler_end_headers"
     },
     {
       "relation": "method",
@@ -12444,9 +12463,9 @@
       "source_file": "tools/serve-dist.py",
       "source_location": "L13",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "tools_serve_dist_handler",
-      "target": "tools_serve_dist_handler_init",
-      "confidence_score": 1.0
+      "target": "tools_serve_dist_handler_init"
     },
     {
       "relation": "contains",
@@ -13711,5 +13730,5 @@
     }
   ],
   "hyperedges": [],
-  "built_at_commit": "30b56845f6428e11433c299ab1b07f3c83fdf71d"
+  "built_at_commit": "04297e5e118a1ca024a1c73b9816bc521da64ee1"
 }

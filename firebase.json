@@ -1,5 +1,6 @@
 {
   "hosting": {
+    "site": "noor-paigham",
     "public": "dist",
     "trailingSlash": true,
     "ignore": ["firebase.json", "**/.*", "**/node_modules/**"],
