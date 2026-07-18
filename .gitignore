@@ -8,6 +8,7 @@ node_modules/
 # local reference screenshot dump (64MB of raw PNGs, not repo content)
 Screens/
 dist/
+.firebase/
 __pycache__/
 *.pyc
 # graphify - commit graph.json + GRAPH_REPORT.md, ignore local/generated files

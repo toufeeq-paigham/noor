@@ -78,8 +78,15 @@ function rewrite(text, baseDir) {
     if (!route) { warnings.add(`${baseDir || '(root)'} → unresolved page link: ${p}`); return m; }
     return q + route + (hash || '') + q;
   });
-  // relative asset references (./ or ../ prefixed) → absolute
-  const assetRe = new RegExp(`(['"])((?:\\.\\.?/)[^'"]*?\\.(?:${ASSET_EXT}))(#[^'"]*)?\\1`, 'g');
+  // source-relative asset references (bare, ./ or ../ prefixed) → absolute.
+  // Bare references matter when a root-level authoring page is published below a
+  // clean route (for example Quran.dc.html → /quran/): leaving `_theme/poc.css`
+  // untouched makes the browser request `/quran/_theme/poc.css`.
+  // Root-absolute, fragment, data and URL-scheme references are already portable.
+  const assetRe = new RegExp(
+    `(['"])((?!/|#|[a-zA-Z][a-zA-Z\\d+.-]*:)(?:\\.\\.?/)?[^'"]*?\\.(?:${ASSET_EXT}))(#[^'"]*)?\\1`,
+    'g',
+  );
   text = text.replace(assetRe, (m, q, p, hash) => q + resolveWeb(baseDir, p) + (hash || '') + q);
   return text;
 }
