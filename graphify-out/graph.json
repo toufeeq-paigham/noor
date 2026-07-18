@@ -3895,7 +3895,7 @@
       "label": "IntroScreen()",
       "file_type": "code",
       "source_file": "src/onboarding/storyboards/screens.jsx",
-      "source_location": "L70",
+      "source_location": "L75",
       "id": "storyboards_screens_introscreen",
       "community": 21,
       "norm_label": "introscreen()"
@@ -3904,7 +3904,7 @@
       "label": "PhoneScreen()",
       "file_type": "code",
       "source_file": "src/onboarding/storyboards/screens.jsx",
-      "source_location": "L146",
+      "source_location": "L175",
       "id": "storyboards_screens_phonescreen",
       "community": 21,
       "norm_label": "phonescreen()"
@@ -3913,7 +3913,7 @@
       "label": "OtpScreen()",
       "file_type": "code",
       "source_file": "src/onboarding/storyboards/screens.jsx",
-      "source_location": "L221",
+      "source_location": "L251",
       "id": "storyboards_screens_otpscreen",
       "community": 21,
       "norm_label": "otpscreen()"
@@ -4792,10 +4792,19 @@
       "norm_label": "screens.jsx"
     },
     {
+      "label": "GOLD_OPTIONS",
+      "file_type": "code",
+      "source_file": "src/zakaat/storyboards/screens.jsx",
+      "source_location": "L6",
+      "id": "storyboards_screens_gold_options",
+      "community": 45,
+      "norm_label": "gold_options"
+    },
+    {
       "label": "ZakaatKeypad()",
       "file_type": "code",
       "source_file": "src/zakaat/storyboards/screens.jsx",
-      "source_location": "L8",
+      "source_location": "L13",
       "id": "storyboards_screens_zakaatkeypad",
       "community": 45,
       "norm_label": "zakaatkeypad()"
@@ -4804,7 +4813,7 @@
       "label": "ZakaatEmptyScreen()",
       "file_type": "code",
       "source_file": "src/zakaat/storyboards/screens.jsx",
-      "source_location": "L69",
+      "source_location": "L74",
       "id": "storyboards_screens_zakaatemptyscreen",
       "community": 45,
       "norm_label": "zakaatemptyscreen()"
@@ -4813,7 +4822,7 @@
       "label": "ZakaatListScreen()",
       "file_type": "code",
       "source_file": "src/zakaat/storyboards/screens.jsx",
-      "source_location": "L98",
+      "source_location": "L103",
       "id": "storyboards_screens_zakaatlistscreen",
       "community": 45,
       "norm_label": "zakaatlistscreen()"
@@ -4822,7 +4831,7 @@
       "label": "ZakaatLoadingScreen()",
       "file_type": "code",
       "source_file": "src/zakaat/storyboards/screens.jsx",
-      "source_location": "L203",
+      "source_location": "L208",
       "id": "storyboards_screens_zakaatloadingscreen",
       "community": 45,
       "norm_label": "zakaatloadingscreen()"
@@ -4831,7 +4840,7 @@
       "label": "ZakaatStepScreen()",
       "file_type": "code",
       "source_file": "src/zakaat/storyboards/screens.jsx",
-      "source_location": "L234",
+      "source_location": "L239",
       "id": "storyboards_screens_zakaatstepscreen",
       "community": 45,
       "norm_label": "zakaatstepscreen()"
@@ -4840,7 +4849,7 @@
       "label": "ZakaatSummaryScreen()",
       "file_type": "code",
       "source_file": "src/zakaat/storyboards/screens.jsx",
-      "source_location": "L478",
+      "source_location": "L501",
       "id": "storyboards_screens_zakaatsummaryscreen",
       "community": 45,
       "norm_label": "zakaatsummaryscreen()"
@@ -5050,7 +5059,7 @@
       "label": "patchChrome()",
       "file_type": "code",
       "source_file": "tools/build.mjs",
-      "source_location": "L88",
+      "source_location": "L95",
       "id": "tools_build_patchchrome",
       "community": 64,
       "norm_label": "patchchrome()"
@@ -5059,7 +5068,7 @@
       "label": "baseFor()",
       "file_type": "code",
       "source_file": "tools/build.mjs",
-      "source_location": "L98",
+      "source_location": "L105",
       "id": "tools_build_basefor",
       "community": 64,
       "norm_label": "basefor()"
@@ -5068,7 +5077,7 @@
       "label": "write()",
       "file_type": "code",
       "source_file": "tools/build.mjs",
-      "source_location": "L107",
+      "source_location": "L114",
       "id": "tools_build_write",
       "community": 64,
       "norm_label": "write()"
@@ -12160,6 +12169,16 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "src/zakaat/storyboards/screens.jsx",
+      "source_location": "L6",
+      "weight": 1.0,
+      "source": "src_zakaat_storyboards_screens_jsx_storyboards_screens",
+      "target": "storyboards_screens_gold_options",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "src/zakaat/storyboards/screens.jsx",
       "source_location": "L69",
       "weight": 1.0,
       "confidence_score": 1.0,
@@ -13730,5 +13749,5 @@
     }
   ],
   "hyperedges": [],
-  "built_at_commit": "151e813a007c49e30e38b47d4d8cebab14135c96"
+  "built_at_commit": "fbe3d34c6554696d27b4d277612eb57a6f5d6cf6"
 }

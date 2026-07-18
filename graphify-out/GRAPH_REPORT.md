@@ -1,16 +1,16 @@
-# Graph Report - noor  (2026-07-16)
+# Graph Report - noor  (2026-07-18)
 
 ## Corpus Check
-- 62 files · ~221,702 words
+- 62 files · ~221,907 words
 - Verdict: corpus is large enough that graph structure adds value.
 
 ## Summary
-- 706 nodes · 727 edges · 68 communities (33 shown, 35 thin omitted)
+- 707 nodes · 728 edges · 68 communities (32 shown, 36 thin omitted)
 - Extraction: 100% EXTRACTED · 0% INFERRED · 0% AMBIGUOUS
 - Token cost: 0 input · 0 output
 
 ## Graph Freshness
-- Built from commit: `151e813a`
+- Built from commit: `fbe3d34c`
 - Run `git rev-parse HEAD` and compare to check if the graph is stale.
 - Run `graphify update .` after code changes (no API cost).
 
@@ -57,6 +57,7 @@
 - [[_COMMUNITY_Community 42|Community 42]]
 - [[_COMMUNITY_Community 43|Community 43]]
 - [[_COMMUNITY_Community 44|Community 44]]
+- [[_COMMUNITY_Community 45|Community 45]]
 - [[_COMMUNITY_Community 46|Community 46]]
 - [[_COMMUNITY_Community 47|Community 47]]
 - [[_COMMUNITY_Community 48|Community 48]]
@@ -98,7 +99,7 @@
 ## Import Cycles
 - None detected.
 
-## Communities (68 total, 35 thin omitted)
+## Communities (68 total, 36 thin omitted)
 
 ### Community 0 - "Community 0"
 Cohesion: 0.01
@@ -217,9 +218,9 @@ Cohesion: 0.29
 Nodes (6): hosting, headers, ignore, public, site, trailingSlash
 
 ## Knowledge Gaps
-- **356 isolated node(s):** `eval_id`, `eval_name`, `prompt`, `assertions`, `eval_id` (+351 more)
+- **357 isolated node(s):** `eval_id`, `eval_name`, `prompt`, `assertions`, `eval_id` (+352 more)
   These have ≤1 connection - possible missing edges or undocumented components.
-- **35 thin communities (<3 nodes) omitted from report** — run `graphify query` to explore isolated nodes.
+- **36 thin communities (<3 nodes) omitted from report** — run `graphify query` to explore isolated nodes.
 
 ## Suggested Questions
 _Questions this graph is uniquely positioned to answer:_
@@ -229,7 +230,7 @@ _Questions this graph is uniquely positioned to answer:_
 - **Why does `x-omelette` connect `Community 5` to `Community 0`?**
   _High betweenness centrality (0.006) - this node is a cross-community bridge._
 - **What connects `eval_id`, `eval_name`, `prompt` to the rest of the system?**
-  _356 weakly-connected nodes found - possible documentation gaps or missing edges._
+  _357 weakly-connected nodes found - possible documentation gaps or missing edges._
 - **Should `Community 0` be split into smaller, more focused modules?**
   _Cohesion score 0.014184397163120567 - nodes in this community are weakly interconnected._
 - **Should `Community 1` be split into smaller, more focused modules?**

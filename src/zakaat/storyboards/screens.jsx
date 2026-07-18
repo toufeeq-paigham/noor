@@ -3,6 +3,11 @@
 
 const GOLD_RATE = 14133.0;
 const SILVER_RATE = 25.0;
+const GOLD_OPTIONS = [
+  { label: '24k Gold (995)', rate: GOLD_RATE },
+  { label: '22k Gold (916)', rate: 12955.0 },
+  { label: '18k Gold (750)', rate: 10600.0 }
+];
 
 // ── Numeric Keypad ───────────────────────────────────────────────────────────
 function ZakaatKeypad({ onPress }) {
@@ -242,12 +247,15 @@ function ZakaatStepScreen({
   onBack,
   onCloseKeypad
 }) {
+  const [selectedGoldIndex, setSelectedGoldIndex] = React.useState(0);
+  const [goldMenuOpen, setGoldMenuOpen] = React.useState(false);
+  const selectedGold = GOLD_OPTIONS[selectedGoldIndex];
   const stepsMeta = {
     1: {
       title: 'Gold & Silver',
       subtitle: 'Enter the weight of gold and silver you own',
       fields: [
-        { key: 'gold', label: 'Gold', suffix: 'grams', subText: `₹${GOLD_RATE}/gm`, type: 'weight' },
+        { key: 'gold', label: 'Gold', suffix: 'grams', subText: `₹${selectedGold.rate.toLocaleString()}/gram`, type: 'weight' },
         { key: 'silver', label: 'Silver', suffix: 'grams', subText: `₹${SILVER_RATE}/gm`, type: 'weight' }
       ]
     },
@@ -301,29 +309,36 @@ function ZakaatStepScreen({
   return (
     <div style={{ width: '100%', height: '100%', position: 'relative', background: 'var(--color-surface-primary)', display: 'flex', flexDirection: 'column', overflow: 'hidden' }}>
       
-      {/* AppBar */}
-      <div className="app-bar" style={{ padding: '62px 16px 10px', height: 110 }}>
-        <button className="ib ib-tonal md" onClick={onBack} aria-label="Back">
-          <span className="mi" data-i="arrow_back"></span>
-        </button>
-        <span className="ab-title">Calculate Zakaat</span>
+      {/* Fixed wizard header */}
+      <div style={{ position: 'absolute', inset: '0 0 auto 0', zIndex: 20, padding: '62px 16px 12px', background: 'var(--color-surface-primary)' }}>
+        <div style={{ display: 'flex', alignItems: 'center' }}>
+          <button className="ib ib-tonal md" onClick={onBack} aria-label="Back">
+            <span className="mi" data-i="arrow_back"></span>
+          </button>
+          <span className="ab-title" style={{ marginLeft: 12 }}>Calculate Zakaat</span>
+        </div>
+        <div style={{ display: 'flex', gap: 4, marginTop: 14 }}>
+          {Array.from({ length: 6 }).map((_, idx) => (
+            <div key={idx} style={{ flex: 1, height: 4, borderRadius: 2, background: idx < step ? 'var(--color-action-primary)' : 'var(--color-action-background)' }} />
+          ))}
+        </div>
+        <div style={{ marginTop: 4, fontFamily: 'var(--font-body)', fontSize: 12, fontWeight: 500, color: 'var(--color-info-secondary)' }}>
+          Step {step} of 6
+        </div>
       </div>
 
       {/* Main scrolling form content */}
       <div style={{
         position: 'absolute', inset: '0 0 88px 0', overflowY: 'auto', WebkitOverflowScrolling: 'touch',
-        padding: activeField ? '120px 16px 360px' : '120px 16px 32px'
+        padding: activeField ? '164px 16px 360px' : '164px 16px 32px'
       }}>
         
         {/* Step Card Container */}
         <div style={{ background: 'var(--color-surface-secondary)', borderRadius: 20, padding: 22, border: '1px solid var(--color-neutral-border)' }}>
-          <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', marginBottom: 6 }}>
+          <div style={{ display: 'flex', alignItems: 'flex-start', marginBottom: 6 }}>
             <div style={{ fontFamily: 'var(--font-title)', fontSize: 26, color: 'var(--color-info-primary)', lineHeight: 1.15, flex: 1 }}>
               {currentMeta.title}
             </div>
-            <span style={{ fontFamily: 'var(--font-body)', fontSize: 13, color: 'var(--color-info-secondary)', marginTop: 6, flexShrink: 0 }}>
-              {step} / 6
-            </span>
           </div>
           <div style={{ fontFamily: 'var(--font-body)', fontSize: 14, color: 'var(--color-info-secondary)', marginBottom: 22, lineHeight: 1.45 }}>
             {currentMeta.subtitle}
@@ -338,7 +353,7 @@ function ZakaatStepScreen({
             let rightLabel = null;
             if (step === 1) {
               const numVal = parseFloat(val) || 0;
-              const rate = f.key === 'gold' ? GOLD_RATE : SILVER_RATE;
+              const rate = f.key === 'gold' ? selectedGold.rate : SILVER_RATE;
               rightLabel = `Total: ₹${(numVal * rate).toLocaleString()}`;
             }
 
@@ -350,15 +365,40 @@ function ZakaatStepScreen({
                   border: isFocused ? '1px solid var(--color-action-primary)' : '1px solid var(--color-neutral-border)'
                 }}
               >
-                <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: 10 }}>
+                <div style={{ display: 'flex', alignItems: 'center', gap: 8, marginBottom: 10, position: 'relative' }}>
                   <div style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
                     <span style={{ fontFamily: 'var(--font-body)', fontSize: 16, fontWeight: 700, color: 'var(--color-info-primary)' }}>{f.label}</span>
-                    {f.key === 'gold' && (
-                      <div style={{ background: 'rgba(0,201,80,0.12)', borderRadius: 8, padding: '3px 10px' }}>
-                        <span style={{ fontFamily: 'var(--font-body)', fontSize: 11, fontWeight: 600, color: 'var(--color-action-primary)' }}>24k Gold (995) ▾</span>
-                      </div>
-                    )}
                   </div>
+                  {f.key === 'gold' && (
+                    <>
+                      <button
+                        type="button"
+                        className="chip success"
+                        aria-expanded={goldMenuOpen}
+                        onClick={() => setGoldMenuOpen(!goldMenuOpen)}
+                      >
+                        <span>{selectedGold.label}</span>
+                        <span className={`mi chev ${goldMenuOpen ? 'open' : ''}`} data-i="arrow_drop_down"></span>
+                      </button>
+                      {goldMenuOpen && (
+                        <div className="dd-menu">
+                          {GOLD_OPTIONS.map((option, index) => (
+                            <div
+                              key={option.label}
+                              className={`dd-item ${index === selectedGoldIndex ? 'selected' : ''}`}
+                              onClick={() => { setSelectedGoldIndex(index); setGoldMenuOpen(false); }}
+                            >
+                              <span style={{ flex: 1 }}>
+                                <span style={{ display: 'block', fontWeight: 600 }}>{option.label}</span>
+                                <span style={{ display: 'block', marginTop: 2, fontSize: 12, color: 'var(--color-info-secondary)' }}>₹{option.rate.toLocaleString()} / gram</span>
+                              </span>
+                              {index === selectedGoldIndex && <span className="mi" data-i="check"></span>}
+                            </div>
+                          ))}
+                        </div>
+                      )}
+                    </>
+                  )}
                 </div>
 
                 {/* Input box */}
@@ -400,23 +440,6 @@ function ZakaatStepScreen({
               * Gold and Silver rates are updated regularly
             </div>
           )}
-        </div>
-
-        {/* Step indicators */}
-        <div style={{ display: 'flex', gap: 6, justifyContent: 'center', marginTop: 24 }}>
-          {Array.from({ length: 6 }).map((_, idx) => {
-            const active = idx + 1 === step;
-            return (
-              <div
-                key={idx}
-                style={{
-                  width: active ? 24 : 8, height: 4, borderRadius: 2,
-                  background: active ? 'var(--color-action-primary)' : 'var(--color-neutral-border)',
-                  transition: 'width 200ms'
-                }}
-              />
-            );
-          })}
         </div>
 
       </div>
