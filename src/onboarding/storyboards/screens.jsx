@@ -18,33 +18,38 @@ const KEYPAD_KEYS = [
 
 function Keypad({ onPress }) {
   return (
-    <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr 1fr', gap: 8, paddingBottom: 30 }}>
+    <div role="group" aria-label="Numeric keypad" style={{ display: 'grid', gridTemplateColumns: '1fr 1fr 1fr', gap: 8, paddingBottom: 30 }}>
       {KEYPAD_KEYS.map((k, i) => {
         if (k.isEmpty) {
           return <div key={i} style={{ height: 52, borderRadius: 12, background: 'transparent' }} />;
         }
         if (k.isBackspace) {
           return (
-            <div
+            <button
               key={i}
+              type="button"
               className="kp-key"
+              aria-label="Delete last digit"
               onClick={() => onPress && onPress('backspace')}
               style={{
                 height: 52, borderRadius: 12, background: 'transparent',
-                display: 'flex', alignItems: 'center', justifyContent: 'center', cursor: 'pointer'
+                border: 'none', padding: 0, display: 'flex', alignItems: 'center', justifyContent: 'center', cursor: 'pointer'
               }}
             >
               <span className="mi" style={{ fontSize: 22, color: 'var(--color-info-primary)' }} data-i="backspace"></span>
-            </div>
+            </button>
           );
         }
         return (
-          <div
+          <button
             key={i}
+            type="button"
             className="kp-key"
+            aria-label={k.label}
             onClick={() => onPress && onPress(k.label)}
             style={{
               height: 52, borderRadius: 12, background: 'var(--color-action-background)',
+              border: 'none', padding: 0,
               display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center',
               cursor: 'pointer', userSelect: 'none'
             }}
@@ -60,7 +65,7 @@ function Keypad({ onPress }) {
                 {k.sub}
               </span>
             </span>
-          </div>
+          </button>
         );
       })}
     </div>
@@ -76,13 +81,18 @@ function IntroScreen({
   onCta,
   onSelectDot
 }) {
+  const lastSlideIdx = 2;
+  const isLastSlide = activeDotIdx === lastSlideIdx;
   const dots = [0, 1, 2].map((idx) => {
     const active = idx === activeDotIdx;
     return (
-      <div
+      <button
         key={idx}
+        type="button"
+        aria-label={`Go to onboarding step ${idx + 1}`}
+        aria-current={active ? 'step' : undefined}
         onClick={() => onSelectDot && onSelectDot(idx)}
-        style={{ padding: '5px 2px', cursor: 'pointer' }}
+        style={{ width: 44, height: 44, padding: 0, border: 'none', background: 'transparent', display: 'flex', alignItems: 'center', justifyContent: 'center', cursor: 'pointer' }}
       >
         <div
           style={{
@@ -93,7 +103,7 @@ function IntroScreen({
             transition: 'width 300ms, background 300ms'
           }}
         />
-      </div>
+      </button>
     );
   });
 
@@ -107,9 +117,10 @@ function IntroScreen({
       
       {showSkip && (
         <button
-          className="btn btn-tonal sm"
+          type="button"
+          className="btn btn-tonal"
           onClick={onSkip}
-          style={{ position: 'absolute', top: 70, right: 20, zIndex: 6 }}
+          style={{ position: 'absolute', top: 66, right: 20, zIndex: 6, minWidth: 64, minHeight: 44 }}
         >
           Skip
         </button>
@@ -124,20 +135,38 @@ function IntroScreen({
         </div>
       </div>
 
-      <div style={{ position: 'absolute', bottom: 46, left: 16, right: 16, display: 'flex', flexDirection: 'column', alignItems: 'stretch', gap: 0, zIndex: 5 }}>
-        <button
-          className="btn btn-filled lg"
-          onClick={onCta}
-          style={{ width: '100%' }}
-        >
-          {ctaLabel}
-        </button>
-        <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', gap: 2, marginTop: 12 }}>
+      <div style={{ position: 'absolute', bottom: 34, left: 16, right: 16, display: 'flex', flexDirection: 'column', alignItems: 'stretch', zIndex: 5 }}>
+        <div style={{ textAlign: 'center', fontFamily: 'var(--font-body)', fontSize: 12, fontWeight: 700, letterSpacing: '.08em', textTransform: 'uppercase', color: 'rgba(255,255,255,0.8)' }}>
+          Step {activeDotIdx + 1} of 3
+        </div>
+        <div role="navigation" aria-label="Onboarding progress" style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', gap: 2 }}>
           {dots}
         </div>
-        <div style={{ textAlign: 'center', marginTop: 10, fontFamily: 'var(--font-body)', fontSize: 12, lineHeight: 1.6, color: 'rgba(255,255,255,0.8)' }}>
-          By continuing, you agree to our <span style={{ color: 'var(--color-action-primary)', textDecoration: 'underline', textUnderlineOffset: 2 }}>Terms and Conditions</span> and <span style={{ color: 'var(--color-action-primary)', textDecoration: 'underline', textUnderlineOffset: 2 }}>Privacy Policy</span>
+        <div style={{ display: 'flex', gap: 10 }}>
+          {activeDotIdx > 0 && (
+            <button
+              type="button"
+              className="btn btn-tonal lg"
+              onClick={() => onSelectDot && onSelectDot(activeDotIdx - 1)}
+              style={{ minWidth: 112, color: '#FFFFFF', borderColor: 'rgba(255,255,255,0.35)', background: 'rgba(0,0,0,0.22)' }}
+            >
+              Back
+            </button>
+          )}
+          <button
+            type="button"
+            className="btn btn-filled lg"
+            onClick={onCta}
+            style={{ flex: 1 }}
+          >
+            {ctaLabel}
+          </button>
         </div>
+        {isLastSlide && (
+          <div style={{ textAlign: 'center', marginTop: 10, fontFamily: 'var(--font-body)', fontSize: 12, lineHeight: 1.55, color: 'rgba(255,255,255,0.82)' }}>
+            By continuing, you agree to our <span style={{ color: '#FFFFFF', textDecoration: 'underline', textUnderlineOffset: 2 }}>Terms and Conditions</span> and <span style={{ color: '#FFFFFF', textDecoration: 'underline', textUnderlineOffset: 2 }}>Privacy Policy</span>
+          </div>
+        )}
       </div>
     </div>
   );
@@ -157,7 +186,7 @@ function PhoneScreen({
   
   return (
     <div style={{ width: '100%', height: '100%', background: 'var(--color-surface-primary)', display: 'flex', flexDirection: 'column', padding: '62px 24px 0', boxSizing: 'border-box', position: 'relative', overflow: 'hidden' }}>
-      <button className="ib ib-tonal md" onClick={onBack} style={{ marginTop: 8, alignSelf: 'flex-start' }}>
+      <button type="button" className="ib ib-tonal" aria-label="Back to onboarding" onClick={onBack} style={{ marginTop: 8, alignSelf: 'flex-start' }}>
         <span className="mi" data-i="arrow_back"></span>
       </button>
 
@@ -172,7 +201,7 @@ function PhoneScreen({
         </div>
 
         <div style={{ marginTop: 28, animation: phoneAnim }}>
-          <div className={`input phone ${phoneFocused ? 'focused' : ''} ${phoneError ? 'error' : ''}`}>
+          <div className={`input phone ${phoneFocused ? 'focused' : ''} ${phoneError ? 'error' : ''}`} role="textbox" aria-label="Phone number" aria-invalid={phoneError ? 'true' : 'false'}>
             <div className="inner">
               <div className="prefix">
                 <span style={{ fontSize: 18, lineHeight: 1 }}>🇮🇳</span>
@@ -190,7 +219,7 @@ function PhoneScreen({
           
           <div style={{ height: 20, marginTop: 6 }}>
             {phoneError && (
-              <span style={{ fontFamily: 'var(--font-body)', fontSize: 13, color: 'var(--color-input-text-error)', fontWeight: 600 }}>
+              <span role="alert" style={{ fontFamily: 'var(--font-body)', fontSize: 13, color: 'var(--color-input-text-error)', fontWeight: 600 }}>
                 Please enter a valid 10-digit number
               </span>
             )}
@@ -198,8 +227,10 @@ function PhoneScreen({
         </div>
 
         <button
+          type="button"
           className="btn btn-filled lg"
           onClick={onContinue}
+          disabled={!isFilled}
           style={{ width: '100%', marginTop: 20 }}
         >
           Continue
@@ -284,7 +315,7 @@ function OtpScreen({
         </div>
       )}
 
-      <button className="ib ib-tonal md" onClick={onBack} style={{ marginTop: 8, alignSelf: 'flex-start' }}>
+      <button type="button" className="ib ib-tonal" aria-label="Back to phone number" onClick={onBack} style={{ marginTop: 8, alignSelf: 'flex-start' }}>
         <span className="mi" data-i="arrow_back"></span>
       </button>
 
@@ -296,12 +327,12 @@ function OtpScreen({
           <div style={{ fontFamily: 'var(--font-body)', fontSize: 16, lineHeight: 1.55, color: 'var(--color-info-secondary)', fontWeight: 400 }}>
             Please enter the OTP sent to your phone number<br />
             <span style={{ fontWeight: 700, color: 'var(--color-info-primary)' }}>+91 {phoneFmt}</span>{' '}
-            <span onClick={onEditPhone} style={{ fontWeight: 700, color: 'var(--color-action-primary)', cursor: 'pointer', fontSize: 14 }}>· Edit</span>
+            <button type="button" className="btn btn-link" onClick={onEditPhone} style={{ fontSize: 14, marginLeft: 4 }}>Edit</button>
           </div>
         </div>
 
         <div style={{ marginTop: 28, animation: otpAnim }}>
-          <div className={`otp ${otpError ? 'error' : ''} ${success ? 'success' : ''}`}>
+          <div className={`otp ${otpError ? 'error' : ''} ${success ? 'success' : ''}`} role="group" aria-label={`Verification code, ${otp.length} of 6 digits entered`}>
             <div className="cells">
               {cells.map((c, i) => (
                 <div key={i} className="cell" style={{ borderLeft: c.borderLeft }}>
@@ -314,9 +345,9 @@ function OtpScreen({
           </div>
         </div>
 
-        <div style={{ height: 22, marginTop: 16, display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 8 }}>
+        <div aria-live="polite" style={{ height: 22, marginTop: 16, display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 8 }}>
           {otpError && (
-            <span style={{ fontFamily: 'var(--font-body)', fontSize: 13, fontWeight: 700, color: 'var(--color-status-error)' }}>
+            <span role="alert" style={{ fontFamily: 'var(--font-body)', fontSize: 13, fontWeight: 700, color: 'var(--color-status-error)' }}>
               Incorrect OTP — use the code from the SMS above
             </span>
           )}
@@ -339,7 +370,7 @@ function OtpScreen({
             <span>Resend OTP in <span style={{ fontWeight: 700, color: 'var(--color-info-primary)' }}>{resendIn}s</span></span>
           )}
           {resendIn === 0 && !success && (
-            <span onClick={onResend} style={{ fontWeight: 700, color: 'var(--color-action-primary)', cursor: 'pointer' }}>Resend OTP</span>
+            <button type="button" className="btn btn-link" onClick={onResend}>Resend OTP</button>
           )}
         </div>
         <div style={{ flex: 1 }} />

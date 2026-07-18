@@ -32,6 +32,10 @@
     .step-back { animation:stepback .35s cubic-bezier(.2,.8,.2,1) }
     .kp-key:active { filter:brightness(0.92) }
     [data-theme="dark"] .kp-key:active { filter:brightness(1.25) }
+    @media (prefers-reduced-motion: reduce) {
+      .lf-cursor,.otp-cursor,.otp-banner,.step-fwd,.step-back { animation:none!important }
+      * { scroll-behavior:auto!important }
+    }
   </style>
 </helmet>
 
