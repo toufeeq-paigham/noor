@@ -26,13 +26,6 @@
     .cp-head{margin:0 0 12px}
     .lbl{font-family:var(--font-body);font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:.08em;color:var(--color-info-secondary);margin-bottom:8px}
     
-    /* Calendar styles */
-    .cal-grid{display:grid;grid-template-columns:repeat(7,1fr);gap:4px;text-align:center;font-family:var(--font-body)}
-    .cal-cell{padding:8px 0;border-radius:8px;font-size:13px;color:var(--color-info-primary);cursor:pointer;font-weight:700}
-    .cal-cell:hover{background:color-mix(in oklab, var(--color-action-primary) 10%, transparent)}
-    .cal-cell.selected{background:var(--color-action-primary);color:var(--color-action-primary-inverse)}
-    .cal-cell.disabled{color:var(--color-status-disabled-alt);cursor:default}
-    
     /* Dialog/Sheet preview stage — a relative frame the .dlg-scrim can fill */
     .dlg-stage{position:relative;height:300px;overflow:hidden;border-radius:12px;background:var(--color-surface-secondary);display:flex;align-items:center;justify-content:center}
     /* .tbar/.tab (TabBar) styling lives in _theme/components.css */
@@ -212,34 +205,12 @@
     </div>
   </div>
 
-  <!-- 7. DatePicker -->
-  <div class="cp-card">
-    <div class="cp-head">
-      <div class="cp-h">DatePicker</div>
-      <div class="cp-sub">Islamic Hijri and Gregorian calendar grid picker.</div>
-    </div>
-    <div style="max-width:320px;background:var(--color-surface-secondary);border-radius:16px;padding:16px;border:1px solid var(--color-neutral-border)">
-      <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:16px">
-        <span class="mi" style="color:var(--color-info-primary)" data-i="chevron_left"></span>
-        <span style="font-family:var(--font-body);font-size:15px;font-weight:700;color:var(--color-info-primary)">Muharram 1447</span>
-        <span class="mi" style="color:var(--color-info-primary)" data-i="chevron_right"></span>
-      </div>
-      <div class="cal-grid">
-        <div class="cal-cell disabled">S</div><div class="cal-cell disabled">M</div><div class="cal-cell disabled">T</div><div class="cal-cell disabled">W</div><div class="cal-cell disabled">T</div><div class="cal-cell disabled">F</div><div class="cal-cell disabled">S</div>
-        <div class="cal-cell">1</div><div class="cal-cell">2</div><div class="cal-cell">3</div><div class="cal-cell">4</div><div class="cal-cell">5</div><div class="cal-cell">6</div><div class="cal-cell">7</div>
-        <div class="cal-cell">8</div><div class="cal-cell">9</div><div class="cal-cell selected">10</div><div class="cal-cell">11</div><div class="cal-cell">12</div><div class="cal-cell">13</div><div class="cal-cell">14</div>
-        <div class="cal-cell">15</div><div class="cal-cell">16</div><div class="cal-cell">17</div><div class="cal-cell">18</div><div class="cal-cell">19</div><div class="cal-cell">20</div><div class="cal-cell">21</div>
-      </div>
-    </div>
-  </div>
-
   <!-- Footer -->
   <!-- App-only organisms (implemented in paigham-app core/noor, no POC design yet):
        PersistentSheetDialog (no-scrim multi-detent sheet), ImmersiveOverlaySurface
        (animated gradient overlay), Shimmer skeletons, RevolvingLoader. If one of
        these gets a designed state here, add it to this page and components.css.
-       Planned in core/noor (designed here, not yet built there): DatePicker (.cal-*)
-       and a playback-agnostic AudioPlayer pill (.aplayer) — the waveform atom is in
+       Planned in core/noor (designed here, not yet built there): a playback-agnostic AudioPlayer pill (.aplayer) — the waveform atom is in
        the DS; the bound player bar lives app-side (composeApp AudioPlayerBar). -->
   <div style="text-align:center;font-family:var(--font-body);font-size:12px;color:var(--canvas-label);margin-top:40px">
     Noor Design System · <a href="../molecules/Molecules.dc.html" style="color:var(--color-action-primary);text-decoration:none;font-weight:700">← Molecules</a> · <a href="../../Index.dc.html" style="color:var(--color-action-primary);text-decoration:none;font-weight:700">Index</a>
