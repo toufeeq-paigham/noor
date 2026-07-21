@@ -25,8 +25,8 @@
     /* Stage transition animations (shared with the other section boards) */
     @keyframes stepin { from{transform:translateX(28px);opacity:0} to{transform:translateX(0);opacity:1} }
     @keyframes stepback { from{transform:translateX(-28px);opacity:0} to{transform:translateX(0);opacity:1} }
-    .step-fwd { animation:stepin .35s cubic-bezier(.2,.8,.2,1) }
-    .step-back { animation:stepback .35s cubic-bezier(.2,.8,.2,1) }
+    .step-fwd { animation:stepin var(--motion-standard) var(--ease-out) }
+    .step-back { animation:stepback var(--motion-standard) var(--ease-out) }
   </style>
 </helmet>
 
@@ -34,6 +34,7 @@
      Order matters — HomeScreen depends on PromptCard + BottomNav (React Error #130). -->
 <div style="display: none">
   <x-import component="PromptCard" from="./_theme/components.jsx" hint-size="0,0"></x-import>
+  <x-import component="EmptyState" from="./_theme/components.jsx" hint-size="0,0"></x-import>
   <x-import component="BottomNav" from="./home/storyboards/nav-bar.jsx" hint-size="0,0"></x-import>
   <x-import component="HomeScreen" from="./home/storyboards/screens.jsx" hint-size="0,0"></x-import>
   <x-import component="QuranScreen" from="./home/storyboards/screens.jsx" hint-size="0,0"></x-import>
@@ -113,6 +114,7 @@
                       show-translit="{{ showTranslit }}"
                       show-translation="{{ showTranslation }}"
                       arabic-size="{{ arabicSize }}"
+                      content-state="{{ readerContentState }}"
                       on-back="{{ goListingStage }}"
                       on-toggle-settings="{{ toggleSettings }}"
                       on-close-settings="{{ closeSettings }}"
@@ -120,6 +122,7 @@
                       on-toggle-translation="{{ toggleTranslation }}"
                       on-inc-font="{{ incFont }}"
                       on-dec-font="{{ decFont }}"
+                      on-retry="{{ retryReader }}"
                       hint-size="100%,100%">
             </x-import>
           </div>
@@ -135,7 +138,7 @@
 <script type="text/x-dc" data-dc-script>
 class Component extends DCLogic {
   state = {
-    stage: (location.hash === '#reader' || location.hash === '#surah' || location.hash === '#juz' || location.hash === '#settings') ? 'reader'
+    stage: (location.hash === '#reader' || location.hash === '#surah' || location.hash === '#juz' || location.hash === '#settings' || location.hash === '#reader-loading' || location.hash === '#reader-empty' || location.hash === '#reader-error') ? 'reader'
          : (location.hash === '#index' || location.hash === '#listing' || location.hash === '#juz-index') ? 'listing'
          : 'home',
     origin: location.hash === '#juz' ? 'juz' : 'surah',
@@ -144,7 +147,11 @@ class Component extends DCLogic {
     stepDir: 'none',
     showTranslit: true,
     showTranslation: true,
-    arabicSize: 28
+    arabicSize: 28,
+    readerContentState: (location.hash === '#reader-loading') ? 'loading'
+      : (location.hash === '#reader-empty') ? 'empty'
+      : (location.hash === '#reader-error') ? 'error'
+      : 'ready'
   };
 
   goHomeStage = () => this.setState({ stage: 'home', stepDir: 'back', settingsOpen: false });
@@ -161,7 +168,7 @@ class Component extends DCLogic {
     window.location.href = 'home/Home Screen.dc.html' + hash;
   };
 
-  openReader = (origin) => this.setState({ stage: 'reader', origin, stepDir: 'fwd', settingsOpen: false });
+  openReader = (origin) => this.setState({ stage: 'reader', origin, stepDir: 'fwd', settingsOpen: false, readerContentState: 'ready' });
   openReaderSurah = () => this.openReader('surah');
   openReaderJuz = () => this.openReader('juz');
 
@@ -171,6 +178,7 @@ class Component extends DCLogic {
   toggleTranslation = () => this.setState(s => ({ showTranslation: !s.showTranslation }));
   incFont = () => this.setState(s => ({ arabicSize: Math.min(36, s.arabicSize + 2) }));
   decFont = () => this.setState(s => ({ arabicSize: Math.max(22, s.arabicSize - 2) }));
+  retryReader = () => this.setState({ readerContentState: 'loading', settingsOpen: false });
 
   // Storyboard frame click → jump the live device to that state.
   selectFrame = (i) => {
@@ -180,11 +188,14 @@ class Component extends DCLogic {
     if (i === 3) { this.setState({ stage: 'reader', origin: 'surah', stepDir: 'none', settingsOpen: false }); return; }
     if (i === 4) { this.setState({ stage: 'reader', origin: 'juz', stepDir: 'none', settingsOpen: false }); return; }
     if (i === 5) { this.setState({ stage: 'reader', origin: 'surah', stepDir: 'none', settingsOpen: true }); return; }
+    if (i === 6) { this.setState({ stage: 'reader', origin: 'surah', stepDir: 'none', settingsOpen: false, readerContentState: 'loading' }); return; }
+    if (i === 7) { this.setState({ stage: 'reader', origin: 'surah', stepDir: 'none', settingsOpen: false, readerContentState: 'empty' }); return; }
+    if (i === 8) { this.setState({ stage: 'reader', origin: 'surah', stepDir: 'none', settingsOpen: false, readerContentState: 'error' }); return; }
   };
 
   restart = () => this.setState({
     stage: 'home', origin: 'surah', quranTab: 0, stepDir: 'back', settingsOpen: false,
-    showTranslit: true, showTranslation: true, arabicSize: 28
+    showTranslit: true, showTranslation: true, arabicSize: 28, readerContentState: 'ready'
   });
 
   renderVals() {
@@ -193,7 +204,12 @@ class Component extends DCLogic {
     // Map live state → storyboard frame index for the ring.
     let readerActive = 0;
     if (s.stage === 'listing') readerActive = s.quranTab === 1 ? 2 : 1;
-    else if (s.stage === 'reader') readerActive = s.settingsOpen ? 5 : (s.origin === 'juz' ? 4 : 3);
+    else if (s.stage === 'reader') {
+      if (s.readerContentState === 'loading') readerActive = 6;
+      else if (s.readerContentState === 'empty') readerActive = 7;
+      else if (s.readerContentState === 'error') readerActive = 8;
+      else readerActive = s.settingsOpen ? 5 : (s.origin === 'juz' ? 4 : 3);
+    }
 
     return {
       isHomeStage: s.stage === 'home',
@@ -206,6 +222,7 @@ class Component extends DCLogic {
       showTranslit: s.showTranslit,
       showTranslation: s.showTranslation,
       arabicSize: s.arabicSize,
+      readerContentState: s.readerContentState,
       readerActive,
       setQuranTab: this.setQuranTab,
       goListingStage: this.goListingStage,
@@ -219,6 +236,7 @@ class Component extends DCLogic {
       toggleTranslation: this.toggleTranslation,
       incFont: this.incFont,
       decFont: this.decFont,
+      retryReader: this.retryReader,
       selectFrame: this.selectFrame,
       restart: this.restart
     };

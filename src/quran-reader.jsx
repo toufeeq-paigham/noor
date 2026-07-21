@@ -25,13 +25,15 @@ function QuranReaderScreen({
   showTranslit = true,
   showTranslation = true,
   arabicSize = 28,
+  contentState = 'ready',
   onBack,
   onToggleSettings,
   onCloseSettings,
   onToggleTranslit,
   onToggleTranslation,
   onIncFont,
-  onDecFont
+  onDecFont,
+  onRetry
 }) {
   const metaText = origin === 'surah' ? '7 ayahs' : 'Juz 1 | 1 - 7 ayahs';
   const last = QURAN_AYAHS.length - 1;
@@ -60,7 +62,27 @@ function QuranReaderScreen({
 
       {/* Ayahs */}
       <div style={{ flex: 1, overflowY: 'auto', WebkitOverflowScrolling: 'touch' }}>
-        {QURAN_AYAHS.map((a, i) => (
+        {contentState === 'loading' ? (
+          <div className="empty-state" role="status" aria-live="polite" style={{ minHeight: '100%', justifyContent: 'center' }}>
+            <div className="empty-state-icon"><span className="mi" data-i="hourglass_top"></span></div>
+            <div className="empty-state-title">Loading ayahs</div>
+            <div className="empty-state-description">Preparing your Quran reading view.</div>
+          </div>
+        ) : contentState === 'empty' ? (
+          <EmptyState
+            icon="auto_stories"
+            title="No ayahs available"
+            description="This Quran selection is currently empty."
+            style={{ minHeight: '100%', justifyContent: 'center' }}
+          />
+        ) : contentState === 'error' ? (
+          <div className="empty-state" role="alert" style={{ minHeight: '100%', justifyContent: 'center' }}>
+            <div className="empty-state-icon"><span className="mi" data-i="error"></span></div>
+            <div className="empty-state-title">Couldn’t load Quran</div>
+            <div className="empty-state-description">Check your connection and try again.</div>
+            <button className="btn btn-filled empty-state-action" onClick={onRetry}>Try again</button>
+          </div>
+        ) : QURAN_AYAHS.map((a, i) => (
           <div key={a.n} style={{
             padding: i === last ? '20px 20px 32px' : '20px 20px 16px',
             borderBottom: i === last ? 'none' : '1px solid var(--color-neutral-border)'
@@ -125,7 +147,10 @@ const QURAN_READER_FRAMES = [
   { name: 'Quran — Juz index', kind: 'listing', quranTab: 1 },
   { name: 'Reader — opened from Surah', kind: 'reader', origin: 'surah' },
   { name: 'Reader — opened from Juz', kind: 'reader', origin: 'juz' },
-  { name: 'Reader — View Settings sheet', kind: 'reader', origin: 'surah', settingsOpen: true }
+  { name: 'Reader — View Settings sheet', kind: 'reader', origin: 'surah', settingsOpen: true },
+  { name: 'Reader — Loading', kind: 'reader', origin: 'surah', contentState: 'loading' },
+  { name: 'Reader — Empty', kind: 'reader', origin: 'surah', contentState: 'empty' },
+  { name: 'Reader — Error & Retry', kind: 'reader', origin: 'surah', contentState: 'error' }
 ];
 
 function QuranReaderRow({ active = -1, onSelectFrame }) {
@@ -162,7 +187,7 @@ function QuranReaderRow({ active = -1, onSelectFrame }) {
             );
           } else {
             screenContent = (
-              <QuranReaderScreen origin={f.origin} settingsOpen={!!f.settingsOpen} />
+              <QuranReaderScreen origin={f.origin} settingsOpen={!!f.settingsOpen} contentState={f.contentState || 'ready'} />
             );
           }
 

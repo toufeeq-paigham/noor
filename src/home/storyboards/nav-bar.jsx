@@ -10,9 +10,9 @@
 
 const NAV_TABS = [
   { label: 'Home', icon: 'home' },
-  { label: 'Qaum', icon: 'group' },
+  { label: 'Qaum', icon: 'groups' },
   { label: 'Quran', icon: 'menu_book' },
-  { label: 'Salaah', icon: 'mosque' },
+  { label: 'Salaah', icon: 'mosque_clock2' },
   { label: 'Profile', icon: 'person' }
 ];
 
@@ -20,18 +20,21 @@ function BottomNav({ activeIndex = 0, onSelect }) {
   const idx = Number(activeIndex) || 0;
   const glowLeft = idx * (100 / NAV_TABS.length) + '%';
   return (
-    <div className="nb-bar">
+    <div className="nb-bar" aria-label="Primary navigation">
       <div className="nb-glow" style={{ left: glowLeft }}></div>
-      <div className="nb-nav">
+      <div className="nb-nav" role="tablist">
         {NAV_TABS.map((t, i) => (
-          <div
+          <button
+            type="button"
             key={i}
             className={`nb-item ${i === idx ? 'active' : ''}`}
+            role="tab"
+            aria-selected={i === idx ? 'true' : 'false'}
             onClick={onSelect ? () => onSelect(i) : undefined}
           >
             <span className="mi" data-i={t.icon}></span>
             <span>{t.label}</span>
-          </div>
+          </button>
         ))}
       </div>
     </div>

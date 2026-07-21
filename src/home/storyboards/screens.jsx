@@ -38,7 +38,8 @@ function HomeScreen({
   onFindMasjid,
   notifNudge = false,       // signed-in with masjid, notifs off (InlineNudge.NotificationPermission)
   onCloseNotifNudge,
-  onAllowNotif
+  onAllowNotif,
+  trackingLoading = false
 }) {
   const { PromptCard } = window;
   const bellIcon = notifOn ? 'notifications' : 'notifications_off';
@@ -174,22 +175,29 @@ function HomeScreen({
         <div style={{ position: 'relative', pointerEvents: 'auto', background: 'color-mix(in oklab, var(--color-surface-card) 82%, transparent)', backdropFilter: 'blur(28px) saturate(180%)', WebkitBackdropFilter: 'blur(28px) saturate(180%)', borderRadius: '24px 24px 0 0', paddingBottom: 32 }}>
           {/* Drag handle */}
           <div style={{ display: 'flex', justifyContent: 'center', padding: '10px 0 6px' }}>
-            <div style={{ width: 38, height: 4, background: 'var(--color-info-faint)', borderRadius: 2 }} />
+            <div style={{ width: 'var(--control-h-md)', height: 'var(--size-sm)', background: 'var(--color-info-faint)', borderRadius: 'var(--radius-xs)' }} />
           </div>
 
-          {/* Track Salaah */}
           <div style={{ padding: '14px 20px 24px' }}>
             <div style={{ display: 'flex', alignItems: 'baseline', justifyContent: 'space-between', marginBottom: 16 }}>
               <div style={{ fontFamily: 'var(--font-body)', fontSize: 20, fontWeight: 700, color: 'var(--color-info-primary)' }}>Track Salaah</div>
-              <span style={{ fontFamily: 'var(--font-body)', fontSize: 12, fontWeight: 700, color: 'var(--color-action-primary)' }}>{salaahCount}</span>
+              {trackingLoading ? (
+                <span className="skeleton" aria-hidden="true" style={{ width: 64, height: 12, borderRadius: 6 }} />
+              ) : (
+                <span style={{ fontFamily: 'var(--font-body)', fontSize: 12, fontWeight: 700, color: 'var(--color-action-primary)' }}>{salaahCount}</span>
+              )}
             </div>
             <div style={{ display: 'flex', justifyContent: 'space-between' }}>
               {prayerList.map((p, idx) => (
-                <div key={idx} onClick={() => onTogglePrayer && onTogglePrayer(p.name)} style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: 8, cursor: 'pointer' }}>
-                  <div className={`cb ${p.checked ? 'on' : ''}`}>
-                    {p.checked && <span className="mi" data-i="check"></span>}
+                <div key={idx} onClick={() => !trackingLoading && onTogglePrayer && onTogglePrayer(p.name)} style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: 8, cursor: trackingLoading ? 'default' : 'pointer' }}>
+                  <div className={`cb ${trackingLoading ? 'skeleton' : (p.checked ? 'on' : '')}`} aria-hidden={trackingLoading ? 'true' : undefined}>
+                    {!trackingLoading && p.checked && <span className="mi" data-i="check"></span>}
                   </div>
-                  <span style={{ fontFamily: 'var(--font-body)', fontSize: 12, fontWeight: 600, color: p.labelColor }}>{p.name}</span>
+                  {trackingLoading ? (
+                    <span className="skeleton" aria-hidden="true" style={{ width: 34, height: 12, borderRadius: 6 }} />
+                  ) : (
+                    <span style={{ fontFamily: 'var(--font-body)', fontSize: 12, fontWeight: 600, color: p.labelColor }}>{p.name}</span>
+                  )}
                 </div>
               ))}
             </div>
@@ -544,9 +552,11 @@ function QaumScreen({
   onFindMasjid,
   notifNudge = false,    // signed-in with masjid, notifs off (InlineNudge.NotificationPermission)
   onCloseNotifNudge,
-  onAllowNotif
+  onAllowNotif,
+  contentState = 'ready', // 'ready' | 'loading' | 'empty' | 'error'
+  onRetry
 }) {
-  const { PromptCard } = window;
+  const { PromptCard, EmptyState } = window;
   const APP_BAR_H = 96;
   // Scroll-driven docking: when the inline player scrolls out of view while playing,
   // the mini player sticks to the nearest edge (top if scrolled above, bottom if below).
@@ -620,6 +630,32 @@ function QaumScreen({
           />
         )}
 
+        {contentState === 'loading' && (
+          <div className="empty-state" role="status" aria-live="polite">
+            <div className="empty-state-icon"><span className="mi" data-i="hourglass_top"></span></div>
+            <div className="empty-state-title">Loading community updates</div>
+            <div className="empty-state-description">Fetching the latest posts from Paigham and your masjids.</div>
+          </div>
+        )}
+
+        {contentState === 'empty' && EmptyState && (
+          <EmptyState
+            icon="group"
+            title="No community updates yet"
+            description="Posts from Paigham and the masjids you follow will appear here."
+          />
+        )}
+
+        {contentState === 'error' && EmptyState && (
+          <div className="empty-state" role="alert">
+            <div className="empty-state-icon"><span className="mi" data-i="error"></span></div>
+            <div className="empty-state-title">Couldn’t load Qaum</div>
+            <div className="empty-state-description">Check your connection and try again.</div>
+            <button className="btn btn-filled empty-state-action" onClick={onRetry}>Try again</button>
+          </div>
+        )}
+
+        {contentState === 'ready' && (<React.Fragment>
         {/* Post 1 — Paigham · Haj 2027 */}
         <div style={{ borderBottom: '1px solid var(--color-neutral-border)', padding: '16px 16px 14px' }}>
             <PostHeader letter="P" bg="#1A5E30" name="Paigham" sub="Paigham HQ" />
@@ -712,6 +748,7 @@ function QaumScreen({
           </div>
           <PostActions liked={true} count={6} time="6mo ago" />
         </div>
+        </React.Fragment>)}
       </div>
 
       {/* App bar — DS .app-bar (transparent, progressive blur), same as the Home tab.
@@ -766,7 +803,9 @@ function QuranScreen({
   activeTab = 0, // 0 = Surah, 1 = Juz
   onSelectTab,
   onSelectSurah, // (idx) => open reader from the Surah list
-  onSelectJuz    // (juzIdx) => open reader from the Juz list
+  onSelectJuz,   // (juzIdx) => open reader from the Juz list
+  contentState = 'ready',
+  onRetry
 }) {
   const tabs = [
     { label: 'Surah', index: 0 },
@@ -780,7 +819,9 @@ function QuranScreen({
     { n: 4,  name: "An-Nisaa",     tr: "The Women",         ayahs: 176, place: "Madinah", arabic: "سُورَةُ النِّسَاءِ" },
     { n: 5,  name: "Al-Maaida",    tr: "The Table Spread",  ayahs: 120, place: "Madinah", arabic: "سُورَةُ الْمَائِدَةِ" },
     { n: 6,  name: "Al-An'aam",    tr: "The Cattle",        ayahs: 165, place: "Makkah",  arabic: "سُورَةُ الْأَنْعَامِ" },
-    { n: 7,  name: "Al-A'raaf",    tr: "The Heights",       ayahs: 206, place: "Makkah",  arabic: "سُورَةُ الْأَعْرَافِ" }
+    { n: 7,  name: "Al-A'raaf",    tr: "The Heights",       ayahs: 206, place: "Makkah",  arabic: "سُورَةُ الْأَعْرَافِ" },
+    { n: 8,  name: "Al-Anfaal",    tr: "The Spoils of War", ayahs: 75,  place: "Madinah", arabic: "سُورَةُ الْأَنْفَالِ" },
+    { n: 9,  name: "At-Tawba",     tr: "The Repentance",    ayahs: 129, place: "Madinah", arabic: "سُورَةُ التَّوْبَةِ" }
   ];
 
   // Juz tab: surahs grouped under each Juz, each with its ayah range for that Juz.
@@ -812,7 +853,26 @@ function QuranScreen({
           down by that amount. */}
       <div style={{ position: 'absolute', inset: 0, overflowY: 'auto', WebkitOverflowScrolling: 'touch' }}>
         <div style={{ padding: `${QURAN_APPBAR_H + 4}px 16px 90px` }}>
-        {activeTab === 0 ? (
+        {contentState === 'loading' ? (
+          <div className="empty-state" role="status" aria-live="polite">
+            <div className="empty-state-icon"><span className="mi" data-i="hourglass_top"></span></div>
+            <div className="empty-state-title">Loading Quran index</div>
+            <div className="empty-state-description">Preparing the Surah and Juz listings.</div>
+          </div>
+        ) : contentState === 'empty' ? (
+          <EmptyState
+            icon="auto_stories"
+            title="No Quran entries available"
+            description="The Quran index is currently empty."
+          />
+        ) : contentState === 'error' ? (
+          <div className="empty-state" role="alert">
+            <div className="empty-state-icon"><span className="mi" data-i="error"></span></div>
+            <div className="empty-state-title">Couldn’t load Quran</div>
+            <div className="empty-state-description">Check your connection and try again.</div>
+            <button className="btn btn-filled empty-state-action" onClick={onRetry}>Try again</button>
+          </div>
+        ) : activeTab === 0 ? (
           /* Surah tab — flat list of surah cards (name · translation · ayah count) */
           <div style={{ display: 'flex', flexDirection: 'column', gap: 8 }}>
             {surahs.map((s, idx) => (
@@ -1091,7 +1151,10 @@ function SalaahScreen({
       {approx ? (
         <div className="app-bar" style={{ alignItems: 'center', height: SAL_APPBAR_H, padding: '54px 16px 10px' }} onClick={guest ? onOpenLoginSheet : undefined}>
           <div style={{ flex: 1, minWidth: 0, cursor: guest ? 'pointer' : 'default' }}>
-            <span style={{ fontFamily: 'var(--font-title)', fontSize: 22, color: 'var(--color-info-primary)', letterSpacing: '-0.3px' }}>📍 Bangalore (Approx.)</span>
+            <div style={{ display: 'flex', alignItems: 'center', gap: 'var(--size-sm)', color: 'var(--color-info-primary)' }}>
+              <span className="mi" data-i="location_on" aria-hidden="true" style={{ fontSize: 'var(--icon-md)' }}></span>
+              <span style={{ fontFamily: 'var(--font-title)', fontSize: 22, letterSpacing: '-0.3px' }}>Bangalore (Approx.)</span>
+            </div>
           </div>
         </div>
       ) : (
@@ -1154,6 +1217,7 @@ function ProfileScreen({
   phone = "+91 87928 13003",
   version = "1.0.0",
   masjidName = "Masjid E Bilal",
+  showMyMasjids = true,
   onMyMasjids,             // tap the My Masjids row → open My Masjids sheet (masjid-register board)
   onRegister,
   onInvite,
@@ -1176,15 +1240,15 @@ function ProfileScreen({
   );
 
   const cards = [
-    onMyMasjids
+    showMyMasjids && onMyMasjids
       ? [{ icon: 'mosque', label: 'My Masjids', value: masjidName, onClick: onMyMasjids }, { icon: 'add', label: 'Register a Masjid', onClick: onRegister }]
       : [{ icon: 'add', label: 'Register a Masjid', onClick: onRegister }],
     [
-      { icon: 'group', label: 'Invite your Friends', onClick: onInvite },
+      { icon: 'groups_outlined', label: 'Invite your Friends', onClick: onInvite },
       { icon: 'check_circle', label: 'Approve Friends', onClick: onApprove }
     ],
     [
-      { icon: 'description', label: 'Terms & Conditions', onClick: onTerms },
+      { icon: 'contract', label: 'Terms & Conditions', onClick: onTerms },
       { icon: 'security', label: 'Privacy Policy', onClick: onPrivacy },
       { icon: 'info', label: 'About', value: `Version ${version}`, onClick: onAbout }
     ],
@@ -1196,7 +1260,7 @@ function ProfileScreen({
       {/* Scroll container */}
       <div style={{ flex: 1, overflowY: 'auto', WebkitOverflowScrolling: 'touch', paddingBottom: 80 }}>
         {/* Profile Hero — avatar + name + phone (no masjid when none followed) */}
-        <div className="p-hero" style={{ position: 'relative', display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', gap: 14, padding: '56px 20px 28px' }}>
+        <div className="p-hero" style={{ position: 'relative', display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', gap: 14, padding: '56px 20px 28px', background: 'var(--gradient-emerald)' }}>
           <div style={{ width: 112, height: 112, borderRadius: '50%', background: 'color-mix(in oklab, var(--color-action-secondary) 22%, transparent)', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
             <span style={{ fontFamily: 'var(--font-title)', fontSize: 44, color: 'var(--color-info-primary)' }}>{userName.charAt(0)}</span>
           </div>
@@ -1226,7 +1290,7 @@ function ProfileScreen({
         <div style={{ position: 'absolute', inset: 0, background: 'rgba(0,0,0,0.5)', zIndex: 100, display: 'flex', alignItems: 'flex-end' }}>
           <div style={{ width: '100%', background: 'var(--color-surface-primary)', borderRadius: '24px 24px 0 0', padding: 24, boxSizing: 'border-box' }}>
             <div style={{ fontFamily: 'var(--font-body)', fontSize: 18, fontWeight: 800, color: 'var(--color-info-primary)', marginBottom: 8, textWrap: 'balance' }}>Are you sure you want to log out?</div>
-            <div style={{ fontFamily: 'var(--font-body)', fontSize: 14, color: 'var(--color-info-secondary)', marginBottom: 20 }}>You will need to verify your phone number again to log back into Paigham.</div>
+            <div style={{ fontFamily: 'var(--font-body)', fontSize: 14, color: 'var(--color-info-secondary)', marginBottom: 20 }}>You'll need to sign in again to access your account.</div>
             <div style={{ display: 'flex', gap: 12 }}>
               <button onClick={onToggleLogoutSheet} className="btn btn-tonal lg" style={{ flex: 1 }}>Cancel</button>
               <button onClick={onConfirmLogout} className="btn btn-filled lg" style={{ flex: 1, background: 'var(--color-status-error)', color: '#fff' }}>Log out</button>

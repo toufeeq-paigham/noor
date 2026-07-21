@@ -35,6 +35,59 @@ const QURAN_EXTRA_FRAMES = [
   { id: 'quran-juz', name: 'Quran — Juz View', tab: 2, component: 'QuranScreen', props: { activeTab: 1 } }
 ];
 
+// Quran data states use appended indices 34-36 so all existing deep-link indices remain stable.
+const QURAN_DATA_FRAMES = [
+  { id: 'quran-loading', name: 'Quran — Loading', tab: 2, component: 'QuranScreen', props: { contentState: 'loading' } },
+  { id: 'quran-empty', name: 'Quran — Empty', tab: 2, component: 'QuranScreen', props: { contentState: 'empty' } },
+  { id: 'quran-error', name: 'Quran — Error & Retry', tab: 2, component: 'QuranScreen', props: { contentState: 'error', onRetry: () => {} } }
+];
+
+// Qaum data states use appended indices 31-33 so all existing deep-link indices remain stable.
+const QAUM_DATA_FRAMES = [
+  { id: 'qaum-loading', name: 'Qaum — Loading', tab: 1, component: 'QaumScreen', props: { contentState: 'loading' } },
+  { id: 'qaum-empty', name: 'Qaum — Empty', tab: 1, component: 'QaumScreen', props: { contentState: 'empty' } },
+  { id: 'qaum-error', name: 'Qaum — Error & Retry', tab: 1, component: 'QaumScreen', props: { contentState: 'error', onRetry: () => {} } }
+];
+
+// Supplied Compose evidence includes a Home state where timing content stays
+// usable while only tracking data is loading. Keep that state explicit in Noor.
+const HOME_DATA_FRAMES = [
+  {
+    id: 'home-tracking-loading',
+    name: 'Home — Tracking Loading',
+    tab: 0,
+    component: 'HomeScreen',
+    props: {
+      prayer: 'Asr',
+      masjidName: 'Bangalore (Approx.)',
+      followNudge: true,
+      trackingLoading: true,
+      onFindMasjid: () => {},
+      onCloseFollowNudge: () => {}
+    }
+  }
+];
+
+const PROFILE_EXTRA_FRAMES = [
+  {
+    id: 'profile-pending',
+    name: 'Profile — Pending Setup',
+    tab: 4,
+    component: 'ProfileScreen',
+    props: {
+      userName: 'Paigham User',
+      phone: '+91 81234 03269',
+      showMyMasjids: false,
+      onRegister: () => {},
+      onInvite: () => {},
+      onApprove: () => {},
+      onTerms: () => {},
+      onPrivacy: () => {},
+      onAbout: () => {}
+    }
+  }
+];
+
 // NOTE: the guest / no-masjid / notification nudge STATES used to live here as extra frames.
 // They moved to their own board — src/nudge-states/ — to declutter this storyboard and cut the
 // canvas' pan/zoom cost. STORYBOARD_FRAMES indices 1-3 (login-nudge/privacy/ATT) are retained in
@@ -117,10 +170,11 @@ function HomeRow({ active = 0, onSelectFrame }) {
   return (
     <div>
       <div className="poc-row-label">
-        <span className="mi" data-i="home"></span> 02 · Home Tab — Maghrib Default · 1 Screen
+        <span className="mi" data-i="home"></span> 02 · Home Tab — Calculated or Masjid Timings
       </div>
       <div className="poc-board">
         {renderFrame(STORYBOARD_FRAMES[0], 0, active, onSelectFrame)}
+        {HOME_DATA_FRAMES.map((f, i) => renderFrame(f, 37 + i, active, onSelectFrame))}
       </div>
     </div>
   );
@@ -130,12 +184,13 @@ function QaumRow({ active = 0, onSelectFrame }) {
   return (
     <div>
       <div className="poc-row-label">
-        <span className="mi" data-i="group"></span> 03 · Qaum Tab — Community Feed &amp; Audio Player · 4 states
+        <span className="mi" data-i="groups"></span> 03 · Qaum Tab — Community Feed, Data States &amp; Audio Player · 7 states
       </div>
       <div className="poc-board">
         {/* Base feed (idle audio) at global index 4, then the audio-player variations at 13-15 */}
         {renderFrame(STORYBOARD_FRAMES[4], 4, active, onSelectFrame)}
         {QAUM_EXTRA_FRAMES.map((f, i) => renderFrame(f, 13 + i, active, onSelectFrame))}
+        {QAUM_DATA_FRAMES.map((f, i) => renderFrame(f, 31 + i, active, onSelectFrame))}
       </div>
     </div>
   );
@@ -145,11 +200,12 @@ function QuranRow({ active = 0, onSelectFrame }) {
   return (
     <div>
       <div className="poc-row-label">
-        <span className="mi" data-i="menu_book"></span> 04 · Quran Tab — Surah &amp; Juz · 2 states
+        <span className="mi" data-i="menu_book"></span> 04 · Quran Tab — Surah, Juz &amp; Data States · 5 states
       </div>
       <div className="poc-board">
         {renderFrame(STORYBOARD_FRAMES[5], 5, active, onSelectFrame)}
         {QURAN_EXTRA_FRAMES.map((f, i) => renderFrame(f, 16 + i, active, onSelectFrame))}
+        {QURAN_DATA_FRAMES.map((f, i) => renderFrame(f, 34 + i, active, onSelectFrame))}
       </div>
     </div>
   );
@@ -159,7 +215,7 @@ function SalaahRow({ active = 0, onSelectFrame }) {
   return (
     <div>
       <div className="poc-row-label">
-        <span className="mi" data-i="mosque"></span> 05 · Salaah Tab — Bilal Timings · 1 Screen
+        <span className="mi" data-i="mosque_clock2"></span> 05 · Salaah Tab — Bilal Timings · 1 Screen
       </div>
       <div className="poc-board">
         {renderFrame(STORYBOARD_FRAMES[6], 6, active, onSelectFrame)}
@@ -172,10 +228,11 @@ function ProfileRow({ active = 0, onSelectFrame }) {
   return (
     <div>
       <div className="poc-row-label">
-        <span className="mi" data-i="person"></span> 06 · Profile Tab — User Settings · 1 Screen
+        <span className="mi" data-i="person"></span> 06 · Profile Tab — User Settings · 2 states
       </div>
       <div className="poc-board">
         {STORYBOARD_FRAMES.slice(7, 8).map((f, i) => renderFrame(f, 7 + i, active, onSelectFrame))}
+        {PROFILE_EXTRA_FRAMES.map((f, i) => renderFrame(f, 38 + i, active, onSelectFrame))}
       </div>
     </div>
   );

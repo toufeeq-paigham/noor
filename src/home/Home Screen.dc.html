@@ -125,6 +125,7 @@
                       notif-nudge="{{ homeNotifNudge }}"
                       on-close-notif-nudge="{{ closeHomeNotifNudge }}"
                       on-allow-notif="{{ allowNotif }}"
+                      tracking-loading="{{ homeTrackingLoading }}"
                       hint-size="100%,100%">
             </x-import>
           </sc-if>
@@ -148,6 +149,8 @@
                       notif-nudge="{{ qaumNotifNudge }}"
                       on-close-notif-nudge="{{ closeQaumNudge }}"
                       on-allow-notif="{{ allowNotif }}"
+                      content-state="{{ qaumContentState }}"
+                      on-retry="{{ retryQaum }}"
                       hint-size="100%,100%">
             </x-import>
           </sc-if>
@@ -159,6 +162,8 @@
                       on-select-tab="{{ setQuranTab }}"
                       on-select-surah="{{ goReaderSurah }}"
                       on-select-juz="{{ goReaderJuz }}"
+                      content-state="{{ quranContentState }}"
+                      on-retry="{{ retryQuran }}"
                       hint-size="100%,100%">
             </x-import>
           </sc-if>
@@ -197,7 +202,9 @@
           <!-- TAB 4: PROFILE SCREEN -->
           <sc-if value="{{ isProfileTab }}">
             <x-import component="ProfileScreen" from="./storyboards/screens.jsx"
-                      user-name="Toufeeq"
+                      user-name="{{ profileUserName }}"
+                      phone="{{ profilePhone }}"
+                      show-my-masjids="{{ profileHasMasjid }}"
                       masjid-name="{{ homeMasjidLabel }}"
                       on-my-masjids="{{ goMyMasjids }}"
                       logout-open="{{ profileLogoutOpen }}"
@@ -316,15 +323,18 @@ class Component extends DCLogic {
     homeSlide: 0,
     homeLikes: { haj: { liked: true, count: 4 }, eid: { liked: true, count: 12 } },
     homeNotifOn: true,
+    homeTrackingLoading: false,
     
     // Qaum tab state
     qaumLikes: { post1: { liked: true, count: 4 }, post2: { liked: false, count: 2 }, post3: { liked: true, count: 8 } },
     qaumAudioPlaying: false,
     qaumAudioProgress: 0,
     qaumDock: 'none',
+    qaumContentState: 'ready',
 
     // Quran tab state
     quranTab: 0,
+    quranContentState: 'ready',
 
     // Salaah tab state
     salaahShowMasjidSheet: false,
@@ -335,7 +345,10 @@ class Component extends DCLogic {
     salaahPrayersChecked: { Fajr: true, Zohar: true, Asr: true, Maghrib: false, Isha: false },
 
     // Profile tab state
-    profileLogoutOpen: false
+    profileLogoutOpen: false,
+    profileUserName: "Toufeeq",
+    profilePhone: "+91 87928 13003",
+    profileHasMasjid: true
   };
 
   componentDidMount() {
@@ -363,6 +376,14 @@ class Component extends DCLogic {
       else if (hash === '#salaah-masjid-sheet') this.syncLiveStateToFrame(28);
       else if (hash === '#qaum-guest-signin-sheet') this.syncLiveStateToFrame(29);
       else if (hash === '#qaum-notif-sheet') this.syncLiveStateToFrame(30);
+      else if (hash === '#qaum-loading') this.syncLiveStateToFrame(31);
+      else if (hash === '#qaum-empty') this.syncLiveStateToFrame(32);
+      else if (hash === '#qaum-error') this.syncLiveStateToFrame(33);
+      else if (hash === '#quran-loading') this.syncLiveStateToFrame(34);
+      else if (hash === '#quran-empty') this.syncLiveStateToFrame(35);
+      else if (hash === '#quran-error') this.syncLiveStateToFrame(36);
+      else if (hash === '#home-tracking-loading') this.syncLiveStateToFrame(37);
+      else if (hash === '#profile-pending') this.syncLiveStateToFrame(38);
     }
   }
 
@@ -406,7 +427,19 @@ class Component extends DCLogic {
       { activeTab: 3, homeNoMasjid: true, masjidSheetOpen: true, salaahPrayersChecked: { Fajr: false, Zohar: false, Asr: false, Maghrib: false, Isha: false } },
       { activeTab: 1, homeGuest: true, guestSignInSheetOpen: true, qaumAudioPlaying: false, qaumAudioProgress: 0, qaumDock: 'none' },
       // 30 · Notification "Stay in the loop" sheet on Qaum
-      { activeTab: 1, homeNotifOff: true, notifSheetOpen: true, qaumAudioPlaying: false, qaumAudioProgress: 0, qaumDock: 'none' }
+      { activeTab: 1, homeNotifOff: true, notifSheetOpen: true, qaumAudioPlaying: false, qaumAudioProgress: 0, qaumDock: 'none' },
+      // 31-33 · Qaum loading, empty, and recoverable error
+      { activeTab: 1, qaumContentState: 'loading', qaumAudioPlaying: false, qaumAudioProgress: 0, qaumDock: 'none' },
+      { activeTab: 1, qaumContentState: 'empty', qaumAudioPlaying: false, qaumAudioProgress: 0, qaumDock: 'none' },
+      { activeTab: 1, qaumContentState: 'error', qaumAudioPlaying: false, qaumAudioProgress: 0, qaumDock: 'none' },
+      // 34-36 · Quran loading, empty, and recoverable error
+      { activeTab: 2, quranContentState: 'loading' },
+      { activeTab: 2, quranContentState: 'empty' },
+      { activeTab: 2, quranContentState: 'error' },
+      // 37 · Home timing content ready while Salaah tracking is loading
+      { activeTab: 0, homeNoMasjid: true, homeFollowNudge: true, homeTrackingLoading: true, homeHeroSel: null, homeActivePrayer: 'Asr' },
+      // 38 · Signed-in pending setup: never label this account as Guest
+      { activeTab: 4, homeNoMasjid: true, profileUserName: 'Paigham User', profilePhone: '+91 81234 03269', profileHasMasjid: false }
     ];
     clearInterval(this._audioTimer);
     this.setState({
@@ -422,6 +455,12 @@ class Component extends DCLogic {
       notifSheetOpen: false,
       guestSignInSheetOpen: false,
       qaumNudgeClosed: false,
+      qaumContentState: 'ready',
+      quranContentState: 'ready',
+      homeTrackingLoading: false,
+      profileUserName: 'Toufeeq',
+      profilePhone: '+91 87928 13003',
+      profileHasMasjid: true,
       salaahNudgeClosed: false,
       salaahLoginSheet: false,
       ...states[idx],
@@ -436,6 +475,7 @@ class Component extends DCLogic {
       if (s.homePrivacyConsent) return 2;
       if (s.homeGuestSheet) return 19;
       if (s.homeLoginNudge) return 1;
+      if (s.homeTrackingLoading) return 37;
       if (s.homeFollowNudge) return 20;
       if (s.homeNotifNudge) return 24;
       const p = (s.homeActivePrayer || 'Maghrib').toLowerCase();
@@ -448,9 +488,16 @@ class Component extends DCLogic {
     if (tabIndex === 1 && s.homeGuest) return s.guestSignInSheetOpen ? 29 : 17;
     if (tabIndex === 1 && s.homeNoMasjid) return s.masjidSheetOpen ? 22 : 21;
     if (tabIndex === 1 && s.homeNotifOff) return s.notifSheetOpen ? 30 : 25;
+    if (tabIndex === 1 && s.qaumContentState === 'loading') return 31;
+    if (tabIndex === 1 && s.qaumContentState === 'empty') return 32;
+    if (tabIndex === 1 && s.qaumContentState === 'error') return 33;
+    if (tabIndex === 2 && s.quranContentState === 'loading') return 34;
+    if (tabIndex === 2 && s.quranContentState === 'empty') return 35;
+    if (tabIndex === 2 && s.quranContentState === 'error') return 36;
     if (tabIndex === 3 && s.homeGuest) return 18;
     if (tabIndex === 3 && s.homeNoMasjid) return s.masjidSheetOpen ? 28 : 23;
     if (tabIndex === 3 && s.homeNotifOff) return s.notifSheetOpen ? 27 : 26;
+    if (tabIndex === 4 && !s.profileHasMasjid) return 38;
     return tabIndex + 3;
   }
 
@@ -541,12 +588,14 @@ class Component extends DCLogic {
       notifSheetOpen: false,
       guestSignInSheetOpen: false,
       qaumNudgeClosed: false,
+      qaumContentState: 'ready',
       salaahNudgeClosed: false,
       salaahLoginSheet: false,
       homePrayers: { Fajr: true, Zohar: true, Asr: true, Maghrib: true, Isha: false },
       homeSehriNote: false,
       homeSlide: 0,
       quranTab: 0,
+      quranContentState: 'ready',
       salaahShowMasjidSheet: false,
       profileLogoutOpen: false
     });
@@ -596,7 +645,6 @@ class Component extends DCLogic {
   });
 
   toggleNotif = () => this.setState(s => ({ homeNotifOn: !s.homeNotifOn }));
-
   // Qaum handlers
   toggleQaumLike = (key) => this.setState(s => {
     const cur = s.qaumLikes[key];
@@ -630,8 +678,11 @@ class Component extends DCLogic {
     this.setState({ qaumAudioPlaying: false, qaumAudioProgress: 0, qaumDock: 'none' });
   };
 
+  retryQaum = () => this.setState({ qaumContentState: 'loading', activeFrameIndex: 31 });
+
   // Quran handlers
   setQuranTab = (idx) => this.setState({ quranTab: idx });
+  retryQuran = () => this.setState({ quranContentState: 'loading', activeFrameIndex: 34 });
   goReaderSurah = () => { window.location.href = '../Quran.dc.html#surah'; };
   goReaderJuz = () => { window.location.href = '../Quran.dc.html#juz'; };
 
@@ -730,6 +781,7 @@ class Component extends DCLogic {
       homeSlide: s.homeSlide,
       homeLikes: s.homeLikes,
       homeNotifOn: s.homeNotifOn,
+      homeTrackingLoading: s.homeTrackingLoading,
       toggleSuhoor: this.toggleSuhoor,
       toggleIftaar: this.toggleIftaar,
       toggleHomePrayer: this.toggleHomePrayer,
@@ -756,11 +808,15 @@ class Component extends DCLogic {
       qaumAudioProgress: s.qaumAudioProgress,
       toggleQaumAudio: this.toggleQaumAudio,
       qaumDock: s.qaumDock,
+      qaumContentState: s.qaumContentState,
       closeQaumAudio: this.closeQaumAudio,
+      retryQaum: this.retryQaum,
 
       // Quran Screen props
       quranTab: s.quranTab,
+      quranContentState: s.quranContentState,
       setQuranTab: this.setQuranTab,
+      retryQuran: this.retryQuran,
       goReaderSurah: this.goReaderSurah,
       goReaderJuz: this.goReaderJuz,
 
@@ -778,6 +834,9 @@ class Component extends DCLogic {
 
       // Profile Screen props
       profileLogoutOpen: s.profileLogoutOpen,
+      profileUserName: s.profileUserName,
+      profilePhone: s.profilePhone,
+      profileHasMasjid: s.profileHasMasjid,
       toggleProfileLogoutSheet: this.toggleProfileLogoutSheet,
 
       // Guest and Login Nudge state
