@@ -181,6 +181,14 @@ grep -rnE '#[0-9a-fA-F]{3,8}' src/components src/_theme/components.css
   `NAME.svg` in `src/_ds/icons/` and add a `[data-i="NAME"]` rule to `icons.css`. Do NOT add new
   `material-symbols-rounded` ligatures — that font is retained only for the vendored `_ds_bundle.js`.
 
+## Canonical Product Flows — Read Before Journey Design
+
+The shared Paigham onboarding, user-state, nudge, and Salaah-timing rules live in
+`../paigham-app/docs/ui-ux-upgrade/FLOW_LOGIC.md`. Read that document before changing Noor journeys
+for authentication, onboarding, Home, Profile, Masjid discovery, or Salaah. Noor may improve how a
+flow is explained, but it must not silently change the product logic; approved logic changes must
+update that document in the same change.
+
 ## Commit Messages
 
 Never include `Co-Authored-By: Claude` or any Anthropic/Claude trailer. Omit it entirely.
