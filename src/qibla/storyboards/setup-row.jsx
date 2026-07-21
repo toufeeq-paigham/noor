@@ -4,15 +4,17 @@
 // `active` = index of the frame the live device currently shows (-1 = none).
 
 const SETUP_FRAMES = [
-  { name: 'Permissions', showPermission: true, qiblaRel: 300 },
-  { name: 'Acquiring location', showPermission: false, qiblaRel: 300 },
+  { name: 'Permissions', permissionState: 'request', qiblaRel: 300 },
+  { name: 'Permission denied', permissionState: 'denied', qiblaRel: 300 },
+  { name: 'Location services off', permissionState: 'services', qiblaRel: 300 },
+  { name: 'Acquiring location', permissionState: 'locating', qiblaRel: 300 },
 ];
 
 function SetupRow({ active = -1, onSelectFrame }) {
   const { InitialQiblaScreen } = window;
   return (
     <div>
-      <div className="poc-row-label"><span className="mi" data-i="security"></span> 01 · Setup — compass · permissions → locating · {SETUP_FRAMES.length} states</div>
+      <div className="poc-row-label"><span className="mi" data-i="security"></span> 01 · Setup — request · recovery · locating · {SETUP_FRAMES.length} states</div>
       <div className="poc-board">
         {SETUP_FRAMES.map((f, i) => {
           const isActive = active === i;
@@ -22,7 +24,7 @@ function SetupRow({ active = -1, onSelectFrame }) {
                 <div className="noor-frame-inner">
                   <div className="noor-screen">
                     <div className="noor-island"></div>
-                    {InitialQiblaScreen && <InitialQiblaScreen showPermission={f.showPermission} qiblaRel={f.qiblaRel} />}
+                    {InitialQiblaScreen && <InitialQiblaScreen permissionState={f.permissionState} qiblaRel={f.qiblaRel} />}
                     <div className="noor-home"></div>
                   </div>
                 </div>

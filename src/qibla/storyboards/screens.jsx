@@ -134,19 +134,41 @@ function PreviewChips({ items }) {
 // ══════════════════════════════════════════════════════════════════════
 // 1 · InitialQiblaScreen — dark compass + (optional) permission request UI
 // ══════════════════════════════════════════════════════════════════════
-function InitialQiblaScreen({ showPermission = true, qiblaRel = 300, pointing = false, onGrant, onClose }) {
+function InitialQiblaScreen({ showPermission = true, permissionState, qiblaRel = 300, pointing = false, onGrant, onClose }) {
   const heading = ((QIBLA_BEARING - qiblaRel) % 360 + 360) % 360;
+  const mode = permissionState || (showPermission ? 'request' : 'locating');
+  const copy = {
+    request: {
+      icon: 'explore',
+      title: 'Help us find the Qibla',
+      body: 'Paigham uses your location to calculate the direction and the camera for guided alignment.',
+      action: 'Allow location and camera',
+    },
+    denied: {
+      icon: 'no_photography',
+      title: 'Camera and location are off',
+      body: 'Allow both permissions in Settings to use the guided Qibla finder.',
+      action: 'Open Settings',
+    },
+    services: {
+      icon: 'location_off',
+      title: 'Turn on location services',
+      body: 'Location services are needed to calculate the Qibla direction from where you are.',
+      action: 'Open Location Settings',
+    },
+  }[mode];
   return (
     <div style={{ position: 'relative', width: '100%', height: '100%', overflow: 'hidden',
       background: 'var(--color-surface-primary)', display: 'flex', flexDirection: 'column' }}>
-      <div style={{ flex: 1, display: 'flex', alignItems: 'center', justifyContent: 'center', paddingTop: 72, paddingBottom: showPermission ? 0 : 40 }}>
+      <div style={{ flex: 1, display: 'flex', alignItems: 'center', justifyContent: 'center', paddingTop: 72, paddingBottom: mode !== 'locating' ? 0 : 40 }}>
         <CompassDial size={264} qiblaRel={qiblaRel} heading={heading} pointing={pointing} />
       </div>
-      {showPermission ? (
+      {mode !== 'locating' ? (
         <div style={{ flexShrink: 0, padding: '0 24px 40px' }}>
-          <div style={{ fontFamily: FONT_T, fontSize: 26, lineHeight: 1.2, letterSpacing: '-0.4px', color: 'var(--color-info-primary)', marginBottom: 10 }}>Location and Camera Permissions</div>
-          <div style={{ fontFamily: FONT_B, fontSize: 14, lineHeight: 1.6, color: 'var(--color-info-secondary)', marginBottom: 24 }}>Please grant Location and Camera permission to find Qibla near you.</div>
-          <button className="btn btn-filled lg" onClick={onGrant} style={{ width: '100%' }}>Grant permissions</button>
+          <span className="mi" style={{ fontSize: 'var(--icon-lg)', color: mode === 'request' ? 'var(--color-action-primary)' : 'var(--color-status-warning)', marginBottom: 12 }} data-i={copy.icon}></span>
+          <div style={{ fontFamily: FONT_T, fontSize: 26, lineHeight: 1.2, letterSpacing: '-0.4px', color: 'var(--color-info-primary)', marginBottom: 10 }}>{copy.title}</div>
+          <div style={{ fontFamily: FONT_B, fontSize: 14, lineHeight: 1.6, color: 'var(--color-info-secondary)', marginBottom: 24 }}>{copy.body}</div>
+          <button className="btn btn-filled lg" onClick={onGrant} style={{ width: '100%' }}>{copy.action}</button>
         </div>
       ) : (
         <div style={{ flexShrink: 0, padding: '0 24px 44px', textAlign: 'center' }}>

@@ -20,11 +20,14 @@
     ::-webkit-scrollbar{display:none}*{-ms-overflow-style:none;scrollbar-width:none}
     @keyframes stepin { from{transform:translateX(28px);opacity:0} to{transform:translateX(0);opacity:1} }
     @keyframes stepback { from{transform:translateX(-28px);opacity:0} to{transform:translateX(0);opacity:1} }
-    .step-fwd { animation:stepin .35s cubic-bezier(.2,.8,.2,1) }
-    .step-back { animation:stepback .35s cubic-bezier(.2,.8,.2,1) }
+    .step-fwd { animation:stepin var(--motion-emphasized) var(--ease-out) }
+    .step-back { animation:stepback var(--motion-standard) var(--ease-out) }
     /* Guided direction arrow pulse (opacity only — the rotate transform is set inline) */
     @keyframes qpulse { 0%,100%{opacity:.6} 50%{opacity:1} }
-    .qibla-arrow { animation:qpulse 1.2s ease-in-out infinite }
+    .qibla-arrow { animation:qpulse var(--motion-celebration) var(--ease-in-out) infinite }
+    @media (prefers-reduced-motion: reduce) {
+      .step-fwd,.step-back,.qibla-arrow { animation:none }
+    }
   </style>
 </helmet>
 
@@ -52,7 +55,7 @@
             <sc-if value="{{ isInitialStage }}">
               <div class="{{ stepAnim }}" style="width:100%;height:100%;position:relative">
                 <x-import component="InitialQiblaScreen" from="./storyboards/screens.jsx"
-                          show-permission="{{ showPermission }}"
+                          permission-state="{{ permissionState }}"
                           qibla-rel="{{ initQiblaRel }}"
                           on-grant="{{ onGrant }}"
                           on-close="{{ onClose }}"
@@ -85,8 +88,13 @@
 <script type="text/x-dc" data-dc-script>
 class Component extends DCLogic {
   state = {
-    // 'permissions' | 'locating' | 'searching' | 'horizontal' | 'inview'
-    stage: (location.hash === '#ar' ? 'searching' : 'permissions'),
+    // 'permissions' | 'permissionDenied' | 'servicesDisabled' | 'locating' | 'searching' | 'horizontal' | 'inview'
+    stage: ({
+      '#ar': 'searching',
+      '#permission-denied': 'permissionDenied',
+      '#location-services': 'servicesDisabled',
+      '#locating': 'locating',
+    }[location.hash] || 'permissions'),
     stepDir: 'fwd',
   };
 
@@ -108,24 +116,29 @@ class Component extends DCLogic {
   onTurnAway = () => this.setState({ stage: 'searching', stepDir: 'back' });
 
   // Tap a storyboard frame → jump the live device to that state.
-  selectSetupFrame = (i) => { clearTimeout(this._t); this.setState({ stage: i === 0 ? 'permissions' : 'locating', stepDir: 'none' }); };
+  selectSetupFrame = (i) => {
+    clearTimeout(this._t);
+    this.setState({ stage: ['permissions', 'permissionDenied', 'servicesDisabled', 'locating'][i] || 'permissions', stepDir: 'none' });
+  };
   selectArFrame = (i) => { clearTimeout(this._t); this.setState({ stage: ['searching', 'horizontal', 'inview'][i] || 'searching', stepDir: 'none' }); };
 
   restart = () => { clearTimeout(this._t); this.setState({ stage: 'permissions', stepDir: 'back' }); };
 
   renderVals() {
     const s = this.state;
-    const isInitial = s.stage === 'permissions' || s.stage === 'locating';
+    const isInitial = ['permissions', 'permissionDenied', 'servicesDisabled', 'locating'].includes(s.stage);
     const isAr = !isInitial;
 
     return {
       isInitialStage: isInitial,
       isArStage: isAr,
-      showPermission: s.stage === 'permissions',
+      permissionState: {
+        permissions: 'request', permissionDenied: 'denied', servicesDisabled: 'services', locating: 'locating'
+      }[s.stage] || 'request',
       initQiblaRel: 300,
       arStage: s.stage,
 
-      setupActive: s.stage === 'permissions' ? 0 : (s.stage === 'locating' ? 1 : -1),
+      setupActive: { permissions:0, permissionDenied:1, servicesDisabled:2, locating:3 }[s.stage] ?? -1,
       arActive: s.stage === 'searching' ? 0 : (s.stage === 'horizontal' ? 1 : (s.stage === 'inview' ? 2 : -1)),
 
       stepAnim: s.stepDir === 'back' ? 'step-back' : (s.stepDir === 'none' ? '' : 'step-fwd'),

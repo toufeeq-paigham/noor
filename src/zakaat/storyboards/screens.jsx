@@ -84,7 +84,7 @@ function ZakaatEmptyScreen({ onCalculate, onBack }) {
 
       {/* Empty State Content */}
       <div style={{ flex: 1, display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', padding: '32px 24px', textAlign: 'center' }}>
-        <span className="mi" style={{ fontSize: 72, color: 'var(--color-info-tertiary)', opacity: 0.35, marginBottom: 20 }} data-i="savings"></span>
+        <span className="mi" style={{ fontSize: 72, color: 'var(--color-info-tertiary)', opacity: 'var(--opacity-low)', marginBottom: 20 }} data-i="money_bag"></span>
         <div style={{ fontFamily: 'var(--font-title)', fontSize: 28, color: 'var(--color-info-primary)', lineHeight: 1.2, marginBottom: 12 }}>
           No Zakaats found
         </div>
