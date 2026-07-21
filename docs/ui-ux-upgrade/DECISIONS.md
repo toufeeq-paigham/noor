@@ -403,6 +403,39 @@ The saved-record journey remains calm, accounting-led, and moderately dense. The
 
 No calculation, repository, deletion, deep-link, route-order, or saved-record identity behavior changes. The optional transition amount is display-only and is replaced by repository data when loading completes.
 
+### Qaum media continuity — 2026-07-21
+
+Qaum remains a moderately dense community feed. Author identity, message copy, reactions, timestamps, audio, and the bottom navigation stay visually subordinate to post media. Opening an image preserves the feed behind a Noor scrim, removes the bottom navigation from the active interaction layer, and expands only the selected media. The working dials remain `DESIGN_VARIANCE: 4`, `MOTION_INTENSITY: 3`, and `VISUAL_DENSITY: 5`.
+
+#### Before | After | Why
+
+| Before | After | Why |
+| --- | --- | --- |
+| Compose opens post imagery inside a platform `Popup`, while Noor has no image-detail state | Specify one feed-backed semantic media overlay in Noor and keep the Compose viewer in the same Compose tree as its thumbnail | `Popup` is an unsupported shared-element boundary and the POC must define the visible and logical target state |
+| The image viewer appears independently of the thumbnail that launched it | Match the selected image using the stable post ID plus media index, with the same image model on both ends | Only the selected media changes scale; preserving its identity makes the overlay spatially understandable |
+| The full-screen viewer owns raw drag and sizing values and keeps shell navigation interactive underneath | Move viewer geometry into component metrics, hide background semantics, suppress the bottom navigation while open, and retain safe-area controls | Immersive content needs one interaction layer, token ownership, and reachable dismissal on every device |
+| Paging away from the origin can still imply that a different image should return to the original thumbnail | Enable the shared match only while the origin page remains selected | A shared transition must never claim false identity after carousel paging |
+
+#### UX Pro Max checklist
+
+- The source image is one named button; the detail surface is a modal pane with an explicit 48dp/44pt-compatible Close action.
+- Feed and app-bar semantics are hidden while the modal is open, and the scrim consumes background interaction.
+- The bottom navigation is absent only during the immersive viewer and returns with the feed state intact.
+- Source and target use the same image URL/cache identity and descriptive text exists only in the expanded viewer.
+- Close, system Back, scrim tap, vertical dismissal, pager position, safe areas, light/dark colors, dynamic text, and reduced motion remain explicit verification states.
+- Missing or removed paging content dismisses safely rather than retaining an invalid post/media index.
+
+#### Motion and interaction specification
+
+| Interaction | Purpose | Motion | Interruption | Reduced motion |
+| --- | --- | --- | --- | --- |
+| Thumbnail to viewer | Preserve the selected post-media identity | Shared media element with Noor spatial bounds, explicit rounded overlay clip, and scrim fade | Close or Back immediately retargets to the source; rapid taps cannot open duplicate viewers | No bounds or positional travel; the modal state replaces immediately |
+| Horizontal paging | Explain movement within one post's media collection | Existing interruptible pager behavior | A new drag takes over directly | Pager snaps without animated travel |
+| Vertical drag | Direct manipulation for dismissal | Content follows the finger; an incomplete drag settles with the Noor spatial spring | Reversing the drag remains direct | Content follows the finger and resets immediately when below threshold |
+| Close / scrim / Back | Provide redundant, predictable dismissal | Shared return only when the origin image is still selected; otherwise a short semantic fade | First dismissal wins and restores shell interaction | Immediate dismissal |
+
+No feed, paging-source, reaction, share, audio, repository, backend, analytics, or top-level navigation contract changes.
+
 ### Sehri supplied-capture repair pass — 2026-07-21
 
 The supplied light/dark captures confirm that the map-first structure, native map treatment, serif headings, emerald actions, and compact provider metadata remain the right design direction. The repair keeps that identity while removing unstable text motion and making loading, empty, and failure states part of the same spatial journey. The working dials remain `DESIGN_VARIANCE: 4`, `MOTION_INTENSITY: 3`, and `VISUAL_DENSITY: 5`.

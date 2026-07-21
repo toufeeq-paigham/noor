@@ -49,6 +49,16 @@ const QAUM_DATA_FRAMES = [
   { id: 'qaum-error', name: 'Qaum — Error & Retry', tab: 1, component: 'QaumScreen', props: { contentState: 'error', onRetry: () => {} } }
 ];
 
+const QAUM_MEDIA_FRAMES = [
+  {
+    id: 'qaum-media',
+    name: 'Qaum — Feed-backed Image Detail',
+    tab: 1,
+    component: 'QaumScreen',
+    props: { mediaOpen: true, onCloseMedia: () => {} }
+  }
+];
+
 // Supplied Compose evidence includes a Home state where timing content stays
 // usable while only tracking data is loading. Keep that state explicit in Noor.
 const HOME_DATA_FRAMES = [
@@ -120,7 +130,7 @@ function renderFrame(f, i, active, onSelectFrame) {
             </div>
 
             {/* Bottom Nav Bar (shared component, non-interactive preview) */}
-            {BottomNav && <BottomNav activeIndex={f.tab} />}
+            {BottomNav && !f.props.mediaOpen && <BottomNav activeIndex={f.tab} />}
 
             {/* Optional LoginSheet snapshot over the whole device (covers the nav, like the app) */}
             {f.sheet && Dialog && (
@@ -184,13 +194,14 @@ function QaumRow({ active = 0, onSelectFrame }) {
   return (
     <div>
       <div className="poc-row-label">
-        <span className="mi" data-i="groups"></span> 03 · Qaum Tab — Community Feed, Data States &amp; Audio Player · 7 states
+        <span className="mi" data-i="groups"></span> 03 · Qaum Tab — Community Feed, Data States, Media &amp; Audio · 8 states
       </div>
       <div className="poc-board">
         {/* Base feed (idle audio) at global index 4, then the audio-player variations at 13-15 */}
         {renderFrame(STORYBOARD_FRAMES[4], 4, active, onSelectFrame)}
         {QAUM_EXTRA_FRAMES.map((f, i) => renderFrame(f, 13 + i, active, onSelectFrame))}
         {QAUM_DATA_FRAMES.map((f, i) => renderFrame(f, 31 + i, active, onSelectFrame))}
+        {QAUM_MEDIA_FRAMES.map((f, i) => renderFrame(f, 39 + i, active, onSelectFrame))}
       </div>
     </div>
   );

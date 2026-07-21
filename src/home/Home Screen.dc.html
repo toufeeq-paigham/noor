@@ -28,6 +28,21 @@
     .prow:active{background:color-mix(in oklab, var(--color-info-primary) 8%, transparent)}
     .pbtn{cursor:pointer;transition:filter .15s ease}
     .pbtn:active{filter:brightness(0.9)}
+
+    /* Qaum media is one image surface in two compositions. Component geometry lives here;
+       colors, radii, control targets, spacing, and motion remain Noor tokens. */
+    .qaum-post-media{display:block;width:100%;aspect-ratio:3/2;margin:0 0 var(--size-lg);padding:0;overflow:hidden;box-sizing:border-box;border:0;border-radius:var(--radius-2xl);background:var(--color-surface-secondary);cursor:pointer}
+    .qaum-post-media img{display:block;width:100%;height:100%;object-fit:cover}
+    .qaum-post-media.expanded{height:100%;aspect-ratio:auto;margin:0;cursor:default;background:var(--color-surface-primary)}
+    .qaum-post-media.expanded img{object-fit:contain}
+    .qaum-media-overlay{position:absolute;inset:0;z-index:500;display:flex;box-sizing:border-box;padding:calc(var(--size-max) + var(--size-2xl)) var(--size-xl) var(--size-2xl);background:var(--color-surface-scrim);animation:qaum-media-fade var(--motion-standard) var(--ease-out)}
+    .qaum-media-viewer{position:relative;display:flex;flex:1;min-width:0;min-height:0;box-sizing:border-box;padding-top:calc(var(--control-h-lg) + var(--size-xl))}
+    .qaum-media-close{position:absolute;top:0;right:0;z-index:1;width:var(--control-h-lg);height:var(--control-h-lg);display:inline-flex;align-items:center;justify-content:center;border:1px solid var(--color-neutral-border);border-radius:var(--radius-circle);padding:0;background:var(--color-action-background);color:var(--color-info-primary);cursor:pointer;transition:background var(--motion-quick) var(--ease-out)}
+    .qaum-media-close .mi{font-size:var(--icon-md)}
+    .qaum-media-close:active{background:var(--color-action-primary-tint)}
+    @keyframes qaum-media-fade{from{opacity:0}to{opacity:1}}
+    ::view-transition-group(qaum-post-post1-media-0){animation-duration:var(--motion-emphasized);animation-timing-function:var(--ease-out)}
+    @media (prefers-reduced-motion:reduce){.qaum-media-overlay{animation:none}::view-transition-group(qaum-post-post1-media-0){animation-duration:0ms}}
   </style>
 </helmet>
 
@@ -151,6 +166,10 @@
                       on-allow-notif="{{ allowNotif }}"
                       content-state="{{ qaumContentState }}"
                       on-retry="{{ retryQaum }}"
+                      media-open="{{ qaumMediaOpen }}"
+                      media-transition-enabled="{{ qaumMediaTransitionEnabled }}"
+                      on-open-media="{{ openQaumMedia }}"
+                      on-close-media="{{ closeQaumMedia }}"
                       hint-size="100%,100%">
             </x-import>
           </sc-if>
@@ -223,11 +242,13 @@
         </div>
 
         <!-- BOTTOM TAB BAR (shared component — same one the storyboard frames use) -->
-        <x-import component="BottomNav" from="./storyboards/nav-bar.jsx"
-                  active-index="{{ activeTab }}"
-                  on-select="{{ onNavSelect }}"
-                  hint-size="100%,84px">
-        </x-import>
+        <sc-if value="{{ showBottomNav }}">
+          <x-import component="BottomNav" from="./storyboards/nav-bar.jsx"
+                    active-index="{{ activeTab }}"
+                    on-select="{{ onNavSelect }}"
+                    hint-size="100%,84px">
+          </x-import>
+        </sc-if>
 
         <!-- Guest profile LoginSheet (HomeViewModel.kt) — guest taps the Profile tab.
              Device-level so it overlays whichever tab is showing, nav bar included. -->
@@ -331,6 +352,7 @@ class Component extends DCLogic {
     qaumAudioProgress: 0,
     qaumDock: 'none',
     qaumContentState: 'ready',
+    qaumMediaOpen: false,
 
     // Quran tab state
     quranTab: 0,
@@ -384,6 +406,7 @@ class Component extends DCLogic {
       else if (hash === '#quran-error') this.syncLiveStateToFrame(36);
       else if (hash === '#home-tracking-loading') this.syncLiveStateToFrame(37);
       else if (hash === '#profile-pending') this.syncLiveStateToFrame(38);
+      else if (hash === '#qaum-media') this.syncLiveStateToFrame(39);
     }
   }
 
@@ -439,7 +462,9 @@ class Component extends DCLogic {
       // 37 · Home timing content ready while Salaah tracking is loading
       { activeTab: 0, homeNoMasjid: true, homeFollowNudge: true, homeTrackingLoading: true, homeHeroSel: null, homeActivePrayer: 'Asr' },
       // 38 · Signed-in pending setup: never label this account as Guest
-      { activeTab: 4, homeNoMasjid: true, profileUserName: 'Paigham User', profilePhone: '+91 81234 03269', profileHasMasjid: false }
+      { activeTab: 4, homeNoMasjid: true, profileUserName: 'Paigham User', profilePhone: '+91 81234 03269', profileHasMasjid: false },
+      // 39 · Qaum media detail retains the feed behind a semantic overlay
+      { activeTab: 1, qaumMediaOpen: true, qaumAudioPlaying: false, qaumAudioProgress: 0, qaumDock: 'none' }
     ];
     clearInterval(this._audioTimer);
     this.setState({
@@ -456,6 +481,7 @@ class Component extends DCLogic {
       guestSignInSheetOpen: false,
       qaumNudgeClosed: false,
       qaumContentState: 'ready',
+      qaumMediaOpen: false,
       quranContentState: 'ready',
       homeTrackingLoading: false,
       profileUserName: 'Toufeeq',
@@ -491,6 +517,7 @@ class Component extends DCLogic {
     if (tabIndex === 1 && s.qaumContentState === 'loading') return 31;
     if (tabIndex === 1 && s.qaumContentState === 'empty') return 32;
     if (tabIndex === 1 && s.qaumContentState === 'error') return 33;
+    if (tabIndex === 1 && s.qaumMediaOpen) return 39;
     if (tabIndex === 2 && s.quranContentState === 'loading') return 34;
     if (tabIndex === 2 && s.quranContentState === 'empty') return 35;
     if (tabIndex === 2 && s.quranContentState === 'error') return 36;
@@ -503,10 +530,14 @@ class Component extends DCLogic {
 
   // Switch tab handlers
   setTab = (idx) => () => {
-    this.setState(s => ({
-      activeTab: idx,
-      activeFrameIndex: this.syncFrameIndexFromTab(idx, s)
-    }));
+    this.setState(s => {
+      const next = { ...s, activeTab: idx, qaumMediaOpen: false };
+      return {
+        activeTab: idx,
+        qaumMediaOpen: false,
+        activeFrameIndex: this.syncFrameIndexFromTab(idx, next)
+      };
+    });
   };
 
   switchToTab2 = () => this.setTab(2)();
@@ -680,6 +711,22 @@ class Component extends DCLogic {
 
   retryQaum = () => this.setState({ qaumContentState: 'loading', activeFrameIndex: 31 });
 
+  transitionQaumMedia = (open) => {
+    const update = () => this.setState(s => {
+      const next = { ...s, qaumMediaOpen: open };
+      return {
+        qaumMediaOpen: open,
+        activeFrameIndex: this.syncFrameIndexFromTab(s.activeTab, next)
+      };
+    });
+    const reduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    if (!reduced && document.startViewTransition) document.startViewTransition(update);
+    else update();
+  };
+
+  openQaumMedia = () => this.transitionQaumMedia(true);
+  closeQaumMedia = () => this.transitionQaumMedia(false);
+
   // Quran handlers
   setQuranTab = (idx) => this.setState({ quranTab: idx });
   retryQuran = () => this.setState({ quranContentState: 'loading', activeFrameIndex: 34 });
@@ -764,6 +811,7 @@ class Component extends DCLogic {
       // Bottom nav (shared BottomNav component)
       activeTab: s.activeTab,
       onNavSelect: this.onNavSelect,
+      showBottomNav: !s.qaumMediaOpen,
 
       // Active tab selectors
       isHomeTab: s.activeTab === 0,
@@ -809,6 +857,10 @@ class Component extends DCLogic {
       toggleQaumAudio: this.toggleQaumAudio,
       qaumDock: s.qaumDock,
       qaumContentState: s.qaumContentState,
+      qaumMediaOpen: s.qaumMediaOpen,
+      qaumMediaTransitionEnabled: true,
+      openQaumMedia: this.openQaumMedia,
+      closeQaumMedia: this.closeQaumMedia,
       closeQaumAudio: this.closeQaumAudio,
       retryQaum: this.retryQaum,
 

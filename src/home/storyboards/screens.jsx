@@ -533,6 +533,26 @@ function PostActions({ liked, count, time, onLike }) {
   );
 }
 
+const QAUM_MEDIA_TRANSITION_NAME = 'qaum-post-post1-media-0';
+
+function QaumPostMedia({ expanded = false, onOpen, transitionName = 'none' }) {
+  const Tag = onOpen ? 'button' : 'div';
+  return (
+    <Tag
+      className={`qaum-post-media${expanded ? ' expanded' : ''}`}
+      type={onOpen ? 'button' : undefined}
+      onClick={onOpen}
+      aria-label={onOpen ? 'Open community gathering image' : undefined}
+      style={{ viewTransitionName: transitionName }}
+    >
+      <img
+        src="../../images/intro_qaum.webp"
+        alt={expanded ? 'Community gathering at a masjid' : ''}
+      />
+    </Tag>
+  );
+}
+
 // 2. QAUM SCREEN
 function QaumScreen({
   activeFilter = 0,
@@ -554,7 +574,11 @@ function QaumScreen({
   onCloseNotifNudge,
   onAllowNotif,
   contentState = 'ready', // 'ready' | 'loading' | 'empty' | 'error'
-  onRetry
+  onRetry,
+  mediaOpen = false,
+  mediaTransitionEnabled = false,
+  onOpenMedia,
+  onCloseMedia
 }) {
   const { PromptCard, EmptyState } = window;
   const APP_BAR_H = 96;
@@ -589,7 +613,12 @@ function QaumScreen({
     <div style={{ position: 'relative', width: '100%', height: '100%', overflow: 'hidden', background: 'var(--color-surface-primary)' }}>
 
       {/* Feed — scrolls UNDER the app bar (like the Home tab) */}
-      <div ref={feedRef} onScroll={recomputeDock} style={{ position: 'absolute', inset: 0, overflowY: 'auto', WebkitOverflowScrolling: 'touch', paddingTop: APP_BAR_H, paddingBottom: 90 }}>
+      <div
+        ref={feedRef}
+        onScroll={recomputeDock}
+        aria-hidden={mediaOpen ? true : undefined}
+        style={{ position: 'absolute', inset: 0, overflowY: 'auto', WebkitOverflowScrolling: 'touch', paddingTop: APP_BAR_H, paddingBottom: 90 }}
+      >
         {/* Guest sign-in nudge (PromptCard.error, NudgeInline.kt Qaum copy) */}
         {loginNudge && (
           <PromptCard
@@ -662,29 +691,10 @@ function QaumScreen({
             <div style={{ fontFamily: 'var(--font-body)', fontSize: 14, color: 'color-mix(in oklab, var(--color-info-primary) 85%, transparent)', marginBottom: 10, lineHeight: 1.5 }}>
               Haj 2027 registration is open. Please check the website. <span style={{ fontWeight: 700, color: 'var(--color-info-primary)', cursor: 'pointer' }}>Read more</span>
             </div>
-            {/* Banner card */}
-            <div style={{ borderRadius: 14, overflow: 'hidden', border: '1px solid rgba(255,255,255,0.1)', marginBottom: 10, background: 'linear-gradient(160deg,#0A3820,#1A6B3A)', padding: '14px 16px' }}>
-              <div style={{ display: 'flex', gap: 10, alignItems: 'flex-start' }}>
-                <div style={{ flex: 1 }}>
-                  <div style={{ fontSize: 10, fontWeight: 800, color: 'var(--color-neutral-brand)', letterSpacing: '.06em', fontFamily: 'var(--font-body)', marginBottom: 4 }}>APPLICATIONS OPEN</div>
-                  <div style={{ fontFamily: 'var(--font-body)', fontSize: 11, color: 'rgba(255,255,255,0.75)', lineHeight: 1.4 }}>Haj Committee of India invites applications from eligible intending pilgrims for Haj–2027.</div>
-                </div>
-                <div style={{ background: 'color-mix(in oklab, var(--color-neutral-brand) 25%, transparent)', borderRadius: 8, padding: '6px 10px', textAlign: 'center', flexShrink: 0 }}>
-                  <div style={{ fontSize: 9, color: 'var(--color-neutral-brand)', fontWeight: 700, fontFamily: 'var(--font-body)' }}>SPIRITUAL</div>
-                  <div style={{ fontSize: 9, color: 'var(--color-neutral-brand)', fontWeight: 700, fontFamily: 'var(--font-body)' }}>JOURNEY</div>
-                </div>
-              </div>
-              <div style={{ marginTop: 10, paddingTop: 10, borderTop: '1px solid rgba(255,255,255,0.1)', display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 8 }}>
-                <div style={{ background: 'rgba(0,201,80,0.15)', borderRadius: 8, padding: 8 }}>
-                  <div style={{ fontSize: 9, fontWeight: 700, color: 'var(--color-action-primary)', fontFamily: 'var(--font-body)', marginBottom: 3 }}>DATES</div>
-                  <div style={{ fontSize: 10, fontWeight: 700, color: '#E07050', fontFamily: 'var(--font-body)' }}>22 JUNE - 20 JULY</div>
-                </div>
-                <div style={{ background: 'rgba(0,201,80,0.15)', borderRadius: 8, padding: 8 }}>
-                  <div style={{ fontSize: 9, fontWeight: 700, color: 'var(--color-action-primary)', fontFamily: 'var(--font-body)', marginBottom: 3 }}>APPLY</div>
-                  <div style={{ fontSize: 10, fontWeight: 700, color: '#FFFFFF', fontFamily: 'var(--font-body)' }}>HAJ SUVIDHA APP</div>
-                </div>
-              </div>
-            </div>
+            <QaumPostMedia
+              onOpen={onOpenMedia}
+              transitionName={!mediaTransitionEnabled || mediaOpen ? 'none' : QAUM_MEDIA_TRANSITION_NAME}
+            />
             <PostActions liked={likes.post1.liked} count={likes.post1.count} time="2d ago" onLike={() => onLike && onLike('post1')} />
         </div>
 
@@ -754,7 +764,7 @@ function QaumScreen({
       {/* App bar — DS .app-bar (transparent, progressive blur), same as the Home tab.
           When the player docks UP, it pins into the app bar's bottom edge (like the Dua
           tab bar), so the bar grows to hold the title + the mini player. */}
-      <div className="app-bar" style={{ flexDirection: 'column', alignItems: 'stretch', gap: 0, height: effectiveDock === 'top' ? APP_BAR_H + 58 : APP_BAR_H, padding: '54px 14px 10px' }}>
+      <div aria-hidden={mediaOpen ? true : undefined} className="app-bar" style={{ flexDirection: 'column', alignItems: 'stretch', gap: 0, height: effectiveDock === 'top' ? APP_BAR_H + 58 : APP_BAR_H, padding: '54px 14px 10px' }}>
         <div className="ab-title" style={{ paddingLeft: 4 }}>Qaum</div>
         {effectiveDock === 'top' && (
           <div style={{ marginTop: 12 }}>
@@ -773,6 +783,26 @@ function QaumScreen({
           className="dock-bottom"
           style={{ bottom: dockBottomOffset }}
         />
+      )}
+
+      {mediaOpen && (
+        <div
+          className="qaum-media-overlay"
+          role="dialog"
+          aria-modal="true"
+          aria-label="Community post image"
+          onClick={onCloseMedia}
+        >
+          <div className="qaum-media-viewer" onClick={(event) => event.stopPropagation()}>
+            <button className="qaum-media-close" type="button" onClick={onCloseMedia} aria-label="Close image viewer">
+              <span className="mi" data-i="close"></span>
+            </button>
+            <QaumPostMedia
+              expanded
+              transitionName={mediaTransitionEnabled ? QAUM_MEDIA_TRANSITION_NAME : 'none'}
+            />
+          </div>
+        </div>
       )}
     </div>
   );
