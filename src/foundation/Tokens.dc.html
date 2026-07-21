@@ -66,6 +66,23 @@
   </div>
   </sc-if>
 
+  <!-- ── OPACITY ── -->
+  <sc-if value="{{ showOpacity }}">
+  <div style="margin-bottom:44px">
+    <div class="tk-h" style="margin-bottom:6px">Opacity</div>
+    <div class="tk-role" style="margin-bottom:22px">Semantic visibility steps for supporting content, scrims, charts, and state emphasis.</div>
+    <div class="tk-card" style="padding:22px 24px;display:grid;grid-template-columns:repeat(auto-fill,minmax(150px,1fr));gap:16px">
+      <sc-for list="{{ opacity }}" as="op" hint-placeholder-count="8">
+        <div>
+          <div style="height:54px;border-radius:12px;background:var(--color-action-primary);opacity:{{ op.value }}"></div>
+          <div class="tk-name" style="margin-top:8px">{{ op.name }}</div>
+          <div class="tk-role">{{ op.value }}</div>
+        </div>
+      </sc-for>
+    </div>
+  </div>
+  </sc-if>
+
   <!-- ── TYPE ROLES ── -->
   <sc-if value="{{ showType }}">
   <div style="margin-bottom:44px">
@@ -129,6 +146,7 @@ class Component extends DCLogic {
   catDefs = [
     { id: 'all', label: 'All' },
     { id: 'color', label: 'Colour' },
+    { id: 'opacity', label: 'Opacity' },
     { id: 'type', label: 'Type' },
     { id: 'elevation', label: 'Elevation' },
     { id: 'sizing', label: 'Sizing' },
@@ -141,10 +159,12 @@ class Component extends DCLogic {
       { name: '--color-surface-card', role: 'Cards, sidebars', maps: 'noor-snow-drift' },
       { name: '--color-surface-overlay', role: 'Glass overlays', maps: 'noor-white-a60' },
       { name: '--color-surface-scrim', role: 'Modal scrim', maps: 'noor-black-a40' },
+      { name: '--color-surface-media-scrim', role: 'Image legibility scrim', maps: 'noor-black-a55' },
     ]},
     { title: 'Action', tokens: [
       { name: '--color-action-primary', role: 'Primary CTAs', maps: 'noor-jade-green' },
-      { name: '--color-action-primary-inverse', role: 'On-primary text', maps: 'noor-mint-cream' },
+      { name: '--color-action-primary-tint', role: 'Subtle branded containers', maps: 'noor-jade-green-a12' },
+      { name: '--color-action-primary-inverse', role: 'Accessible on-primary text', maps: 'noor-jet-black' },
       { name: '--color-action-secondary', role: 'Secondary accent', maps: 'noor-teal' },
       { name: '--color-action-background', role: 'Tonal fills, tracks', maps: 'noor-gainsboro' },
       { name: '--color-action-destructive', role: 'Delete, danger', maps: 'noor-scarlet-red' },
@@ -152,6 +172,9 @@ class Component extends DCLogic {
     { title: 'Info / text', tokens: [
       { name: '--color-info-primary', role: 'Headings, body', maps: 'noor-jet-black' },
       { name: '--color-info-secondary', role: 'Sub-text, captions', maps: 'noor-slate-gray' },
+      { name: '--color-info-faint', role: 'Disabled and low-emphasis metadata', maps: 'noor-silver-faint' },
+      { name: '--color-info-on-media', role: 'Primary text on imagery', maps: 'noor-pure-white' },
+      { name: '--color-info-on-media-secondary', role: 'Supporting text on imagery', maps: 'noor-white-a70' },
       { name: '--color-info-tertiary', role: 'Hints', maps: 'noor-slate-gray' },
       { name: '--color-info-primary-inverse', role: 'On-dark text', maps: 'noor-pure-white' },
     ]},
@@ -165,6 +188,7 @@ class Component extends DCLogic {
     { title: 'Status', tokens: [
       { name: '--color-status-success', role: 'Confirmations', maps: 'noor-jade-green' },
       { name: '--color-status-error', role: 'Errors', maps: 'noor-scarlet-red' },
+      { name: '--color-status-error-faint', role: 'Subtle destructive affordances', maps: 'noor-scarlet-red-a40' },
       { name: '--color-status-warning', role: 'Warnings', maps: 'noor-tangerine' },
       { name: '--color-status-warning-alt', role: 'Warning alt', maps: 'noor-amber' },
       { name: '--color-status-disabled', role: 'Disabled fills', maps: 'noor-cultured-gray' },
@@ -200,6 +224,27 @@ class Component extends DCLogic {
     { name: '--control-h-md', role: 'Default button', px: '40px' },
     { name: '--input-h', role: 'Text field', px: '46px' },
     { name: '--control-h-lg', role: 'Large button', px: '48px' },
+    { name: '--radius-card', role: 'Grouped card radius', px: '20px' },
+    { name: '--content-gutter', role: 'Reading gutter', px: '20px' },
+    { name: '--empty-state-icon', role: 'Empty-state icon', px: '72px' },
+    { name: '--illustration-sm', role: 'Small illustration', px: '120px' },
+    { name: '--illustration-lg', role: 'Large illustration', px: '160px' },
+  ];
+
+  opacityDefs = [
+    { name: '--opacity-transparent', value: '0' },
+    { name: '--opacity-whisper', value: '.05' },
+    { name: '--opacity-faint', value: '.07' },
+    { name: '--opacity-tint', value: '.12' },
+    { name: '--opacity-subtle', value: '.20' },
+    { name: '--opacity-low', value: '.30' },
+    { name: '--opacity-medium', value: '.40' },
+    { name: '--opacity-balanced', value: '.50' },
+    { name: '--opacity-strong', value: '.60' },
+    { name: '--opacity-prominent', value: '.70' },
+    { name: '--opacity-high', value: '.80' },
+    { name: '--opacity-emphasis', value: '.86' },
+    { name: '--opacity-opaque', value: '1' },
   ];
 
   setCat = (id) => this.setState({ cat: id });
@@ -221,6 +266,7 @@ class Component extends DCLogic {
     return {
       chips,
       showColor: cat === 'all' || cat === 'color',
+      showOpacity: cat === 'all' || cat === 'opacity',
       showType: cat === 'all' || cat === 'type',
       showElevation: cat === 'all' || cat === 'elevation',
       showSizing: cat === 'all' || cat === 'sizing',
@@ -228,6 +274,7 @@ class Component extends DCLogic {
       typeSamples: this.typeSamples,
       shadows: this.shadowDefs,
       sizing: this.sizingDefs,
+      opacity: this.opacityDefs,
     };
   }
 }

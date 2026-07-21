@@ -337,6 +337,18 @@
             "definedIn": "colors_and_type.css"
         },
         {
+            "name": "--noor-silver-faint",
+            "value": "#C4C4C9",
+            "kind": "color",
+            "definedIn": "colors_and_type.css"
+        },
+        {
+            "name": "--noor-graphite-faint",
+            "value": "#52525C",
+            "kind": "color",
+            "definedIn": "colors_and_type.css"
+        },
+        {
             "name": "--noor-coral-red",
             "value": "#FF6467",
             "kind": "color",
@@ -391,8 +403,20 @@
             "definedIn": "colors_and_type.css"
         },
         {
+            "name": "--noor-white-a70",
+            "value": "rgba(255,255,255,0.70)",
+            "kind": "color",
+            "definedIn": "colors_and_type.css"
+        },
+        {
             "name": "--noor-black-a40",
             "value": "rgba(9,9,11,0.40)",
+            "kind": "color",
+            "definedIn": "colors_and_type.css"
+        },
+        {
+            "name": "--noor-black-a55",
+            "value": "rgba(9,9,11,0.55)",
             "kind": "color",
             "definedIn": "colors_and_type.css"
         },
@@ -405,6 +429,30 @@
         {
             "name": "--noor-gunmetal-a80",
             "value": "rgba(24,24,27,0.80)",
+            "kind": "color",
+            "definedIn": "colors_and_type.css"
+        },
+        {
+            "name": "--noor-scarlet-red-a40",
+            "value": "rgba(231,0,11,0.40)",
+            "kind": "color",
+            "definedIn": "colors_and_type.css"
+        },
+        {
+            "name": "--noor-coral-red-a40",
+            "value": "rgba(255,100,103,0.40)",
+            "kind": "color",
+            "definedIn": "colors_and_type.css"
+        },
+        {
+            "name": "--noor-jade-green-a12",
+            "value": "rgba(0,201,80,0.12)",
+            "kind": "color",
+            "definedIn": "colors_and_type.css"
+        },
+        {
+            "name": "--noor-emerald-green-a12",
+            "value": "rgba(0,188,125,0.12)",
             "kind": "color",
             "definedIn": "colors_and_type.css"
         },
@@ -439,14 +487,26 @@
             "definedIn": "colors_and_type.css"
         },
         {
+            "name": "--color-surface-media-scrim",
+            "value": "var(--noor-black-a55)",
+            "kind": "color",
+            "definedIn": "colors_and_type.css"
+        },
+        {
             "name": "--color-action-primary",
             "value": "var(--noor-jade-green)",
             "kind": "color",
             "definedIn": "colors_and_type.css"
         },
         {
+            "name": "--color-action-primary-tint",
+            "value": "var(--noor-jade-green-a12)",
+            "kind": "color",
+            "definedIn": "colors_and_type.css"
+        },
+        {
             "name": "--color-action-primary-inverse",
-            "value": "var(--noor-mint-cream)",
+            "value": "var(--noor-jet-black)",
             "kind": "color",
             "definedIn": "colors_and_type.css"
         },
@@ -547,14 +607,38 @@
             "definedIn": "colors_and_type.css"
         },
         {
+            "name": "--color-info-faint",
+            "value": "var(--noor-silver-faint)",
+            "kind": "color",
+            "definedIn": "colors_and_type.css"
+        },
+        {
             "name": "--color-info-tertiary",
             "value": "var(--noor-slate-gray)",
             "kind": "color",
             "definedIn": "colors_and_type.css"
         },
         {
+            "name": "--color-info-on-media",
+            "value": "var(--noor-pure-white)",
+            "kind": "color",
+            "definedIn": "colors_and_type.css"
+        },
+        {
+            "name": "--color-info-on-media-secondary",
+            "value": "var(--noor-white-a70)",
+            "kind": "color",
+            "definedIn": "colors_and_type.css"
+        },
+        {
             "name": "--color-status-error",
             "value": "var(--noor-scarlet-red)",
+            "kind": "color",
+            "definedIn": "colors_and_type.css"
+        },
+        {
+            "name": "--color-status-error-faint",
+            "value": "var(--noor-scarlet-red-a40)",
             "kind": "color",
             "definedIn": "colors_and_type.css"
         },
@@ -648,6 +732,13 @@
             "scope": "[data-theme=\"dark\"]"
         },
         {
+            "name": "--color-surface-media-scrim",
+            "value": "var(--noor-black-a55)",
+            "kind": "color",
+            "definedIn": "colors_and_type.css",
+            "scope": "[data-theme=\"dark\"]"
+        },
+        {
             "name": "--color-action-primary",
             "value": "var(--noor-emerald-green)",
             "kind": "color",
@@ -655,8 +746,15 @@
             "scope": "[data-theme=\"dark\"]"
         },
         {
+            "name": "--color-action-primary-tint",
+            "value": "var(--noor-emerald-green-a12)",
+            "kind": "color",
+            "definedIn": "colors_and_type.css",
+            "scope": "[data-theme=\"dark\"]"
+        },
+        {
             "name": "--color-action-primary-inverse",
-            "value": "var(--noor-forest-green)",
+            "value": "var(--noor-jet-black)",
             "kind": "color",
             "definedIn": "colors_and_type.css",
             "scope": "[data-theme=\"dark\"]"
@@ -774,6 +872,13 @@
             "scope": "[data-theme=\"dark\"]"
         },
         {
+            "name": "--color-info-faint",
+            "value": "var(--noor-graphite-faint)",
+            "kind": "color",
+            "definedIn": "colors_and_type.css",
+            "scope": "[data-theme=\"dark\"]"
+        },
+        {
             "name": "--color-info-tertiary",
             "value": "var(--noor-ash-gray)",
             "kind": "color",
@@ -781,8 +886,29 @@
             "scope": "[data-theme=\"dark\"]"
         },
         {
+            "name": "--color-info-on-media",
+            "value": "var(--noor-pure-white)",
+            "kind": "color",
+            "definedIn": "colors_and_type.css",
+            "scope": "[data-theme=\"dark\"]"
+        },
+        {
+            "name": "--color-info-on-media-secondary",
+            "value": "var(--noor-white-a70)",
+            "kind": "color",
+            "definedIn": "colors_and_type.css",
+            "scope": "[data-theme=\"dark\"]"
+        },
+        {
             "name": "--color-status-error",
             "value": "var(--noor-coral-red)",
+            "kind": "color",
+            "definedIn": "colors_and_type.css",
+            "scope": "[data-theme=\"dark\"]"
+        },
+        {
+            "name": "--color-status-error-faint",
+            "value": "var(--noor-coral-red-a40)",
             "kind": "color",
             "definedIn": "colors_and_type.css",
             "scope": "[data-theme=\"dark\"]"
@@ -947,6 +1073,12 @@
             "definedIn": "colors_and_type.css"
         },
         {
+            "name": "--radius-card",
+            "value": "20px",
+            "kind": "radius",
+            "definedIn": "colors_and_type.css"
+        },
+        {
             "name": "--radius-huge",
             "value": "24px",
             "kind": "radius",
@@ -980,6 +1112,192 @@
             "name": "--input-h",
             "value": "46px",
             "kind": "spacing",
+            "definedIn": "colors_and_type.css"
+        },
+        {
+            "name": "--icon-sm",
+            "value": "16px",
+            "kind": "spacing",
+            "definedIn": "colors_and_type.css"
+        },
+        {
+            "name": "--icon-md",
+            "value": "24px",
+            "kind": "spacing",
+            "definedIn": "colors_and_type.css"
+        },
+        {
+            "name": "--icon-lg",
+            "value": "32px",
+            "kind": "spacing",
+            "definedIn": "colors_and_type.css"
+        },
+        {
+            "name": "--content-gutter",
+            "value": "20px",
+            "kind": "spacing",
+            "definedIn": "colors_and_type.css"
+        },
+        {
+            "name": "--empty-state-icon",
+            "value": "72px",
+            "kind": "spacing",
+            "definedIn": "colors_and_type.css"
+        },
+        {
+            "name": "--illustration-sm",
+            "value": "120px",
+            "kind": "spacing",
+            "definedIn": "colors_and_type.css"
+        },
+        {
+            "name": "--illustration-lg",
+            "value": "160px",
+            "kind": "spacing",
+            "definedIn": "colors_and_type.css"
+        },
+        {
+            "name": "--opacity-transparent",
+            "value": "0",
+            "kind": "other",
+            "definedIn": "colors_and_type.css"
+        },
+        {
+            "name": "--opacity-faint",
+            "value": ".07",
+            "kind": "other",
+            "definedIn": "colors_and_type.css"
+        },
+        {
+            "name": "--opacity-whisper",
+            "value": ".05",
+            "kind": "other",
+            "definedIn": "colors_and_type.css"
+        },
+        {
+            "name": "--opacity-tint",
+            "value": ".12",
+            "kind": "other",
+            "definedIn": "colors_and_type.css"
+        },
+        {
+            "name": "--opacity-subtle",
+            "value": ".20",
+            "kind": "other",
+            "definedIn": "colors_and_type.css"
+        },
+        {
+            "name": "--opacity-medium",
+            "value": ".40",
+            "kind": "other",
+            "definedIn": "colors_and_type.css"
+        },
+        {
+            "name": "--opacity-low",
+            "value": ".30",
+            "kind": "other",
+            "definedIn": "colors_and_type.css"
+        },
+        {
+            "name": "--opacity-balanced",
+            "value": ".50",
+            "kind": "other",
+            "definedIn": "colors_and_type.css"
+        },
+        {
+            "name": "--opacity-strong",
+            "value": ".60",
+            "kind": "other",
+            "definedIn": "colors_and_type.css"
+        },
+        {
+            "name": "--opacity-prominent",
+            "value": ".70",
+            "kind": "other",
+            "definedIn": "colors_and_type.css"
+        },
+        {
+            "name": "--opacity-high",
+            "value": ".80",
+            "kind": "other",
+            "definedIn": "colors_and_type.css"
+        },
+        {
+            "name": "--opacity-emphasis",
+            "value": ".86",
+            "kind": "other",
+            "definedIn": "colors_and_type.css"
+        },
+        {
+            "name": "--opacity-opaque",
+            "value": "1",
+            "kind": "other",
+            "definedIn": "colors_and_type.css"
+        },
+        {
+            "name": "--motion-press",
+            "value": "120ms",
+            "kind": "other",
+            "definedIn": "colors_and_type.css"
+        },
+        {
+            "name": "--motion-quick",
+            "value": "160ms",
+            "kind": "other",
+            "definedIn": "colors_and_type.css"
+        },
+        {
+            "name": "--motion-standard",
+            "value": "220ms",
+            "kind": "other",
+            "definedIn": "colors_and_type.css"
+        },
+        {
+            "name": "--motion-emphasized",
+            "value": "280ms",
+            "kind": "other",
+            "definedIn": "colors_and_type.css"
+        },
+        {
+            "name": "--motion-exit",
+            "value": "140ms",
+            "kind": "other",
+            "definedIn": "colors_and_type.css"
+        },
+        {
+            "name": "--motion-celebration",
+            "value": "1400ms",
+            "kind": "other",
+            "definedIn": "colors_and_type.css"
+        },
+        {
+            "name": "--motion-success-hold",
+            "value": "2500ms",
+            "kind": "other",
+            "definedIn": "colors_and_type.css"
+        },
+        {
+            "name": "--motion-ambient-pulse",
+            "value": "900ms",
+            "kind": "other",
+            "definedIn": "colors_and_type.css"
+        },
+        {
+            "name": "--motion-scan-sweep",
+            "value": "4000ms",
+            "kind": "other",
+            "definedIn": "colors_and_type.css"
+        },
+        {
+            "name": "--ease-out",
+            "value": "cubic-bezier(.23,1,.32,1)",
+            "kind": "other",
+            "definedIn": "colors_and_type.css"
+        },
+        {
+            "name": "--ease-in-out",
+            "value": "cubic-bezier(.77,0,.175,1)",
+            "kind": "other",
             "definedIn": "colors_and_type.css"
         },
         {

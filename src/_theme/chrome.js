@@ -72,16 +72,17 @@
     ]},
     { id: 'onboarding', num: '02', title: 'Onboarding', items: [
       { name: 'Sign in', file: 'onboarding/Onboarding.dc.html#intro', icon: 'login', meta: 'Board · intro → phone → OTP' },
-      { name: 'Complete Profile', file: 'personal-details/Personal Details.dc.html#details', icon: 'person', meta: 'Board · details → welcome · 3 states' }
+      { name: 'Complete Profile', file: 'personal-details/Personal Details.dc.html#details', icon: 'person', meta: 'Board · details → welcome · 6 states' }
     ]},
     { id: 'core', num: '03', title: 'Core app', items: [
       { name: 'Home Screen', file: 'home/Home Screen.dc.html', icon: 'splitscreen', meta: 'Section board · 5 tabs + prayer/audio variations' },
       { name: 'Sign-in & Nudge States', file: 'nudge-states/Sign-in & Nudge States.dc.html', icon: 'notifications', meta: 'Board · guest · no-masjid · notifications · 17 states' },
-      { name: 'Quran', file: 'Quran.dc.html#home', icon: 'auto_stories', meta: 'Section board · Home → index → reader · 6 states' }
+      { name: 'Quran', file: 'Quran.dc.html#home', icon: 'auto_stories', meta: 'Section board · Home → index → reader · 9 states' }
     ]},
     { id: 'masjid', num: '04', title: 'Masjid', items: [
       { name: 'Masjid Onboarding', file: 'masjid-register/Masjid Onboarding.dc.html#entry', icon: 'add_home_work', meta: 'Section board · My Masjids sheet · wizard · outcome · 19 states' },
-      { name: 'Explore Masjids', file: 'masjid-explore/Explore Masjids.dc.html#map', icon: 'travel_explore', meta: 'Section board · map · list · pincode · QR · 10 states' }
+      { name: 'Explore Masjids', file: 'masjid-explore/Explore Masjids.dc.html#map', icon: 'travel_explore', meta: 'Section board · map · list · pincode · QR · 10 states' },
+      { name: 'Masjid Operations', file: 'masjid-operations/Masjid Operations.dc.html', icon: 'admin_panel_settings', meta: 'Section board · admin · members · posts · timings · 30 states' }
     ]},
     { id: 'content', num: '05', title: 'Content & tools', items: [
       { name: 'Find Sehri', file: 'sehri/Sehri.dc.html#map', icon: 'restaurant', meta: 'Section board · Home → permission → map · list · 5 states' },

@@ -7,7 +7,6 @@
   --canvas-bg: #FBFAF8;                        /* near-white field for the dotted canvas */
   --canvas-dot: rgba(40, 35, 25, 0.20);        /* Figma-style dotted grid */
   --canvas-label: rgba(60, 50, 40, 0.50);      /* uppercase captions on the canvas */
-  --color-info-faint: #C4C4C9;                 /* dashed borders, disabled glyphs */
   --sheet-shadow: 0 20px 50px rgba(0, 0, 0, 0.16);
 }
 
@@ -15,7 +14,6 @@
   --canvas-bg: #0B0B0D;
   --canvas-dot: rgba(255, 255, 255, 0.08);
   --canvas-label: rgba(225, 220, 210, 0.40);
-  --color-info-faint: #52525C;
   --sheet-shadow: 0 20px 50px rgba(0, 0, 0, 0.55);
 }
 

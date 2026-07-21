@@ -263,4 +263,17 @@ function RichNudgeSheet({ isOpen, onClose, illustration, icon, title, descriptio
   );
 }
 
-Object.assign(window, { PromptCard, BottomSheet, Dialog, RichNudgeSheet });
+function EmptyState({ icon, title, description, iconLabel, style = {} }) {
+  if (!title) return null;
+  return (
+    <div className="empty-state" style={style}>
+      <div className="empty-state-icon" aria-hidden={iconLabel ? undefined : true} aria-label={iconLabel}>
+        <span className="mi" data-i={icon || 'info'}></span>
+      </div>
+      <div className="empty-state-title">{title}</div>
+      {description ? <div className="empty-state-description">{description}</div> : null}
+    </div>
+  );
+}
+
+Object.assign(window, { PromptCard, BottomSheet, Dialog, RichNudgeSheet, EmptyState });

@@ -10,7 +10,7 @@
    and src/components/{atoms,molecules,organisms}/*):
      PRIMITIVES  .surf
      ATOMS       .btn .ib · .badge .chip · .input .phone .otp · .sw .cb · .ind .dot
-     MOLECULES   .tbar .tab · .nb-bar .nb-* · .dd-menu .dd-item .chev · .rx-* .em
+     MOLECULES   .choice-group .choice-card · .tbar .tab · .nb-bar .nb-* · .dd-menu .dd-item .chev · .rx-* .em
      ORGANISMS   .app-bar .ab-*
    ============================================================ */
 
@@ -26,6 +26,10 @@
 .btn-link::after{content:"";position:absolute;left:0;right:0;bottom:0;height:1px;background:currentColor}
 .btn-destructive{background:var(--color-action-destructive);color:#fff;box-shadow:0 8px 20px -8px color-mix(in oklab,var(--color-action-destructive) 50%,transparent)}
 .btn[disabled]{background:var(--color-status-disabled);color:var(--color-status-disabled-alt);box-shadow:none;cursor:not-allowed}
+.btn[aria-busy="true"]{background:var(--color-action-primary);color:var(--color-action-primary-inverse);cursor:wait}
+.btn-spinner{width:16px;height:16px;flex-shrink:0;box-sizing:border-box;border:2px solid color-mix(in oklab,currentColor 30%,transparent);border-top-color:currentColor;border-radius:360px;animation:btnspin var(--motion-emphasized) linear infinite}
+@keyframes btnspin{to{transform:rotate(360deg)}}
+@media (prefers-reduced-motion:reduce){.btn-spinner{animation:none;border-color:currentColor transparent currentColor currentColor}}
 
 /* ── Icon buttons ── */
 .ib{width:48px;height:48px;border-radius:360px;display:inline-flex;align-items:center;justify-content:center;border:none;cursor:pointer;flex-shrink:0}
@@ -83,6 +87,17 @@
 .input.focused{border:1px solid color-mix(in oklab,var(--color-input-border-focused) 50%,transparent)}
 .input.error{border:1px solid color-mix(in oklab,var(--color-input-border-error) 50%,transparent)}
 .input.disabled{opacity:.6}
+
+/* ── Choice cards ── */
+.choice-group{display:flex;gap:var(--size-xl);width:100%}
+.choice-card{flex:1;min-height:72px;display:flex;align-items:center;gap:var(--size-xl);padding:var(--size-xl) var(--size-2xl);box-sizing:border-box;border-radius:var(--radius-2xl);border:1px solid var(--color-action-border);background:transparent;color:var(--color-info-primary);font-family:var(--font-body);cursor:pointer;text-align:left;transition:background var(--motion-quick) var(--ease-out),border-color var(--motion-quick) var(--ease-out),color var(--motion-quick) var(--ease-out)}
+.choice-card.selected{border:2px solid var(--color-action-primary);background:color-mix(in oklab,var(--color-action-primary) 10%,transparent);color:var(--color-action-primary)}
+.choice-card[disabled]{border-color:var(--color-status-disabled);color:var(--color-status-disabled-alt);cursor:not-allowed}
+.choice-card .mi{font-size:var(--size-2xl);color:var(--color-action-border)}
+.choice-card.selected .mi{color:var(--color-action-primary)}
+.choice-card-art{font-size:var(--title-h2-size);line-height:var(--title-h2-lh);flex-shrink:0}
+.choice-card-label{font-size:var(--body-m-size);line-height:var(--body-m-lh);font-weight:700}
+.choice-card-support{font-size:var(--body-s-size);line-height:var(--body-s-lh);font-weight:400;color:var(--color-info-secondary);margin-top:var(--size-sm)}
 /* Code variant — fixed-length numeric entry (pincode · PIN · passcode): large, bold,
    letter-spaced, tabular figures so every digit reads distinctly. NOT for free text. */
 .input.code .inner{min-height:48px}
@@ -141,10 +156,10 @@
 .qrow-body{flex:1;min-width:0}
 .qrow-name{font-family:var(--font-body);font-size:15px;font-weight:800;color:var(--color-info-primary)}
 .qrow-sub{font-family:var(--font-body);font-size:12px;color:var(--color-info-secondary);margin-top:1px}
-.qrow-meta{font-family:var(--font-body);font-size:12px;color:var(--color-info-faint);margin-top:1px}
+.qrow-meta{font-family:var(--font-body);font-size:12px;color:var(--color-info-secondary);margin-top:1px}
 .qrow-trail{text-align:right;flex-shrink:0}
 .qrow-ar{font-family:var(--font-title);font-size:17px;color:var(--color-info-primary);direction:rtl;line-height:1.2}
-.qrow-place{font-family:var(--font-body);font-size:11px;color:var(--color-info-faint);margin-top:3px}
+.qrow-place{font-family:var(--font-body);font-size:11px;color:var(--color-info-secondary);margin-top:3px}
 
 /* ── Dropdown menu ── */
 .dd-menu{position:absolute;left:0;right:0;top:calc(100% + 6px);z-index:5;background:color-mix(in oklab,var(--color-surface-card) 96%,transparent);backdrop-filter:blur(20px) saturate(180%);-webkit-backdrop-filter:blur(20px) saturate(180%);border-radius:16px;box-shadow:0 1px 2px rgba(9,9,11,.04),0 16px 32px -14px rgba(9,9,11,.2);padding:6px}
@@ -181,11 +196,11 @@
 
 /* ── Bottom NavBar ── */
 .nb-bar{position:absolute;left:0;right:0;bottom:0;border-top-left-radius:26px;border-top-right-radius:26px;background:color-mix(in oklab,var(--color-surface-primary) 88%,transparent);border-top:1px solid var(--color-neutral-border);backdrop-filter:blur(20px);-webkit-backdrop-filter:blur(20px);padding:12px 8px 28px;box-sizing:border-box;z-index:50}
-.nb-glow{position:absolute;top:-8px;width:20%;height:60px;pointer-events:none;transition:left 250ms}
+.nb-glow{position:absolute;top:-8px;width:20%;height:60px;pointer-events:none;transition:left var(--motion-quick) var(--ease-in-out)}
 .nb-glow::before{content:"";position:absolute;left:10%;right:10%;top:0;height:48px;background:radial-gradient(ellipse at top,color-mix(in oklab,var(--color-action-primary) 28%,transparent),transparent 70%);filter:blur(8px)}
 .nb-nav{display:flex;width:100%;position:relative;z-index:1}
-.nb-item{flex:1;min-width:0;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:3px;padding:2px 4px;cursor:pointer;text-decoration:none}
-.nb-item .mi{font-size:24px;line-height:1;color:var(--color-status-disabled-alt);transition:color 200ms,font-variation-settings 200ms;font-variation-settings:'FILL' 0}
+.nb-item{flex:1;min-width:0;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:3px;padding:2px 4px;cursor:pointer;text-decoration:none;border:0;background:transparent;font:inherit;color:inherit}
+.nb-item .mi{font-size:var(--icon-md);line-height:1;color:var(--color-status-disabled-alt);transition:color var(--motion-quick) var(--ease-out),font-variation-settings var(--motion-quick) var(--ease-out);font-variation-settings:'FILL' 0}
 .nb-item span:not(.mi){display:block;font-family:var(--font-body);font-size:10px;font-weight:500;color:var(--color-status-disabled-alt);transition:color 200ms;white-space:nowrap}
 .nb-item.active .mi{color:var(--color-action-primary);-webkit-mask-image:var(--mif,var(--mi));mask-image:var(--mif,var(--mi))}
 .nb-item.active span:not(.mi){color:var(--color-action-primary);font-weight:700}
@@ -250,3 +265,17 @@
 .aplayer.dock-top,.aplayer.dock-bottom{position:absolute;left:12px;right:12px;z-index:40}
 .aplayer.dock-top{top:12px;box-shadow:0 8px 24px -12px rgba(9,9,11,.35)}
 .aplayer.dock-bottom{bottom:12px;box-shadow:0 -8px 24px -12px rgba(9,9,11,.35)}
+
+/* ── Empty state ──
+   Quiet, centered absence or recoverable failure. Screens supply copy and any
+   action below the component; geometry and typography stay owned here. */
+.empty-state{min-height:100%;box-sizing:border-box;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;padding:var(--size-max) var(--content-gutter);color:var(--color-info-primary)}
+.empty-state-icon{width:var(--empty-state-icon);height:var(--empty-state-icon);border-radius:var(--radius-circle);display:flex;align-items:center;justify-content:center;background:color-mix(in oklab,var(--color-action-primary) 10%,transparent);color:var(--color-action-primary)}
+.empty-state-icon .mi{font-size:var(--icon-lg)}
+.empty-state-title{margin-top:var(--size-xl);font-family:var(--font-body);font-size:var(--body-m-size);line-height:var(--body-m-lh);font-weight:700}
+.empty-state-description{max-width:30ch;margin-top:var(--size-md);font-family:var(--font-body);font-size:var(--body-s-size);line-height:var(--body-s-lh);color:var(--color-info-secondary)}
+.empty-state-action{margin-top:var(--size-2xl)}
+
+/* Still loading placeholder: the geometry matches Compose shimmer while the
+   storyboard remains motion-free for reduced-motion inspection. */
+.skeleton{display:inline-block;box-sizing:border-box;background:color-mix(in oklab,var(--color-info-faint) 24%,var(--color-surface-card))}
