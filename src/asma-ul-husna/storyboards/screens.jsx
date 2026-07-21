@@ -116,42 +116,22 @@ const screenStyle = {
   width: '100%', height: '100%', position: 'relative',
   background: 'var(--color-surface-primary)', overflow: 'hidden'
 };
-const headerHeight = 'calc(var(--control-h-lg) * 2 + var(--size-max) * 2 + var(--size-2xl))';
+const headerHeight = 'calc(var(--control-h-lg) + var(--size-max) + var(--size-huge))';
 
 function schemeStyle(index) {
   const scheme = SCHEMES[index % SCHEMES.length];
   return { '--surface-gradient': scheme.gradient, '--surface-accent': scheme.accent };
 }
 
-function normalized(value) {
-  return String(value || '').normalize('NFD').replace(/[\u0300-\u036f]/g, '').toLowerCase().trim();
-}
-
-function visibleNames(query) {
-  const needle = normalized(query);
-  if (!needle) return NAMES;
-  return NAMES.filter((name) => normalized(`${name.num} ${name.ar} ${name.latin} ${name.meaning}`).includes(needle));
-}
-
-function NamesHeader({ query = '', onQueryChange, onBack, disabled = false }) {
-  const SearchBar = window.SearchBar;
+function NamesHeader({ onBack }) {
   return (
-    <div className="app-bar" style={{ height: headerHeight, padding: 'calc(var(--size-max) + var(--size-huge)) var(--size-2xl) var(--size-md)', flexDirection: 'column', alignItems: 'stretch', gap: 'var(--size-md)' }}>
+    <div className="app-bar" style={{ height: headerHeight, padding: 'calc(var(--size-max) + var(--size-huge)) var(--size-2xl) var(--size-md)' }}>
       <div style={{ display: 'flex', alignItems: 'center', gap: 'var(--size-xl)', minHeight: 'var(--control-h-lg)' }}>
         <button className="ib ib-tonal" onClick={onBack} aria-label="Back">
           <span className="mi" data-i="arrow_back" aria-hidden="true"></span>
         </button>
         <span className="ab-title">Asma ul Husna</span>
       </div>
-      {SearchBar ? (
-        <SearchBar
-          value={query}
-          placeholder="Search by name, meaning, or number"
-          ariaLabel="Search the 99 Names"
-          disabled={disabled}
-          onChange={onQueryChange}
-        />
-      ) : null}
     </div>
   );
 }
@@ -166,9 +146,9 @@ function SkeletonGrid() {
   );
 }
 
-function GridScreen({ mode = 'loaded', query = '', onQueryChange, onSelectName, onBack, onRetry }) {
+function GridScreen({ mode = 'loaded', selectedIdx = null, onSelectName, onCloseDetail, onPrev, onNext, onBack, onRetry }) {
   const EmptyState = window.EmptyState;
-  const names = mode === 'empty' ? [] : visibleNames(query);
+  const names = mode === 'empty' ? [] : NAMES;
   const body = (() => {
     if (mode === 'loading') return <SkeletonGrid />;
     if (mode === 'error') return (
@@ -180,20 +160,13 @@ function GridScreen({ mode = 'loaded', query = '', onQueryChange, onSelectName, 
     if (!NAMES.length || mode === 'empty') return EmptyState ? (
       <EmptyState icon="menu_book" title="The 99 Names aren't available" description="Please try again in a moment." />
     ) : null;
-    if (!names.length) return (
-      <div style={{ minHeight: '100%', display: 'flex', flexDirection: 'column', justifyContent: 'center' }}>
-        {EmptyState ? <EmptyState icon="search_off" title={`No names match “${query}”`} description="Try a name, meaning, or number." /> : null}
-        <button className="btn btn-tonal lg" style={{ alignSelf: 'center' }} onClick={() => onQueryChange && onQueryChange('')}>Clear search</button>
-      </div>
-    );
     return (
       <div className="gradient-collection">
-        {names.map((name) => {
-          const index = NAMES.findIndex((candidate) => candidate.num === name.num);
+        {names.map((name, index) => {
           return (
             <button
               key={name.num}
-              className="gradient-tile"
+              className={`gradient-tile${selectedIdx === index ? ' asma-selected-tile' : ''}`}
               style={schemeStyle(index)}
               onClick={() => onSelectName && onSelectName(index)}
               aria-label={`${name.num}. ${name.latin}. ${name.meaning}`}
@@ -210,49 +183,41 @@ function GridScreen({ mode = 'loaded', query = '', onQueryChange, onSelectName, 
 
   return (
     <div style={screenStyle}>
-      <NamesHeader query={query} onQueryChange={onQueryChange} onBack={onBack} disabled={mode === 'loading'} />
+      <NamesHeader onBack={onBack} />
       <div style={{ position: 'absolute', inset: 0, overflowY: 'auto', WebkitOverflowScrolling: 'touch', padding: `${headerHeight} var(--size-xl) var(--size-huge)`, boxSizing: 'border-box' }}>
         {body}
       </div>
+      {selectedIdx != null && mode === 'loaded' ? (
+        <DetailOverlay
+          selectedIdx={selectedIdx}
+          onClose={onCloseDetail}
+          onPrev={onPrev}
+          onNext={onNext}
+        />
+      ) : null}
     </div>
   );
 }
 
-function DetailScreen({ selectedIdx = 6, mode = 'loaded', onPrev, onNext, onBack, onRetry }) {
-  const EmptyState = window.EmptyState;
+function DetailOverlay({ selectedIdx = 6, onPrev, onNext, onClose }) {
   const safeIndex = Math.min(Math.max(Number(selectedIdx) || 0, 0), Math.max(NAMES.length - 1, 0));
   const name = NAMES[safeIndex];
-
-  if (mode !== 'loaded' || !name) {
-    const title = mode === 'error' ? "We couldn't load this name" : mode === 'empty' ? "The 99 Names aren't available" : 'Loading name';
-    return (
-      <div style={screenStyle}>
-        <div className="app-bar" style={{ padding: 'calc(var(--size-max) + var(--size-huge)) var(--size-2xl) var(--size-md)', height: 'calc(var(--control-h-lg) + var(--size-max) + var(--size-huge))' }}>
-          <button className="ib ib-tonal" onClick={onBack} aria-label="Back"><span className="mi" data-i="arrow_back" aria-hidden="true"></span></button>
-        </div>
-        <div style={{ height: '100%', display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', padding: 'var(--size-huge)', boxSizing: 'border-box' }}>
-          {mode === 'loading' ? <div className="btn-spinner" role="status" aria-label="Loading name"></div> : EmptyState ? <EmptyState icon={mode === 'error' ? 'error' : 'menu_book'} title={title} description="Please try again in a moment." /> : null}
-          {mode === 'error' ? <button className="btn btn-filled lg" onClick={onRetry}>Try again</button> : null}
-        </div>
-      </div>
-    );
-  }
+  if (!name) return null;
 
   return (
-    <div style={{ ...screenStyle, display: 'flex', flexDirection: 'column' }}>
-      <div className="app-bar" style={{ padding: 'calc(var(--size-max) + var(--size-huge)) var(--size-2xl) var(--size-md)', height: 'calc(var(--control-h-lg) + var(--size-max) + var(--size-huge))' }}>
-        <button className="ib ib-tonal" onClick={onBack} aria-label="Back to all names"><span className="mi" data-i="arrow_back" aria-hidden="true"></span></button>
-      </div>
-      <div style={{ flex: 1, display: 'flex', alignItems: 'center', justifyContent: 'center', padding: 'calc(var(--control-h-lg) + var(--size-max) + var(--size-huge)) var(--size-huge) var(--size-2xl)', boxSizing: 'border-box', overflowY: 'auto' }}>
-        <article className="gradient-detail-card" style={schemeStyle(safeIndex)} aria-label={`${name.num} of ${NAMES.length}. ${name.latin}. ${name.meaning}`}>
+    <div className="asma-detail-overlay" role="dialog" aria-modal="true" aria-label={`${name.latin} details`} onClick={onClose}>
+      <div className="asma-detail-dialog" onClick={(event) => event.stopPropagation()}>
+        <button className="ib ib-tonal asma-detail-close" onClick={onClose} aria-label="Close name details">
+          <span className="mi" data-i="close" aria-hidden="true"></span>
+        </button>
+        <article className="gradient-detail-card asma-shared-detail" style={schemeStyle(safeIndex)} aria-label={`${name.num} of ${NAMES.length}. ${name.latin}. ${name.meaning}`}>
           <div className="gradient-tile-number" aria-hidden="true">{name.num}</div>
           <div className="arabic body-h1" style={{ color: 'var(--surface-accent)' }} aria-hidden="true">{name.ar}</div>
           <div className="gradient-detail-divider" aria-hidden="true"></div>
           <div className="body-h3 fw-bold" style={{ color: 'var(--color-action-primary)' }}>{name.latin}</div>
           <div className="body-m" style={{ color: 'var(--color-info-secondary)', marginTop: 'var(--size-xl)' }}>{name.meaning}</div>
         </article>
-      </div>
-      <nav aria-label="Browse the 99 Names" style={{ flexShrink: 0, display: 'flex', alignItems: 'center', justifyContent: 'space-between', padding: 'var(--size-2xl) var(--size-huge) var(--size-max)' }}>
+        <nav className="asma-detail-nav" aria-label="Browse the 99 Names">
         <button className="ib ib-filled" onClick={onPrev} disabled={safeIndex <= 0} aria-label={safeIndex > 0 ? `Previous: ${NAMES[safeIndex - 1].latin}` : 'No previous name'}>
           <span className="mi" data-i="arrow_back" aria-hidden="true"></span>
         </button>
@@ -260,14 +225,14 @@ function DetailScreen({ selectedIdx = 6, mode = 'loaded', onPrev, onNext, onBack
         <button className="ib ib-filled" onClick={onNext} disabled={safeIndex >= NAMES.length - 1} aria-label={safeIndex < NAMES.length - 1 ? `Next: ${NAMES[safeIndex + 1].latin}` : 'No next name'}>
           <span className="mi" data-i="arrow_forward" aria-hidden="true"></span>
         </button>
-      </nav>
+        </nav>
+      </div>
     </div>
   );
 }
 
 Object.assign(window, {
   GridScreen,
-  DetailScreen,
+  DetailOverlay,
   ASMA_NAMES: NAMES,
-  ASMA_VISIBLE_NAMES: visibleNames,
 });

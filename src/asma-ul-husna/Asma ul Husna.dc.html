@@ -15,18 +15,13 @@
   <script src="../_ds/noor-design-system-46f42e91-1858-412f-bdb6-560a6cc3df9f/_ds_bundle.js"></script>
   <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Rounded:opsz,wght,FILL,GRAD@24,400,0..1,0&amp;display=block">
   <link rel="stylesheet" href="../_theme/icons.css">
+  <link rel="stylesheet" href="./asma-ul-husna.css">
   <style>
     @font-face{font-family:'AlQuranIndoPak';src:url('../_ds/noor-design-system-46f42e91-1858-412f-bdb6-560a6cc3df9f/fonts/AlQuran-IndoPak.ttf') format('truetype')}
     body{background:var(--canvas-bg);padding:36px 32px 90px;min-height:100vh;box-sizing:border-box}
     ::-webkit-scrollbar{display:none}*{-ms-overflow-style:none;scrollbar-width:none}
-    @keyframes stepin { from{transform:translateX(var(--size-huge));opacity:0} to{transform:translateX(0);opacity:1} }
-    @keyframes stepback { from{transform:translateX(calc(var(--size-huge) * -1));opacity:0} to{transform:translateX(0);opacity:1} }
-    .step-fwd { animation:stepin var(--motion-emphasized) var(--ease-out) }
-    .step-back { animation:stepback var(--motion-emphasized) var(--ease-out) }
   </style>
 </helmet>
-
-<x-import component="SearchBar" from="../_theme/components.jsx" hint-size="0,0"></x-import>
 
 <!-- ── Page header ── -->
 <x-import component="BoardHeader" from="../_theme/board.jsx"
@@ -49,40 +44,24 @@
   <!-- Live interactive device -->
   <x-import component="BoardLive" from="../_theme/board.jsx"
             restart="{{ restart }}"
-            hint="Click a name card to view its detail. Use ← → to navigate."
+            hint="Tap a name to open its detail over the collection. Tap outside or Close to return."
             hint-size="400px,900px">
     <x-import component="IOSDevice" from="../ios-frame.jsx" hint-size="402px,874px">
       <div style="width:100%;height:100%;position:relative;overflow:hidden;background:var(--color-surface-primary)">
 
-        <!-- ════ STAGE · GRID ════ -->
-        <sc-if value="{{ isGridStage }}">
-          <div class="{{ stepAnim }}" style="position:absolute;inset:0">
+          <div style="position:absolute;inset:0">
             <x-import component="GridScreen" from="./storyboards/screens.jsx"
                       mode="{{ mode }}"
-                      query="{{ query }}"
-                      on-query-change="{{ updateQuery }}"
+                      selected-idx="{{ selectedIdx }}"
                       on-select-name="{{ selectName }}"
+                      on-close-detail="{{ closeDetail }}"
+                      on-prev="{{ prevName }}"
+                      on-next="{{ nextName }}"
                       on-back="{{ goBack }}"
                       on-retry="{{ retry }}"
                       hint-size="100%,100%">
             </x-import>
           </div>
-        </sc-if>
-
-        <!-- ════ STAGE · DETAIL ════ -->
-        <sc-if value="{{ isDetailStage }}">
-          <div class="{{ stepAnim }}" style="position:absolute;inset:0">
-            <x-import component="DetailScreen" from="./storyboards/screens.jsx"
-                      mode="{{ mode }}"
-                      selected-idx="{{ selectedIdx }}"
-                      on-prev="{{ prevName }}"
-                      on-next="{{ nextName }}"
-                      on-back="{{ goGridStage }}"
-                      on-retry="{{ retry }}"
-                      hint-size="100%,100%">
-            </x-import>
-          </div>
-        </sc-if>
 
       </div>
     </x-import>
@@ -94,11 +73,8 @@
 <script type="text/x-dc" data-dc-script>
 class Component extends DCLogic {
   state = {
-    stage: location.hash === '#detail' ? 'detail' : 'grid',
-    selectedIdx: 6, // Al-Muhaymin (#7) as default detail
+    selectedIdx: location.hash === '#detail' ? 6 : null,
     mode: 'loaded',
-    query: '',
-    stepDir: 'fwd'
   };
 
   componentWillUnmount() { window.clearTimeout(this._retryTimer); }
@@ -111,22 +87,17 @@ class Component extends DCLogic {
   };
 
   selectName = (idx) => {
-    this.setState({ stage: 'detail', selectedIdx: idx, mode: 'loaded', stepDir: 'fwd' });
+    this.setState({ selectedIdx: idx, mode: 'loaded' });
   };
 
   selectFrame = (i) => {
     const frame = window.ASMA_STORYBOARD_FRAMES[i];
     if (!frame) return;
     this.setState({
-      stage: frame.stage,
       mode: frame.mode,
-      query: frame.query || '',
-      selectedIdx: frame.selectedIdx == null ? 6 : frame.selectedIdx,
-      stepDir: frame.stage === 'detail' ? 'fwd' : 'back'
+      selectedIdx: frame.selectedIdx == null ? null : frame.selectedIdx,
     });
   };
-
-  updateQuery = (query) => this.setState({ query, mode: 'loaded' });
 
   retry = () => {
     this.setState({ mode: 'loading' });
@@ -151,40 +122,33 @@ class Component extends DCLogic {
     });
   };
 
-  goGridStage = () => {
-    this.setState({ stage: 'grid', mode: 'loaded', stepDir: 'back' });
-  };
+  closeDetail = () => this.setState({ selectedIdx: null, mode: 'loaded' });
 
   goBack = () => {
     window.location.href = '../home/Home Screen.dc.html';
   };
 
   restart = () => {
-    this.setState({ stage: 'grid', selectedIdx: 6, mode: 'loaded', query: '', stepDir: 'back' });
+    this.setState({ selectedIdx: null, mode: 'loaded' });
   };
 
   renderVals() {
     const s = this.state;
 
     let namesActive = -1;
-    if (s.stage === 'grid' && s.mode === 'loaded' && !s.query) namesActive = 1;
-    if (s.stage === 'detail' && s.selectedIdx === 6) namesActive = 7;
+    if (s.mode === 'loaded' && s.selectedIdx == null) namesActive = 1;
+    if (s.selectedIdx === 6) namesActive = 5;
 
     return {
       selectedIdx: s.selectedIdx,
       mode: s.mode,
-      query: s.query,
       namesActive,
-      isGridStage: s.stage === 'grid',
-      isDetailStage: s.stage === 'detail',
-      stepAnim: s.stepDir === 'fwd' ? 'step-fwd' : s.stepDir === 'back' ? 'step-back' : '',
       selectName: this.selectName,
       selectFrame: this.selectFrame,
-      updateQuery: this.updateQuery,
       retry: this.retry,
       prevName: this.prevName,
       nextName: this.nextName,
-      goGridStage: this.goGridStage,
+      closeDetail: this.closeDetail,
       goBack: this.goBack,
       restart: this.restart
     };

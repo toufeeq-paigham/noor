@@ -3,13 +3,11 @@
 const STORYBOARD_FRAMES = [
   { name: 'Loading — final grid shape', stage: 'grid', mode: 'loading' },
   { name: 'All 99 names', stage: 'grid', mode: 'loaded' },
-  { name: 'Search — matching names', stage: 'grid', mode: 'loaded', query: 'Merciful' },
-  { name: 'Search — no results', stage: 'grid', mode: 'loaded', query: 'Ocean' },
   { name: 'Collection unavailable', stage: 'grid', mode: 'empty' },
   { name: 'Load failed — retry', stage: 'grid', mode: 'error' },
-  { name: 'Detail — first name', stage: 'detail', mode: 'loaded', selectedIdx: 0 },
-  { name: 'Detail — Al-Muhaymin (#7)', stage: 'detail', mode: 'loaded', selectedIdx: 6 },
-  { name: 'Detail — last name', stage: 'detail', mode: 'loaded', selectedIdx: 98 },
+  { name: 'Overlay — first name', stage: 'grid', mode: 'loaded', selectedIdx: 0 },
+  { name: 'Overlay — Al-Muhaymin (#7)', stage: 'grid', mode: 'loaded', selectedIdx: 6 },
+  { name: 'Overlay — last name', stage: 'grid', mode: 'loaded', selectedIdx: 98 },
 ];
 
 function NamesRow({ active = -1, onSelectFrame }) {
@@ -22,10 +20,10 @@ function NamesRow({ active = -1, onSelectFrame }) {
       <div className="poc-board">
         {STORYBOARD_FRAMES.map((frame, index) => {
           const ringClass = active === index ? 'is-active' : '';
-          const { GridScreen, DetailScreen } = window;
-          const screenContent = frame.stage === 'grid'
-            ? (GridScreen ? <GridScreen mode={frame.mode} query={frame.query || ''} /> : null)
-            : (DetailScreen ? <DetailScreen mode={frame.mode} selectedIdx={frame.selectedIdx} /> : null);
+          const { GridScreen } = window;
+          const screenContent = GridScreen
+            ? <GridScreen mode={frame.mode} selectedIdx={frame.selectedIdx} />
+            : null;
 
           return (
             <div key={frame.name} className="poc-board-item" onClick={() => onSelectFrame && onSelectFrame(index)}>

@@ -1,0 +1,60 @@
+.asma-detail-overlay {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-sizing: border-box;
+  padding: calc(var(--size-max) + var(--size-huge)) var(--size-huge) var(--size-max);
+  background: var(--color-surface-scrim);
+  animation: asma-scrim-in var(--motion-standard) var(--ease-out) both;
+}
+
+.asma-detail-dialog {
+  position: relative;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--size-2xl);
+  animation: asma-detail-in var(--motion-emphasized) var(--ease-out) both;
+}
+
+.asma-detail-close {
+  position: absolute;
+  top: calc(var(--control-h-lg) * -1 - var(--size-md));
+  right: 0;
+}
+
+.asma-detail-nav {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.asma-selected-tile {
+  view-transition-name: asma-selected-name;
+}
+
+.asma-shared-detail {
+  view-transition-name: asma-selected-name;
+  box-shadow: var(--shadow-dialog);
+}
+
+@keyframes asma-scrim-in {
+  from { opacity: var(--opacity-transparent); }
+  to { opacity: var(--opacity-opaque); }
+}
+
+@keyframes asma-detail-in {
+  from { opacity: var(--opacity-transparent); transform: scale(var(--opacity-emphasis)); }
+  to { opacity: var(--opacity-opaque); transform: scale(var(--opacity-opaque)); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .asma-detail-overlay,
+  .asma-detail-dialog {
+    animation-duration: var(--motion-press);
+  }
+}
