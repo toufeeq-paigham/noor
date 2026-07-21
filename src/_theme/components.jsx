@@ -276,4 +276,44 @@ function EmptyState({ icon, title, description, iconLabel, style = {} }) {
   );
 }
 
-Object.assign(window, { PromptCard, BottomSheet, Dialog, RichNudgeSheet, EmptyState });
+function SearchBar({
+  value = '',
+  placeholder = 'Search',
+  ariaLabel = 'Search',
+  onChange,
+  onClear,
+  disabled = false,
+  autoFocus = false,
+  style = {}
+}) {
+  const clear = () => {
+    if (onClear) onClear();
+    else if (onChange) onChange('');
+  };
+
+  return (
+    <div className={`search-bar${disabled ? ' disabled' : ''}`} style={style}>
+      <div className="inner">
+        <span className="mi search-bar-icon" data-i="search" aria-hidden="true"></span>
+        <input
+          className="search-bar-input"
+          type="search"
+          value={value}
+          placeholder={placeholder}
+          aria-label={ariaLabel}
+          disabled={disabled}
+          readOnly={!onChange}
+          autoFocus={autoFocus}
+          onInput={(event) => onChange && onChange(event.target.value)}
+        />
+        {value ? (
+          <button className="search-bar-clear" type="button" onClick={clear} aria-label="Clear search">
+            <span className="mi" data-i="close" aria-hidden="true"></span>
+          </button>
+        ) : null}
+      </div>
+    </div>
+  );
+}
+
+Object.assign(window, { PromptCard, BottomSheet, Dialog, RichNudgeSheet, EmptyState, SearchBar });

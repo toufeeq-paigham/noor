@@ -44,6 +44,7 @@
 .ib .mi{font-size:22px}
 .ib.sm .mi{font-size:16px}
 .ib.md .mi{font-size:20px}
+.ib[disabled]{background:var(--color-status-disabled);color:var(--color-status-disabled-alt);box-shadow:none;cursor:not-allowed;opacity:var(--opacity-balanced)}
 
 /* ── Badges (accents are data colors, kept literal) ── */
 .badge{display:inline-flex;align-items:center;gap:6px;padding:4px 10px;border-radius:360px;font-family:var(--font-body);font-size:14px;font-weight:500;border:1px solid}
@@ -87,6 +88,29 @@
 .input.focused{border:1px solid color-mix(in oklab,var(--color-input-border-focused) 50%,transparent)}
 .input.error{border:1px solid color-mix(in oklab,var(--color-input-border-error) 50%,transparent)}
 .input.disabled{opacity:.6}
+
+/* SearchBar — editable search molecule with one full-size clear action. */
+.search-bar{position:relative;width:100%;min-height:var(--control-h-lg);box-sizing:border-box;border-radius:var(--radius-2xl);padding:var(--size-xs);background:var(--color-input-background);transition:border-color var(--motion-quick) var(--ease-out)}
+.search-bar:focus-within{border:1px solid color-mix(in oklab,var(--color-input-border-focused) 50%,transparent)}
+.search-bar .inner{display:flex;align-items:center;min-height:calc(var(--control-h-lg) - var(--size-sm));box-sizing:border-box;border:1px solid var(--color-input-border-disabled);border-radius:calc(var(--radius-2xl) - var(--size-xs));overflow:hidden}
+.search-bar-icon{flex-shrink:0;margin-left:var(--size-2xl);font-size:var(--icon-md);color:var(--color-input-placeholder)}
+.search-bar-input{min-width:0;flex:1;align-self:stretch;border:0;outline:0;padding:0 var(--size-xl);background:transparent;font-family:var(--font-body);font-size:var(--body-m-size);line-height:var(--body-m-lh);color:var(--color-input-text);appearance:none;-webkit-appearance:none}
+.search-bar-input::-webkit-search-cancel-button{display:none}
+.search-bar-input::placeholder{color:var(--color-input-placeholder);opacity:1}
+.search-bar-clear{width:var(--control-h-lg);height:var(--control-h-lg);display:inline-flex;align-items:center;justify-content:center;flex-shrink:0;border:0;border-radius:var(--radius-circle);padding:0;background:transparent;color:var(--color-info-secondary);cursor:pointer;transition:background var(--motion-quick) var(--ease-out),transform var(--motion-press) var(--ease-out)}
+.search-bar-clear .mi{font-size:var(--icon-md)}
+.search-bar-clear:active{transform:scale(.96);background:color-mix(in oklab,currentColor 8%,transparent)}
+.search-bar.disabled{opacity:var(--opacity-strong)}
+
+/* Gradient collection primitives — shared by Asma and future editorial grids. */
+.gradient-collection{display:grid;grid-template-columns:repeat(auto-fit,minmax(var(--illustration-sm),1fr));gap:var(--size-md)}
+.gradient-tile{position:relative;min-height:calc(var(--control-h-lg) * 2 + var(--size-sm));display:flex;flex-direction:column;align-items:center;justify-content:center;gap:var(--size-sm);box-sizing:border-box;border:1px solid color-mix(in oklab,var(--surface-accent,var(--color-action-primary)) 24%,transparent);border-radius:var(--radius-2xl);padding:var(--size-xl) var(--size-md);background:var(--surface-gradient,var(--gradient-emerald)),var(--color-surface-card);color:var(--surface-accent,var(--color-action-primary));text-align:center;cursor:pointer;transition:transform var(--motion-press) var(--ease-out),border-color var(--motion-quick) var(--ease-out)}
+.gradient-tile:active{transform:scale(.97)}
+.gradient-tile-number{position:absolute;top:var(--size-md);left:var(--size-md);font-family:var(--font-body);font-size:var(--body-xs-size);line-height:var(--body-xs-lh);font-weight:700;color:var(--color-info-secondary)}
+.gradient-tile-arabic{font-family:var(--font-arabic);font-size:var(--body-l-size);line-height:1.8;direction:rtl}
+.gradient-tile-label{font-family:var(--font-body);font-size:var(--body-xs-size);line-height:var(--body-xs-lh);font-weight:700;color:color-mix(in oklab,var(--surface-accent,var(--color-action-primary)) 80%,var(--color-info-primary))}
+.gradient-detail-card{position:relative;width:min(100%,calc(var(--illustration-lg) * 2 + var(--size-2xl)));min-height:calc(var(--illustration-lg) * 2);display:flex;flex-direction:column;align-items:center;justify-content:center;box-sizing:border-box;border:1px solid color-mix(in oklab,var(--surface-accent,var(--color-action-primary)) 24%,transparent);border-radius:var(--radius-huge);padding:var(--size-max) var(--size-huge);background:var(--surface-gradient,var(--gradient-emerald)),var(--color-surface-card);box-shadow:0 var(--size-2xl) var(--size-max) calc(var(--size-max) * -1) color-mix(in oklab,var(--surface-accent,var(--color-action-primary)) 45%,transparent);text-align:center}
+.gradient-detail-divider{width:60%;height:var(--size-xs);margin:var(--size-2xl) auto;border-radius:var(--radius-xs);background:linear-gradient(90deg,transparent,var(--surface-accent,var(--color-action-primary)),transparent)}
 
 /* ── Choice cards ── */
 .choice-group{display:flex;gap:var(--size-xl);width:100%}

@@ -333,6 +333,43 @@ This is a redesign-preserve pass for a high-frequency devotional reader. Noor's 
 
 The POC changes no route, repository contract, favourite behavior, deep-link identity, Arabic content, or playback contract. Device audio, native share, largest text, and final screenshot overlay remain part of the delegated evidence pass.
 
+### Asma ul Husna design read and state specification — 2026-07-21
+
+This is a redesign-preserve pass for a devotional reference collection. The six Noor gradient schemes, Arabic-first tile hierarchy, calm serif app bar, emerald actions, and swipeable detail presentation remain authoritative. The working dials remain `DESIGN_VARIANCE: 4`, `MOTION_INTENSITY: 3`, and `VISUAL_DENSITY: 5`.
+
+| Before | After | Why |
+| --- | --- | --- |
+| The POC claims a 99-name collection but contains only 18 records | Use the same complete 99-name corpus, numbering, transliteration, and meanings as Compose | The approved design specification must be logically complete, not a partial visual sample |
+| Ninety-nine square tiles can only be scanned manually | Add the shared Noor `SearchBar` molecule and match name, meaning, Arabic, transliteration, or exact number | Search materially shortens a reference task without replacing the contemplative grid |
+| The POC has three happy-path frames and no truthful unresolved or recovery states | Specify nine deterministic loading, all-names, matching-search, no-result, unavailable, error/retry, and detail-boundary states | Loading, successful absence, filtered absence, and failure are different truths |
+| Tiles omit their sequence number and expose pointer behavior on non-semantic containers | Add a quiet number label and a full-card button label containing number, transliteration, and meaning | Sequence becomes visible while the Arabic name remains dominant and assistive navigation gets useful context |
+| Compose detail can initialize with an empty collection or an out-of-range deep-link index | Gate the pager behind loading/availability and clamp route indices before pager creation | A malformed or early deep link must not produce invalid pager state |
+| Detail text is fixed inside a proportional card | Keep the visual card proportions but allow its content to scroll under large text | Dynamic text must remain readable without breaking navigation geometry |
+| Shared-bound motion remains active when reduced motion is requested | Skip shared-bounds travel, stop shimmer, and snap detail paging under reduced motion | Meaning and hierarchy remain intact without positional or continuous motion |
+
+#### UX Pro Max checklist
+
+- Back, previous, next, clear-search, retry, tiles, and result actions meet the platform target contract; Compose's clear action is 48dp.
+- Search exposes the Search IME action, clears focus on submit, and uses the shared outside-tap keyboard-dismiss behavior without stealing consumed gestures.
+- Loading reserves final grid geometry; source-empty, filtered-empty, and recoverable error remain distinct.
+- Grid identity uses the divine-name number, and filtered selections navigate with the original collection index.
+- Noor auto-fit tiles and Compose `GridCells.Adaptive` preserve three canonical columns while adding columns on wider layouts.
+- Status/navigation insets remain owned by the shared app bar and bottom navigation region.
+- Tile semantics announce number, transliteration, and meaning; decorative Arabic duplication is suppressed in the POC.
+- Detail content remains scrollable for dynamic text, and light/dark colors come only from Noor gradient and semantic roles.
+- The collection is bundled local content, so there is no separate offline state; unexpected loading failure uses the persistent retry path.
+
+#### Motion specification
+
+| Interaction | Purpose | Timing / easing | Interruption | Reduced motion |
+| --- | --- | --- | --- | --- |
+| Grid to detail | Preserve the selected tile's spatial identity | Noor emphasized duration with existing spatial easing | Back or a new route retargets navigation | Shared-bounds travel is omitted |
+| Detail swipe / previous / next | Explain sequence within the 99 names | Noor emphasized duration and ease-out | A new swipe or control action retargets the pager | Snap to the destination page |
+| Tile and clear press | Confirm direct manipulation | Noor press timing; immediate haptic feedback in Compose | Release or navigation ends feedback | Static state change only |
+| Loading grid | Communicate unresolved bundled content in final geometry | Noor shimmer while unresolved | Loaded, empty, or error replaces placeholders in place | Static placeholders with loading semantics |
+
+The redesign changes no route name, repository contract, Arabic corpus, deep-link format, or navigation order. Canonical light/dark and adaptive device screenshots remain the final parity gate.
+
 All six journeys preserve their current brand illustration, information architecture, calculation logic, repositories, and route contracts. Physical compass, camera, location, audio, and adaptive-layout evidence is intentionally grouped into the final device pass.
 
 ### Sehri supplied-capture repair pass — 2026-07-21

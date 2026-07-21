@@ -1,12 +1,15 @@
-// Asma ul Husna — static storyboard row (3 states: grid top, grid scrolled, detail).
-// Rendered on the board via:
-//   <x-import component="NamesRow" from="./storyboards/names-row.jsx" active="{{ namesActive }}">
-// `active` = index of the frame the live device currently shows (-1 = none).
+// Asma ul Husna — deterministic storyboard states for the complete journey.
 
 const STORYBOARD_FRAMES = [
-  { name: 'Grid — top of list', stage: 'grid' },
-  { name: 'Grid — scrolled', stage: 'grid' },
-  { name: 'Detail — Al-Muhaymin (#7)', stage: 'detail', selectedIdx: 6 }
+  { name: 'Loading — final grid shape', stage: 'grid', mode: 'loading' },
+  { name: 'All 99 names', stage: 'grid', mode: 'loaded' },
+  { name: 'Search — matching names', stage: 'grid', mode: 'loaded', query: 'Merciful' },
+  { name: 'Search — no results', stage: 'grid', mode: 'loaded', query: 'Ocean' },
+  { name: 'Collection unavailable', stage: 'grid', mode: 'empty' },
+  { name: 'Load failed — retry', stage: 'grid', mode: 'error' },
+  { name: 'Detail — first name', stage: 'detail', mode: 'loaded', selectedIdx: 0 },
+  { name: 'Detail — Al-Muhaymin (#7)', stage: 'detail', mode: 'loaded', selectedIdx: 6 },
+  { name: 'Detail — last name', stage: 'detail', mode: 'loaded', selectedIdx: 98 },
 ];
 
 function NamesRow({ active = -1, onSelectFrame }) {
@@ -14,24 +17,18 @@ function NamesRow({ active = -1, onSelectFrame }) {
     <div>
       <div className="poc-row-label">
         <span className="mi" data-i="auto_awesome"></span>
-        01 · Asma ul Husna — 99 Names grid &amp; detail · {STORYBOARD_FRAMES.length} states
+        01 · Asma ul Husna — complete 99-name collection · {STORYBOARD_FRAMES.length} states
       </div>
       <div className="poc-board">
-        {STORYBOARD_FRAMES.map((f, i) => {
-          const isActive = active === i;
-          const ringClass = isActive ? 'is-active' : '';
-
+        {STORYBOARD_FRAMES.map((frame, index) => {
+          const ringClass = active === index ? 'is-active' : '';
           const { GridScreen, DetailScreen } = window;
-          let screenContent = null;
-
-          if (f.stage === 'grid') {
-            screenContent = GridScreen ? <GridScreen /> : <div style={{ padding: 20, color: 'var(--color-info-secondary)' }}>Loading...</div>;
-          } else if (f.stage === 'detail') {
-            screenContent = DetailScreen ? <DetailScreen selectedIdx={f.selectedIdx} /> : <div style={{ padding: 20, color: 'var(--color-info-secondary)' }}>Loading...</div>;
-          }
+          const screenContent = frame.stage === 'grid'
+            ? (GridScreen ? <GridScreen mode={frame.mode} query={frame.query || ''} /> : null)
+            : (DetailScreen ? <DetailScreen mode={frame.mode} selectedIdx={frame.selectedIdx} /> : null);
 
           return (
-            <div key={i} className="poc-board-item" onClick={() => onSelectFrame && onSelectFrame(i)}>
+            <div key={frame.name} className="poc-board-item" onClick={() => onSelectFrame && onSelectFrame(index)}>
               <div className={`noor-frame ${ringClass}`} style={{ '--s': '0.46', cursor: onSelectFrame ? 'pointer' : 'default' }}>
                 <div className="noor-frame-inner">
                   <div className="noor-screen">
@@ -41,7 +38,7 @@ function NamesRow({ active = -1, onSelectFrame }) {
                   </div>
                 </div>
               </div>
-              <div className="poc-frame-caption">{i + 1} · {f.name}</div>
+              <div className="poc-frame-caption">{index + 1} · {frame.name}</div>
             </div>
           );
         })}

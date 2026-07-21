@@ -30,6 +30,8 @@
   </style>
 </helmet>
 
+<x-import component="SearchBar" from="../../_theme/components.jsx" hint-size="0,0"></x-import>
+
 <div class="cp-wrap">
 
   <!-- 1. SearchBar -->
@@ -38,13 +40,13 @@
       <div class="cp-h">SearchBar</div>
       <div class="cp-sub">Standard input wrapper containing search icon indicator and placeholders.</div>
     </div>
-    <div style="max-width:400px">
-      <div class="input">
-        <div class="inner">
-          <span class="mi" data-i="search"></span>
-          <span class="val ph">Search surahs, masjids, or topics...</span>
-        </div>
-      </div>
+    <div style="max-width:400px;display:flex;flex-direction:column;gap:12px">
+      <x-import component="SearchBar" from="../../_theme/components.jsx"
+                placeholder="Search surahs, masjids, or topics..."
+                aria-label="Search examples" hint-size="400px,48px"></x-import>
+      <x-import component="SearchBar" from="../../_theme/components.jsx"
+                value="Merciful" placeholder="Search names"
+                aria-label="Search with a value" hint-size="400px,48px"></x-import>
     </div>
   </div>
 

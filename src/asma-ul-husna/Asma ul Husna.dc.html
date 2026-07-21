@@ -19,12 +19,14 @@
     @font-face{font-family:'AlQuranIndoPak';src:url('../_ds/noor-design-system-46f42e91-1858-412f-bdb6-560a6cc3df9f/fonts/AlQuran-IndoPak.ttf') format('truetype')}
     body{background:var(--canvas-bg);padding:36px 32px 90px;min-height:100vh;box-sizing:border-box}
     ::-webkit-scrollbar{display:none}*{-ms-overflow-style:none;scrollbar-width:none}
-    @keyframes stepin { from{transform:translateX(28px);opacity:0} to{transform:translateX(0);opacity:1} }
-    @keyframes stepback { from{transform:translateX(-28px);opacity:0} to{transform:translateX(0);opacity:1} }
-    .step-fwd { animation:stepin .35s cubic-bezier(.2,.8,.2,1) }
-    .step-back { animation:stepback .35s cubic-bezier(.2,.8,.2,1) }
+    @keyframes stepin { from{transform:translateX(var(--size-huge));opacity:0} to{transform:translateX(0);opacity:1} }
+    @keyframes stepback { from{transform:translateX(calc(var(--size-huge) * -1));opacity:0} to{transform:translateX(0);opacity:1} }
+    .step-fwd { animation:stepin var(--motion-emphasized) var(--ease-out) }
+    .step-back { animation:stepback var(--motion-emphasized) var(--ease-out) }
   </style>
 </helmet>
+
+<x-import component="SearchBar" from="../_theme/components.jsx" hint-size="0,0"></x-import>
 
 <!-- ── Page header ── -->
 <x-import component="BoardHeader" from="../_theme/board.jsx"
@@ -56,8 +58,12 @@
         <sc-if value="{{ isGridStage }}">
           <div class="{{ stepAnim }}" style="position:absolute;inset:0">
             <x-import component="GridScreen" from="./storyboards/screens.jsx"
+                      mode="{{ mode }}"
+                      query="{{ query }}"
+                      on-query-change="{{ updateQuery }}"
                       on-select-name="{{ selectName }}"
                       on-back="{{ goBack }}"
+                      on-retry="{{ retry }}"
                       hint-size="100%,100%">
             </x-import>
           </div>
@@ -67,10 +73,12 @@
         <sc-if value="{{ isDetailStage }}">
           <div class="{{ stepAnim }}" style="position:absolute;inset:0">
             <x-import component="DetailScreen" from="./storyboards/screens.jsx"
+                      mode="{{ mode }}"
                       selected-idx="{{ selectedIdx }}"
                       on-prev="{{ prevName }}"
                       on-next="{{ nextName }}"
                       on-back="{{ goGridStage }}"
+                      on-retry="{{ retry }}"
                       hint-size="100%,100%">
             </x-import>
           </div>
@@ -88,19 +96,45 @@ class Component extends DCLogic {
   state = {
     stage: location.hash === '#detail' ? 'detail' : 'grid',
     selectedIdx: 6, // Al-Muhaymin (#7) as default detail
+    mode: 'loaded',
+    query: '',
     stepDir: 'fwd'
   };
 
+  componentWillUnmount() { window.clearTimeout(this._retryTimer); }
+
+  motionMillis = (token) => {
+    const value = getComputedStyle(document.documentElement).getPropertyValue(token).trim();
+    if (value.endsWith('ms')) return Number.parseFloat(value) || 0;
+    if (value.endsWith('s')) return (Number.parseFloat(value) || 0) * 1000;
+    return 0;
+  };
+
   selectName = (idx) => {
-    this.setState({ stage: 'detail', selectedIdx: idx, stepDir: 'fwd' });
+    this.setState({ stage: 'detail', selectedIdx: idx, mode: 'loaded', stepDir: 'fwd' });
   };
 
   selectFrame = (i) => {
-    if (i <= 1) {
-      this.setState({ stage: 'grid', stepDir: 'back' });
-    } else {
-      this.setState({ stage: 'detail', selectedIdx: 6, stepDir: 'fwd' });
-    }
+    const frame = window.ASMA_STORYBOARD_FRAMES[i];
+    if (!frame) return;
+    this.setState({
+      stage: frame.stage,
+      mode: frame.mode,
+      query: frame.query || '',
+      selectedIdx: frame.selectedIdx == null ? 6 : frame.selectedIdx,
+      stepDir: frame.stage === 'detail' ? 'fwd' : 'back'
+    });
+  };
+
+  updateQuery = (query) => this.setState({ query, mode: 'loaded' });
+
+  retry = () => {
+    this.setState({ mode: 'loading' });
+    window.clearTimeout(this._retryTimer);
+    this._retryTimer = window.setTimeout(
+      () => this.setState({ mode: 'loaded' }),
+      this.motionMillis('--motion-standard')
+    );
   };
 
   prevName = () => {
@@ -112,13 +146,13 @@ class Component extends DCLogic {
 
   nextName = () => {
     this.setState(s => {
-      if (s.selectedIdx >= 17) return {};
+      if (s.selectedIdx >= 98) return {};
       return { selectedIdx: s.selectedIdx + 1 };
     });
   };
 
   goGridStage = () => {
-    this.setState({ stage: 'grid', stepDir: 'back' });
+    this.setState({ stage: 'grid', mode: 'loaded', stepDir: 'back' });
   };
 
   goBack = () => {
@@ -126,27 +160,28 @@ class Component extends DCLogic {
   };
 
   restart = () => {
-    this.setState({ stage: 'grid', selectedIdx: 6, stepDir: 'back' });
+    this.setState({ stage: 'grid', selectedIdx: 6, mode: 'loaded', query: '', stepDir: 'back' });
   };
 
   renderVals() {
     const s = this.state;
 
     let namesActive = -1;
-    if (s.stage === 'grid') {
-      namesActive = 0;
-    } else if (s.stage === 'detail') {
-      namesActive = 2;
-    }
+    if (s.stage === 'grid' && s.mode === 'loaded' && !s.query) namesActive = 1;
+    if (s.stage === 'detail' && s.selectedIdx === 6) namesActive = 7;
 
     return {
       selectedIdx: s.selectedIdx,
+      mode: s.mode,
+      query: s.query,
       namesActive,
       isGridStage: s.stage === 'grid',
       isDetailStage: s.stage === 'detail',
       stepAnim: s.stepDir === 'fwd' ? 'step-fwd' : s.stepDir === 'back' ? 'step-back' : '',
       selectName: this.selectName,
       selectFrame: this.selectFrame,
+      updateQuery: this.updateQuery,
+      retry: this.retry,
       prevName: this.prevName,
       nextName: this.nextName,
       goGridStage: this.goGridStage,
