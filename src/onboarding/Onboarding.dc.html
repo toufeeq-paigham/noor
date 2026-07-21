@@ -98,6 +98,7 @@
                             verifying="{{ showVerifying }}"
                             success="{{ showSuccess }}"
                             resend-in="{{ resendIn }}"
+                            resend-status="{{ resendStatus }}"
                             sms-visible="{{ smsVisible }}"
                             on-edit-phone="{{ editPhone }}"
                             on-resend="{{ resend }}"
@@ -130,6 +131,7 @@ class Component extends DCLogic {
     verifying: false,
     success: false,
     resendIn: 30,
+    resendStatus: 'idle',
     smsVisible: false,
   };
 
@@ -152,6 +154,8 @@ class Component extends DCLogic {
 
   clearTimers() {
     clearTimeout(this._smsTimer);
+    clearTimeout(this._resendTimer);
+    clearTimeout(this._resendStatusTimer);
     clearInterval(this._tick);
   }
 
@@ -194,28 +198,31 @@ class Component extends DCLogic {
     this.clearTimers();
     // 0 empty · 1 filled · 2 invalid
     const phone = i === 0 ? '' : (i === 1 ? '8123403269' : '8123400000');
-    this.setState({ stage: 'phone', stepDir: 'none', phone, phoneError: i === 2, otp: '', otpError: false, verifying: false, success: false, smsVisible: false });
+    this.setState({ stage: 'phone', stepDir: 'none', phone, phoneError: i === 2, otp: '', otpError: false, verifying: false, success: false, resendStatus: 'idle', smsVisible: false });
   };
   selectOtpFrame = (i) => {
     this.clearTimers();
-    // 0 SMS arrived · 1 typing · 2 incorrect · 3 verified
+    // 0 SMS arrived · 1 typing · 2 incorrect · 3 sending · 4 sent · 5 failed · 6 verified
     const states = [
-      { otp: '', otpError: false, verifying: false, success: false, resendIn: 30, smsVisible: true },
-      { otp: '3533', otpError: false, verifying: false, success: false, resendIn: 30, smsVisible: false },
-      { otp: '111111', otpError: true, verifying: false, success: false, resendIn: 30, smsVisible: false },
-      { otp: '353357', otpError: false, verifying: false, success: true, resendIn: 0, smsVisible: false }
+      { otp: '', otpError: false, verifying: false, success: false, resendIn: 30, resendStatus: 'idle', smsVisible: true },
+      { otp: '3533', otpError: false, verifying: false, success: false, resendIn: 30, resendStatus: 'idle', smsVisible: false },
+      { otp: '111111', otpError: true, verifying: false, success: false, resendIn: 30, resendStatus: 'idle', smsVisible: false },
+      { otp: '', otpError: false, verifying: false, success: false, resendIn: 0, resendStatus: 'sending', smsVisible: false },
+      { otp: '', otpError: false, verifying: false, success: false, resendIn: 30, resendStatus: 'sent', smsVisible: false },
+      { otp: '', otpError: false, verifying: false, success: false, resendIn: 0, resendStatus: 'error', smsVisible: false },
+      { otp: '353357', otpError: false, verifying: false, success: true, resendIn: 0, resendStatus: 'idle', smsVisible: false }
     ];
     this.setState({ stage: 'otp', stepDir: 'none', phone: this.state.phone || '8123403269', ...states[i] });
   };
 
   editPhone = () => {
     this.clearTimers();
-    this.setState({ stage: 'phone', stepDir: 'back', otp: '', otpError: false, verifying: false, smsVisible: false, resendIn: 30 });
+    this.setState({ stage: 'phone', stepDir: 'back', otp: '', otpError: false, verifying: false, smsVisible: false, resendIn: 30, resendStatus: 'idle' });
   };
 
   onContinue = () => {
     if (this.state.phone.length !== 10) { this.setState({ phoneError: true }); return; }
-    this.setState({ stage: 'otp', stepDir: 'fwd', otp: '', otpError: false, resendIn: 30, smsVisible: false });
+    this.setState({ stage: 'otp', stepDir: 'fwd', otp: '', otpError: false, resendIn: 30, resendStatus: 'idle', smsVisible: false });
     this.startOtpTimers();
   };
 
@@ -230,7 +237,6 @@ class Component extends DCLogic {
         setTimeout(() => { window.location.href = '../home/Home Screen.dc.html'; }, 900);
       } else {
         this.setState({ verifying: false, otpError: true, smsVisible: true });
-        setTimeout(() => this.setState(st => (st.otpError ? { otpError: false, otp: '' } : {})), 1200);
       }
     }, 800);
   };
@@ -280,10 +286,18 @@ class Component extends DCLogic {
   };
 
   resend = () => {
-    if (this.state.resendIn > 0) return;
-    this.setState({ resendIn: 30, otp: '', otpError: false, smsVisible: false });
+    if (this.state.resendIn > 0 || this.state.resendStatus === 'sending') return;
+    this.setState({ resendStatus: 'sending', otpError: false, smsVisible: false });
     clearTimeout(this._smsTimer);
-    this._smsTimer = setTimeout(() => this.setState({ smsVisible: true }), 1400);
+    clearTimeout(this._resendTimer);
+    clearTimeout(this._resendStatusTimer);
+    this._resendTimer = setTimeout(() => {
+      this.setState({ resendIn: 30, resendStatus: 'sent', otp: '' });
+      this.startOtpTimers();
+      this._resendStatusTimer = setTimeout(() => {
+        this.setState(s => (s.resendStatus === 'sent' ? { resendStatus: 'idle' } : {}));
+      }, 1500);
+    }, 900);
   };
 
   restart = () => {
@@ -291,7 +305,7 @@ class Component extends DCLogic {
     this.setState({
       stage: 'intro', slide: 0, stepDir: 'back',
       phone: '', phoneError: false, otp: '', otpError: false,
-      verifying: false, success: false, resendIn: 30, smsVisible: false,
+      verifying: false, success: false, resendIn: 30, resendStatus: 'idle', smsVisible: false,
     });
   };
 
@@ -309,7 +323,8 @@ class Component extends DCLogic {
     /* board rings */
     const introActive = isIntro ? cur : -1;
     const phoneActive = isPhone ? (s.phoneError ? 2 : (full ? 1 : 0)) : -1;
-    const otpActive = isOtp ? ((s.success || s.verifying) ? 3 : (s.otpError ? 2 : (s.otp.length > 0 ? 1 : 0))) : -1;
+    const resendFrame = s.resendStatus === 'sending' ? 3 : (s.resendStatus === 'sent' ? 4 : (s.resendStatus === 'error' ? 5 : -1));
+    const otpActive = isOtp ? (s.success ? 6 : (resendFrame >= 0 ? resendFrame : (s.otpError ? 2 : (s.otp.length > 0 ? 1 : 0)))) : -1;
 
     return {
       /* stages */
@@ -355,6 +370,7 @@ class Component extends DCLogic {
       showVerifying: s.verifying,
       showSuccess: s.success,
       resendIn: s.resendIn,
+      resendStatus: s.resendStatus,
       smsVisible: isOtp && s.smsVisible,
       resend: this.resend,
     };

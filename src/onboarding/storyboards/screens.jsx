@@ -255,6 +255,7 @@ function OtpScreen({
   verifying = false,
   success = false,
   resendIn = 0,
+  resendStatus = "idle",
   smsVisible = false,
   onEditPhone,
   onResend,
@@ -362,14 +363,34 @@ function OtpScreen({
               <span style={{ fontFamily: 'var(--font-body)', fontSize: 13, fontWeight: 700, color: 'var(--color-action-primary)' }}>Verified — taking you home</span>
             </span>
           )}
+          {!verifying && !success && resendStatus === 'sending' && (
+            <span style={{ display: 'inline-flex', alignItems: 'center', gap: 8 }}>
+              <span style={{ display: 'inline-block', width: 14, height: 14, border: '2px solid var(--color-action-primary)', borderTopColor: 'transparent', borderRadius: '50%', animation: 'spin .7s linear infinite' }} />
+              <span style={{ fontFamily: 'var(--font-body)', fontSize: 13, fontWeight: 700, color: 'var(--color-info-secondary)' }}>Sending OTP…</span>
+            </span>
+          )}
+          {!verifying && !success && resendStatus === 'sent' && (
+            <span style={{ display: 'inline-flex', alignItems: 'center', gap: 6 }}>
+              <span className="mi fill" style={{ fontSize: 18, color: 'var(--color-action-primary)', fontVariationSettings: "'FILL' 1" }} data-i="check_circle"></span>
+              <span style={{ fontFamily: 'var(--font-body)', fontSize: 13, fontWeight: 700, color: 'var(--color-action-primary)' }}>OTP sent</span>
+            </span>
+          )}
+          {!verifying && !success && resendStatus === 'error' && (
+            <span role="alert" style={{ fontFamily: 'var(--font-body)', fontSize: 13, fontWeight: 700, color: 'var(--color-status-error)', textAlign: 'center' }}>
+              OTP not sent. Check your connection and retry.
+            </span>
+          )}
         </div>
 
         <div style={{ marginTop: 8, textAlign: 'center', fontFamily: 'var(--font-body)', fontSize: 15, color: 'var(--color-info-secondary)' }}>
-          {resendIn > 0 && !success && (
+          {resendIn > 0 && !success && resendStatus !== 'error' && (
             <span>Resend OTP in <span style={{ fontWeight: 700, color: 'var(--color-info-primary)' }}>{resendIn}s</span></span>
           )}
-          {resendIn === 0 && !success && (
-            <button type="button" className="btn btn-link" onClick={onResend}>Resend OTP</button>
+          {resendIn === 0 && !success && resendStatus !== 'sending' && (
+            <button type="button" className="btn btn-link" onClick={onResend}>{resendStatus === 'error' ? 'Retry' : 'Resend OTP'}</button>
+          )}
+          {resendIn === 0 && !success && resendStatus === 'sending' && (
+            <button type="button" className="btn btn-link" disabled aria-disabled="true" style={{ background: 'transparent', color: 'var(--color-status-disabled-alt)', boxShadow: 'none' }}>Resend OTP</button>
           )}
         </div>
         <div style={{ flex: 1 }} />
