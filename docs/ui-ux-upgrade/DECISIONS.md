@@ -188,6 +188,7 @@ The Quran journey is a reading tool, not a decorative content page. Noor's Arabi
 | Reader failures depend only on a transient sheet | Keep index metadata errors in the existing persistent sheet, but give ayah-content failure a stable inline retry state | The user retains context and can recover after dismissals or restoration |
 | Arabic reader bounds and step values live as feature constants | Add min, default, max, and step values to Noor Arabic typography tokens | Reader typography policy is shared, testable, and no longer screen-owned |
 | POC route changes travel for 350ms with a local easing curve | Use Noor's 220ms standard motion and shared ease-out token | The transition feels responsive and follows reduced-motion policy |
+| Selecting a Surah or Juz row replaces its calligraphy with an unrelated route slide | Carry the selected Surah calligraphy into the reader app bar with a stable mode, Juz, and Surah identity | The morph explains exactly which reading context opened without animating the sacred text or the full high-frequency reader |
 
 ### Motion specification
 
@@ -196,6 +197,7 @@ The Quran journey is a reading tool, not a decorative content page. Noor's Arabi
 | Surah/Juz tab change | Spatial continuity | Frequent | Existing interruptible pager motion | Page changes without decorative travel |
 | Index/reader data-state change | Explain resolved state | Occasional | Standard `AnimatedContent`; no content reflow choreography | Immediate state replacement |
 | Board route change | Spatial progression | Occasional | 220ms horizontal/opacity ease-out | Shared CSS token resolves to 1ms |
+| Selected Surah calligraphy to reader title | Preserve selected reading context | Occasional | Shared-bounds morph using the emphasized Noor timing and ease-out; the surrounding route does not slide concurrently | Immediate title replacement with no positional travel |
 | Reader settings sheet | Preserve reader context | Occasional | Existing Noor sheet transition | Sheet appears without travel |
 | Arabic size step | Immediate reading feedback | Occasional | No animation; typography updates in place | Same behavior |
 
@@ -206,6 +208,8 @@ The Quran journey is a reading tool, not a decorative content page. Noor's Arabi
 - Surah rows use stable IDs; ayah rows already use stable Surah/key pairs.
 - Empty and error states use the shared `EmptyState`, typed Noor icons, semantic status colors, and full-size retry controls.
 - Existing sticky Surah/Juz context, translation preferences, transliteration preferences, Back behavior, and deep-link parameters are preserved.
+- Selected calligraphy uses stable Surah or Juz-plus-Surah identity; the surrounding route slide is suppressed while the shared title morph runs, and reduced motion replaces it immediately.
+- Compose carries the root Navigation 3 animated scope through the nested Home tab so the match follows root destination lifecycle and predictive Back rather than the tab pager lifecycle.
 - Quran audio was not invented: there is no Quran audio/reciter repository, service, route contract, or approved Noor behavior in the current application. It remains a documented product-capability exception rather than a false visual control.
 
 ### Certification notes

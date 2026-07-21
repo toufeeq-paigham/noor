@@ -21,6 +21,11 @@ const QURAN_AYAHS = [
 
 function QuranReaderScreen({
   origin = 'juz',
+  surahId = 1,
+  surahName = 'Al-Faatiha',
+  surahArabic = 'سُورَةُ الْفَاتِحَةِ',
+  selectionMeta,
+  titleTransitionName,
   settingsOpen = false,
   showTranslit = true,
   showTranslation = true,
@@ -35,7 +40,7 @@ function QuranReaderScreen({
   onDecFont,
   onRetry
 }) {
-  const metaText = origin === 'surah' ? '7 ayahs' : 'Juz 1 | 1 - 7 ayahs';
+  const metaText = selectionMeta || (origin === 'surah' ? '7 ayahs' : 'Juz 1 | 1 - 7 ayahs');
   const last = QURAN_AYAHS.length - 1;
 
   return (
@@ -46,7 +51,7 @@ function QuranReaderScreen({
         <button className="ib ib-tonal md" onClick={onBack} aria-label="Back">
           <span className="mi" data-i="arrow_back"></span>
         </button>
-        <div style={{ fontFamily: "'QWBWSurah',serif", fontSize: 22, color: 'var(--color-info-primary)', direction: 'rtl' }}>سُورَةُ الْفَاتِحَةِ</div>
+        <div style={{ fontFamily: "'QWBWSurah',serif", fontSize: 22, color: 'var(--color-info-primary)', direction: 'rtl', viewTransitionName: titleTransitionName }}>{surahArabic}</div>
         <button className="ib ib-tonal md" onClick={onToggleSettings} aria-label="View settings">
           <span className="mi" data-i="settings"></span>
         </button>
@@ -55,7 +60,7 @@ function QuranReaderScreen({
       {/* Surah info bar */}
       <div style={{ flexShrink: 0, padding: '6px 20px 12px', borderBottom: '1px solid var(--color-neutral-border)' }}>
         <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-          <span style={{ fontFamily: 'var(--font-body)', fontSize: 14, fontWeight: 600, color: 'var(--color-info-primary)' }}>1. Al-Faatiha</span>
+          <span style={{ fontFamily: 'var(--font-body)', fontSize: 14, fontWeight: 600, color: 'var(--color-info-primary)' }}>{surahId}. {surahName}</span>
           <span style={{ fontFamily: 'var(--font-body)', fontSize: 13, color: 'var(--color-info-secondary)' }}>{metaText}</span>
         </div>
       </div>

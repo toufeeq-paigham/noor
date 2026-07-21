@@ -782,7 +782,7 @@ function QaumScreen({
 // Surah card row — shared by the Surah list and the grouped Juz list.
 // `meta` is the ayah count ("7 ayahs") in the Surah tab, or the ayah range
 // ("142 - 252 ayahs") in the Juz tab.
-function SurahRow({ n, name, tr, meta, arabic, place, onClick }) {
+function SurahRow({ n, name, tr, meta, arabic, place, transitionName, onClick }) {
   return (
     <div className="qrow" onClick={onClick} style={{ cursor: onClick ? 'pointer' : 'default' }}>
       <div className="qrow-num">{n}</div>
@@ -792,7 +792,7 @@ function SurahRow({ n, name, tr, meta, arabic, place, onClick }) {
         <div className="qrow-meta">{meta}</div>
       </div>
       <div className="qrow-trail">
-        <div className="qrow-ar">{arabic}</div>
+        <div className="qrow-ar" style={transitionName ? { viewTransitionName: transitionName } : undefined}>{arabic}</div>
         <div className="qrow-place">{place}</div>
       </div>
     </div>
@@ -876,7 +876,17 @@ function QuranScreen({
           /* Surah tab — flat list of surah cards (name · translation · ayah count) */
           <div style={{ display: 'flex', flexDirection: 'column', gap: 8 }}>
             {surahs.map((s, idx) => (
-              <SurahRow key={idx} n={s.n} name={s.name} tr={s.tr} meta={`${s.ayahs} ayahs`} arabic={s.arabic} place={s.place} onClick={() => onSelectSurah && onSelectSurah(idx)} />
+              <SurahRow
+                key={idx}
+                n={s.n}
+                name={s.name}
+                tr={s.tr}
+                meta={`${s.ayahs} ayahs`}
+                arabic={s.arabic}
+                place={s.place}
+                transitionName={`quran-surah-${s.n}`}
+                onClick={() => onSelectSurah && onSelectSurah(s)}
+              />
             ))}
           </div>
         ) : (
@@ -889,7 +899,17 @@ function QuranScreen({
                 <div style={{ position: 'sticky', top: QURAN_APPBAR_H, zIndex: 2, background: 'color-mix(in oklab, var(--color-info-primary) 3%, var(--color-surface-primary))', borderRadius: '20px 20px 0 0', padding: '12px 16px 8px', fontFamily: 'var(--font-body)', fontSize: 18, fontWeight: 800, color: 'var(--color-info-primary)' }}>{j.title}</div>
                 <div style={{ padding: '0 8px 8px', display: 'flex', flexDirection: 'column', gap: 8 }}>
                   {j.surahs.map((s, si) => (
-                    <SurahRow key={si} n={s.n} name={s.name} tr={s.tr} meta={s.range} arabic={s.arabic} place={s.place} onClick={() => onSelectJuz && onSelectJuz(ji)} />
+                    <SurahRow
+                      key={si}
+                      n={s.n}
+                      name={s.name}
+                      tr={s.tr}
+                      meta={s.range}
+                      arabic={s.arabic}
+                      place={s.place}
+                      transitionName={`quran-juz-${ji + 1}-surah-${s.n}`}
+                      onClick={() => onSelectJuz && onSelectJuz(ji + 1, s)}
+                    />
                   ))}
                 </div>
               </div>

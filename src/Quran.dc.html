@@ -27,6 +27,8 @@
     @keyframes stepback { from{transform:translateX(-28px);opacity:0} to{transform:translateX(0);opacity:1} }
     .step-fwd { animation:stepin var(--motion-standard) var(--ease-out) }
     .step-back { animation:stepback var(--motion-standard) var(--ease-out) }
+    ::view-transition-group(*) { animation-duration:var(--motion-emphasized);animation-timing-function:var(--ease-out) }
+    @media (prefers-reduced-motion:reduce){.step-fwd,.step-back{animation:none}::view-transition-group(*){animation-duration:0ms}}
   </style>
 </helmet>
 
@@ -110,12 +112,17 @@
           <div class="{{ stepAnim }}" style="position:absolute;inset:0">
             <x-import component="QuranReaderScreen" from="./quran-reader.jsx"
                       origin="{{ origin }}"
+                      surah-id="{{ selectedSurahId }}"
+                      surah-name="{{ selectedSurahName }}"
+                      surah-arabic="{{ selectedSurahArabic }}"
+                      selection-meta="{{ selectedSurahMeta }}"
+                      title-transition-name="{{ readerTitleTransitionName }}"
                       settings-open="{{ settingsOpen }}"
                       show-translit="{{ showTranslit }}"
                       show-translation="{{ showTranslation }}"
                       arabic-size="{{ arabicSize }}"
                       content-state="{{ readerContentState }}"
-                      on-back="{{ goListingStage }}"
+                      on-back="{{ closeReader }}"
                       on-toggle-settings="{{ toggleSettings }}"
                       on-close-settings="{{ closeSettings }}"
                       on-toggle-translit="{{ toggleTranslit }}"
@@ -151,7 +158,12 @@ class Component extends DCLogic {
     readerContentState: (location.hash === '#reader-loading') ? 'loading'
       : (location.hash === '#reader-empty') ? 'empty'
       : (location.hash === '#reader-error') ? 'error'
-      : 'ready'
+      : 'ready',
+    selectedSurahId: 1,
+    selectedSurahName: 'Al-Faatiha',
+    selectedSurahArabic: 'سُورَةُ الْفَاتِحَةِ',
+    selectedSurahMeta: '7 ayahs',
+    selectedJuzId: 1
   };
 
   goHomeStage = () => this.setState({ stage: 'home', stepDir: 'back', settingsOpen: false });
@@ -168,9 +180,45 @@ class Component extends DCLogic {
     window.location.href = 'home/Home Screen.dc.html' + hash;
   };
 
-  openReader = (origin) => this.setState({ stage: 'reader', origin, stepDir: 'fwd', settingsOpen: false, readerContentState: 'ready' });
-  openReaderSurah = () => this.openReader('surah');
-  openReaderJuz = () => this.openReader('juz');
+  _transitionReader = (update, fallbackDirection) => {
+    const reduced = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    if (!reduced && document.startViewTransition) {
+      document.startViewTransition(() => update('none'));
+    } else {
+      update(reduced ? 'none' : fallbackDirection);
+    }
+  };
+
+  openReader = (origin, surah, juzId = 1) => {
+    const selection = surah || {
+      n: 1,
+      name: 'Al-Faatiha',
+      arabic: 'سُورَةُ الْفَاتِحَةِ',
+      ayahs: 7,
+      range: '1 - 7 ayahs'
+    };
+    this._transitionReader((stepDir) => {
+      this.setState({
+        stage: 'reader',
+        origin,
+        stepDir,
+        settingsOpen: false,
+        readerContentState: 'ready',
+        selectedSurahId: selection.n,
+        selectedSurahName: selection.name,
+        selectedSurahArabic: selection.arabic,
+        selectedSurahMeta: origin === 'surah' ? `${selection.ayahs} ayahs` : `Juz ${juzId} | ${selection.range}`,
+        selectedJuzId: juzId
+      });
+    }, 'fwd');
+  };
+  openReaderSurah = (surah) => this.openReader('surah', surah);
+  openReaderJuz = (juzId, surah) => this.openReader('juz', surah, juzId);
+  closeReader = () => {
+    this._transitionReader((stepDir) => {
+      this.setState({ stage: 'listing', stepDir, settingsOpen: false });
+    }, 'back');
+  };
 
   toggleSettings = () => this.setState(s => ({ settingsOpen: !s.settingsOpen }));
   closeSettings = () => this.setState({ settingsOpen: false });
@@ -195,7 +243,12 @@ class Component extends DCLogic {
 
   restart = () => this.setState({
     stage: 'home', origin: 'surah', quranTab: 0, stepDir: 'back', settingsOpen: false,
-    showTranslit: true, showTranslation: true, arabicSize: 28, readerContentState: 'ready'
+    showTranslit: true, showTranslation: true, arabicSize: 28, readerContentState: 'ready',
+    selectedSurahId: 1,
+    selectedSurahName: 'Al-Faatiha',
+    selectedSurahArabic: 'سُورَةُ الْفَاتِحَةِ',
+    selectedSurahMeta: '7 ayahs',
+    selectedJuzId: 1
   });
 
   renderVals() {
@@ -223,12 +276,20 @@ class Component extends DCLogic {
       showTranslation: s.showTranslation,
       arabicSize: s.arabicSize,
       readerContentState: s.readerContentState,
+      selectedSurahId: s.selectedSurahId,
+      selectedSurahName: s.selectedSurahName,
+      selectedSurahArabic: s.selectedSurahArabic,
+      selectedSurahMeta: s.selectedSurahMeta,
+      readerTitleTransitionName: s.origin === 'juz'
+        ? `quran-juz-${s.selectedJuzId}-surah-${s.selectedSurahId}`
+        : `quran-surah-${s.selectedSurahId}`,
       readerActive,
       setQuranTab: this.setQuranTab,
       goListingStage: this.goListingStage,
       onNavSelect: this.onNavSelect,
       openReaderSurah: this.openReaderSurah,
       openReaderJuz: this.openReaderJuz,
+      closeReader: this.closeReader,
       goHomeStage: this.goHomeStage,
       toggleSettings: this.toggleSettings,
       closeSettings: this.closeSettings,
