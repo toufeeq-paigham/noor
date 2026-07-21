@@ -281,6 +281,19 @@ This remains a redesign-preserve pass: the prayer-period artwork, emerald action
 - Scanner motion explains the active scan only; it is static under reduced motion. Registration paging uses the standard Noor duration and snaps when reduced.
 - The canonical flow is: no primary masjid → select → Personal Details → update profile → follow selections → refresh user → complete setup. With a primary masjid, selection follows immediately.
 
+### Supplied-capture keyboard and registration-alignment repair — 2026-07-21
+
+The Noor registration board already defines every wizard body at the top of the scrollable content region, directly below Back, progress, and the step label. The supplied iOS capture identified a Compose pager-default mismatch and a shared numeric-keyboard escape problem; it does not authorize a new registration layout.
+
+| Before | After | Why |
+| --- | --- | --- |
+| Compose vertically centers short Masjid registration pages inside each pager page | Explicitly align every pager page to the top, matching Noor and the phone/OTP reading order | The title, explanation, and first task should appear immediately after progress instead of floating in the lower half of the screen |
+| Numeric keyboards can cover the Zakaat step action or provide no iOS dismissal key | Keep wizard/navigation actions above the IME and expose Done for numeric fields | Progress must never depend on a keyboard layout that may omit Return or Done |
+| Focus can remain trapped until a field or action is found | Clear focus on Next/primary actions and when a tap lands on otherwise non-interactive screen space | Dismissal becomes predictable without stealing gestures from buttons, fields, sheets, maps, or scroll regions |
+| Multi-field manual registration has no explicit IME sequence | Use Next through name, address, and city; use Done on the final state field and the single-field contact/pincode pages | The keyboard communicates the next useful action and preserves field order |
+
+The action remains visually stable and uses existing Noor geometry. No route, validation rule, field order, business contract, palette, typography, or motion value changes.
+
 ## UX-06: Islamic content and tools
 
 ### Before / After / Why
