@@ -685,3 +685,15 @@ Reading this as a redesign-preserve pass for an occasional physical guidance too
 | Recovery screen | Explain a stable inability to start | No animation | Retry or Close acts immediately | Identical static presentation |
 
 The route, permission order, sensor calculations, haptic threshold, camera contract, and navigation destination remain unchanged. This pass completes previously claimed recovery behavior rather than adding a new product branch.
+
+## Canonical evidence capture mode - 2026-07-21
+
+This is parity tooling, not a product-state redesign. It applies the program's canonical 402 x 874 viewport to the unchanged live Noor component and is active only when the board URL contains `capture=1`.
+
+| Before | After | Why |
+| --- | --- | --- |
+| Noor's live device rendered at the board's 82% inspection scale | `?capture=1` resolves the live-device scale to 1 while ordinary boards retain 82% | A scaled board preview cannot serve as pixel-parity evidence |
+| Browser clipping around the fixed board could reposition the POC chrome into the captured rectangle | Capture mode places the live device at `(0,0)`, hides only POC chrome/restart controls, and occupies a 402 x 874 viewport | Every retained image now comes directly from the canonical device without rescaling or crop reconstruction |
+| Baseline evidence depended on an operator reproducing board zoom and crop offsets | The capture URL, theme, route hash, dimensions, and native JPEG manifest are recorded with the evidence | A later agent can reproduce and audit the reference instead of trusting an unexplained image |
+
+Capture mode does not change tokens, theme mappings, component hierarchy, motion, application state, or navigation behavior. It is excluded when `capture=1` is absent.

@@ -115,6 +115,22 @@ html.noor-canvas-mode .poc-frames {
   gap: 14px;
   z-index: 40;
 }
+.poc-live.is-capture {
+  top: 0;
+  right: auto;
+  left: 0;
+  width: 402px;
+  height: 874px;
+  justify-content: flex-start;
+  gap: 0;
+  z-index: 2147483647;
+}
+.poc-live.is-capture .poc-play,
+.poc-live.is-capture .poc-live-hint { display: none; }
+body:has(.poc-live.is-capture) { overflow: hidden; }
+body:has(.poc-live.is-capture) #noor-chrome,
+body:has(.poc-live.is-capture) #noor-nav,
+body:has(.poc-live.is-capture) #noor-nav-scrim { display: none !important; }
 
 /* Figma-style row label — one per flow row on a section board */
 .poc-row-label {
