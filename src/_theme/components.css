@@ -279,3 +279,8 @@
 /* Still loading placeholder: the geometry matches Compose shimmer while the
    storyboard remains motion-free for reduced-motion inspection. */
 .skeleton{display:inline-block;box-sizing:border-box;background:color-mix(in oklab,var(--color-info-faint) 24%,var(--color-surface-card))}
+
+/* Screen-level asynchronous feedback. Place directly above the related action;
+   the action keeps its normal label and geometry while disabled. */
+.inline-loading-status{display:flex;align-items:center;justify-content:center;gap:var(--size-md);font-family:var(--font-body);font-size:var(--body-s-size);line-height:var(--body-s-lh);color:var(--color-info-secondary)}
+.inline-loading-status .btn-spinner{flex-shrink:0}

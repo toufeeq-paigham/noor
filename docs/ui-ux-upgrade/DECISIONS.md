@@ -364,7 +364,7 @@ The final source certification is build- and test-backed. Pixel, dark-mode, dyna
 
 | Before | After | Why |
 | --- | --- | --- |
-| The Personal Details saving frame disabled the action but did not visibly distinguish work from a disabled button | The shared loading button now renders an inline progress indicator and the explicit label `Saving details...` while retaining its fixed bottom-bar geometry | Saving is asynchronous and trust-sensitive; the user needs immediate, persistent feedback without a layout jump |
+| The Personal Details saving frame placed progress inside the Complete Setup button | Place a shared `InlineLoadingStatus` in the screen directly above the fixed bottom bar; keep the button label and bounds unchanged while disabling repeated submission | Progress stays visible and consistent with phone/OTP without changing the navigation surface or making the primary action visually jump |
 | Filled action text used pale green-on-green semantic pairs with insufficient contrast | Both themes map `action-primary-inverse` to Noor Jet Black | The primary action now keeps Noor's emerald identity while meeting readable text/icon contrast |
 | Quran row metadata and revelation place used the faint informational color | Metadata now uses `info-secondary` in Noor and Compose | The supplied light and dark captures exposed low contrast in supporting Quran information |
 | The onboarded Profile capture had a primary masjid but no reusable path to the user's masjids | Compose adds the Noor `My Masjids` row only when a primary masjid exists; pending Profile remains unchanged | The row is part of Noor's onboarded Profile contract and must not appear during incomplete setup |
@@ -374,11 +374,11 @@ The final source certification is build- and test-backed. Pixel, dark-mode, dyna
 
 | Component | Purpose | Timing / behavior | Interruption | Reduced motion |
 | --- | --- | --- | --- | --- |
-| Loading button indicator | Confirm that profile persistence is active | Continuous indeterminate rotation using Noor's emphasized motion token; text changes immediately | Completion or failure removes it immediately and restores the action state | A static ring remains with `Saving details...`, so progress is still understandable without rotation |
+| Screen-level saving indicator | Confirm that profile persistence is active | Continuous indeterminate rotation beside `Saving details...`, positioned above the action | Completion or failure removes it immediately and restores the action state | A static ring remains with the same text, so progress is understandable without rotation |
 | Profile `My Masjids` row | Direct navigation feedback | Existing Noor row press feedback only; no decorative transition | A second action is blocked by normal navigation dispatch | Unchanged |
 | Quran metadata correction | Improve legibility | No animation | Not applicable | Not applicable |
 
-The saving-state browser audit confirmed `aria-busy="true"`, a visible `.btn-spinner`, disabled repeated submission, retained emerald background, and Jet Black content. The new supplied Compose screenshots remain baseline evidence because they predate these source repairs; fresh post-fix captures are still required before pixel-parity closure.
+The previous saving-state audit confirmed disabled repeated submission and stable bottom-bar geometry. The revised screen-level placement now requires a fresh Noor and Compose capture before pixel-parity closure.
 
 ## UX-01 / UX-03 token and metrics reduction — 2026-07-21
 

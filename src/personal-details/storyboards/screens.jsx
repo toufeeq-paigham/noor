@@ -60,11 +60,17 @@ function PersonalDetailsScreen({ name = '', onNameTap, gender = null, onSelectGe
 
       <AlmostThereAppBar onBack={onBack} />
 
+      {loading && (
+        <div className="inline-loading-status" role="status" aria-live="polite" style={{ position: 'absolute', left: 'var(--content-gutter)', right: 'var(--content-gutter)', bottom: 'calc(var(--control-h-lg) + var(--size-max) + var(--size-huge))' }}>
+          <span className="btn-spinner" aria-hidden="true"></span>
+          <span>Saving details…</span>
+        </div>
+      )}
+
       {/* Bottom bar — Complete Setup (CompleteSetupBottomBar) */}
       <div style={{ position: 'absolute', left: 0, right: 0, bottom: 0, padding: '12px 16px 28px', background: 'var(--color-surface-primary)', boxSizing: 'border-box' }}>
         <button className="btn btn-filled lg" disabled={loading} aria-busy={loading ? 'true' : 'false'} onClick={onCompleteSetup} style={{ width: '100%' }}>
-          {loading ? <span className="btn-spinner" aria-hidden="true"></span> : null}
-          {loading ? 'Saving details…' : 'Complete Setup'}
+          Complete Setup
         </button>
       </div>
 
