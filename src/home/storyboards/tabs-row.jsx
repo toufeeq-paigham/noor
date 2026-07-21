@@ -95,6 +95,23 @@ const PROFILE_EXTRA_FRAMES = [
       onPrivacy: () => {},
       onAbout: () => {}
     }
+  },
+  {
+    id: 'profile-admin',
+    name: 'Profile — Managed Masjid',
+    tab: 4,
+    component: 'ProfileScreen',
+    props: {
+      showManagedMasjid: true,
+      onMyMasjids: () => {},
+      onManageMasjid: () => {},
+      onRegister: () => {},
+      onInvite: () => {},
+      onApprove: () => {},
+      onTerms: () => {},
+      onPrivacy: () => {},
+      onAbout: () => {}
+    }
   }
 ];
 
@@ -239,11 +256,12 @@ function ProfileRow({ active = 0, onSelectFrame }) {
   return (
     <div>
       <div className="poc-row-label">
-        <span className="mi" data-i="person"></span> 06 · Profile Tab — User Settings · 2 states
+        <span className="mi" data-i="person"></span> 06 · Profile Tab — User Settings · 3 states
       </div>
       <div className="poc-board">
         {STORYBOARD_FRAMES.slice(7, 8).map((f, i) => renderFrame(f, 7 + i, active, onSelectFrame))}
-        {PROFILE_EXTRA_FRAMES.map((f, i) => renderFrame(f, 38 + i, active, onSelectFrame))}
+        {renderFrame(PROFILE_EXTRA_FRAMES[0], 38, active, onSelectFrame)}
+        {renderFrame(PROFILE_EXTRA_FRAMES[1], 40, active, onSelectFrame)}
       </div>
     </div>
   );

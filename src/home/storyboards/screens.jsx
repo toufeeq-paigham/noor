@@ -1262,13 +1262,18 @@ function SalaahScreen({
 }
 
 // 5. PROFILE SCREEN
+const PROFILE_ADMIN_TRANSITION_NAME = 'masjid-admin-masjid-e-bilal-title';
+
 function ProfileScreen({
   userName = "Toufeeq",
   phone = "+91 87928 13003",
   version = "1.0.0",
   masjidName = "Masjid E Bilal",
   showMyMasjids = true,
+  showManagedMasjid = false,
   onMyMasjids,             // tap the My Masjids row → open My Masjids sheet (masjid-register board)
+  onManageMasjid,
+  adminTransitionEnabled = false,
   onRegister,
   onInvite,
   onApprove,
@@ -1283,7 +1288,7 @@ function ProfileScreen({
   const renderRow = (r, last) => (
     <div key={r.label} onClick={r.onClick} className="prow" style={{ display: 'flex', alignItems: 'center', gap: 14, padding: 16, borderBottom: last ? 'none' : '1px solid var(--color-neutral-border)' }}>
       <span className="mi" style={{ fontSize: 22, color: r.destructive ? 'var(--color-status-error)' : 'var(--color-info-secondary)' }} data-i={r.icon}></span>
-      <span style={{ fontFamily: 'var(--font-body)', fontSize: 16, color: r.destructive ? 'var(--color-status-error)' : 'var(--color-info-primary)', flex: 1 }}>{r.label}</span>
+      <span style={{ fontFamily: 'var(--font-body)', fontSize: 16, color: r.destructive ? 'var(--color-status-error)' : 'var(--color-info-primary)', flex: 1, viewTransitionName: r.transitionName || 'none' }}>{r.label}</span>
       {r.value ? <span style={{ fontFamily: 'var(--font-body)', fontSize: 14, color: 'var(--color-info-secondary)' }}>{r.value}</span> : null}
       <span className="mi" style={{ fontSize: 20, color: r.destructive ? 'color-mix(in oklab, var(--color-status-error) 40%, transparent)' : 'var(--color-info-faint)' }} data-i="chevron_right"></span>
     </div>
@@ -1291,7 +1296,17 @@ function ProfileScreen({
 
   const cards = [
     showMyMasjids && onMyMasjids
-      ? [{ icon: 'mosque', label: 'My Masjids', value: masjidName, onClick: onMyMasjids }, { icon: 'add', label: 'Register a Masjid', onClick: onRegister }]
+      ? [
+          { icon: 'mosque', label: 'My Masjids', value: masjidName, onClick: onMyMasjids },
+          showManagedMasjid && onManageMasjid ? {
+            icon: 'account_balance',
+            label: masjidName,
+            value: 'Admin',
+            onClick: onManageMasjid,
+            transitionName: adminTransitionEnabled ? PROFILE_ADMIN_TRANSITION_NAME : 'none'
+          } : null,
+          { icon: 'add', label: 'Register a Masjid', onClick: onRegister }
+        ].filter(Boolean)
       : [{ icon: 'add', label: 'Register a Masjid', onClick: onRegister }],
     [
       { icon: 'groups_outlined', label: 'Invite your Friends', onClick: onInvite },

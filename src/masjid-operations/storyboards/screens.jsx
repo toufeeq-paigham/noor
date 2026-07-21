@@ -74,11 +74,13 @@ const titleFor = journey => ({
   salaah: 'Salaah Configuration',
 }[journey]);
 
-function OperationTopBar({ title }) {
+const PROFILE_ADMIN_TRANSITION_NAME = 'masjid-admin-masjid-e-bilal-title';
+
+function OperationTopBar({ title, transitionEnabled = false }) {
   return (
     <div className="op-topbar">
       <button className="ib md" aria-label="Back"><span className="mi" data-i="arrow_back"></span></button>
-      <div className="op-title">{title}</div>
+      <div className="op-title" style={{ viewTransitionName: transitionEnabled ? PROFILE_ADMIN_TRANSITION_NAME : 'none' }}>{title}</div>
       <div className="op-top-spacer"></div>
     </div>
   );
@@ -152,8 +154,10 @@ function OperationContent({ data }) {
   return null;
 }
 
-function OperationScreen({ data = OP_STATES[0] }) {
-  return <div className="op-screen"><OperationTopBar title={titleFor(data.journey)}/><OperationContent data={data}/></div>;
+function OperationScreen({ data = OP_STATES[0], adminTransitionEnabled = false }) {
+  const adminContent = data.journey === 'admin' && data.state === 'content';
+  const title = adminContent ? 'Masjid E Bilal' : titleFor(data.journey);
+  return <div className="op-screen"><OperationTopBar title={title} transitionEnabled={adminTransitionEnabled && adminContent}/><OperationContent data={data}/></div>;
 }
 
 function OperationsBoard({ active = 0, onSelectFrame }) {

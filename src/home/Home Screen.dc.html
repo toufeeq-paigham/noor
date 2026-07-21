@@ -29,6 +29,9 @@
     .pbtn{cursor:pointer;transition:filter .15s ease}
     .pbtn:active{filter:brightness(0.9)}
 
+    @view-transition{navigation:auto}
+    ::view-transition-group(masjid-admin-masjid-e-bilal-title){animation-duration:var(--motion-emphasized);animation-timing-function:var(--ease-out)}
+
     /* Qaum media is one image surface in two compositions. Component geometry lives here;
        colors, radii, control targets, spacing, and motion remain Noor tokens. */
     .qaum-post-media{display:block;width:100%;aspect-ratio:3/2;margin:0 0 var(--size-lg);padding:0;overflow:hidden;box-sizing:border-box;border:0;border-radius:var(--radius-2xl);background:var(--color-surface-secondary);cursor:pointer}
@@ -42,7 +45,7 @@
     .qaum-media-close:active{background:var(--color-action-primary-tint)}
     @keyframes qaum-media-fade{from{opacity:0}to{opacity:1}}
     ::view-transition-group(qaum-post-post1-media-0){animation-duration:var(--motion-emphasized);animation-timing-function:var(--ease-out)}
-    @media (prefers-reduced-motion:reduce){.qaum-media-overlay{animation:none}::view-transition-group(qaum-post-post1-media-0){animation-duration:0ms}}
+    @media (prefers-reduced-motion:reduce){.qaum-media-overlay{animation:none}::view-transition-group(qaum-post-post1-media-0),::view-transition-group(masjid-admin-masjid-e-bilal-title){animation-duration:0ms}}
   </style>
 </helmet>
 
@@ -224,8 +227,11 @@
                       user-name="{{ profileUserName }}"
                       phone="{{ profilePhone }}"
                       show-my-masjids="{{ profileHasMasjid }}"
+                      show-managed-masjid="{{ profileManagedMasjid }}"
                       masjid-name="{{ homeMasjidLabel }}"
                       on-my-masjids="{{ goMyMasjids }}"
+                      on-manage-masjid="{{ goMasjidAdmin }}"
+                      admin-transition-enabled="true"
                       logout-open="{{ profileLogoutOpen }}"
                       on-toggle-logout-sheet="{{ toggleProfileLogoutSheet }}"
                       on-confirm-logout="{{ resetToDefault }}"
@@ -370,7 +376,8 @@ class Component extends DCLogic {
     profileLogoutOpen: false,
     profileUserName: "Toufeeq",
     profilePhone: "+91 87928 13003",
-    profileHasMasjid: true
+    profileHasMasjid: true,
+    profileManagedMasjid: false
   };
 
   componentDidMount() {
@@ -407,6 +414,7 @@ class Component extends DCLogic {
       else if (hash === '#home-tracking-loading') this.syncLiveStateToFrame(37);
       else if (hash === '#profile-pending') this.syncLiveStateToFrame(38);
       else if (hash === '#qaum-media') this.syncLiveStateToFrame(39);
+      else if (hash === '#profile-admin') this.syncLiveStateToFrame(40);
     }
   }
 
@@ -464,7 +472,9 @@ class Component extends DCLogic {
       // 38 · Signed-in pending setup: never label this account as Guest
       { activeTab: 4, homeNoMasjid: true, profileUserName: 'Paigham User', profilePhone: '+91 81234 03269', profileHasMasjid: false },
       // 39 · Qaum media detail retains the feed behind a semantic overlay
-      { activeTab: 1, qaumMediaOpen: true, qaumAudioPlaying: false, qaumAudioProgress: 0, qaumDock: 'none' }
+      { activeTab: 1, qaumMediaOpen: true, qaumAudioPlaying: false, qaumAudioProgress: 0, qaumDock: 'none' },
+      // 40 · Active committee membership opens the matching admin console
+      { activeTab: 4, profileHasMasjid: true, profileManagedMasjid: true }
     ];
     clearInterval(this._audioTimer);
     this.setState({
@@ -487,6 +497,7 @@ class Component extends DCLogic {
       profileUserName: 'Toufeeq',
       profilePhone: '+91 87928 13003',
       profileHasMasjid: true,
+      profileManagedMasjid: false,
       salaahNudgeClosed: false,
       salaahLoginSheet: false,
       ...states[idx],
@@ -525,6 +536,7 @@ class Component extends DCLogic {
     if (tabIndex === 3 && s.homeNoMasjid) return s.masjidSheetOpen ? 28 : 23;
     if (tabIndex === 3 && s.homeNotifOff) return s.notifSheetOpen ? 27 : 26;
     if (tabIndex === 4 && !s.profileHasMasjid) return 38;
+    if (tabIndex === 4 && s.profileManagedMasjid) return 40;
     return tabIndex + 3;
   }
 
@@ -765,6 +777,10 @@ class Component extends DCLogic {
     window.location.href = '../masjid-register/Masjid Onboarding.dc.html#my-masjids-' + seg;
   };
 
+  goMasjidAdmin = () => {
+    window.location.href = '../masjid-operations/Masjid Operations.dc.html#admin';
+  };
+
   goSehri = () => {
     window.location.href = '../sehri/Sehri.dc.html#permission';
   };
@@ -846,6 +862,7 @@ class Component extends DCLogic {
       goSehri: this.goSehri,
       goMasjids: this.goMasjids,
       goMyMasjids: this.goMyMasjids,
+      goMasjidAdmin: this.goMasjidAdmin,
       goZakaat: this.goZakaat,
       goQibla: this.goQibla,
 
@@ -889,6 +906,7 @@ class Component extends DCLogic {
       profileUserName: s.profileUserName,
       profilePhone: s.profilePhone,
       profileHasMasjid: s.profileHasMasjid,
+      profileManagedMasjid: s.profileManagedMasjid,
       toggleProfileLogoutSheet: this.toggleProfileLogoutSheet,
 
       // Guest and Login Nudge state

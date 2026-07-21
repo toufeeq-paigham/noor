@@ -26,16 +26,21 @@
     .op-row{min-height:64px;display:flex;align-items:center;gap:var(--size-lg);border-bottom:1px solid var(--color-neutral-border);padding:var(--size-md) 0;box-sizing:border-box}.op-row-icon{font-size:var(--icon-md);color:var(--color-action-primary)}.op-row-icon.destructive{color:var(--color-status-error)}.op-row-copy{min-width:0;flex:1}.op-row-title{font-size:15px;font-weight:700}.op-row-sub{font-size:13px;color:var(--color-info-secondary);margin-top:4px}.op-chevron{color:var(--color-info-faint)}
     .op-search,.op-field{min-height:52px;padding:var(--size-lg);box-sizing:border-box;border-radius:var(--radius-lg);background:var(--color-input-background);color:var(--color-info-secondary);display:flex;align-items:center;gap:var(--size-md);border:1px solid var(--color-input-border)}.op-field{min-height:152px;align-items:flex-start}.op-field.invalid{border-color:var(--color-status-error)}.op-field-error{font-size:12px;color:var(--color-status-error)}.op-media-row,.op-actions{display:flex;gap:var(--size-md)}.op-media-row>* ,.op-actions>*{flex:1}.op-progress{height:4px;background:var(--color-surface-secondary);border-radius:var(--radius-circle);overflow:hidden}.op-progress span{display:block;width:64%;height:100%;background:var(--color-action-primary)}
     .op-dialog-scrim{position:absolute;inset:0;background:var(--color-surface-scrim);display:flex;align-items:center;justify-content:center;padding:var(--size-2xl);z-index:4}.op-dialog{background:var(--color-surface-primary);border-radius:var(--radius-2xl);padding:var(--size-2xl);display:flex;flex-direction:column;gap:var(--size-lg);width:100%;box-sizing:border-box}.op-destructive{background:var(--color-action-destructive)!important}.op-summary,.op-time{display:flex;justify-content:space-between;align-items:center;gap:var(--size-md);padding:var(--size-lg) 0;border-bottom:1px solid var(--color-neutral-border)}.op-time span:nth-child(2){margin-left:auto;color:var(--color-info-secondary)}
-    @media(prefers-reduced-motion:reduce){.op-loader{animation:none}}
+    @view-transition{navigation:auto}
+    ::view-transition-group(masjid-admin-masjid-e-bilal-title){animation-duration:var(--motion-emphasized);animation-timing-function:var(--ease-out)}
+    @media(prefers-reduced-motion:reduce){.op-loader{animation:none}::view-transition-group(masjid-admin-masjid-e-bilal-title){animation-duration:0ms}}
   </style>
 </helmet>
 <div style="display:none"><x-import component="OperationScreen" from="./storyboards/screens.jsx" hint-size="0,0"></x-import></div>
 <x-import component="BoardHeader" from="../_theme/board.jsx" title="Masjid Operations — Admin & Publishing" subtitle="Noor specification for the Compose-only administration journeys: permissions, content, empty, loading, destructive confirmation, failure, and success states." hint-size="1440px,92px"></x-import>
-<div class="poc-stage"><div class="poc-frames"><x-import component="OperationsBoard" from="./storyboards/screens.jsx" active="{{ active }}" on-select-frame="{{ selectFrame }}" hint-size="1600px,4200px"></x-import></div><x-import component="BoardLive" from="../_theme/board.jsx" restart="{{ restart }}" hint-size="400px,900px"><x-import component="IOSDevice" from="../ios-frame.jsx" hint-size="402px,874px"><div style="width:100%;height:100%;position:relative;overflow:hidden"><x-import component="OperationScreen" from="./storyboards/screens.jsx" data="{{ activeData }}" hint-size="100%,100%"></x-import></div></x-import></x-import></div>
+<div class="poc-stage"><div class="poc-frames"><x-import component="OperationsBoard" from="./storyboards/screens.jsx" active="{{ active }}" on-select-frame="{{ selectFrame }}" hint-size="1600px,4200px"></x-import></div><x-import component="BoardLive" from="../_theme/board.jsx" restart="{{ restart }}" hint-size="400px,900px"><x-import component="IOSDevice" from="../ios-frame.jsx" hint-size="402px,874px"><div style="width:100%;height:100%;position:relative;overflow:hidden"><x-import component="OperationScreen" from="./storyboards/screens.jsx" data="{{ activeData }}" admin-transition-enabled="true" hint-size="100%,100%"></x-import></div></x-import></x-import></div>
 </x-dc>
 <script type="text/x-dc" data-dc-script>
 class Component extends DCLogic {
   state = { active: 0 };
+  componentDidMount() {
+    if (window.location.hash === '#admin') this.setState({ active: 1 });
+  }
   selectFrame = index => this.setState({ active: index });
   restart = () => this.setState({ active: 0 });
   renderVals() {

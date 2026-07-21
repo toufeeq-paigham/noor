@@ -230,6 +230,35 @@ The Quran journey is a reading tool, not a decorative content page. Noor's Arabi
 
 Motion remains restrained: frequent tab changes use the shared quick token, loaders do not shift geometry, sheets use the emphasized token, and reduced motion snaps state while retaining feedback. Source behavior is complete; timing on physical permission prompts remains in the consolidated device pass.
 
+### Profile committee row to Admin Console continuity — 2026-07-21
+
+The Profile tab can contain active committee memberships in addition to the primary-masjid manager. Only the membership row and its matching console title represent the same stable domain object, so they form the approved route-level transition pair. `My Masjids`, invitations, and registration keep normal navigation because their targets change task and composition rather than expanding the same object.
+
+#### Before | After | Why
+
+| Before | After | Why |
+| --- | --- | --- |
+| Noor's Profile states omit the active committee-membership row already rendered by Compose | Add a deterministic managed-masjid Profile state with the existing row rhythm, icon, role value, and console action | The design specification must cover the role-backed entry point before motion is added |
+| The membership name disappears into a generic `Masjid Console` loading title | Carry the selected masjid name into the destination title using stable organisation identity | The user sees which console is opening even before repository data resolves |
+| Every Profile navigation candidate appears equally eligible for a morph | Limit shared bounds to active membership name -> matching Admin Console title | Motion should explain object continuity, not decorate unrelated task navigation |
+
+#### UX Pro Max checklist
+
+- The full 56px Profile row remains the action target; the shared title is presentation-only and does not split semantics.
+- Role value, membership filtering, Back, restricted access, loading, retry, and repository authorization remain unchanged.
+- Destination loading uses display-only route context, while loaded server data stays authoritative.
+- Long names use the existing row and app-bar constraints; dynamic-type, truncation, and predictive-Back evidence remain required.
+- Reduced motion preserves the immediate known title without positional travel.
+
+#### Motion and interaction specification
+
+| Interaction | Purpose | Timing / easing | Interruption | Reduced motion |
+| --- | --- | --- | --- | --- |
+| Active membership row -> Admin Console | Preserve the selected masjid identity across Navigation 3 | Noor emphasized spatial spring with non-spatial content fade | Predictive Back and a cancelled gesture return to the same row; a different membership receives a different key | Immediate title replacement |
+| My Masjids / Invitations / Register | Ordinary task navigation | Existing route transition only | Existing navigation dispatch | Existing reduced-motion behavior |
+
+No membership, role, repository, backend, route destination, analytics, or onboarding branch changes. The optional route name is display-only and never replaces the organisation ID.
+
 ## UX-03 five-tab visual parity pass — 2026-07-21
 
 ### Design read and dials
