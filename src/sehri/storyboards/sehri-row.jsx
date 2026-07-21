@@ -7,9 +7,12 @@
 const FRAMES = [
   { name: 'Home tab — Sehri card', isHome: true },
   { name: 'Location permission', permission: true, selectedIdx: 0 },
+  { name: 'Initial loading', loading: true, points: [] },
   { name: 'Map — nearby locations', selectedIdx: 0 },
   { name: 'Map — another location', selectedIdx: 1 },
   { name: 'List view', isList: true },
+  { name: 'No Sehri nearby', points: [] },
+  { name: 'Recoverable error', error: true, points: [] },
 ];
 
 function SehriRow({ active = -1, onSelectFrame }) {
@@ -37,7 +40,7 @@ function SehriRow({ active = -1, onSelectFrame }) {
           } else if (f.isList) {
             screenContent = SehriListScreen ? <SehriListScreen /> : null;
           } else {
-            screenContent = SehriMapScreen ? <SehriMapScreen selectedIdx={f.selectedIdx} permission={!!f.permission} /> : null;
+            screenContent = SehriMapScreen ? <SehriMapScreen selectedIdx={f.selectedIdx} permission={!!f.permission} points={f.points} loading={!!f.loading} error={!!f.error} /> : null;
           }
 
           return (

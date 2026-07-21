@@ -105,6 +105,42 @@
           </div>
         </sc-if>
 
+        <!-- ════ STAGE · INITIAL LOADING ════ -->
+        <sc-if value="{{ isLoadingStage }}">
+          <div class="{{ stepAnim }}" style="position:absolute;inset:0">
+            <x-import component="SehriMapScreen" from="./storyboards/screens.jsx"
+                      points="{{ emptyPoints }}"
+                      loading="{{ loadingOn }}"
+                      on-back="{{ goHomeStage }}"
+                      hint-size="100%,100%">
+            </x-import>
+          </div>
+        </sc-if>
+
+        <!-- ════ STAGE · EMPTY ════ -->
+        <sc-if value="{{ isEmptyStage }}">
+          <div class="{{ stepAnim }}" style="position:absolute;inset:0">
+            <x-import component="SehriMapScreen" from="./storyboards/screens.jsx"
+                      points="{{ emptyPoints }}"
+                      on-back="{{ goHomeStage }}"
+                      hint-size="100%,100%">
+            </x-import>
+          </div>
+        </sc-if>
+
+        <!-- ════ STAGE · ERROR / RETRY ════ -->
+        <sc-if value="{{ isErrorStage }}">
+          <div class="{{ stepAnim }}" style="position:absolute;inset:0">
+            <x-import component="SehriMapScreen" from="./storyboards/screens.jsx"
+                      points="{{ emptyPoints }}"
+                      error="{{ errorOn }}"
+                      on-retry="{{ retryLoad }}"
+                      on-back="{{ goHomeStage }}"
+                      hint-size="100%,100%">
+            </x-import>
+          </div>
+        </sc-if>
+
         <!-- ════ STAGE · LIST ════ -->
         <sc-if value="{{ isListStage }}">
           <div class="{{ stepAnim }}" style="position:absolute;inset:0">
@@ -127,7 +163,10 @@ class Component extends DCLogic {
   state = {
     stage: (location.hash === '#map' ? 'map'
           : location.hash === '#list' ? 'list'
-          : location.hash === '#permission' ? 'permission' : 'home'),  // 'home' | 'permission' | 'map' | 'list'
+          : location.hash === '#loading' ? 'loading'
+          : location.hash === '#empty' ? 'empty'
+          : location.hash === '#error' ? 'error'
+          : location.hash === '#permission' ? 'permission' : 'home'),
     stepDir: 'fwd',
     selectedIdx: 0,
   };
@@ -142,6 +181,7 @@ class Component extends DCLogic {
   goHomeStage = () => this.setState({ stage: 'home', stepDir: 'back' });
   onOpenList = () => this.setState({ stage: 'list', stepDir: 'fwd' });
   onOpenMap = () => this.setState({ stage: 'map', stepDir: 'back' });
+  retryLoad = () => this.setState({ stage: 'map', stepDir: 'fwd', selectedIdx: 0 });
 
   goHijri = () => { window.location.href = '../hijri/Hijri.dc.html#calendar'; };
   goDua = () => { window.location.href = '../dua-dikhr/Dua & Dikhr.dc.html#categories'; };
@@ -150,9 +190,12 @@ class Component extends DCLogic {
   selectFrame = (i) => {
     if (i === 0) return this.setState({ stage: 'home', stepDir: 'back' });
     if (i === 1) return this.setState({ stage: 'permission', stepDir: 'fwd', selectedIdx: 0 });
-    if (i === 2) return this.setState({ stage: 'map', stepDir: 'fwd', selectedIdx: 0 });
-    if (i === 3) return this.setState({ stage: 'map', stepDir: 'fwd', selectedIdx: 1 });
-    if (i === 4) return this.setState({ stage: 'list', stepDir: 'fwd' });
+    if (i === 2) return this.setState({ stage: 'loading', stepDir: 'fwd' });
+    if (i === 3) return this.setState({ stage: 'map', stepDir: 'fwd', selectedIdx: 0 });
+    if (i === 4) return this.setState({ stage: 'map', stepDir: 'fwd', selectedIdx: 1 });
+    if (i === 5) return this.setState({ stage: 'list', stepDir: 'fwd' });
+    if (i === 6) return this.setState({ stage: 'empty', stepDir: 'fwd' });
+    if (i === 7) return this.setState({ stage: 'error', stepDir: 'fwd' });
   };
 
   restart = () => this.setState({ stage: 'home', stepDir: 'back', selectedIdx: 0 });
@@ -163,23 +206,35 @@ class Component extends DCLogic {
     const isPermission = s.stage === 'permission';
     const isMap = s.stage === 'map';
     const isList = s.stage === 'list';
+    const isLoading = s.stage === 'loading';
+    const isEmpty = s.stage === 'empty';
+    const isError = s.stage === 'error';
 
-    // Ring — matches sehri-row.jsx FRAMES (0 home · 1 permission · 2 map[0] · 3 map[1] · 4 list).
+    // Ring — matches sehri-row.jsx FRAMES.
     let sehriActive = -1;
     if (isHome) sehriActive = 0;
     else if (isPermission) sehriActive = 1;
-    else if (isMap) sehriActive = s.selectedIdx === 0 ? 2 : 3;
-    else if (isList) sehriActive = 4;
+    else if (isLoading) sehriActive = 2;
+    else if (isMap) sehriActive = s.selectedIdx === 0 ? 3 : 4;
+    else if (isList) sehriActive = 5;
+    else if (isEmpty) sehriActive = 6;
+    else if (isError) sehriActive = 7;
 
     return {
       isHomeStage: isHome,
       isPermissionStage: isPermission,
       isMapStage: isMap,
       isListStage: isList,
+      isLoadingStage: isLoading,
+      isEmptyStage: isEmpty,
+      isErrorStage: isError,
       stepAnim: s.stepDir === 'back' ? 'step-back' : 'step-fwd',
       sehriActive,
       selectedIdx: s.selectedIdx,
       permOn: true,
+      loadingOn: true,
+      errorOn: true,
+      emptyPoints: [],
 
       selectPoint: this.selectPoint,
       selectFrame: this.selectFrame,
@@ -188,6 +243,7 @@ class Component extends DCLogic {
       goHomeStage: this.goHomeStage,
       onOpenList: this.onOpenList,
       onOpenMap: this.onOpenMap,
+      retryLoad: this.retryLoad,
       goHijri: this.goHijri,
       goDua: this.goDua,
       restart: this.restart,

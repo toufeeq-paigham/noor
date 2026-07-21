@@ -14,9 +14,6 @@ const SEHRI = [
   { name: 'Sehri Seva Point', org: 'Nagawara Main Road', areas: 'Nagawara, Arabic College, HBR Layout', eligibility: 'Open to all', time: '3:10 AM – 4:40 AM', tag: { label: '₹30', kind: 'paid' }, phone: '+91 98455 61208', pos: { left: '32%', top: '30%' } },
 ];
 
-const NEARBY_COUNT = 10;    // headline count, shared by both views
-const SHEET_H = 300;        // px — reserved height of the bottom sheet
-
 // Circular glass control that floats over the map imagery.
 // Literal translucent white + white glyph are whitelisted (on-color over imagery).
 function GlassBtn({ icon, onClick, ariaLabel }) {
@@ -107,7 +104,7 @@ function MapCanvas({ points, selectedIdx, onSelectPoint }) {
 function StatusTab({ tag }) {
   const free = tag.kind === 'free';
   return (
-    <div style={{ position: 'absolute', top: 0, right: 0, background: free ? '#00C950' : '#C9AD7B', color: free ? '#fff' : '#1A2030', fontFamily: 'var(--font-body)', fontSize: 13, fontWeight: 800, padding: '6px 14px', borderRadius: '0 18px 0 14px' }}>{tag.label}</div>
+    <div style={{ position: 'absolute', top: 0, right: 0, background: free ? 'var(--color-action-primary)' : 'var(--color-neutral-brand)', color: 'var(--color-action-primary-inverse)', fontFamily: 'var(--font-body)', fontSize: 13, fontWeight: 800, padding: '6px 14px', borderRadius: '0 var(--radius-card) 0 14px' }}>{tag.label}</div>
   );
 }
 
@@ -128,13 +125,13 @@ function DetailRow({ icon, children, clamp }) {
 // A single Sehri distribution card — DS .surf card + .ib components.
 function SehriCard({ p, onCall, onNavigate }) {
   return (
-    <div className="surf" style={{ borderRadius: 20, position: 'relative', overflow: 'hidden' }}>
+    <div className="surf" style={{ borderRadius: 'var(--radius-card)', position: 'relative', overflow: 'hidden' }}>
       <StatusTab tag={p.tag} />
 
       {/* Heading */}
-      <div style={{ paddingRight: 64 }}>
-        <div style={{ fontFamily: 'var(--font-title)', fontSize: 22, color: 'var(--color-info-primary)', letterSpacing: '-0.3px' }}>{p.name}</div>
-        <div style={{ fontFamily: 'var(--font-body)', fontSize: 13, color: 'var(--color-info-secondary)', marginTop: 3 }}>{p.org}</div>
+      <div style={{ paddingRight: 84, minWidth: 0 }}>
+        <div style={{ fontFamily: 'var(--font-title)', fontSize: 22, color: 'var(--color-info-primary)', letterSpacing: '-0.3px', whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }}>{p.name}</div>
+        <div style={{ fontFamily: 'var(--font-body)', fontSize: 13, color: 'var(--color-info-secondary)', marginTop: 3, whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }}>{p.org}</div>
       </div>
 
       <div style={{ height: 1, background: 'var(--color-neutral-border)', margin: '13px 0' }} />
@@ -142,7 +139,7 @@ function SehriCard({ p, onCall, onNavigate }) {
       {/* Details */}
       <div style={{ display: 'flex', flexDirection: 'column', gap: 10, paddingRight: 96 }}>
         <DetailRow icon="location_on" clamp>{p.areas}</DetailRow>
-        <DetailRow icon="group">{p.eligibility}</DetailRow>
+        <DetailRow icon="delivery_dining">{p.eligibility}</DetailRow>
         <DetailRow icon="schedule">{p.time}</DetailRow>
       </div>
 
@@ -150,6 +147,29 @@ function SehriCard({ p, onCall, onNavigate }) {
       <div style={{ position: 'absolute', right: 16, bottom: 16, display: 'flex', gap: 10 }}>
         <button className="ib ib-tonal md" onClick={onCall} aria-label="Call"><span className="mi" data-i="call"></span></button>
         <button className="ib ib-tonal primary md" onClick={onNavigate} aria-label="Directions"><span className="mi" data-i="near_me"></span></button>
+      </div>
+    </div>
+  );
+}
+
+function SehriStatusCard({ kind, onRetry }) {
+  const isLoading = kind === 'loading';
+  const isError = kind === 'error';
+  const icon = isLoading ? 'hourglass_top' : isError ? 'error' : 'delivery_dining';
+  const title = isLoading ? 'Searching this area' : isError ? 'Nearby results unavailable' : 'Try another area';
+  const description = isLoading
+    ? 'Looking for Sehri providers near the map centre.'
+    : isError
+      ? 'Check your connection and try again. Your map position is unchanged.'
+      : 'Move the map or use your location to search somewhere nearby.';
+
+  return (
+    <div className="surf" style={{ borderRadius: 'var(--radius-card)', overflow: 'hidden' }}>
+      <div className="empty-state" role={isError ? 'alert' : 'status'} aria-live="polite" style={{ minHeight: 'var(--illustration-large)', padding: 'var(--size-xl) var(--content-gutter)' }}>
+        <div className="empty-state-icon"><span className="mi" data-i={icon}></span></div>
+        <div className="empty-state-title">{title}</div>
+        <div className="empty-state-description">{description}</div>
+        {isError && <button className="btn btn-filled empty-state-action" onClick={onRetry}>Try again</button>}
       </div>
     </div>
   );
@@ -208,8 +228,19 @@ function SehriMapScreen({
   onAllowOnce,
   onAllowWhileUsing,
   onDeny,
+  loading = false,
+  error = false,
+  onRetry,
 }) {
   const list = points || SEHRI;
+  const statusKind = error ? 'error' : loading && list.length === 0 ? 'loading' : !loading && list.length === 0 ? 'empty' : null;
+  const sheetTitle = error
+    ? 'Couldn’t load nearby Sehri'
+    : loading && list.length === 0
+      ? 'Finding nearby Sehri'
+      : list.length === 0
+        ? 'No Sehri nearby'
+        : `${list.length} Sehri Locations Nearby`;
   return (
     <div style={{ position: 'relative', width: '100%', height: '100%', overflow: 'hidden', background: '#1C2535' }}>
       <MapCanvas points={list} selectedIdx={selectedIdx} onSelectPoint={onSelectPoint} />
@@ -223,32 +254,37 @@ function SehriMapScreen({
         </div>
 
         <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', gap: 12, marginBottom: 14 }}>
-          <span style={{ fontFamily: 'var(--font-title)', fontSize: 22, color: 'var(--color-info-primary)', letterSpacing: '-0.3px' }}>{NEARBY_COUNT} Sehri Locations Nearby</span>
-          <button className="ib ib-tonal primary md" onClick={onOpenList} aria-label="List view">
-            <span className="mi" data-i="format_list_bulleted"></span>
-          </button>
+          <span style={{ fontFamily: 'var(--font-title)', fontSize: 22, color: 'var(--color-info-primary)', letterSpacing: '-0.3px', minWidth: 0 }}>{sheetTitle}</span>
+          {list.length > 0 && (
+            <button className="ib ib-tonal primary md" onClick={onOpenList} aria-label="List view">
+              <span className="mi" data-i="format_list_bulleted"></span>
+            </button>
+          )}
         </div>
 
-        {/* Carousel — transform track, dots + pins drive the index */}
-        <div style={{ overflow: 'hidden' }}>
-          <div style={{ display: 'flex', transform: `translateX(-${selectedIdx * 100}%)`, transition: 'transform 320ms cubic-bezier(.2,.8,.2,1)' }}>
-            {list.map((p, i) => (
-              <div key={i} style={{ flex: '0 0 100%', minWidth: 0, boxSizing: 'border-box' }}>
-                <SehriCard p={p} onCall={() => {}} onNavigate={() => {}} />
-              </div>
-            ))}
+        {statusKind ? (
+          <SehriStatusCard kind={statusKind} onRetry={onRetry} />
+        ) : (
+          <div style={{ overflow: 'hidden' }}>
+            <div style={{ display: 'flex', transform: `translateX(-${selectedIdx * 100}%)`, transition: 'transform var(--motion-standard) var(--ease-out)' }}>
+              {list.map((p, i) => (
+                <div key={i} style={{ flex: '0 0 100%', minWidth: 0, boxSizing: 'border-box' }}>
+                  <SehriCard p={p} onCall={() => {}} onNavigate={() => {}} />
+                </div>
+              ))}
+            </div>
           </div>
-        </div>
+        )}
 
         {/* Dots */}
-        <div style={{ display: 'flex', justifyContent: 'center', gap: 5, marginTop: 14 }}>
+        {!statusKind && <div style={{ display: 'flex', justifyContent: 'center', gap: 5, marginTop: 14 }}>
           {list.map((p, i) => {
             const active = i === selectedIdx;
             return (
-              <div key={i} onClick={() => onSelectPoint && onSelectPoint(i)} style={{ height: 4, width: active ? 20 : 6, borderRadius: 2, background: active ? 'var(--color-info-primary)' : 'var(--color-info-faint)', transition: 'width 250ms', cursor: 'pointer' }} />
+              <div key={i} onClick={() => onSelectPoint && onSelectPoint(i)} style={{ height: 4, width: active ? 20 : 6, borderRadius: 2, background: active ? 'var(--color-info-primary)' : 'var(--color-info-faint)', transition: 'width var(--motion-standard) var(--ease-out)', cursor: 'pointer' }} />
             );
           })}
-        </div>
+        </div>}
       </div>
 
       {/* Location permission (system alert over the map) */}
@@ -284,7 +320,7 @@ function SehriListScreen({
       <div style={{ position: 'absolute', inset: 0, zIndex: 2, overflowY: 'auto', WebkitOverflowScrolling: 'touch', paddingTop: 140, paddingBottom: 28, boxSizing: 'border-box' }}>
         {/* Headline — sits over the visible map strip */}
         <div style={{ display: 'flex', alignItems: 'flex-start', justifyContent: 'space-between', gap: 12, padding: '0 16px', marginBottom: 16 }}>
-          <div style={{ fontFamily: 'var(--font-title)', fontSize: 26, color: '#fff', letterSpacing: '-0.3px', textShadow: '0 1px 6px rgba(0,0,0,0.55)', minWidth: 0 }}>{NEARBY_COUNT} Sehri Locations Nearby</div>
+          <div style={{ fontFamily: 'var(--font-title)', fontSize: 26, color: '#fff', letterSpacing: '-0.3px', textShadow: '0 1px 6px rgba(0,0,0,0.55)', minWidth: 0 }}>{list.length} Sehri Locations Nearby</div>
           <button
             className="ib md"
             onClick={onOpenMap}

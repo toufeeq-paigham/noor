@@ -297,6 +297,41 @@ This remains a redesign-preserve pass: the prayer-period artwork, emerald action
 
 All six journeys preserve their current brand illustration, information architecture, calculation logic, repositories, and route contracts. Physical compass, camera, location, audio, and adaptive-layout evidence is intentionally grouped into the final device pass.
 
+### Sehri supplied-capture repair pass — 2026-07-21
+
+The supplied light/dark captures confirm that the map-first structure, native map treatment, serif headings, emerald actions, and compact provider metadata remain the right design direction. The repair keeps that identity while removing unstable text motion and making loading, empty, and failure states part of the same spatial journey. The working dials remain `DESIGN_VARIANCE: 4`, `MOTION_INTENSITY: 3`, and `VISUAL_DENSITY: 5`.
+
+#### Before | After | Why
+
+| Before | After | Why |
+| --- | --- | --- |
+| Provider names and addresses use continuous marquees, so captures can show missing beginnings or endings | Use stable single-line text with a reserved ribbon column and deterministic ellipsis | Users should be able to scan provider identity immediately; frequent decorative motion must not be required to read content |
+| The service ribbon can cover long titles and addresses | Reserve component-owned width for the ribbon in both title rows | Long real-world provider data must never sit behind another control |
+| The peek sheet is sized from an oversized content estimate | Size populated, empty, and error detents independently through component metrics | The map remains useful while one complete card and its actions stay visible |
+| Empty copy sits directly on a translucent map sheet and map labels show through it | Place the empty explanation on an opaque Noor surface with a Sehri-specific delivery icon | Empty guidance must remain legible regardless of the native map underneath |
+| A provider-data failure replaces the entire map with a blank error page | Keep the last map position and show a stable retry card in the persistent sheet | The map did not fail; preserving spatial context makes retry and recovery less jarring |
+| Nearby searches append old areas indefinitely | Replace the result set for the current map area, retain selection only when it still exists, and clear markers on a true empty result | The visible count, markers, list, and empty state must all describe the same search area |
+| The POC hard-codes ten results while its fixture and Compose response contain different counts | Derive the heading from the visible collection | Trust-sensitive location results must never claim providers that are not present |
+
+#### Screen-state and UX checklist
+
+- Eight Noor states cover Home entry, system permission, initial loading, two map selections, expanded list, successful empty, and recoverable error.
+- Back, map/list toggle, location, call, directions, retry, card selection, and pager dots retain full touch targets and named semantics.
+- Initial loading reserves the resolved sheet geometry; refresh with existing content keeps the last useful map position.
+- Empty and error are distinct: empty means a successful search with zero providers, while error retains an explicit retry.
+- Light/dark surfaces, semantic foregrounds, native safe areas, and the persistent sheet remain token-driven. The native map renderer is an approved platform visual exception.
+
+#### Motion and interaction specification
+
+| Interaction | Purpose | Motion | Interruption | Reduced motion |
+| --- | --- | --- | --- | --- |
+| Card/page selection | Spatial continuity between provider card and marker | Existing Noor standard pager transition | A new marker or page retargets immediately | Page snaps to the selected provider |
+| Map/list change | Explain a change in information density | Short fade owned by the sheet | Dragging or another toggle takes over immediately | Content switches without a fade |
+| Sheet detent | Preserve map-to-list spatial relationship | Existing interruptible Noor persistent-sheet motion | Dragging remains direct and reversible | Platform sheet resolves without decorative travel |
+| Provider text | None; movement is unnecessary | No marquee or automatic text animation | Not applicable | Stable ellipsis is identical |
+
+No new palette, typography family, route, repository contract, or feature-owned motion value is introduced.
+
 ## UX-07: Masjid operations
 
 ### Noor specification
