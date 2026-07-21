@@ -303,6 +303,7 @@ function QRScreen({
   masjid = MASJIDS[0],
   following = false,
   guest = false, // guest CTA reads "Sign in to Follow" (MasjidQrSearchScreen.kt)
+  permissionDenied = false,
   onToggleFollow,
   onBack,
   onScan,      // tap the frame to simulate a detection
@@ -323,7 +324,17 @@ function QRScreen({
         <div className="ab-title" style={{ color: '#fff', fontSize: 23, textShadow: '0 1px 6px rgba(0,0,0,0.5)' }}>Scan QR at your Masjid</div>
       </div>
 
+      {permissionDenied ? (
+        <div style={{ position: 'absolute', inset: 0, zIndex: 10, display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', padding: 24, textAlign: 'center' }}>
+          <span className="mi" data-i="photo_camera" style={{ fontSize: 48, color: 'var(--color-neutral-white)' }}></span>
+          <div style={{ fontFamily: 'var(--font-title)', fontSize: 24, color: 'var(--color-neutral-white)', marginTop: 12 }}>Camera access is off</div>
+          <div style={{ fontFamily: 'var(--font-body)', fontSize: 14, color: 'var(--color-neutral-white)', marginTop: 8, maxWidth: 300 }}>Allow camera access in Settings to scan your masjid’s Paigham QR code.</div>
+          <button className="btn btn-filled lg" style={{ marginTop: 16 }}>Open Settings</button>
+        </div>
+      ) : null}
+
       {/* Scan frame */}
+      {!permissionDenied && (
       <div style={{ position: 'absolute', left: '50%', top: scanning ? '46%' : '34%', transform: 'translate(-50%,-50%)', width: FRAME, height: FRAME, transition: 'top 320ms cubic-bezier(.2,.8,.2,1)' }} onClick={scanning ? onScan : undefined}>
         {/* window fill */}
         <div style={{ position: 'absolute', inset: 0, borderRadius: 22, background: scanning ? 'rgba(255,255,255,0.06)' : 'transparent', display: 'flex', alignItems: 'center', justifyContent: 'center', overflow: 'hidden' }}>
@@ -337,16 +348,17 @@ function QRScreen({
         {/* scanning line */}
         {scanning && <div className="qr-scanline" style={{ position: 'absolute', left: 10, right: 10, height: 2, background: 'var(--color-action-primary)', boxShadow: '0 0 12px 2px color-mix(in oklab, var(--color-action-primary) 70%, transparent)' }} />}
       </div>
+      )}
 
       {/* Hint (scanning) */}
-      {scanning && (
+      {!permissionDenied && scanning && (
         <div style={{ position: 'absolute', left: 0, right: 0, top: '46%', marginTop: FRAME / 2 + 34, textAlign: 'center', padding: '0 32px' }}>
           <span style={{ fontFamily: 'var(--font-body)', fontSize: 15, fontWeight: 600, color: 'rgba(255,255,255,0.82)', textShadow: '0 1px 5px rgba(0,0,0,0.5)' }}>Align QR code within the frame</span>
         </div>
       )}
 
       {/* Result sheet */}
-      {!scanning && (
+      {!permissionDenied && !scanning && (
         <div style={{ position: 'absolute', left: 0, right: 0, bottom: 0, zIndex: 20, background: 'color-mix(in oklab, var(--color-surface-primary) 94%, transparent)', backdropFilter: 'blur(24px) saturate(180%)', WebkitBackdropFilter: 'blur(24px) saturate(180%)', borderTop: '1px solid var(--color-neutral-border)', borderRadius: '24px 24px 0 0', padding: '10px 16px 22px', boxSizing: 'border-box' }}>
           <div style={{ display: 'flex', justifyContent: 'center', marginBottom: 14 }}>
             <div style={{ width: 38, height: 4, borderRadius: 2, background: 'var(--color-info-faint)' }} />

@@ -472,7 +472,7 @@ function OutcomeScreen({ data = {} }) {
   if (d.variant === 'submitting') {
     return (
       <div style={{ width: '100%', height: '100%', background: 'var(--color-surface-primary)', display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', gap: 18 }}>
-        <div style={{ width: 52, height: 52, borderRadius: '50%', border: '4px solid var(--color-surface-secondary)', borderTopColor: 'var(--color-action-primary)', animation: 'spin 900ms linear infinite' }}></div>
+        <div className="registration-spinner" style={{ width: 52, height: 52, borderRadius: '50%', border: '4px solid var(--color-surface-secondary)', borderTopColor: 'var(--color-action-primary)', animation: 'spin var(--motion-celebration) linear infinite' }}></div>
         <div style={{ fontFamily: FONT_B, fontSize: 15, fontWeight: 600, color: 'var(--color-info-primary)' }}>Submitting for verification…</div>
       </div>
     );
@@ -499,6 +499,7 @@ function OutcomeScreen({ data = {} }) {
           <div style={{ display: 'flex', gap: 10 }}><span className="mi" style={{ fontSize: 18, color: 'var(--color-info-secondary)' }} data-i="verified"></span><span style={{ fontFamily: FONT_B, fontSize: 13.5, color: 'var(--color-info-secondary)' }}>Masjid approved and published</span></div>
         </div>
         <button className="btn btn-filled lg" onClick={d.onDone} style={{ width: '100%', marginBottom: 14 }}>Done — take me home</button>
+        <button className="btn btn-tonal lg" onClick={d.onUpdate} style={{ width: '100%', marginBottom: 14 }}>Update details</button>
         <div onClick={d.onTogglePreview} style={{ cursor: 'pointer' }}><span style={{ fontFamily: FONT_B, fontSize: 12, color: 'var(--color-info-secondary)', borderBottom: '1px solid var(--color-info-secondary)' }}>Preview: rejected state</span></div>
       </div>
     );

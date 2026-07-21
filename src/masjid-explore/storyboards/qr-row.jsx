@@ -6,6 +6,7 @@
 const FRAMES = [
   { name: 'Scanning', scanning: true },
   { name: 'Masjid found', scanning: false },
+  { name: 'Camera permission denied', scanning: false, permissionDenied: true },
 ];
 
 function QrRow({ active = -1, onSelectFrame }) {
@@ -25,7 +26,7 @@ function QrRow({ active = -1, onSelectFrame }) {
                 <div className="noor-frame-inner">
                   <div className="noor-screen">
                     <div className="noor-island"></div>
-                    {QRScreen && <QRScreen scanning={f.scanning} />}
+                    {QRScreen && <QRScreen scanning={f.scanning} permissionDenied={!!f.permissionDenied} />}
                     <div className="noor-home"></div>
                   </div>
                 </div>

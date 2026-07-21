@@ -23,8 +23,11 @@
     @keyframes pulse { 0%,100% { opacity: 1 } 50% { opacity: .4 } }
     @keyframes stepin { from{transform:translateX(28px);opacity:0} to{transform:translateX(0);opacity:1} }
     @keyframes stepback { from{transform:translateX(-28px);opacity:0} to{transform:translateX(0);opacity:1} }
-    .step-fwd { animation:stepin .35s cubic-bezier(.2,.8,.2,1) }
-    .step-back { animation:stepback .35s cubic-bezier(.2,.8,.2,1) }
+    .step-fwd { animation:stepin var(--motion-emphasized) var(--ease-out) }
+    .step-back { animation:stepback var(--motion-standard) var(--ease-out) }
+    @media (prefers-reduced-motion: reduce) {
+      .step-fwd,.step-back,.registration-spinner { animation:none !important }
+    }
   </style>
 </helmet>
 
@@ -228,6 +231,7 @@ class Component extends DCLogic {
   doneHome = () => { window.location.href = '../home/Home Screen.dc.html'; };
   togglePreview = () => this.setState(s => ({ step: s.step === 'pending' ? 'rejected' : 'pending' }));
   reapply = () => this.goTo('contact');
+  updateDetails = () => this.goTo('register');
   contactSupport = () => {};
 
   ctaFor(step) {
@@ -334,7 +338,7 @@ class Component extends DCLogic {
 
       outcomeData: {
         variant: s.step, contactName: s.contactName, masjidSummaryName, role: s.role, submittedDate: '5 Jul 2026',
-        onDone: this.doneHome, onReapply: this.reapply, onContactSupport: this.contactSupport, onTogglePreview: this.togglePreview
+        onDone: this.doneHome, onUpdate: this.updateDetails, onReapply: this.reapply, onContactSupport: this.contactSupport, onTogglePreview: this.togglePreview
       }
     };
   }

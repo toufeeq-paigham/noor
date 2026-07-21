@@ -96,6 +96,7 @@
               <div class="{{ stepAnim }}" style="position:absolute;inset:0">
                 <x-import component="QRScreen" from="./storyboards/screens.jsx"
                           scanning="{{ qrScanning }}"
+                          permission-denied="{{ qrPermissionDenied }}"
                           following="{{ qrFollowing }}"
                           guest="{{ guest }}"
                           on-toggle-follow="{{ toggleQrFollow }}"
@@ -158,13 +159,14 @@ class Component extends DCLogic {
     // Signed in but profile not completed: a follow attempt routes to personal-details first.
     needsDetails: location.hash.includes('needs-details'),
     loginSheetOpen: false, // guest follow attempt → "Sign in to follow masjids" LoginSheet
-    qrScanning: true,      // qr stage sub-state: true = scanning, false = result sheet
+    qrScanning: location.hash !== '#qr-permission',
+    qrPermissionDenied: location.hash === '#qr-permission',
     pincodeQuery: '',      // pincode stage: typed digits (max 6)
     pincodeFocused: false, // pincode stage: keypad up + suggestions visible
   };
 
   componentDidMount() {
-    if (this.state.stage === 'qr') this.startQrScan();
+    if (this.state.stage === 'qr' && !this.state.qrPermissionDenied) this.startQrScan();
   }
 
   componentWillUnmount() { clearTimeout(this._qrTimer); }
@@ -192,7 +194,7 @@ class Component extends DCLogic {
   onOpenMap = () => { clearTimeout(this._qrTimer); this.setState({ stage: 'map', stepDir: 'back' }); };
 
   // QR scan: enter scanning, auto-detect after a beat (or on tapping the frame).
-  onQr = () => { this.setState({ stage: 'qr', stepDir: 'fwd', qrScanning: true }); this.startQrScan(); };
+  onQr = () => { this.setState({ stage: 'qr', stepDir: 'fwd', qrScanning: true, qrPermissionDenied: false }); this.startQrScan(); };
   startQrScan = () => {
     clearTimeout(this._qrTimer);
     this._qrTimer = setTimeout(() => this.setState(s => (s.stage === 'qr' ? { qrScanning: false } : {})), 1800);
@@ -212,7 +214,7 @@ class Component extends DCLogic {
 
   goBack = () => { window.location.href = '../home/Home Screen.dc.html'; };
 
-  restart = () => { clearTimeout(this._qrTimer); this.setState({ stage: 'map', stepDir: 'back', selectedIdx: 0, followed: {}, loginSheetOpen: false, qrScanning: true, pincodeQuery: '', pincodeFocused: false }); };
+  restart = () => { clearTimeout(this._qrTimer); this.setState({ stage: 'map', stepDir: 'back', selectedIdx: 0, followed: {}, loginSheetOpen: false, qrScanning: true, qrPermissionDenied: false, pincodeQuery: '', pincodeFocused: false }); };
 
   // Tap a storyboard frame → start the journey from that state, per view.
   selectMapFrame = (i) => {
@@ -233,8 +235,8 @@ class Component extends DCLogic {
   };
   selectQrFrame = (i) => {
     clearTimeout(this._qrTimer);
-    // 0 scanning · 1 masjid found
-    this.setState({ stage: 'qr', stepDir: 'none', guest: false, loginSheetOpen: false, qrScanning: i === 0 });
+    // 0 scanning · 1 masjid found · 2 camera permission denied
+    this.setState({ stage: 'qr', stepDir: 'none', guest: false, loginSheetOpen: false, qrScanning: i === 0, qrPermissionDenied: i === 2 });
     if (i === 0) this.startQrScan();
   };
   selectPincodeFrame = (i) => {
@@ -262,8 +264,8 @@ class Component extends DCLogic {
     // List ring — matches list-row.jsx FRAMES (0 · nearby list, 1 · following a masjid).
     const listActive = isList ? (anyFollowed ? 1 : 0) : -1;
 
-    // QR ring — matches qr-row.jsx FRAMES (0 · scanning, 1 · masjid found).
-    const qrActive = isQr ? (s.qrScanning ? 0 : 1) : -1;
+    // QR ring — matches qr-row.jsx FRAMES (0 · scanning, 1 · masjid found, 2 · permission denied).
+    const qrActive = isQr ? (s.qrPermissionDenied ? 2 : (s.qrScanning ? 0 : 1)) : -1;
 
     // Pincode ring — matches pincode-row.jsx FRAMES (0 · empty, 1 · typing, 2 · results).
     let pincodeActive = -1;
@@ -302,6 +304,7 @@ class Component extends DCLogic {
       goBack: this.goBack,
 
       qrScanning: s.qrScanning,
+      qrPermissionDenied: s.qrPermissionDenied,
       qrFollowing: !!s.followed[this.QR_RESULT_IDX],
       qrDetect: this.qrDetect,
       toggleQrFollow: this.toggleQrFollow,
