@@ -436,6 +436,37 @@ Qaum remains a moderately dense community feed. Author identity, message copy, r
 
 No feed, paging-source, reaction, share, audio, repository, backend, analytics, or top-level navigation contract changes.
 
+### Masjid map/list card continuity — 2026-07-21
+
+The discovery journey has no separate masjid-detail route, so this pass does not invent one. The supported source/target pair is the selected masjid card in the map carousel and the same card in the expanded nearby list. Map pins remain inside the native map-rendering boundary and are intentionally excluded from shared-element matching. The working dials remain `DESIGN_VARIANCE: 4`, `MOTION_INTENSITY: 3`, and `VISUAL_DENSITY: 5`.
+
+#### Before | After | Why
+
+| Before | After | Why |
+| --- | --- | --- |
+| Map and list replace the full discovery presentation with unrelated slide motion | Keep the selected masjid card as the stable container while the surrounding density changes | The same domain object should explain the user's spatial move between overview and scan-friendly list |
+| List view forgets which carousel card anchored the transition | Carry the selected masjid identity into the list and match only that card | A stable identity prevents a visually plausible but logically wrong card match |
+| Map markers appear eligible for the same morph | Explicitly limit matching to cards inside the shared UI tree | Platform map content crosses an unsupported rendering boundary and must not be faked as a Compose shared element |
+| Storyboard frames and the live device could own duplicate transition names | Enable transition ownership only in the live device | Every active transition name must resolve to one source and one target |
+
+#### UX Pro Max checklist
+
+- Map/List remains a 48px named control and the selected card's Follow and Directions actions remain independently reachable.
+- Followed state, current selection, guest gating, pending Personal Details routing, and onboarding completion logic are unchanged.
+- The transition uses semantic Noor surfaces and the existing card hierarchy in both themes; no new palette or raw feature value is introduced.
+- Static storyboard frames never participate in the live transition, avoiding duplicate element identity.
+- Reduced motion replaces the view immediately while preserving the selected card and followed state.
+
+#### Motion and interaction specification
+
+| Interaction | Purpose | Timing / easing | Interruption | Reduced motion |
+| --- | --- | --- | --- | --- |
+| Map carousel to nearby list | Explain the information-density change through one stable masjid | Noor emphasized duration with ease-out bounds continuity | A new Map/List action retargets from the current selected masjid | Immediate replacement with selection preserved |
+| Nearby list to map carousel | Return to the selected geographic context | Same reversible container continuity | Follow, Directions, Back, or another toggle takes precedence | Immediate replacement |
+| Marker selection | Existing map-to-carousel synchronization | Existing pager/marker feedback only; no shared morph across the native map boundary | A new marker retargets the carousel | Existing snap behavior |
+
+No route, repository, backend, analytics, follow-persistence, Personal Details handoff, or onboarding branch changes.
+
 ### Sehri supplied-capture repair pass — 2026-07-21
 
 The supplied light/dark captures confirm that the map-first structure, native map treatment, serif headings, emerald actions, and compact provider metadata remain the right design direction. The repair keeps that identity while removing unstable text motion and making loading, empty, and failure states part of the same spatial journey. The working dials remain `DESIGN_VARIANCE: 4`, `MOTION_INTENSITY: 3`, and `VISUAL_DENSITY: 5`.

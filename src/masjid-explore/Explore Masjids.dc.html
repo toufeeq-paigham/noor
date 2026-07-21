@@ -28,6 +28,8 @@
     .pc-cursor { display:inline-block; width:2px; height:20px; background:var(--color-action-primary); border-radius:1px; margin-left:1px; vertical-align:middle; animation:blink 1s step-end infinite }
     .kp-key:active { filter:brightness(0.92) }
     [data-theme="dark"] .kp-key:active { filter:brightness(1.25) }
+    ::view-transition-group(*) { animation-duration:var(--motion-emphasized);animation-timing-function:var(--ease-out) }
+    @media (prefers-reduced-motion:reduce){.step-fwd,.step-back,.qr-scanline,.pc-cursor{animation:none}::view-transition-group(*){animation-duration:0ms}}
   </style>
 </helmet>
 
@@ -70,6 +72,7 @@
                           on-qr="{{ onQr }}"
                           on-open-list="{{ onOpenList }}"
                           on-recenter="{{ recenter }}"
+                          card-transition-enabled="true"
                           hint-size="100%,100%">
                 </x-import>
               </div>
@@ -81,11 +84,13 @@
                 <x-import component="ExploreListScreen" from="./storyboards/screens.jsx"
                           followed="{{ followed }}"
                           guest="{{ guest }}"
+                          selected-idx="{{ selectedIdx }}"
                           on-toggle-follow="{{ toggleFollow }}"
                           on-back="{{ goBack }}"
                           on-search="{{ onSearch }}"
                           on-qr="{{ onQr }}"
                           on-open-map="{{ onOpenMap }}"
+                          card-transition-enabled="true"
                           hint-size="100%,100%">
                 </x-import>
               </div>
@@ -189,9 +194,15 @@ class Component extends DCLogic {
 
   recenter = () => this.setState({ selectedIdx: 0 });
 
-  // Map ⇄ list toggle.
-  onOpenList = () => this.setState({ stage: 'list', stepDir: 'fwd' });
-  onOpenMap = () => { clearTimeout(this._qrTimer); this.setState({ stage: 'map', stepDir: 'back' }); };
+  // Map ⇄ list keeps the selected masjid card as the stable spatial anchor.
+  transitionExplorerView = (stage) => {
+    const update = () => this.setState({ stage, stepDir: 'none' });
+    const reduced = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    if (!reduced && document.startViewTransition) document.startViewTransition(update);
+    else update();
+  };
+  onOpenList = () => this.transitionExplorerView('list');
+  onOpenMap = () => { clearTimeout(this._qrTimer); this.transitionExplorerView('map'); };
 
   // QR scan: enter scanning, auto-detect after a beat (or on tapping the frame).
   onQr = () => { this.setState({ stage: 'qr', stepDir: 'fwd', qrScanning: true, qrPermissionDenied: false }); this.startQrScan(); };
@@ -276,7 +287,7 @@ class Component extends DCLogic {
       isListStage: isList,
       isQrStage: isQr,
       isPincodeStage: isPincode,
-      stepAnim: s.stepDir === 'back' ? 'step-back' : 'step-fwd',
+      stepAnim: s.stepDir === 'none' ? '' : (s.stepDir === 'back' ? 'step-back' : 'step-fwd'),
       mapActive,
       listActive,
       qrActive,

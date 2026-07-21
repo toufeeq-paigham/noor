@@ -16,6 +16,8 @@ const MASJIDS = [
 
 const SHEET_H = 262; // px — reserved height for the bottom sheet (used to offset the map FAB)
 const NEARBY_COUNT = MASJIDS.length * 8 + 4; // headline count, shared by both views
+const masjidCardTransitionName = (masjid) =>
+  `masjid-card-${masjid.pin}-${masjid.name.toLowerCase().replace(/[^a-z0-9]+/g, '-')}`;
 
 // Circular glass control that floats over the map imagery.
 // Literal translucent white + white glyph are whitelisted (on-color over imagery).
@@ -108,9 +110,9 @@ function MapCanvas({ masjids, selectedIdx, onSelectMasjid }) {
 
 // A single masjid result card — DS .surf card + .btn / .ib components.
 // `showFollow` hides the inline Follow chip (QR result uses a full-width CTA instead).
-function MasjidCard({ m, following, onToggleFollow, onNavigate, showFollow = true }) {
+function MasjidCard({ m, following, onToggleFollow, onNavigate, showFollow = true, transitionName = 'none' }) {
   return (
-    <div className="surf" style={{ borderRadius: 18 }}>
+    <div className="surf" style={{ borderRadius: 18, viewTransitionName: transitionName }}>
       <div style={{ display: 'flex', alignItems: 'center', gap: 12, marginBottom: 12 }}>
         <div style={{ width: 42, height: 42, borderRadius: '50%', background: 'var(--color-action-primary)', display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0, fontFamily: 'var(--font-body)', fontSize: 17, fontWeight: 800, color: 'var(--color-action-primary-inverse)' }}>{m.letter}</div>
         <div style={{ flex: 1, minWidth: 0 }}>
@@ -150,6 +152,7 @@ function ExploreMapScreen({
   onQr,
   onOpenList,
   onRecenter,
+  cardTransitionEnabled = false,
 }) {
   const list = masjids || MASJIDS;
   return (
@@ -192,6 +195,7 @@ function ExploreMapScreen({
                   following={!!followed[i]}
                   onToggleFollow={() => onToggleFollow && onToggleFollow(i)}
                   onNavigate={() => {}}
+                  transitionName={cardTransitionEnabled && i === selectedIdx ? masjidCardTransitionName(m) : 'none'}
                 />
               </div>
             ))}
@@ -222,6 +226,8 @@ function ExploreListScreen({
   onSearch,
   onQr,
   onOpenMap,
+  selectedIdx = 0,
+  cardTransitionEnabled = false,
 }) {
   const list = masjids || MASJIDS;
   return (
@@ -265,6 +271,7 @@ function ExploreListScreen({
               following={!!followed[i]}
               onToggleFollow={() => onToggleFollow && onToggleFollow(i)}
               onNavigate={() => {}}
+              transitionName={cardTransitionEnabled && i === selectedIdx ? masjidCardTransitionName(m) : 'none'}
             />
           ))}
         </div>
