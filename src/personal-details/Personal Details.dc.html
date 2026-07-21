@@ -20,17 +20,17 @@
     ::-webkit-scrollbar{display:none}*{-ms-overflow-style:none;scrollbar-width:none}
     @keyframes stepin { from{transform:translateX(28px);opacity:0} to{transform:translateX(0);opacity:1} }
     @keyframes stepback { from{transform:translateX(-28px);opacity:0} to{transform:translateX(0);opacity:1} }
-    @keyframes confettidrift { 0%{transform:translateY(-8px) rotate(0deg)} 50%{transform:translateY(6px) rotate(180deg)} 100%{transform:translateY(-8px) rotate(360deg)} }
+    @keyframes confettidrift { 0%{transform:translateY(-8px) rotate(0deg);opacity:0} 12%{opacity:1} 100%{transform:translateY(18px) rotate(320deg);opacity:0} }
     @keyframes ptshake { 0%,100%{transform:translateX(0)} 20%{transform:translateX(-8px)} 40%{transform:translateX(8px)} 60%{transform:translateX(-5px)} 80%{transform:translateX(5px)} }
-    .step-fwd { animation:stepin .35s cubic-bezier(.2,.8,.2,1) }
-    .step-back { animation:stepback .35s cubic-bezier(.2,.8,.2,1) }
+    .step-fwd { animation:stepin var(--motion-emphasized) var(--ease-out) }
+    .step-back { animation:stepback var(--motion-standard) var(--ease-out) }
   </style>
 </helmet>
 
 <!-- ── Page header (shared board chrome) ── -->
 <x-import component="BoardHeader" from="../_theme/board.jsx"
           title="Personal Details — Complete your profile"
-          subtitle="Shown when a signed-in member follows a masjid before completing their profile. Fill the details, and on Complete Setup we save them and follow the masjid that sent you here."
+          subtitle="Shown after a signed-in member chooses masjids during setup. Complete Setup saves the profile, refreshes signed-in data, and continues to Home."
           hint-size="1440px,92px"></x-import>
 
 <!-- ── Board ── -->
@@ -54,10 +54,14 @@
                           gender="{{ gender }}"
                           name-error="{{ nameError }}"
                           gender-error="{{ genderError }}"
+                          loading="{{ loading }}"
+                          service-error="{{ serviceError }}"
                           shake-key="{{ shakeKey }}"
                           on-name-tap="{{ fillName }}"
                           on-select-gender="{{ selectGender }}"
                           on-complete-setup="{{ completeSetup }}"
+                          on-retry="{{ retrySetup }}"
+                          on-dismiss-error="{{ dismissError }}"
                           on-back="{{ goBack }}"
                           hint-size="100%,100%">
                 </x-import>
@@ -69,6 +73,7 @@
               <div class="{{ stepAnim }}" style="position:absolute;inset:0">
                 <x-import component="SuccessScreen" from="./storyboards/screens.jsx"
                           on-back="{{ goBack }}"
+                          on-continue="{{ continueHome }}"
                           hint-size="100%,100%">
                 </x-import>
               </div>
@@ -82,11 +87,6 @@
 </x-dc>
 <script type="text/x-dc" data-dc-script>
 class Component extends DCLogic {
-  // Masjid carried in from the explore flow (#follow-<idx>); null when opened standalone.
-  pendingMasjid = (location.hash.match(/#follow-(\d+)/) || [])[1] != null
-    ? parseInt((location.hash.match(/#follow-(\d+)/) || [])[1], 10)
-    : null;
-
   state = {
     stage: 'details',   // 'details' | 'success'
     stepDir: 'fwd',
@@ -94,18 +94,26 @@ class Component extends DCLogic {
     gender: null,       // 'male' | 'female' | null
     nameError: false,
     genderError: false,
+    loading: false,
+    serviceError: false,
     shakeKey: 0,        // bump to replay the gender-row shake on repeat invalid submits
   };
 
   componentWillUnmount() { clearTimeout(this._returnTimer); }
+
+  motionMillis = (token, fallback) => {
+    const value = getComputedStyle(document.documentElement).getPropertyValue(token).trim();
+    if (value.endsWith('ms')) return Number.parseFloat(value) || fallback;
+    if (value.endsWith('s')) return (Number.parseFloat(value) || fallback / 1000) * 1000;
+    return fallback;
+  };
 
   // Interacting clears that field's error (matches the app clearing on change).
   fillName = () => this.setState(s => ({ name: s.name ? '' : 'Toufeeq Ahamed', nameError: false }));
   selectGender = (g) => this.setState({ gender: g, genderError: false });
 
   // Complete Setup validates first (PersonalDetailsViewModel): name ≥ 3 chars + a gender.
-  // On failure, show error states (gender row shakes) and stay. On success → post → celebrate,
-  // and when a masjid is pending, return to the explore flow which follows it.
+  // On failure, show recovery in place. On success, celebrate and continue to Home.
   completeSetup = () => {
     const s = this.state;
     const nameBad = s.name.trim().length < 3;
@@ -114,48 +122,50 @@ class Component extends DCLogic {
       this.setState(st => ({ nameError: nameBad, genderError: genderBad, shakeKey: st.shakeKey + 1 }));
       return;
     }
-    this.setState({ stage: 'success', stepDir: 'fwd', nameError: false, genderError: false });
-    if (this.pendingMasjid != null) {
-      clearTimeout(this._returnTimer);
-      this._returnTimer = setTimeout(() => {
-        window.location.href = '../masjid-explore/Explore Masjids.dc.html#followed-' + this.pendingMasjid;
-      }, 1900);
-    }
+    this.setState({ loading: true, serviceError: false, nameError: false, genderError: false });
+    clearTimeout(this._returnTimer);
+    this._returnTimer = setTimeout(() => {
+      this.setState({ stage: 'success', stepDir: 'fwd', loading: false });
+      this._returnTimer = setTimeout(this.continueHome, this.motionMillis('--motion-success-hold', 2500));
+    }, this.motionMillis('--motion-emphasized', 280));
   };
+
+  retrySetup = () => {
+    this.setState({ serviceError: false, loading: false });
+    setTimeout(this.completeSetup, 0);
+  };
+  dismissError = () => this.setState({ serviceError: false, loading: false });
+  continueHome = () => { window.location.href = '../home/Home Screen.dc.html'; };
 
   goBack = () => {
     if (this.state.stage === 'success') { this.setState({ stage: 'details', stepDir: 'back' }); return; }
-    // From the form: return to where we came from.
-    if (this.pendingMasjid != null) {
-      window.location.href = '../masjid-explore/Explore Masjids.dc.html#map';
-    } else {
-      window.location.href = '../home/Home Screen.dc.html';
-    }
+    window.location.href = '../masjid-explore/Explore Masjids.dc.html#map';
   };
 
   restart = () => {
     clearTimeout(this._returnTimer);
-    this.setState({ stage: 'details', stepDir: 'back', name: '', gender: null, nameError: false, genderError: false, shakeKey: 0 });
+    this.setState({ stage: 'details', stepDir: 'back', name: '', gender: null, nameError: false, genderError: false, loading: false, serviceError: false, shakeKey: 0 });
   };
 
-  // Tap a storyboard frame → jump the live device to that state (0 empty · 1 error · 2 filled · 3 success).
+  // Tap a storyboard frame to jump the live device to that state.
   selectFrame = (i) => {
     clearTimeout(this._returnTimer);
     const states = [
       { stage: 'details', name: '', gender: null, nameError: false, genderError: false },
       { stage: 'details', name: '', gender: null, nameError: true, genderError: true },
       { stage: 'details', name: 'Toufeeq Ahamed', gender: 'male', nameError: false, genderError: false },
+      { stage: 'details', name: 'Toufeeq Ahamed', gender: 'male', nameError: false, genderError: false, loading: true },
+      { stage: 'details', name: 'Toufeeq Ahamed', gender: 'male', nameError: false, genderError: false, serviceError: true },
       { stage: 'success', name: 'Toufeeq Ahamed', gender: 'male', nameError: false, genderError: false }
     ];
-    this.setState(s => ({ ...states[i], stepDir: 'none', shakeKey: s.shakeKey + 1 }));
+    this.setState(s => ({ loading: false, serviceError: false, ...states[i], stepDir: 'none', shakeKey: s.shakeKey + 1 }));
   };
 
   renderVals() {
     const s = this.state;
     const isDetails = s.stage === 'details';
     const isSuccess = s.stage === 'success';
-    // Ring → details-row frames: 0 empty · 1 validation error · 2 filled · 3 success.
-    const detailsActive = isSuccess ? 3 : ((s.nameError || s.genderError) ? 1 : ((s.name && s.gender) ? 2 : 0));
+    const detailsActive = isSuccess ? 5 : (s.serviceError ? 4 : (s.loading ? 3 : ((s.nameError || s.genderError) ? 1 : ((s.name && s.gender) ? 2 : 0))));
 
     return {
       isDetailsStage: isDetails,
@@ -169,10 +179,15 @@ class Component extends DCLogic {
       gender: s.gender,
       nameError: s.nameError,
       genderError: s.genderError,
+      loading: s.loading,
+      serviceError: s.serviceError,
       shakeKey: s.shakeKey,
       fillName: this.fillName,
       selectGender: this.selectGender,
       completeSetup: this.completeSetup,
+      retrySetup: this.retrySetup,
+      dismissError: this.dismissError,
+      continueHome: this.continueHome,
       goBack: this.goBack,
     };
   }

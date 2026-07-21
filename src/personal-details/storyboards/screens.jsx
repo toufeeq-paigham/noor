@@ -13,25 +13,20 @@ function AlmostThereAppBar({ onBack }) {
   );
 }
 
-// One gender card (Brother/Sister) — radio + emoji + label (GenderSelector.kt).
-function GenderCard({ emoji, label, selected, onClick }) {
+// One accessible Noor choice card (Brother/Sister).
+function GenderCard({ illustration, label, selected, onClick, disabled = false }) {
   return (
-    <div onClick={onClick} style={{
-      flex: 1, position: 'relative', cursor: 'pointer', borderRadius: 20, padding: '22px 16px 18px', textAlign: 'center', boxSizing: 'border-box',
-      border: selected ? '2px solid var(--color-action-primary)' : '1px solid var(--color-action-border)',
-      background: selected ? 'color-mix(in oklab, var(--color-action-primary) 10%, transparent)' : 'transparent',
-      transition: 'background 200ms, border-color 200ms'
-    }}>
-      <span className="mi" data-i={selected ? 'radio_button_checked' : 'radio_button_unchecked'} style={{ position: 'absolute', top: 10, right: 10, fontSize: 20, color: selected ? 'var(--color-action-primary)' : 'var(--color-action-border)' }}></span>
-      <div style={{ fontSize: 40, lineHeight: 1 }}>{emoji}</div>
-      <div style={{ marginTop: 8, fontFamily: 'var(--font-body)', fontSize: 16, fontWeight: 600, color: selected ? 'var(--color-action-primary)' : 'var(--color-info-secondary)' }}>{label}</div>
-    </div>
+    <button className={`choice-card ${selected ? 'selected' : ''}`} role="radio" aria-checked={selected ? 'true' : 'false'} disabled={disabled} onClick={onClick}>
+      <span className="choice-card-art" aria-hidden="true">{illustration}</span>
+      <span className="choice-card-label">{label}</span>
+      <span className="mi" aria-hidden="true" data-i={selected ? 'radio_button_checked' : 'radio_button_unchecked'}></span>
+    </button>
   );
 }
 
 // PERSONAL DETAILS — profile completion form (PersonalDetailsScreen.kt). Complete Setup validates:
 // name < 3 chars → nameError, no gender → genderError (the gender row shakes via `shakeKey`).
-function PersonalDetailsScreen({ name = '', onNameTap, gender = null, onSelectGender, onCompleteSetup, onBack, nameError = false, genderError = false, shakeKey = 0 }) {
+function PersonalDetailsScreen({ name = '', onNameTap, gender = null, onSelectGender, onCompleteSetup, onBack, onRetry, onDismissError, nameError = false, genderError = false, loading = false, serviceError = false, shakeKey = 0 }) {
   const APPBAR_H = 96;
   return (
     <div style={{ width: '100%', height: '100%', position: 'relative', overflow: 'hidden', background: 'var(--color-surface-primary)' }}>
@@ -54,9 +49,9 @@ function PersonalDetailsScreen({ name = '', onNameTap, gender = null, onSelectGe
           {/* Gender */}
           <div style={{ marginTop: 16 }}>
             <div style={{ fontFamily: 'var(--font-body)', fontSize: 15, color: 'var(--color-input-text)', marginBottom: 12 }}>How should we address you?</div>
-            <div key={shakeKey} style={{ display: 'flex', gap: 12, animation: genderError ? 'ptshake .45s ease' : 'none' }}>
-              <GenderCard emoji="👳🏻" label="Brother" selected={gender === 'male'} onClick={() => onSelectGender && onSelectGender('male')} />
-              <GenderCard emoji="🧕🏻" label="Sister" selected={gender === 'female'} onClick={() => onSelectGender && onSelectGender('female')} />
+            <div key={shakeKey} className="choice-group" role="radiogroup" aria-label="How should we address you?" style={{ animation: genderError ? 'ptshake var(--motion-emphasized) var(--ease-out)' : 'none' }}>
+              <GenderCard illustration="👳🏻" label="Brother" selected={gender === 'male'} disabled={loading} onClick={() => onSelectGender && onSelectGender('male')} />
+              <GenderCard illustration="🧕🏻" label="Sister" selected={gender === 'female'} disabled={loading} onClick={() => onSelectGender && onSelectGender('female')} />
             </div>
             <div className="helper err" style={{ minHeight: 20, marginTop: 8 }}>{genderError ? 'Please select your gender' : ''}</div>
           </div>
@@ -67,15 +62,39 @@ function PersonalDetailsScreen({ name = '', onNameTap, gender = null, onSelectGe
 
       {/* Bottom bar — Complete Setup (CompleteSetupBottomBar) */}
       <div style={{ position: 'absolute', left: 0, right: 0, bottom: 0, padding: '12px 16px 28px', background: 'var(--color-surface-primary)', boxSizing: 'border-box' }}>
-        <button className="btn btn-filled lg" onClick={onCompleteSetup} style={{ width: '100%' }}>Complete Setup</button>
+        <button className="btn btn-filled lg" disabled={loading} aria-busy={loading ? 'true' : 'false'} onClick={onCompleteSetup} style={{ width: '100%' }}>
+          {loading ? <span className="btn-spinner" aria-hidden="true"></span> : null}
+          {loading ? 'Saving details…' : 'Complete Setup'}
+        </button>
       </div>
+
+      {serviceError && (
+        <div className="dlg-scrim sheet" role="alertdialog" aria-modal="true" aria-labelledby="details-error-title">
+          <div className="dlg">
+            <div className="dlg-handle"></div>
+            <div id="details-error-title" className="dlg-title">We could not save your details</div>
+            <div className="dlg-desc">Check your connection and try again. Your entries are still here.</div>
+            <div className="dlg-actions">
+              <button className="btn btn-tonal" onClick={onDismissError}>Dismiss</button>
+              <button className="btn btn-filled" onClick={onRetry}>Retry</button>
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   );
 }
 
-// Deterministic confetti (decorative — literal data colors are DS-whitelisted). Pieces drift +
-// rotate in place via the `confettidrift` keyframe declared in the board helmet.
-const CONFETTI_COLORS = ['#00C950', '#009689', '#4A8AFF', '#E7000B', '#FE9A00', '#AD46FF'];
+// Deterministic confetti using semantic theme colors. Pieces drift and rotate in place via
+// the `confettidrift` keyframe declared in the board helmet.
+const CONFETTI_COLORS = [
+  'var(--color-action-primary)',
+  'var(--color-action-secondary)',
+  'var(--color-status-error)',
+  'var(--color-status-warning)',
+  'var(--color-status-warning-alt)',
+  'var(--color-neutral-brand)'
+];
 function Confetti({ count = 46 }) {
   const rnd = (i, s) => { const x = Math.sin((i + 1) * s) * 10000; return x - Math.floor(x); };
   const pieces = Array.from({ length: count }, (_, i) => ({
@@ -91,16 +110,15 @@ function Confetti({ count = 46 }) {
     <div style={{ position: 'absolute', inset: 0, overflow: 'hidden', pointerEvents: 'none' }}>
       {pieces.map((p, i) => (
         <div key={i} style={{ position: 'absolute', left: p.left + '%', top: p.top + '%' }}>
-          <div style={{ width: p.w, height: p.h, background: p.color, borderRadius: 1, transform: `rotate(${p.rot}deg)`, animation: `confettidrift 3.2s ${p.delay}s ease-in-out infinite` }} />
+          <div style={{ width: p.w, height: p.h, background: p.color, borderRadius: 'var(--radius-xs)', transform: `rotate(${p.rot}deg)`, animation: `confettidrift var(--motion-celebration) ${p.delay}s var(--ease-out) both` }} />
         </div>
       ))}
     </div>
   );
 }
 
-// SUCCESS — celebration after Complete Setup (SuccessCelebrationOverlay.kt). In the masjid-follow
-// flow the board auto-returns from here and follows the pending masjid.
-function SuccessScreen({ onBack }) {
+// SUCCESS - celebration after Complete Setup. Continue returns to Home.
+function SuccessScreen({ onBack, onContinue }) {
   const features = [
     'View Jamaah timings for your masjids',
     'Stay updated with Qaum announcements',
@@ -122,6 +140,7 @@ function SuccessScreen({ onBack }) {
             </div>
           ))}
         </div>
+        <button className="btn btn-filled lg" onClick={onContinue} style={{ width: '100%', marginTop: 24 }}>Continue to Home</button>
       </div>
     </div>
   );
