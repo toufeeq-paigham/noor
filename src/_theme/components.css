@@ -185,6 +185,24 @@
 .qrow-ar{font-family:var(--font-title);font-size:17px;color:var(--color-info-primary);direction:rtl;line-height:1.2}
 .qrow-place{font-family:var(--font-body);font-size:11px;color:var(--color-info-secondary);margin-top:3px}
 
+/* ── List item ──
+   General settings/metadata action row. Unlike ListRow, this component has no
+   numbered badge or Quran-specific trailing calligraphy contract. */
+.list-item{width:100%;min-height:calc(var(--control-h-lg) + var(--size-md));display:flex;align-items:center;gap:var(--size-xl);box-sizing:border-box;border:0;padding:var(--size-lg) var(--size-2xl);background:transparent;color:var(--color-info-primary);font:inherit;text-align:left}
+.list-item-leading{width:calc(var(--icon-md) - var(--size-xs));height:calc(var(--icon-md) - var(--size-xs));display:inline-flex;align-items:center;justify-content:center;flex-shrink:0;font-size:calc(var(--icon-md) - var(--size-xs));color:var(--color-info-secondary)}
+.list-item-copy{min-width:0;display:flex;flex:1;flex-direction:column}
+.list-item-title{overflow:hidden;font-family:var(--font-body);font-size:var(--body-m-size);line-height:var(--body-m-lh);font-weight:500;color:currentColor;text-overflow:ellipsis;white-space:nowrap}
+.list-item-subtitle,.list-item-value{font-family:var(--font-body);font-size:var(--body-s-size);line-height:var(--body-s-lh);color:var(--color-info-secondary)}
+.list-item-subtitle{display:-webkit-box;overflow:hidden;margin-top:var(--size-xs);-webkit-line-clamp:2;-webkit-box-orient:vertical}
+.list-item-value{max-width:42%;overflow:hidden;flex-shrink:0;text-overflow:ellipsis;white-space:nowrap}
+.list-item-chevron{flex-shrink:0;font-size:calc(var(--icon-md) - var(--size-sm));color:var(--color-info-faint)}
+.list-item.actionable{cursor:pointer;transition:background var(--motion-quick) var(--ease-out),transform var(--motion-press) var(--ease-out)}
+.list-item.actionable:active{background:color-mix(in oklab,var(--color-action-primary) 6%,transparent);transform:scale(.99)}
+.list-item.destructive{color:var(--color-status-error)}
+.list-item.destructive .list-item-leading{color:var(--color-status-error)}
+.list-item.destructive .list-item-chevron{color:color-mix(in oklab,var(--color-status-error) 40%,transparent)}
+@media(prefers-reduced-motion:reduce){.list-item.actionable{transition:none}.list-item.actionable:active{transform:none}}
+
 /* ── Dropdown menu ── */
 .dd-menu{position:absolute;left:0;right:0;top:calc(100% + 6px);z-index:5;background:color-mix(in oklab,var(--color-surface-card) 96%,transparent);backdrop-filter:blur(20px) saturate(180%);-webkit-backdrop-filter:blur(20px) saturate(180%);border-radius:16px;box-shadow:0 1px 2px rgba(9,9,11,.04),0 16px 32px -14px rgba(9,9,11,.2);padding:6px}
 .dd-item{display:flex;align-items:center;gap:10px;padding:10px 12px;border-radius:12px;font-family:var(--font-body);font-size:15px;color:var(--color-info-primary);cursor:pointer}

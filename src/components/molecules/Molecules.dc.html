@@ -31,6 +31,7 @@
 </helmet>
 
 <x-import component="SearchBar" from="../../_theme/components.jsx" hint-size="0,0"></x-import>
+<x-import component="ListItem" from="../../_theme/components.jsx" hint-size="0,0"></x-import>
 
 <div class="cp-wrap">
 
@@ -112,27 +113,14 @@
       <div class="cp-h">ListItem</div>
       <div class="cp-sub">Single row items displaying a trailing status, metadata, or arrow actions.</div>
     </div>
-    <div style="max-width:500px;background:var(--color-surface-secondary);border-radius:16px;padding:8px">
-      <div style="display:flex;align-items:center;justify-content:space-between;padding:12px 16px;border-bottom:1px solid var(--color-neutral-border)">
-        <div style="display:flex;align-items:center;gap:12px">
-          <span class="mi" style="color:var(--color-action-primary)" data-i="mosque"></span>
-          <div>
-            <div style="font-family:var(--font-body);font-size:15px;font-weight:700;color:var(--color-info-primary)">Masjid E Bilal</div>
-            <div style="font-family:var(--font-body);font-size:12px;color:var(--color-info-secondary)">0.8 km away · Bangalore</div>
-          </div>
-        </div>
-        <span class="mi" style="color:var(--color-info-secondary)" data-i="chevron_right"></span>
-      </div>
-      <div style="display:flex;align-items:center;justify-content:space-between;padding:12px 16px">
-        <div style="display:flex;align-items:center;gap:12px">
-          <span class="mi" style="color:var(--color-action-primary)" data-i="bookmark"></span>
-          <div>
-            <div style="font-family:var(--font-body);font-size:15px;font-weight:700;color:var(--color-info-primary)">Al-Baqarah (Ayah 255)</div>
-            <div style="font-family:var(--font-body);font-size:12px;color:var(--color-info-secondary)">Saved 2 days ago</div>
-          </div>
-        </div>
-        <span class="mi" style="color:var(--color-info-secondary)" data-i="chevron_right"></span>
-      </div>
+    <div style="max-width:500px;background:var(--color-surface-secondary);border-radius:var(--radius-2xl);padding:var(--size-md)">
+      <x-import component="ListItem" from="../../_theme/components.jsx"
+                icon="mosque" title="Masjid E Bilal" subtitle="0.8 km away · Bangalore"
+                hint-size="500px,68px"></x-import>
+      <div style="height:1px;background:var(--color-neutral-border)"></div>
+      <x-import component="ListItem" from="../../_theme/components.jsx"
+                icon="bookmark" title="Al-Baqarah (Ayah 255)" subtitle="Saved 2 days ago"
+                hint-size="500px,68px"></x-import>
     </div>
   </div>
 

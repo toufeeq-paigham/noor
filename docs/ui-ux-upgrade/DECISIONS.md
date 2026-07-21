@@ -230,6 +230,20 @@ The Quran journey is a reading tool, not a decorative content page. Noor's Arabi
 
 Motion remains restrained: frequent tab changes use the shared quick token, loaders do not shift geometry, sheets use the emphasized token, and reduced motion snaps state while retaining feedback. Source behavior is complete; timing on physical permission prompts remains in the consolidated device pass.
 
+### Generic ListItem foundation — 2026-07-21
+
+The Molecules reference showed a generic settings/metadata row, while Compose Profile rebuilt the same structure locally. The numbered Quran/chapter `ListRow` is a distinct content pattern and remains separate.
+
+#### Before | After | Why
+
+| Before | After | Why |
+| --- | --- | --- |
+| `ListItem` existed only as inline reference markup | Export a token-driven Noor `ListItem` with leading icon, title, optional supporting/value copy, chevron, destructive tone, action feedback, and reduced-motion behavior | The reference page now documents a real reusable component rather than an illustration |
+| Profile owned row height and icon geometry | Move those metrics into the matching `core:noor` molecule and make 56dp a minimum height | Normal geometry remains stable while large text can expand instead of clipping |
+| Generic settings rows and numbered content rows were easy to conflate | Keep `ListItem` and `ListRow` as explicitly different APIs | Their hierarchy, trailing content, and consumers are materially different |
+
+The component does not change Profile ordering, labels, actions, managed-masjid identity, haptics, navigation, or shared-transition matching.
+
 ### Profile committee row to Admin Console continuity — 2026-07-21
 
 The Profile tab can contain active committee memberships in addition to the primary-masjid manager. Only the membership row and its matching console title represent the same stable domain object, so they form the approved route-level transition pair. `My Masjids`, invitations, and registration keep normal navigation because their targets change task and composition rather than expanding the same object.

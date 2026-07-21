@@ -276,6 +276,38 @@ function EmptyState({ icon, title, description, iconLabel, style = {} }) {
   );
 }
 
+// Generic settings / metadata row. This is deliberately separate from the
+// numbered, content-specific ListRow used by Quran and chapter indexes.
+function ListItem({
+  icon,
+  title,
+  subtitle,
+  value,
+  destructive = false,
+  showChevron = true,
+  onClick,
+  style = {}
+}) {
+  if (!title) return null;
+  const Root = onClick ? 'button' : 'div';
+  return (
+    <Root
+      className={`list-item${destructive ? ' destructive' : ''}${onClick ? ' actionable' : ''}`}
+      onClick={onClick}
+      type={onClick ? 'button' : undefined}
+      style={style}
+    >
+      {icon ? <span className="mi list-item-leading" data-i={icon} aria-hidden="true"></span> : null}
+      <span className="list-item-copy">
+        <span className="list-item-title">{title}</span>
+        {subtitle ? <span className="list-item-subtitle">{subtitle}</span> : null}
+      </span>
+      {value ? <span className="list-item-value">{value}</span> : null}
+      {showChevron ? <span className="mi list-item-chevron" data-i="chevron_right" aria-hidden="true"></span> : null}
+    </Root>
+  );
+}
+
 function SearchBar({
   value = '',
   placeholder = 'Search',
@@ -316,4 +348,4 @@ function SearchBar({
   );
 }
 
-Object.assign(window, { PromptCard, BottomSheet, Dialog, RichNudgeSheet, EmptyState, SearchBar });
+Object.assign(window, { PromptCard, BottomSheet, Dialog, RichNudgeSheet, EmptyState, ListItem, SearchBar });
