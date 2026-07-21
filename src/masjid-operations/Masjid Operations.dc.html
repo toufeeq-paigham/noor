@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="../support.js"></script>
+<script src="../_theme/chrome.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+  <link rel="stylesheet" href="../_ds/noor-design-system-46f42e91-1858-412f-bdb6-560a6cc3df9f/colors_and_type.css">
+  <link rel="stylesheet" href="../_theme/poc.css">
+  <link rel="stylesheet" href="../_theme/components.css">
+  <link rel="stylesheet" href="../_theme/icons.css">
+  <script src="../_ds/noor-design-system-46f42e91-1858-412f-bdb6-560a6cc3df9f/_ds_bundle.js"></script>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Rounded:opsz,wght,FILL,GRAD@24,400,0..1,0&amp;display=block">
+  <style>
+    body{background:var(--canvas-bg);padding:36px 32px 90px;min-height:100vh;box-sizing:border-box}
+    ::-webkit-scrollbar{display:none}*{-ms-overflow-style:none;scrollbar-width:none}
+    .op-screen{width:100%;height:100%;background:var(--color-surface-primary);color:var(--color-info-primary);font-family:var(--font-body);display:flex;flex-direction:column;position:relative;overflow:hidden}
+    .op-topbar{height:72px;padding:16px;box-sizing:border-box;display:flex;align-items:center;gap:var(--size-md);border-bottom:1px solid var(--color-neutral-border);flex-shrink:0}.op-title{font-family:var(--font-title);font-size:22px;flex:1;text-align:center}.op-top-spacer{width:48px}
+    .op-content{padding:var(--size-2xl);display:flex;flex-direction:column;gap:var(--size-lg);overflow:auto;flex:1;box-sizing:border-box}.op-status{flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;padding:var(--size-3xl);gap:var(--size-xl);box-sizing:border-box}.op-status-icon{font-size:var(--icon-2xl);color:var(--color-action-primary)}.op-status-icon.error{color:var(--color-status-error)}.op-status-icon.success{color:var(--color-status-success)}.op-status-title{font-family:var(--font-title);font-size:22px;color:var(--color-info-primary)}.op-status-copy{font-size:14px;line-height:1.55;color:var(--color-info-secondary)}
+    .op-loader{width:48px;height:48px;border-radius:50%;border:4px solid var(--color-surface-secondary);border-top-color:var(--color-action-primary);animation:opspin var(--motion-celebration) linear infinite}@keyframes opspin{to{transform:rotate(360deg)}}
+    .op-hero,.op-card{background:var(--color-surface-card);border:1px solid var(--color-neutral-border);border-radius:var(--radius-xl);padding:var(--size-xl);display:flex;align-items:center;gap:var(--size-xl)}.op-hero>.mi{font-size:var(--icon-xl);color:var(--color-action-primary)}
+    .op-row{min-height:64px;display:flex;align-items:center;gap:var(--size-lg);border-bottom:1px solid var(--color-neutral-border);padding:var(--size-md) 0;box-sizing:border-box}.op-row-icon{font-size:var(--icon-md);color:var(--color-action-primary)}.op-row-icon.destructive{color:var(--color-status-error)}.op-row-copy{min-width:0;flex:1}.op-row-title{font-size:15px;font-weight:700}.op-row-sub{font-size:13px;color:var(--color-info-secondary);margin-top:4px}.op-chevron{color:var(--color-info-faint)}
+    .op-search,.op-field{min-height:52px;padding:var(--size-lg);box-sizing:border-box;border-radius:var(--radius-lg);background:var(--color-input-background);color:var(--color-info-secondary);display:flex;align-items:center;gap:var(--size-md);border:1px solid var(--color-input-border)}.op-field{min-height:152px;align-items:flex-start}.op-field.invalid{border-color:var(--color-status-error)}.op-field-error{font-size:12px;color:var(--color-status-error)}.op-media-row,.op-actions{display:flex;gap:var(--size-md)}.op-media-row>* ,.op-actions>*{flex:1}.op-progress{height:4px;background:var(--color-surface-secondary);border-radius:var(--radius-circle);overflow:hidden}.op-progress span{display:block;width:64%;height:100%;background:var(--color-action-primary)}
+    .op-dialog-scrim{position:absolute;inset:0;background:var(--color-surface-scrim);display:flex;align-items:center;justify-content:center;padding:var(--size-2xl);z-index:4}.op-dialog{background:var(--color-surface-primary);border-radius:var(--radius-2xl);padding:var(--size-2xl);display:flex;flex-direction:column;gap:var(--size-lg);width:100%;box-sizing:border-box}.op-destructive{background:var(--color-action-destructive)!important}.op-summary,.op-time{display:flex;justify-content:space-between;align-items:center;gap:var(--size-md);padding:var(--size-lg) 0;border-bottom:1px solid var(--color-neutral-border)}.op-time span:nth-child(2){margin-left:auto;color:var(--color-info-secondary)}
+    @media(prefers-reduced-motion:reduce){.op-loader{animation:none}}
+  </style>
+</helmet>
+<div style="display:none"><x-import component="OperationScreen" from="./storyboards/screens.jsx" hint-size="0,0"></x-import></div>
+<x-import component="BoardHeader" from="../_theme/board.jsx" title="Masjid Operations — Admin & Publishing" subtitle="Noor specification for the Compose-only administration journeys: permissions, content, empty, loading, destructive confirmation, failure, and success states." hint-size="1440px,92px"></x-import>
+<div class="poc-stage"><div class="poc-frames"><x-import component="OperationsBoard" from="./storyboards/screens.jsx" active="{{ active }}" on-select-frame="{{ selectFrame }}" hint-size="1600px,4200px"></x-import></div><x-import component="BoardLive" from="../_theme/board.jsx" restart="{{ restart }}" hint-size="400px,900px"><x-import component="IOSDevice" from="../ios-frame.jsx" hint-size="402px,874px"><div style="width:100%;height:100%;position:relative;overflow:hidden"><x-import component="OperationScreen" from="./storyboards/screens.jsx" data="{{ activeData }}" hint-size="100%,100%"></x-import></div></x-import></x-import></div>
+</x-dc>
+<script type="text/x-dc" data-dc-script>
+class Component extends DCLogic {
+  state = { active: 0 };
+  selectFrame = index => this.setState({ active: index });
+  restart = () => this.setState({ active: 0 });
+  renderVals() {
+    const states = window.MASJID_OPERATION_STATES || [];
+    return { active: this.state.active, activeData: states[this.state.active] || states[0], selectFrame: this.selectFrame, restart: this.restart };
+  }
+}
+</script>
+</body>
+</html>
