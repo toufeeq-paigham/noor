@@ -308,6 +308,31 @@ The action remains visually stable and uses existing Noor geometry. No route, va
 | Zakaat briefly reports empty before collection and gesture hints own raw timing | Enter loading first and use Noor gesture motion tokens with a reduced-motion alternative | Empty must be truthful and instructional motion must be governed |
 | Dua category changes always travel | Preserve the pager relationship but snap when reduced motion is requested | Spatial continuity is useful only when motion is welcome |
 
+### Dua & Dikhr design read and state specification — 2026-07-21
+
+This is a redesign-preserve pass for a high-frequency devotional reader. Noor's calm serif hierarchy, emerald actions, compact information density, Arabic reading treatment, and pinned navigation remain authoritative. The working dials remain `DESIGN_VARIANCE: 4`, `MOTION_INTENSITY: 3`, and `VISUAL_DENSITY: 5`.
+
+| Before | After | Why |
+| --- | --- | --- |
+| Five happy-path frames imply gradients where the app has real category imagery | Sixteen deterministic frames use the same twelve WebP assets and stable slugs as Compose | The approved POC must specify real hierarchy and every consequential state, not a visual approximation |
+| Categories and chapters duplicate page-local card/row CSS | Add matching Noor `MediaTile` and `ListRow.emphasized` references and consume them in the journey | Reusable geometry, scrims, typography, and press feedback belong to the design system |
+| Favourites has only an empty state | Specify empty and populated saved-dua states with stable item identity | The tab must remain testable after the first favourite is added and after restoration |
+| Loading is implied and errors are absent | Add final-shape grid/list/reader loading plus persistent retry sheets for categories, chapters, reader, and audio | Loading, successful empty, and failure are different truths and require different recovery |
+| Reader favourite/share actions are small glyph hit areas and Share is inert | Use labelled full-size icon buttons and wire the POC share callback | Frequent actions must be discoverable, reachable, and behaviorally represented |
+| Audio play/close targets are 26px/20px and the waveform has no range semantics | Keep 24px glyphs inside 48px targets and expose waveform progress semantics | Visual compactness cannot come at the cost of touch or assistive access |
+| Route movement uses a raw 350ms duration in both directions | Use Noor standard entry, faster exit, and no positional travel under reduced motion | Motion explains navigation without making repeated reading feel slow |
+
+#### Motion specification
+
+| Interaction | Purpose | Timing / easing | Interruption | Reduced motion |
+| --- | --- | --- | --- | --- |
+| Forward/back route handoff | Preserve hierarchy and direction | Standard enter; faster exit; Noor ease-out | A new route replaces the current transition | No positional travel |
+| Category tab pager | Preserve spatial relationship between Du'a and Favourites | Noor quick/standard pager behavior | New selection retargets immediately | Snap to page |
+| Audio dock | Prevent a jarring overlay appearance | Standard enter, faster exit | Close or new playback retargets immediately | Fade/no travel |
+| Loading | Communicate unresolved data | Static final-shape reference; Compose shimmer only while unresolved | Resolution replaces geometry in place | Static placeholders with progress semantics |
+
+The POC changes no route, repository contract, favourite behavior, deep-link identity, Arabic content, or playback contract. Device audio, native share, largest text, and final screenshot overlay remain part of the delegated evidence pass.
+
 All six journeys preserve their current brand illustration, information architecture, calculation logic, repositories, and route contracts. Physical compass, camera, location, audio, and adaptive-layout evidence is intentionally grouped into the final device pass.
 
 ### Sehri supplied-capture repair pass — 2026-07-21

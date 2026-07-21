@@ -3,18 +3,54 @@
 // Layout classes (.cat-card, .dua-item, .dua-block, .audio-dock …) and the AlQuranIndoPak @font-face
 // live in the board page helmet, so both the live device and the static frames share them.
 
-// ── Hisnul Muslim categories (gradients stand in for the photo tiles; whitelisted as imagery) ──
+// ── Hisnul Muslim categories — the same twelve assets and slugs used by Compose ──
 const DUA_CATEGORIES = [
-  { name: 'All', grad: 'linear-gradient(160deg,#B85A10 0%,#6B2A05 60%,#2A1005 100%)' },
-  { name: 'Travel', grad: 'linear-gradient(160deg,#3A7A20 0%,#1A5010 50%,#0A2A08 100%)' },
-  { name: 'Prayer', grad: 'linear-gradient(160deg,#C07020 0%,#703010 50%,#2A0A05 100%)' },
-  { name: 'Morning and Evening Remembrance', grad: 'linear-gradient(160deg,#C08020 0%,#804010 50%,#2A1808 100%)' },
-  { name: 'Hajj and Umrah', grad: 'linear-gradient(160deg,#3A2810 0%,#1A1208 50%,#0A0804 100%)' },
-  { name: 'Joy and Distress', grad: 'linear-gradient(160deg,#1A3050 0%,#0A1828 60%,#050810 100%)' },
-  { name: 'Nature', grad: 'linear-gradient(160deg,#2A6820 0%,#1A4010 50%,#0A1808 100%)' },
-  { name: 'Good etiquette', grad: 'linear-gradient(160deg,#8A9A50 0%,#5A6830 50%,#2A3010 100%)' },
-  { name: 'Home and Family', grad: 'linear-gradient(160deg,#6A5040 0%,#3A2818 50%,#1A1008 100%)' },
-  { name: 'Food and Drink', grad: 'linear-gradient(160deg,#8A5020 0%,#503010 50%,#201008 100%)' }
+  ['all', 'All'], ['food_drink', 'Food and Drink'], ['good_etiquette', 'Good etiquette'],
+  ['hajj_umrah', 'Hajj and Umrah'], ['home_family', 'Home and Family'],
+  ['joy_distress', 'Joy and Distress'], ['morning_evening_remembrance', 'Morning and Evening Remembrance'],
+  ['nature', 'Nature'], ['praising_allah', 'Praising Allah'], ['prayer', 'Prayer'],
+  ['sickness_death', 'Sickness and Death'], ['travel', 'Travel']
+].map(([slug, name]) => ({ slug, name, image: `./assets/${slug}.webp` }));
+
+function StateLoading({ kind = 'list' }) {
+  const count = kind === 'grid' ? 6 : kind === 'reader' ? 2 : 5;
+  return (
+    <div className={`dua-loading ${kind}`} role="status" aria-label="Loading content">
+      {Array.from({ length: count }, (_, i) => <div key={i} className={`skeleton dua-skeleton ${kind}`}></div>)}
+    </div>
+  );
+}
+
+function StateEmpty({ icon, title, description, action, onAction }) {
+  return (
+    <div className="empty-state">
+      <div className="empty-state-icon"><span className="mi" data-i={icon}></span></div>
+      <div className="empty-state-title">{title}</div>
+      <div className="empty-state-description">{description}</div>
+      {action ? <button className="btn btn-tonal md empty-state-action" onClick={onAction}>{action}</button> : null}
+    </div>
+  );
+}
+
+function ErrorSheet({ message, onRetry, onDismiss }) {
+  return (
+    <div className="dlg-scrim sheet" role="alertdialog" aria-modal="true">
+      <div className="dlg">
+        <div className="dlg-handle"></div>
+        <div className="dlg-title">We couldn't load this content</div>
+        <div className="dlg-desc">{message || 'Check your connection and try again.'}</div>
+        <div className="dlg-actions">
+          <button className="btn btn-tonal md" onClick={onDismiss}>Dismiss</button>
+          <button className="btn btn-filled md" onClick={onRetry}>Retry</button>
+        </div>
+      </div>
+    </div>
+  );
+}
+
+const FAVOURITE_ITEMS = [
+  { id: '1:1', number: 1, title: 'When waking up', subtitle: 'Praise is to Allah Who gives us life after sleep.' },
+  { id: '10:1', number: 1, title: 'Remembrance when leaving the home', subtitle: 'In the name of Allah, I place my trust in Allah.' }
 ];
 
 // ── "All" chapter list (source: Dua List.dc.html) ──
@@ -87,7 +123,7 @@ function AppBar({ title, onBack, tabs }) {
 }
 
 // 1. CATEGORIES — Hisnul Muslim hub (tabs pinned in app bar + photo grid)
-function CategoriesScreen({ activeTab = 'dua', onSelectTab, onSelectCategory, onBack }) {
+function CategoriesScreen({ activeTab = 'dua', state = 'content', favourites = [], onSelectTab, onSelectCategory, onSelectFavourite, onRetry, onBack }) {
   const tabBar = (
     <div className="tbar">
       <div className={`tab ${activeTab === 'dua' ? 'active' : ''}`} onClick={() => onSelectTab && onSelectTab('dua')}>DU'A</div>
@@ -101,19 +137,23 @@ function CategoriesScreen({ activeTab = 'dua', onSelectTab, onSelectCategory, on
       {/* Scroll layer — runs full-bleed under the app bar (which holds the pinned tabs) */}
       <div style={{ position: 'absolute', inset: 0, overflowY: 'auto', WebkitOverflowScrolling: 'touch', paddingTop: APPBAR_H_TABS }}>
         <div style={{ padding: '4px 16px 24px' }}>
-          {activeTab === 'fav' ? (
-            <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', gap: 12, minHeight: 320, textAlign: 'center', padding: '0 24px' }}>
-              <span className="mi" style={{ fontSize: 40, color: 'var(--color-info-faint)' }} data-i="favorite"></span>
-              <div style={{ fontFamily: 'var(--font-body)', fontSize: 15, fontWeight: 700, color: 'var(--color-info-primary)' }}>No favourites yet</div>
-              <div style={{ fontFamily: 'var(--font-body)', fontSize: 13, color: 'var(--color-info-secondary)', lineHeight: 1.5 }}>Tap the heart on any dua to save it here for quick access.</div>
-            </div>
+          {state === 'loading' ? <StateLoading kind={activeTab === 'dua' ? 'grid' : 'list'} /> : activeTab === 'fav' ? (
+            favourites.length === 0 ? <StateEmpty icon="favorite" title="No favourites yet" description="Tap the heart on any dua to save it here for quick access." /> :
+            <div className="dua-list-stack">{favourites.map((item) => (
+              <button key={item.id} className="list-row-emphasized" onClick={() => onSelectFavourite && onSelectFavourite(item.id)}>
+                <span className="list-row-emphasized-number">{item.number}</span>
+                <span className="list-row-emphasized-body"><span className="list-row-emphasized-title">{item.title}</span><span className="list-row-emphasized-subtitle">{item.subtitle}</span></span>
+              </button>
+            ))}</div>
+          ) : state === 'empty' ? (
+            <StateEmpty icon="volunteer_activism" title="No categories available" description="Please try again in a moment." />
           ) : (
             <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 10 }}>
-              {DUA_CATEGORIES.map((c, i) => (
-                <div key={i} className="cat-card" onClick={() => onSelectCategory && onSelectCategory(i)} style={{ background: c.grad }}>
-                  <div className="cat-scrim"></div>
-                  <div className="cat-label">{c.name}</div>
-                </div>
+              {DUA_CATEGORIES.map((c) => (
+                <button key={c.slug} className="media-tile" onClick={() => onSelectCategory && onSelectCategory(c.slug)} aria-label={`Open ${c.name} duas`}>
+                  <img src={c.image} alt="" />
+                  <span className="media-tile-label">{c.name}</span>
+                </button>
               ))}
             </div>
           )}
@@ -121,28 +161,32 @@ function CategoriesScreen({ activeTab = 'dua', onSelectTab, onSelectCategory, on
       </div>
 
       <AppBar title="Hisnul Muslim" onBack={onBack} tabs={tabBar} />
+      {state === 'error' ? <ErrorSheet onRetry={onRetry} /> : null}
     </div>
   );
 }
 
 // 2. DUA LIST — numbered chapter list
-function DuaListScreen({ categoryName = 'All', onSelectDua, onBack }) {
+function DuaListScreen({ categoryName = 'All', state = 'content', onSelectDua, onRetry, onBack }) {
   return (
     <div style={{ position: 'relative', width: '100%', height: '100%', overflow: 'hidden', background: 'var(--color-surface-primary)' }}>
 
       {/* Scroll layer — runs full-bleed under the floating app bar */}
       <div style={{ position: 'absolute', inset: 0, overflowY: 'auto', WebkitOverflowScrolling: 'touch', paddingTop: APPBAR_H }}>
         <div style={{ padding: '6px 16px 24px', display: 'flex', flexDirection: 'column', gap: 8 }}>
-          {DUA_LIST.map((title, i) => (
-            <div key={i} className="dua-item" onClick={() => onSelectDua && onSelectDua(i)}>
-              <div className="dua-num">{i + 1}</div>
-              <span className="dua-item-title">{title}</span>
-            </div>
-          ))}
+          {state === 'loading' ? <StateLoading /> : state === 'empty' ?
+            <StateEmpty icon="menu_book" title="No duas available" description="Please try again in a moment." /> :
+            DUA_LIST.map((title, i) => (
+              <button key={title} className="list-row-emphasized" onClick={() => onSelectDua && onSelectDua(i)}>
+                <span className="list-row-emphasized-number">{i + 1}</span>
+                <span className="list-row-emphasized-body"><span className="list-row-emphasized-title">{title}</span></span>
+              </button>
+            ))}
         </div>
       </div>
 
       <AppBar title={categoryName} onBack={onBack} />
+      {state === 'error' ? <ErrorSheet onRetry={onRetry} /> : null}
     </div>
   );
 }
@@ -155,9 +199,15 @@ function DuaDetailScreen({
   audioIdx = -1,          // index of the dua currently loaded in the player (-1 = none)
   audioPlaying = false,   // is the loaded dua currently playing
   audioProgress = 0,      // seconds elapsed
+  audioLoading = false,
+  state = 'content',
+  audioError,
   onToggleAudio,          // (i) → per-dua play button
   onToggleAp,             // dock play/pause
   onCloseAudio,
+  onDismissAudioError,
+  onRetry,
+  onShare,
   onBack
 }) {
   const duas = DUA_DETAIL.duas;
@@ -171,7 +221,8 @@ function DuaDetailScreen({
       {/* Reader scroll layer — runs full-bleed under the floating app bar.
           Extra bottom padding when the player is docked so the last line clears it. */}
       <div style={{ position: 'absolute', inset: 0, overflowY: 'auto', WebkitOverflowScrolling: 'touch', paddingTop: APPBAR_H, paddingBottom: audioOpen ? 80 : 0 }}>
-        {duas.map((d, i) => {
+        {state === 'loading' ? <StateLoading kind="reader" /> : state === 'empty' ?
+          <StateEmpty icon="menu_book" title="No duas available" description="Please try again in a moment." /> : duas.map((d, i) => {
           const isFav = !!favorites[i];
           const isPlaying = audioIdx === i && audioPlaying;
           return (
@@ -181,16 +232,14 @@ function DuaDetailScreen({
               <div className="dua-en">{d.translation}</div>
               <div className="dua-src">{d.source}</div>
               <div className="dua-acts">
-                <span
-                  className="mi"
+                <button
+                  className="ib ib-link md"
                   onClick={() => onToggleFav && onToggleFav(i)}
-                  style={{ fontSize: 22, cursor: 'pointer', color: isFav ? 'var(--color-action-primary)' : 'var(--color-info-secondary)', fontVariationSettings: `'FILL' ${isFav ? 1 : 0}` }}
-                  data-i="favorite"
-                ></span>
-                <span className="mi" style={{ fontSize: 22, color: 'var(--color-info-secondary)', cursor: 'pointer' }} data-i="share"></span>
+                  aria-label={isFav ? 'Remove from favourites' : 'Add to favourites'}><span className="mi" style={{ color: isFav ? 'var(--color-action-primary)' : 'var(--color-info-secondary)', fontVariationSettings: `'FILL' ${isFav ? 1 : 0}` }} data-i="favorite"></span></button>
+                <button className="ib ib-link md" onClick={() => onShare && onShare(i)} aria-label="Share dua"><span className="mi" style={{ color: 'var(--color-info-secondary)' }} data-i="share"></span></button>
                 <div style={{ flex: 1 }}></div>
-                <button className={`ib ${isPlaying ? 'ib-filled' : 'ib-tonal'} sm`} onClick={() => onToggleAudio && onToggleAudio(i)} aria-label={isPlaying ? 'Pause' : 'Play'}>
-                  <span className="mi" data-i={isPlaying ? 'pause' : 'play_arrow'}></span>
+                <button className={`ib ${isPlaying ? 'ib-filled' : 'ib-tonal'} sm`} onClick={() => onToggleAudio && onToggleAudio(i)} aria-label={audioLoading && audioIdx === i ? 'Loading audio' : isPlaying ? 'Pause' : 'Play'} disabled={audioLoading && audioIdx === i}>
+                  {audioLoading && audioIdx === i ? <span className="btn-spinner"></span> : <span className="mi" data-i={isPlaying ? 'pause' : 'play_arrow'}></span>}
                 </button>
               </div>
             </div>
@@ -204,10 +253,10 @@ function DuaDetailScreen({
       {audioOpen && (
         <div className="aplayer dock-bottom">
           <button className="ap-toggle" onClick={onToggleAp} aria-label={audioPlaying ? 'Pause' : 'Play'}>
-            <span className="mi fill" data-i={audioPlaying ? 'pause' : 'play_arrow'}></span>
+            {audioLoading ? <span className="btn-spinner"></span> : <span className="mi fill" data-i={audioPlaying ? 'pause' : 'play_arrow'}></span>}
           </button>
           <span className="ap-time">{fmtTime(audioProgress)}</span>
-          <div className="ap-wave">
+          <div className="ap-wave" role="slider" aria-label="Audio progress" aria-valuemin="0" aria-valuemax={AUDIO_TOTAL} aria-valuenow={audioProgress}>
             {bars.map((b, i) => (
               <i key={i} className={b.on ? 'on' : ''} style={{ '--h': b.h }}></i>
             ))}
@@ -218,10 +267,12 @@ function DuaDetailScreen({
           </button>
         </div>
       )}
+      {state === 'error' ? <ErrorSheet onRetry={onRetry} /> : null}
+      {audioError ? <ErrorSheet message={audioError} onRetry={onRetry} onDismiss={onDismissAudioError} /> : null}
 
     </div>
   );
 }
 
 // Export on window scope for dynamic board imports
-Object.assign(window, { CategoriesScreen, DuaListScreen, DuaDetailScreen, DUA_CATEGORIES, DUA_LIST, DUA_DETAIL, AUDIO_TOTAL });
+Object.assign(window, { CategoriesScreen, DuaListScreen, DuaDetailScreen, DUA_CATEGORIES, DUA_LIST, DUA_DETAIL, FAVOURITE_ITEMS, AUDIO_TOTAL });

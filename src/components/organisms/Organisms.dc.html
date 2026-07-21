@@ -176,17 +176,17 @@
     <div class="lbl">Interactive</div>
     <div style="max-width:390px;margin-bottom:22px">
       <div class="aplayer">
-        <button class="ap-toggle" onClick="{{ toggleAp }}">
+        <button class="ap-toggle" onClick="{{ toggleAp }}" aria-label="Play or pause audio">
           <span class="mi fill" data-i="{{ apIcon }}"></span>
         </button>
         <span class="ap-time">{{ apTime }}</span>
-        <div class="ap-wave">
+        <div class="ap-wave" role="slider" aria-label="Audio progress" aria-valuemin="0" aria-valuemax="23" aria-valuenow="{{ apProgress }}">
           <sc-for list="{{ liveBars }}" as="b" hint-placeholder-count="40">
             <i class="{{ b.cls }}" style="--h:{{ b.h }}"></i>
           </sc-for>
           <div class="ap-head" style="left:{{ apHead }}"></div>
         </div>
-        <button class="ap-close"><span class="mi" data-i="close"></span></button>
+        <button class="ap-close" aria-label="Close player"><span class="mi" data-i="close"></span></button>
       </div>
     </div>
 

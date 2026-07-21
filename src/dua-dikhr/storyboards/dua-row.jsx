@@ -1,14 +1,25 @@
-// Dua & Dikhr — static storyboard row (5 states: Home entry → categories → list → reader → audio).
+// Dua & Dikhr — deterministic journey and recovery states.
 // Rendered on the board via:
 //   <x-import component="DuaRow" from="./storyboards/dua-row.jsx" active="{{ duaActive }}">
 // `active` = index of the frame the live device currently shows (-1 = none).
 
 const STORYBOARD_FRAMES = [
   { name: 'Home tab — Dua & Dikhr card', isHome: true },
-  { name: 'Hisnul Muslim — categories', kind: 'categories' },
-  { name: 'All — chapter list', kind: 'list' },
-  { name: 'When waking up — reader', kind: 'detail' },
-  { name: 'When waking up — audio playing', kind: 'detail', audioIdx: 0 }
+  { name: 'Categories — loading', kind: 'categories', state: 'loading' },
+  { name: 'Categories — content', kind: 'categories' },
+  { name: 'Categories — empty', kind: 'categories', state: 'empty' },
+  { name: 'Categories — error + retry', kind: 'categories', state: 'error' },
+  { name: 'Favourites — empty', kind: 'categories', tab: 'fav' },
+  { name: 'Favourites — saved duas', kind: 'categories', tab: 'fav', populated: true },
+  { name: 'Chapters — loading', kind: 'list', state: 'loading' },
+  { name: 'Chapters — content', kind: 'list' },
+  { name: 'Chapters — empty', kind: 'list', state: 'empty' },
+  { name: 'Chapters — error + retry', kind: 'list', state: 'error' },
+  { name: 'Reader — loading', kind: 'detail', state: 'loading' },
+  { name: 'Reader — deep-link target', kind: 'detail' },
+  { name: 'Reader — audio loading', kind: 'detail', audioIdx: 0, audioLoading: true },
+  { name: 'Reader — audio playing', kind: 'detail', audioIdx: 0 },
+  { name: 'Reader — audio error + recovery', kind: 'detail', audioError: 'Audio could not be loaded. Check your connection and retry.' }
 ];
 
 function DuaRow({ active = -1, onSelectFrame }) {
@@ -36,10 +47,10 @@ function DuaRow({ active = -1, onSelectFrame }) {
             );
           } else if (f.kind === 'categories') {
             const { CategoriesScreen } = window;
-            screenContent = CategoriesScreen && <CategoriesScreen activeTab="dua" />;
+            screenContent = CategoriesScreen && <CategoriesScreen activeTab={f.tab || 'dua'} state={f.state || 'content'} favourites={f.populated ? window.FAVOURITE_ITEMS : []} />;
           } else if (f.kind === 'list') {
             const { DuaListScreen } = window;
-            screenContent = DuaListScreen && <DuaListScreen categoryName="All" />;
+            screenContent = DuaListScreen && <DuaListScreen categoryName="All" state={f.state || 'content'} />;
           } else {
             const { DuaDetailScreen } = window;
             const playing = f.audioIdx != null;
@@ -50,6 +61,9 @@ function DuaRow({ active = -1, onSelectFrame }) {
                 audioIdx={playing ? f.audioIdx : -1}
                 audioPlaying={playing}
                 audioProgress={playing ? 7 : 0}
+                audioLoading={!!f.audioLoading}
+                state={f.state || 'content'}
+                audioError={f.audioError}
               />
             );
           }

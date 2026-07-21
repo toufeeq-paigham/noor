@@ -20,21 +20,20 @@
     body{background:var(--canvas-bg);padding:36px 32px 90px;min-height:100vh;box-sizing:border-box}
     ::-webkit-scrollbar{display:none}*{-ms-overflow-style:none;scrollbar-width:none}
 
-    /* Transition animations */
+    /* Transition animations — semantic Noor timings; faster Back exit. */
     @keyframes stepin { from{transform:translateX(28px);opacity:0} to{transform:translateX(0);opacity:1} }
     @keyframes stepback { from{transform:translateX(-28px);opacity:0} to{transform:translateX(0);opacity:1} }
-    .step-fwd { animation:stepin .35s cubic-bezier(.2,.8,.2,1) }
-    .step-back { animation:stepback .35s cubic-bezier(.2,.8,.2,1) }
+    .step-fwd { animation:stepin var(--motion-standard) var(--ease-out) }
+    .step-back { animation:stepback var(--motion-exit) var(--ease-out) }
 
     /* Dua layout classes (shared between live prototype and static frames) */
-    .cat-card{position:relative;height:160px;border-radius:16px;overflow:hidden;cursor:pointer}
-    .cat-scrim{position:absolute;inset:0;background:linear-gradient(to top,rgba(0,0,0,0.55) 0%,transparent 60%)}
-    .cat-label{position:absolute;left:12px;right:12px;bottom:12px;font-family:var(--font-body);font-size:15px;font-weight:700;color:#fff;line-height:1.3}
-
-    .dua-item{background:color-mix(in oklab,var(--color-action-primary) 5%,var(--color-surface-primary));border:1px solid color-mix(in oklab,var(--color-action-primary) 22%,transparent);border-radius:16px;padding:14px 16px;display:flex;align-items:center;gap:14px;cursor:pointer;transition:background 160ms}
-    .dua-item:hover{background:color-mix(in oklab,var(--color-action-primary) 9%,var(--color-surface-primary))}
-    .dua-num{width:38px;height:38px;border-radius:50%;background:var(--color-action-primary);flex-shrink:0;display:flex;align-items:center;justify-content:center;font-family:var(--font-body);font-size:15px;font-weight:800;color:#fff}
-    .dua-item-title{font-family:var(--font-body);font-size:16px;font-weight:600;color:var(--color-info-primary)}
+    .dua-list-stack{display:flex;flex-direction:column;gap:var(--size-md)}
+    .dua-loading{box-sizing:border-box;display:flex;flex-direction:column;gap:var(--size-md);padding:var(--size-sm) 0}
+    .dua-loading.grid{display:grid;grid-template-columns:1fr 1fr;gap:var(--size-lg)}
+    .dua-skeleton.grid{height:var(--illustration-lg);border-radius:var(--radius-2xl)}
+    .dua-skeleton.list{height:66px;border-radius:var(--radius-2xl)}
+    .dua-loading.reader{padding:var(--content-gutter)}
+    .dua-skeleton.reader{height:220px;border-radius:var(--radius-md)}
 
     .dua-block{padding:20px 20px 16px;border-bottom:1px solid var(--color-neutral-border)}
     .dua-ar{text-align:right;direction:rtl;font-family:'AlQuranIndoPak',serif;font-size:25px;color:var(--color-info-primary);line-height:2.1;margin-bottom:14px}
@@ -42,6 +41,7 @@
     .dua-en{font-family:var(--font-body);font-size:14px;color:var(--color-info-secondary);margin-bottom:8px;line-height:1.6}
     .dua-src{font-family:var(--font-body);font-size:11px;color:var(--color-info-faint);margin-bottom:14px;line-height:1.5}
     .dua-acts{display:flex;align-items:center;gap:16px}
+    @media (prefers-reduced-motion:reduce){.step-fwd,.step-back{animation:none}}
   </style>
 </helmet>
 
@@ -101,6 +101,8 @@
           <div class="{{ stepAnim }}" style="position:absolute;inset:0">
             <x-import component="CategoriesScreen" from="./storyboards/screens.jsx"
                       active-tab="{{ catTab }}"
+                      state="{{ contentState }}"
+                      favourites="{{ favouriteItems }}"
                       on-select-tab="{{ selectTab }}"
                       on-select-category="{{ openCategory }}"
                       on-back="{{ goHomeStage }}"
@@ -114,6 +116,7 @@
           <div class="{{ stepAnim }}" style="position:absolute;inset:0">
             <x-import component="DuaListScreen" from="./storyboards/screens.jsx"
                       category-name="{{ categoryName }}"
+                      state="{{ contentState }}"
                       on-select-dua="{{ openDua }}"
                       on-back="{{ goCategoriesBack }}"
                       hint-size="100%,100%">
@@ -130,6 +133,9 @@
                       audio-idx="{{ audioIdx }}"
                       audio-playing="{{ apPlaying }}"
                       audio-progress="{{ apProgress }}"
+                      audio-loading="{{ audioLoading }}"
+                      state="{{ contentState }}"
+                      audio-error="{{ audioError }}"
                       on-toggle-fav="{{ toggleFav }}"
                       on-toggle-audio="{{ toggleAudio }}"
                       on-toggle-ap="{{ toggleAp }}"
@@ -160,7 +166,11 @@ class Component extends DCLogic {
     favorites: {},        // { [duaBlockIdx]: true }
     audioIdx: -1,         // dua block loaded in the player (-1 = none)
     apPlaying: false,     // is the player currently playing
-    apProgress: 0         // seconds elapsed
+    apProgress: 0,        // seconds elapsed
+    contentState: 'content',
+    audioLoading: false,
+    audioError: null,
+    favouritesFixture: false
   };
 
   get apTotal() { return window.AUDIO_TOTAL || 23; }
@@ -179,7 +189,7 @@ class Component extends DCLogic {
 
   componentWillUnmount() { this._stopAudio(); }
 
-  goCategoriesStage = () => { this._stopAudio(); this.setState({ stage: 'categories', stepDir: 'fwd', audioIdx: -1, apPlaying: false, apProgress: 0 }); };
+  goCategoriesStage = () => { this._stopAudio(); this.setState({ stage: 'categories', stepDir: 'fwd', contentState: 'content', audioIdx: -1, apPlaying: false, apProgress: 0 }); };
   goHomeStage = () => { this._stopAudio(); this.setState({ stage: 'home', stepDir: 'back', audioIdx: -1, apPlaying: false, apProgress: 0 }); };
 
   goHijri = () => {
@@ -194,7 +204,11 @@ class Component extends DCLogic {
 
   selectTab = (tab) => this.setState({ catTab: tab });
 
-  openCategory = (i) => this.setState({ stage: 'list', categoryIdx: i, stepDir: 'fwd' });
+  openCategory = (slug) => {
+    const cats = window.DUA_CATEGORIES || [];
+    const index = cats.findIndex(c => c.slug === slug);
+    this.setState({ stage: 'list', categoryIdx: index >= 0 ? index : 0, contentState: 'content', stepDir: 'fwd' });
+  };
   goCategoriesBack = () => this.setState({ stage: 'categories', stepDir: 'back' });
 
   openDua = (i) => { this._stopAudio(); this.setState({ stage: 'detail', duaIdx: i, audioIdx: -1, apPlaying: false, apProgress: 0, stepDir: 'fwd' }); };
@@ -223,15 +237,22 @@ class Component extends DCLogic {
 
   selectFrame = (i) => {
     this._stopAudio();
-    if (i === 0) { this.setState({ stage: 'home', stepDir: 'back', audioIdx: -1, apPlaying: false, apProgress: 0 }); return; }
-    if (i === 1) { this.setState({ stage: 'categories', catTab: 'dua', stepDir: 'none', audioIdx: -1, apPlaying: false, apProgress: 0 }); return; }
-    if (i === 2) { this.setState({ stage: 'list', categoryIdx: 0, stepDir: 'none', audioIdx: -1, apPlaying: false, apProgress: 0 }); return; }
-    if (i === 3) { this.setState({ stage: 'detail', duaIdx: 0, audioIdx: -1, apPlaying: false, apProgress: 0, stepDir: 'none' }); return; }
-    if (i === 4) { this.setState({ stage: 'detail', duaIdx: 0, audioIdx: 0, apPlaying: true, apProgress: 4, stepDir: 'none' }); this._startAudio(); return; }
+    const frame = (window.DUA_STORYBOARD_FRAMES || [])[i];
+    if (!frame || frame.isHome) { this.setState({ stage: 'home', stepDir: 'back', audioIdx: -1, apPlaying: false, apProgress: 0 }); return; }
+    const audioOpen = frame.audioIdx != null;
+    this.setState({
+      stage: frame.kind === 'categories' ? 'categories' : frame.kind === 'list' ? 'list' : 'detail',
+      catTab: frame.tab || 'dua', categoryIdx: 0, duaIdx: 0,
+      contentState: frame.state || 'content', favouritesFixture: !!frame.populated,
+      audioIdx: audioOpen ? frame.audioIdx : -1, apPlaying: audioOpen && !frame.audioLoading,
+      apProgress: audioOpen ? 4 : 0, audioLoading: !!frame.audioLoading,
+      audioError: frame.audioError || null, stepDir: 'none'
+    });
+    if (audioOpen && !frame.audioLoading) this._startAudio();
   };
 
   restart = () => { this._stopAudio(); this.setState({
-    stage: 'home', stepDir: 'back', catTab: 'dua', categoryIdx: 0, duaIdx: 0, favorites: {}, audioIdx: -1, apPlaying: false, apProgress: 0
+    stage: 'home', stepDir: 'back', catTab: 'dua', categoryIdx: 0, duaIdx: 0, favorites: {}, audioIdx: -1, apPlaying: false, apProgress: 0, contentState:'content', audioLoading:false, audioError:null, favouritesFixture:false
   }); };
 
   renderVals() {
@@ -245,9 +266,9 @@ class Component extends DCLogic {
     // Map live state → storyboard frame index
     let duaActive = -1;
     if (s.stage === 'home') duaActive = 0;
-    else if (s.stage === 'categories') duaActive = 1;
-    else if (s.stage === 'list') duaActive = 2;
-    else if (s.stage === 'detail') duaActive = s.audioIdx >= 0 ? 4 : 3;
+    else if (s.stage === 'categories') duaActive = s.catTab === 'fav' ? (s.favouritesFixture ? 6 : 5) : ({loading:1,content:2,empty:3,error:4}[s.contentState] ?? 2);
+    else if (s.stage === 'list') duaActive = ({loading:7,content:8,empty:9,error:10}[s.contentState] ?? 8);
+    else if (s.stage === 'detail') duaActive = s.audioError ? 15 : s.audioLoading ? 13 : s.audioIdx >= 0 ? 14 : s.contentState === 'loading' ? 11 : 12;
 
     return {
       isHomeStage: s.stage === 'home',
@@ -262,6 +283,10 @@ class Component extends DCLogic {
       audioIdx: s.audioIdx,
       apPlaying: s.apPlaying,
       apProgress: s.apProgress,
+      contentState: s.contentState,
+      audioLoading: s.audioLoading,
+      audioError: s.audioError,
+      favouriteItems: s.favouritesFixture ? (window.FAVOURITE_ITEMS || []) : [],
       duaActive,
       goCategoriesStage: this.goCategoriesStage,
       goHomeStage: this.goHomeStage,

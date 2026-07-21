@@ -246,21 +246,43 @@
 .rx-popup .em{width:32px;height:32px;font-size:20px;border:none;background:transparent;margin:0;cursor:pointer;transition:transform 200ms cubic-bezier(.34,1.56,.64,1);transform-origin:bottom}
 .rx-popup .em:hover{transform:scale(1.4)}
 
+/* ── Media tile ──
+   Image-led navigation tile used by devotional/content category grids. The
+   image is descriptive only when the title does not already name the target;
+   interactive semantics live on the tile itself. */
+.media-tile{position:relative;width:100%;height:var(--illustration-lg);overflow:hidden;box-sizing:border-box;border:0;border-radius:var(--radius-2xl);padding:0;background:var(--color-surface-secondary);cursor:pointer;text-align:left;color:var(--color-neutral-white);transition:transform var(--motion-press) var(--ease-out)}
+.media-tile img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover}
+.media-tile::after{content:"";position:absolute;inset:0;background:linear-gradient(to bottom,transparent 40%,var(--color-surface-media-scrim) 100%);pointer-events:none}
+.media-tile-label{position:absolute;z-index:1;left:var(--size-xl);right:var(--size-xl);bottom:var(--size-xl);font-family:var(--font-body);font-size:var(--body-m-size);line-height:var(--body-m-lh);font-weight:700;color:var(--color-neutral-white)}
+.media-tile:active{transform:scale(.97)}
+
+/* ── Emphasized list row ──
+   Compact numbered navigation row used by chapter and saved-item indexes. */
+.list-row-emphasized{width:100%;box-sizing:border-box;display:flex;align-items:center;gap:var(--size-lg);min-height:var(--control-h-lg);padding:calc(var(--size-xl) + var(--size-xs)) var(--size-2xl);border:1px solid color-mix(in oklab,var(--color-action-primary) 22%,transparent);border-radius:var(--radius-2xl);background:color-mix(in oklab,var(--color-action-primary) 5%,var(--color-surface-primary));color:var(--color-info-primary);cursor:pointer;text-align:left;transition:background var(--motion-quick) var(--ease-out),transform var(--motion-press) var(--ease-out)}
+.list-row-emphasized-number{width:38px;height:38px;flex-shrink:0;display:flex;align-items:center;justify-content:center;border-radius:var(--radius-circle);background:var(--color-action-primary);font-family:var(--font-body);font-size:var(--body-s-size);font-weight:800;color:var(--color-action-primary-inverse)}
+.list-row-emphasized-body{min-width:0;display:flex;flex:1;flex-direction:column}
+.list-row-emphasized-title{font-family:var(--font-body);font-size:var(--body-m-size);line-height:var(--body-m-lh);font-weight:600;color:var(--color-info-primary)}
+.list-row-emphasized-subtitle{display:-webkit-box;overflow:hidden;margin-top:var(--size-xs);font-family:var(--font-body);font-size:var(--body-s-size);line-height:var(--body-s-lh);color:var(--color-info-secondary);-webkit-line-clamp:2;-webkit-box-orient:vertical}
+@media (hover:hover) and (pointer:fine){.list-row-emphasized:hover{background:color-mix(in oklab,var(--color-action-primary) 9%,var(--color-surface-primary))}}
+.list-row-emphasized:active{transform:scale(.98)}
+
 /* ── Audio player (voice note / announcement) ──
    Pill-shaped player: bare play/pause glyph + tabular time + amplitude
    waveform (+ optional dismiss). Played bars carry .on; the .ap-head playhead
    marks the boundary. Add .dock-top / .dock-bottom to pin it to the viewport
    edge — screens flip between them as the anchor scrolls above/below the fold. */
-.aplayer{display:flex;align-items:center;gap:12px;box-sizing:border-box;padding:8px 16px;min-height:52px;border-radius:16px;background:color-mix(in oklab,var(--color-surface-card) 92%,transparent);border:1px solid color-mix(in oklab,var(--color-action-primary) 22%,transparent);backdrop-filter:blur(20px) saturate(180%);-webkit-backdrop-filter:blur(20px) saturate(180%)}
-.ap-toggle{display:inline-flex;align-items:center;justify-content:center;flex-shrink:0;border:none;background:transparent;cursor:pointer;padding:0;color:var(--color-action-primary)}
-.ap-toggle .mi{font-size:26px}
+.aplayer{display:flex;align-items:center;gap:var(--size-xl);box-sizing:border-box;padding:var(--size-sm) var(--size-md);min-height:calc(var(--control-h-lg) + var(--size-md));border-radius:var(--radius-2xl);background:color-mix(in oklab,var(--color-surface-card) 92%,transparent);border:1px solid color-mix(in oklab,var(--color-action-primary) 22%,transparent);backdrop-filter:blur(20px) saturate(180%);-webkit-backdrop-filter:blur(20px) saturate(180%)}
+.ap-toggle,.ap-close{width:var(--control-h-lg);height:var(--control-h-lg);display:inline-flex;align-items:center;justify-content:center;flex-shrink:0;border:none;background:transparent;cursor:pointer;padding:0;border-radius:var(--radius-circle);transition:background var(--motion-quick) var(--ease-out),transform var(--motion-press) var(--ease-out)}
+.ap-toggle{color:var(--color-action-primary)}
+.ap-toggle .mi{font-size:var(--icon-md)}
 .ap-time{flex-shrink:0;min-width:44px;font-family:var(--font-body);font-size:15px;font-weight:500;color:var(--color-info-primary);font-variant-numeric:tabular-nums;letter-spacing:.02em}
 .ap-wave{position:relative;flex:1;min-width:0;display:flex;align-items:center;gap:2px;height:32px}
 .ap-wave i{flex:1;min-width:1.5px;max-width:3px;height:var(--h,40%);background:var(--color-status-disabled-alt);border-radius:2px;transition:background 120ms}
 .ap-wave i.on{background:var(--color-action-primary)}
 .ap-head{position:absolute;top:0;bottom:0;width:2px;border-radius:2px;background:var(--color-action-primary);box-shadow:0 0 6px color-mix(in oklab,var(--color-action-primary) 60%,transparent);transform:translateX(-50%);transition:left 120ms linear}
-.ap-close{flex-shrink:0;color:var(--color-info-secondary);cursor:pointer;background:none;border:none;padding:0;display:inline-flex}
-.ap-close .mi{font-size:20px}
+.ap-close{color:var(--color-info-secondary)}
+.ap-close .mi{font-size:var(--icon-md)}
+.ap-toggle:active,.ap-close:active{transform:scale(.96);background:color-mix(in oklab,currentColor 8%,transparent)}
 /* Docking — pins to the top or bottom edge as the page scrolls past the anchor */
 .aplayer.dock-top,.aplayer.dock-bottom{position:absolute;left:12px;right:12px;z-index:40}
 .aplayer.dock-top{top:12px;box-shadow:0 8px 24px -12px rgba(9,9,11,.35)}
