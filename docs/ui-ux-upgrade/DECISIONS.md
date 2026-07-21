@@ -321,6 +321,7 @@ This is a redesign-preserve pass for a high-frequency devotional reader. Noor's 
 | Reader favourite/share actions are small glyph hit areas and Share is inert | Use labelled full-size icon buttons and wire the POC share callback | Frequent actions must be discoverable, reachable, and behaviorally represented |
 | Audio play/close targets are 26px/20px and the waveform has no range semantics | Keep 24px glyphs inside 48px targets and expose waveform progress semantics | Visual compactness cannot come at the cost of touch or assistive access |
 | Route movement uses a raw 350ms duration in both directions | Use Noor standard entry, faster exit, and no positional travel under reduced motion | Motion explains navigation without making repeated reading feel slow |
+| Chapter selection loses its spatial identity when the reader replaces the list | Carry the selected chapter title into the reader app bar with a stable chapter identifier | The transition explains where the reader came from without animating the full high-frequency content surface |
 
 #### Motion specification
 
@@ -328,6 +329,7 @@ This is a redesign-preserve pass for a high-frequency devotional reader. Noor's 
 | --- | --- | --- | --- | --- |
 | Forward/back route handoff | Preserve hierarchy and direction | Standard enter; faster exit; Noor ease-out | A new route replaces the current transition | No positional travel |
 | Category label to Chapters title | Preserve the selected category's identity across destinations | Native shared-bounds/view transition with Noor emphasized timing and ease-out | Back or a new destination retargets the platform transition | Immediate title replacement with no bounds travel |
+| Chapter row title to reader title | Preserve spatial continuity into the selected devotional reader | Native shared-bounds/view transition with Noor emphasized timing and ease-out | Back or a different route retargets immediately | Immediate title replacement with no bounds travel |
 | Category tab pager | Preserve spatial relationship between Du'a and Favourites | Noor quick/standard pager behavior | New selection retargets immediately | Snap to page |
 | Audio dock | Prevent a jarring overlay appearance | Standard enter, faster exit | Close or new playback retargets immediately | Fade/no travel |
 | Loading | Communicate unresolved data | Static final-shape reference; Compose shimmer only while unresolved | Resolution replaces geometry in place | Static placeholders with progress semantics |

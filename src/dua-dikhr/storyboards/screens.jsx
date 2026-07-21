@@ -179,7 +179,7 @@ function DuaListScreen({ categoryName = 'All', categorySlug = 'all', state = 'co
             DUA_LIST.map((title, i) => (
               <button key={title} className="list-row-emphasized" onClick={() => onSelectDua && onSelectDua(i)}>
                 <span className="list-row-emphasized-number">{i + 1}</span>
-                <span className="list-row-emphasized-body"><span className="list-row-emphasized-title">{title}</span></span>
+                <span className="list-row-emphasized-body"><span className="list-row-emphasized-title" style={{ viewTransitionName: `dua-chapter-${i + 1}` }}>{title}</span></span>
               </button>
             ))}
         </div>
@@ -193,6 +193,7 @@ function DuaListScreen({ categoryName = 'All', categorySlug = 'all', state = 'co
 
 // 3. DUA DETAIL — reader with favourite/share/play + docked audio player (.aplayer)
 function DuaDetailScreen({
+  chapterId = 1,
   title = 'When waking up',
   favorites = {},
   onToggleFav,
@@ -247,7 +248,7 @@ function DuaDetailScreen({
         })}
       </div>
 
-      <AppBar title={title} onBack={onBack} />
+      <AppBar title={title} onBack={onBack} titleTransitionName={`dua-chapter-${chapterId}`} />
 
       {/* Docked audio player — DS .aplayer molecule pinned to the bottom edge */}
       {audioOpen && (

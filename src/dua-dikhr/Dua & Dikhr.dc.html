@@ -130,6 +130,7 @@
         <sc-if value="{{ isDetailStage }}">
           <div class="{{ stepAnim }}" style="position:absolute;inset:0">
             <x-import component="DuaDetailScreen" from="./storyboards/screens.jsx"
+                      chapter-id="{{ chapterId }}"
                       title="{{ duaTitle }}"
                       favorites="{{ favorites }}"
                       audio-idx="{{ audioIdx }}"
@@ -226,8 +227,27 @@ class Component extends DCLogic {
     this.setState({ stage: 'categories', stepDir });
   }, 'back');
 
-  openDua = (i) => { this._stopAudio(); this.setState({ stage: 'detail', duaIdx: i, audioIdx: -1, apPlaying: false, apProgress: 0, stepDir: 'fwd' }); };
-  goListBack = () => { this._stopAudio(); this.setState({ stage: 'list', audioIdx: -1, apPlaying: false, apProgress: 0, stepDir: 'back' }); };
+  _transitionChapter = (update, fallbackDirection) => {
+    const reduced = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    if (!reduced && document.startViewTransition) {
+      document.startViewTransition(() => update('none'));
+    } else {
+      update(reduced ? 'none' : fallbackDirection);
+    }
+  };
+
+  openDua = (i) => {
+    this._stopAudio();
+    this._transitionChapter((stepDir) => {
+      this.setState({ stage: 'detail', duaIdx: i, audioIdx: -1, apPlaying: false, apProgress: 0, stepDir });
+    }, 'fwd');
+  };
+  goListBack = () => {
+    this._stopAudio();
+    this._transitionChapter((stepDir) => {
+      this.setState({ stage: 'list', audioIdx: -1, apPlaying: false, apProgress: 0, stepDir });
+    }, 'back');
+  };
 
   toggleFav = (i) => this.setState(s => ({ favorites: { ...s.favorites, [i]: !s.favorites[i] } }));
 
@@ -295,6 +315,7 @@ class Component extends DCLogic {
       catTab: s.catTab,
       categoryName,
       categorySlug,
+      chapterId: s.duaIdx + 1,
       duaTitle,
       favorites: s.favorites,
       audioIdx: s.audioIdx,

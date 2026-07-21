@@ -56,6 +56,7 @@ function DuaRow({ active = -1, onSelectFrame }) {
             const playing = f.audioIdx != null;
             screenContent = DuaDetailScreen && (
               <DuaDetailScreen
+                chapterId={1}
                 title="When waking up"
                 favorites={{}}
                 audioIdx={playing ? f.audioIdx : -1}
