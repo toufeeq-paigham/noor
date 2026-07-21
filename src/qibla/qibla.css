@@ -1,0 +1,7 @@
+.qibla-recovery{position:relative;width:100%;height:100%;box-sizing:border-box;display:flex;flex-direction:column;background:var(--color-surface-primary);padding:var(--size-max) var(--size-huge)}
+.qibla-recovery-content{flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center}
+.qibla-recovery-icon{width:var(--illustration-sm);height:var(--illustration-sm);display:flex;align-items:center;justify-content:center;border-radius:var(--radius-circle);background:var(--color-surface-secondary);color:var(--color-status-warning)}
+.qibla-recovery-icon .mi{font-size:var(--icon-lg)}
+.qibla-recovery-title{max-width:calc(var(--illustration-lg) * 2);margin-top:var(--size-2xl);font-family:var(--font-title);font-size:var(--title-h2-size);line-height:var(--title-h2-lh);color:var(--color-info-primary)}
+.qibla-recovery-body{max-width:calc(var(--illustration-lg) * 2);margin-top:var(--size-xl);font-family:var(--font-body);font-size:var(--body-m-size);line-height:var(--body-m-lh);color:var(--color-info-secondary)}
+.qibla-recovery .btn{width:100%;flex-shrink:0}

@@ -174,10 +174,40 @@ function InitialQiblaScreen({ showPermission = true, permissionState, qiblaRel =
         <div style={{ flexShrink: 0, padding: '0 24px 44px', textAlign: 'center' }}>
           <span style={{ display: 'inline-flex', alignItems: 'center', gap: 8, fontFamily: FONT_B, fontSize: 14, fontWeight: 600, color: 'var(--color-info-secondary)' }}>
             <span className="mi" style={{ fontSize: 18, color: 'var(--color-action-primary)' }} data-i="my_location"></span>
-            Finding your location…
+            Preparing guided Qibla…
           </span>
         </div>
       )}
+      <QiblaTopBar onClose={onClose} />
+    </div>
+  );
+}
+
+// Stable recovery when the route cannot obtain the data needed to start the guided finder.
+// This is intentionally motion-free: recovery should be immediately understandable and actionable.
+function RecoveryQiblaScreen({ reason = 'location', onRetry, onClose }) {
+  const copy = reason === 'sensors'
+    ? {
+        icon: 'sensors',
+        title: 'Qibla sensors are unavailable',
+        body: 'This device is not reporting the compass or motion data needed for guided alignment.',
+      }
+    : {
+        icon: 'location_off',
+        title: "We couldn't find your location",
+        body: 'Check location services and try again from a place with a clear signal.',
+      };
+
+  return (
+    <div className="qibla-recovery">
+      <div className="qibla-recovery-content" role="status" aria-live="polite">
+        <div className="qibla-recovery-icon" aria-hidden="true">
+          <span className="mi" data-i={copy.icon}></span>
+        </div>
+        <div className="qibla-recovery-title">{copy.title}</div>
+        <div className="qibla-recovery-body">{copy.body}</div>
+      </div>
+      <button className="btn btn-filled lg" onClick={onRetry}>Try again</button>
       <QiblaTopBar onClose={onClose} />
     </div>
   );
@@ -259,4 +289,4 @@ function SmartQiblaScreen({ stage = 'searching', onClose, onPointQibla, onLayFla
   );
 }
 
-Object.assign(window, { CompassDial, InitialQiblaScreen, SmartQiblaScreen });
+Object.assign(window, { CompassDial, InitialQiblaScreen, RecoveryQiblaScreen, SmartQiblaScreen });

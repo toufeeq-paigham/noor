@@ -513,3 +513,37 @@ No route, field order, navigation label, persistence contract, or analytics-sens
 | Qibla direction hint | Explain which way to turn | Existing token sweep; heading updates remain interruptible | Sensor changes retarget on the next frame | Static direction arrow and snapped heading |
 
 No route, repository, backend, analytics, onboarding branch, or follow-persistence behavior changed in this governance pass. Physical camera, map, location, and compass evidence remains part of the user-run device certification.
+
+## Qibla recovery completion - 2026-07-21
+
+Reading this as a redesign-preserve pass for an occasional physical guidance tool. The dark compass instrument, emerald alignment state, camera handoff, Kaaba artwork, close action, and restrained direction feedback remain authoritative. The working dials remain `DESIGN_VARIANCE: 4`, `MOTION_INTENSITY: 3`, and `VISUAL_DENSITY: 5`.
+
+| Before | After | Why |
+| --- | --- | --- |
+| The parity ledger required sensor failure, but Noor exposed only seven permission, locating, and AR frames | Add separate location-unavailable and sensor-unavailable specifications for nine complete states | The approved design must include the recovery behavior it asks Compose to implement |
+| A failed location read could leave the route indefinitely on the locating presentation | Replace unresolved waiting with a stable location recovery screen and one `Try again` action | Loading must end in success or an actionable failure |
+| Sensor availability and stream failure had no visible contract | Specify a motion-free sensor recovery screen with the same hierarchy and action placement as location recovery | A device capability failure must remain understandable without implying that the camera or compass is active |
+| AR could be entered before a real compass reading, and a legitimate north-facing `0°` value could be treated as missing | Require an explicit reading flag rather than inferring validity from non-zero numbers | Zero is valid sensor data; absence must be represented directly |
+| Permanent camera denial could reuse location-services copy | Use the denied permission's own recovery description | Error copy must state the actual cause and repair |
+| The transient status said only `Finding your location…` while the route could also be waiting for sensor initialization | Use `Preparing guided Qibla…` until location and a real compass reading are both available | The status remains truthful through the complete initialization boundary |
+
+### UX Pro Max checklist
+
+- Permission request, settings recovery, location retry, sensor retry, AR close, and visible AR guidance all have descriptive control labels.
+- Stable recovery is separate from loading and uses a single primary action; it does not rely on warning color alone.
+- The retry action retains Noor's 48dp control contract, while the close action remains in the safe app-bar region.
+- AR remains gated by current location, both permissions, hardware availability, and a real compass reading.
+- A location of `0,0`, a Qibla bearing of `0°`, and a compass heading of `0°` remain valid values once a reading exists.
+- Recovery copy wraps, uses semantic typography and colors, and is bounded for larger windows without screen-owned geometry.
+- Physical sensor, camera, permission, largest-text, landscape, and light/dark evidence remain part of the delegated device pass.
+
+### Motion and interaction specification
+
+| Interaction | Purpose | Timing / easing | Interruption | Reduced motion |
+| --- | --- | --- | --- | --- |
+| Retry initialization | Acknowledge recovery and return to unresolved preparation | Immediate state replacement; no decorative entrance | Close or a new capability result replaces it | Identical static replacement |
+| Compass heading | Track live physical direction | Existing interruptible sensor interpolation using Noor press timing | Every new reading retargets the heading | Snap to the latest reading |
+| Direction hint | Explain which way to turn | Existing Noor-governed opacity pulse | Alignment, recovery, or route exit removes it immediately | Static direction arrow |
+| Recovery screen | Explain a stable inability to start | No animation | Retry or Close acts immediately | Identical static presentation |
+
+The route, permission order, sensor calculations, haptic threshold, camera contract, and navigation destination remain unchanged. This pass completes previously claimed recovery behavior rather than adding a new product branch.

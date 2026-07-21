@@ -8,10 +8,12 @@ const SETUP_FRAMES = [
   { name: 'Permission denied', permissionState: 'denied', qiblaRel: 300 },
   { name: 'Location services off', permissionState: 'services', qiblaRel: 300 },
   { name: 'Acquiring location', permissionState: 'locating', qiblaRel: 300 },
+  { name: 'Location unavailable', recoveryReason: 'location' },
+  { name: 'Sensors unavailable', recoveryReason: 'sensors' },
 ];
 
 function SetupRow({ active = -1, onSelectFrame }) {
-  const { InitialQiblaScreen } = window;
+  const { InitialQiblaScreen, RecoveryQiblaScreen } = window;
   return (
     <div>
       <div className="poc-row-label"><span className="mi" data-i="security"></span> 01 · Setup — request · recovery · locating · {SETUP_FRAMES.length} states</div>
@@ -24,7 +26,9 @@ function SetupRow({ active = -1, onSelectFrame }) {
                 <div className="noor-frame-inner">
                   <div className="noor-screen">
                     <div className="noor-island"></div>
-                    {InitialQiblaScreen && <InitialQiblaScreen permissionState={f.permissionState} qiblaRel={f.qiblaRel} />}
+                    {f.recoveryReason
+                      ? RecoveryQiblaScreen && <RecoveryQiblaScreen reason={f.recoveryReason} />
+                      : InitialQiblaScreen && <InitialQiblaScreen permissionState={f.permissionState} qiblaRel={f.qiblaRel} />}
                     <div className="noor-home"></div>
                   </div>
                 </div>

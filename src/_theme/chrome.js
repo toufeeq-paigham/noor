@@ -88,7 +88,7 @@
       { name: 'Find Sehri', file: 'sehri/Sehri.dc.html#map', icon: 'restaurant', meta: 'Section board · Home → permission → map · list · 5 states' },
       { name: 'Dua & Dikhr', file: 'dua-dikhr/Dua & Dikhr.dc.html#categories', icon: 'volunteer_activism', meta: 'Section board · Hisnul Muslim · 5 states' },
       { name: 'Asma ul Husna', file: 'asma-ul-husna/Asma ul Husna.dc.html', icon: 'auto_awesome', meta: 'Section board · 99 names · search · detail · 9 states' },
-      { name: 'Qibla', file: 'qibla/Qibla.dc.html#permissions', icon: 'explore', meta: 'Section board · permissions → AR compass · 5 states' },
+      { name: 'Qibla', file: 'qibla/Qibla.dc.html#permissions', icon: 'explore', meta: 'Section board · permissions → recovery → AR compass · 9 states' },
       { name: 'Hijri', file: 'hijri/Hijri.dc.html', icon: 'calendar_month', meta: 'Section board · month grid · 3 states' },
       { name: 'Zakaat', file: 'zakaat/Zakaat.dc.html', icon: 'savings', meta: 'Section board · 6-step calculator' }
     ]}
