@@ -50,7 +50,7 @@ function DuaRow({ active = -1, onSelectFrame }) {
             screenContent = CategoriesScreen && <CategoriesScreen activeTab={f.tab || 'dua'} state={f.state || 'content'} favourites={f.populated ? window.FAVOURITE_ITEMS : []} />;
           } else if (f.kind === 'list') {
             const { DuaListScreen } = window;
-            screenContent = DuaListScreen && <DuaListScreen categoryName="All" state={f.state || 'content'} />;
+            screenContent = DuaListScreen && <DuaListScreen categoryName="All" categorySlug="all" state={f.state || 'content'} />;
           } else {
             const { DuaDetailScreen } = window;
             const playing = f.audioIdx != null;

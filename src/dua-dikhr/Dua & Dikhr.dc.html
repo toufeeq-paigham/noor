@@ -25,6 +25,7 @@
     @keyframes stepback { from{transform:translateX(-28px);opacity:0} to{transform:translateX(0);opacity:1} }
     .step-fwd { animation:stepin var(--motion-standard) var(--ease-out) }
     .step-back { animation:stepback var(--motion-exit) var(--ease-out) }
+    ::view-transition-group(*) { animation-duration:var(--motion-emphasized);animation-timing-function:var(--ease-out) }
 
     /* Dua layout classes (shared between live prototype and static frames) */
     .dua-list-stack{display:flex;flex-direction:column;gap:var(--size-md)}
@@ -41,7 +42,7 @@
     .dua-en{font-family:var(--font-body);font-size:14px;color:var(--color-info-secondary);margin-bottom:8px;line-height:1.6}
     .dua-src{font-family:var(--font-body);font-size:11px;color:var(--color-info-faint);margin-bottom:14px;line-height:1.5}
     .dua-acts{display:flex;align-items:center;gap:16px}
-    @media (prefers-reduced-motion:reduce){.step-fwd,.step-back{animation:none}}
+    @media (prefers-reduced-motion:reduce){.step-fwd,.step-back{animation:none}::view-transition-group(*){animation-duration:0ms}}
   </style>
 </helmet>
 
@@ -116,6 +117,7 @@
           <div class="{{ stepAnim }}" style="position:absolute;inset:0">
             <x-import component="DuaListScreen" from="./storyboards/screens.jsx"
                       category-name="{{ categoryName }}"
+                      category-slug="{{ categorySlug }}"
                       state="{{ contentState }}"
                       on-select-dua="{{ openDua }}"
                       on-back="{{ goCategoriesBack }}"
@@ -204,12 +206,25 @@ class Component extends DCLogic {
 
   selectTab = (tab) => this.setState({ catTab: tab });
 
+  _transitionCategory = (update, fallbackDirection) => {
+    const reduced = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    if (!reduced && document.startViewTransition) {
+      document.startViewTransition(() => update('none'));
+    } else {
+      update(reduced ? 'none' : fallbackDirection);
+    }
+  };
+
   openCategory = (slug) => {
     const cats = window.DUA_CATEGORIES || [];
     const index = cats.findIndex(c => c.slug === slug);
-    this.setState({ stage: 'list', categoryIdx: index >= 0 ? index : 0, contentState: 'content', stepDir: 'fwd' });
+    this._transitionCategory((stepDir) => {
+      this.setState({ stage: 'list', categoryIdx: index >= 0 ? index : 0, contentState: 'content', stepDir });
+    }, 'fwd');
   };
-  goCategoriesBack = () => this.setState({ stage: 'categories', stepDir: 'back' });
+  goCategoriesBack = () => this._transitionCategory((stepDir) => {
+    this.setState({ stage: 'categories', stepDir });
+  }, 'back');
 
   openDua = (i) => { this._stopAudio(); this.setState({ stage: 'detail', duaIdx: i, audioIdx: -1, apPlaying: false, apProgress: 0, stepDir: 'fwd' }); };
   goListBack = () => { this._stopAudio(); this.setState({ stage: 'list', audioIdx: -1, apPlaying: false, apProgress: 0, stepDir: 'back' }); };
@@ -260,6 +275,7 @@ class Component extends DCLogic {
     const CATS = window.DUA_CATEGORIES || [];
     const LIST = window.DUA_LIST || [];
     const categoryName = (CATS[s.categoryIdx] && CATS[s.categoryIdx].name) || 'All';
+    const categorySlug = (CATS[s.categoryIdx] && CATS[s.categoryIdx].slug) || 'all';
     // Reader always shows the "When waking up" content; title tracks the tapped chapter.
     const duaTitle = LIST[s.duaIdx] || 'When waking up';
 
@@ -278,6 +294,7 @@ class Component extends DCLogic {
       stepAnim: s.stepDir === 'fwd' ? 'step-fwd' : s.stepDir === 'back' ? 'step-back' : '',
       catTab: s.catTab,
       categoryName,
+      categorySlug,
       duaTitle,
       favorites: s.favorites,
       audioIdx: s.audioIdx,

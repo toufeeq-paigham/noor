@@ -327,6 +327,7 @@ This is a redesign-preserve pass for a high-frequency devotional reader. Noor's 
 | Interaction | Purpose | Timing / easing | Interruption | Reduced motion |
 | --- | --- | --- | --- | --- |
 | Forward/back route handoff | Preserve hierarchy and direction | Standard enter; faster exit; Noor ease-out | A new route replaces the current transition | No positional travel |
+| Category label to Chapters title | Preserve the selected category's identity across destinations | Native shared-bounds/view transition with Noor emphasized timing and ease-out | Back or a new destination retargets the platform transition | Immediate title replacement with no bounds travel |
 | Category tab pager | Preserve spatial relationship between Du'a and Favourites | Noor quick/standard pager behavior | New selection retargets immediately | Snap to page |
 | Audio dock | Prevent a jarring overlay appearance | Standard enter, faster exit | Close or new playback retargets immediately | Fade/no travel |
 | Loading | Communicate unresolved data | Static final-shape reference; Compose shimmer only while unresolved | Resolution replaces geometry in place | Static placeholders with progress semantics |

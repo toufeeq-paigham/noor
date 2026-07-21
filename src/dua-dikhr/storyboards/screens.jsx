@@ -106,7 +106,7 @@ function fmtTime(sec) {
 // Content scrolls UNDER it; the ::before mask fades the blur out toward the bottom edge.
 const APPBAR_H = 96;        // title-only bar
 const APPBAR_H_TABS = 150;  // title bar + pinned tab row
-function AppBar({ title, onBack, tabs }) {
+function AppBar({ title, onBack, tabs, titleTransitionName }) {
   // With `tabs`, the tab row is pinned INSIDE the app bar (never scrolls);
   // the .app-bar children stay crisp while the ::before blur haze fades behind them.
   return (
@@ -115,7 +115,7 @@ function AppBar({ title, onBack, tabs }) {
         <button className="ib ib-tonal md" onClick={onBack} aria-label="Back">
           <span className="mi" data-i="arrow_back"></span>
         </button>
-        <div className="ab-title">{title}</div>
+        <div className="ab-title" style={titleTransitionName ? { viewTransitionName: titleTransitionName } : undefined}>{title}</div>
       </div>
       {tabs ? <div style={{ marginTop: 12 }}>{tabs}</div> : null}
     </div>
@@ -152,7 +152,7 @@ function CategoriesScreen({ activeTab = 'dua', state = 'content', favourites = [
               {DUA_CATEGORIES.map((c) => (
                 <button key={c.slug} className="media-tile" onClick={() => onSelectCategory && onSelectCategory(c.slug)} aria-label={`Open ${c.name} duas`}>
                   <img src={c.image} alt="" />
-                  <span className="media-tile-label">{c.name}</span>
+                  <span className="media-tile-label" style={{ viewTransitionName: `dua-category-${c.slug}` }}>{c.name}</span>
                 </button>
               ))}
             </div>
@@ -167,7 +167,7 @@ function CategoriesScreen({ activeTab = 'dua', state = 'content', favourites = [
 }
 
 // 2. DUA LIST — numbered chapter list
-function DuaListScreen({ categoryName = 'All', state = 'content', onSelectDua, onRetry, onBack }) {
+function DuaListScreen({ categoryName = 'All', categorySlug = 'all', state = 'content', onSelectDua, onRetry, onBack }) {
   return (
     <div style={{ position: 'relative', width: '100%', height: '100%', overflow: 'hidden', background: 'var(--color-surface-primary)' }}>
 
@@ -185,7 +185,7 @@ function DuaListScreen({ categoryName = 'All', state = 'content', onSelectDua, o
         </div>
       </div>
 
-      <AppBar title={categoryName} onBack={onBack} />
+      <AppBar title={categoryName} onBack={onBack} titleTransitionName={`dua-category-${categorySlug}`} />
       {state === 'error' ? <ErrorSheet onRetry={onRetry} /> : null}
     </div>
   );
