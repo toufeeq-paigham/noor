@@ -100,7 +100,7 @@ function ZakaatEmptyScreen({ onCalculate, onBack }) {
 }
 
 // ── Zakaat List Screen ────────────────────────────────────────────────────────
-function ZakaatListScreen({ records = [], onCalculate, onEdit, onDelete, onBack }) {
+function ZakaatListScreen({ records = [], onCalculate, onOpen, onEdit, onDelete, onBack }) {
   return (
     <div style={{ width: '100%', height: '100%', display: 'flex', flexDirection: 'column', background: 'var(--color-surface-primary)', overflow: 'hidden', position: 'relative' }}>
       {/* AppBar */}
@@ -139,6 +139,16 @@ function ZakaatListScreen({ records = [], onCalculate, onEdit, onDelete, onBack 
               {/* Sliding Card Content Layer */}
               <div
                 className={isFirst ? "zakaat-swipe-hint" : ""}
+                role="button"
+                tabIndex={0}
+                aria-label={`Open ${r.name} summary`}
+                onClick={() => onOpen && onOpen(r)}
+                onKeyDown={(event) => {
+                  if (event.key === 'Enter' || event.key === ' ') {
+                    event.preventDefault();
+                    onOpen && onOpen(r);
+                  }
+                }}
                 style={{
                   position: 'relative',
                   zIndex: 2,
@@ -149,7 +159,9 @@ function ZakaatListScreen({ records = [], onCalculate, onEdit, onDelete, onBack 
                   display: 'flex',
                   alignItems: 'center',
                   justifyContent: 'space-between',
-                  transition: 'transform 0.3s ease'
+                  transition: 'transform var(--motion-standard) var(--ease-out)',
+                  viewTransitionName: `zakaat-record-${r.id}`,
+                  cursor: 'pointer'
                 }}
               >
                 <div>
@@ -162,7 +174,10 @@ function ZakaatListScreen({ records = [], onCalculate, onEdit, onDelete, onBack 
                 </div>
                 {onEdit && (
                   <button
-                    onClick={() => onEdit(r)}
+                    onClick={(event) => {
+                      event.stopPropagation();
+                      onEdit(r);
+                    }}
                     className="ib ib-tonal sm"
                     style={{
                       width: 36,
@@ -498,7 +513,7 @@ function ZakaatStepScreen({
 }
 
 // ── Zakaat Summary Screen ────────────────────────────────────────────────────
-function ZakaatSummaryScreen({ values = {}, onBack, onSave }) {
+function ZakaatSummaryScreen({ values = {}, onBack, onSave, titleTransitionName }) {
   // Parsing inputs
   const parseVal = (v) => parseFloat(v || 0);
 
@@ -571,7 +586,11 @@ function ZakaatSummaryScreen({ values = {}, onBack, onSave }) {
       <div style={{ position: 'absolute', inset: '110px 0 0 0', overflowY: 'auto', WebkitOverflowScrolling: 'touch', padding: '16px 16px 40px' }}>
         
         {/* Due amount header */}
-        <div style={{ textAlign: 'center', padding: '20px 0 24px' }}>
+        <div style={{
+          textAlign: 'center',
+          padding: '20px 0 24px',
+          viewTransitionName: titleTransitionName || 'none'
+        }}>
           <div style={{ fontFamily: 'var(--font-body)', fontSize: 14, color: 'var(--color-info-secondary)', marginBottom: 6 }}>
             Zakaat Due
           </div>

@@ -22,6 +22,8 @@
     @keyframes stepback { from{transform:translateX(-28px);opacity:0} to{transform:translateX(0);opacity:1} }
     .step-fwd { animation:stepin .35s cubic-bezier(.2,.8,.2,1) }
     .step-back { animation:stepback .35s cubic-bezier(.2,.8,.2,1) }
+    ::view-transition-group(*) { animation-duration:var(--motion-emphasized);animation-timing-function:var(--ease-out) }
+    @media (prefers-reduced-motion:reduce){.step-fwd,.step-back{animation:none}::view-transition-group(*){animation-duration:0ms}}
   </style>
 </helmet>
 
@@ -101,6 +103,7 @@
             <x-import component="ZakaatListScreen" from="./storyboards/screens.jsx"
                       records="{{ records }}"
                       on-calculate="{{ startCalculating }}"
+                      on-open="{{ openRecord }}"
                       on-edit="{{ editRecord }}"
                       on-back="{{ goHome }}"
                       hint-size="100%,100%">
@@ -141,7 +144,8 @@
             <x-import component="ZakaatSummaryScreen" from="./storyboards/screens.jsx"
                       values="{{ values }}"
                       on-back="{{ goBack }}"
-                      on-save="{{ saveRecord }}"
+                      on-save="{{ summarySave }}"
+                      title-transition-name="{{ summaryTransitionName }}"
                       hint-size="100%,100%">
             </x-import>
           </div>
@@ -163,6 +167,8 @@ class Component extends DCLogic {
     stepDir: 'fwd',
     records: [],
     editingRecordId: null,
+    summaryRecordId: null,
+    summaryOrigin: 'step',
     values: {
       gold: '', silver: '',
       cash: '', bank: '',
@@ -187,8 +193,31 @@ class Component extends DCLogic {
       stepNum: 1,
       activeField: null,
       stepDir: 'fwd',
-      editingRecordId: record.id
+      editingRecordId: record.id,
+      summaryRecordId: null,
+      summaryOrigin: 'step'
     });
+  };
+
+  transitionState = (update) => {
+    const reduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    if (!reduced && document.startViewTransition) {
+      document.startViewTransition(update);
+    } else {
+      update();
+    }
+  };
+
+  openRecord = (record) => {
+    this.transitionState(() => this.setState({
+      stage: 'summary',
+      values: { ...record.values },
+      editingRecordId: null,
+      summaryRecordId: record.id,
+      summaryOrigin: 'list',
+      activeField: null,
+      stepDir: 'none'
+    }));
   };
 
   selectField = (key) => {
@@ -228,7 +257,13 @@ class Component extends DCLogic {
       if (s.stepNum < 6) {
         return { stepNum: s.stepNum + 1, activeField: null, stepDir: 'fwd' };
       } else {
-        return { stage: 'summary', activeField: null, stepDir: 'fwd' };
+        return {
+          stage: 'summary',
+          activeField: null,
+          stepDir: 'fwd',
+          summaryRecordId: null,
+          summaryOrigin: 'step'
+        };
       }
     });
   };
@@ -243,6 +278,15 @@ class Component extends DCLogic {
   };
 
   goBack = () => {
+    if (this.state.stage === 'summary' && this.state.summaryOrigin === 'list') {
+      this.transitionState(() => this.setState({
+        stage: 'list',
+        summaryRecordId: null,
+        summaryOrigin: 'step',
+        stepDir: 'none'
+      }));
+      return;
+    }
     this.setState(s => {
       if (s.stage === 'summary') {
         return { stage: 'step', stepNum: 6, stepDir: 'back' };
@@ -341,6 +385,8 @@ class Component extends DCLogic {
         records: updatedRecords,
         stage: 'list',
         editingRecordId: null,
+        summaryRecordId: null,
+        summaryOrigin: 'step',
         stepNum: 1,
         activeField: null,
         stepDir: 'back',
@@ -363,6 +409,8 @@ class Component extends DCLogic {
       activeField: null,
       stepDir: 'back',
       editingRecordId: null,
+      summaryRecordId: null,
+      summaryOrigin: 'step',
       values: {
         gold: '', silver: '',
         cash: '', bank: '',
@@ -392,12 +440,14 @@ class Component extends DCLogic {
         stepDir: 'fwd'
       });
     } else if (i === 10) {
-      this.setState({ stage: 'summary', values: {}, stepDir: 'fwd' });
+      this.setState({ stage: 'summary', values: {}, stepDir: 'fwd', summaryRecordId: null, summaryOrigin: 'step' });
     } else if (i === 11) {
       this.setState({
         stage: 'summary',
         values: { gold: '10', silver: '500', cash: '25000', bank: '45000', stocks: '15000', debts: '5000' },
-        stepDir: 'fwd'
+        stepDir: 'fwd',
+        summaryRecordId: null,
+        summaryOrigin: 'step'
       });
     }
   };
@@ -434,9 +484,14 @@ class Component extends DCLogic {
       stepNum: s.stepNum,
       activeField: s.activeField,
       values: s.values,
+      summarySave: s.summaryOrigin === 'step' ? this.saveRecord : null,
+      summaryTransitionName: s.summaryOrigin === 'list' && s.summaryRecordId != null
+        ? `zakaat-record-${s.summaryRecordId}`
+        : 'none',
       stepAnim: s.stepDir === 'fwd' ? 'step-fwd' : s.stepDir === 'back' ? 'step-back' : '',
       startCalculating: this.startCalculating,
       editRecord: this.editRecord,
+      openRecord: this.openRecord,
       selectField: this.selectField,
       closeKeypad: this.closeKeypad,
       handleKeyPress: this.handleKeyPress,

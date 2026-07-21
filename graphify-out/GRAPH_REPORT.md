@@ -1,16 +1,16 @@
-# Graph Report - noor  (2026-07-18)
+# Graph Report - noor  (2026-07-21)
 
 ## Corpus Check
-- 62 files · ~221,907 words
+- 64 files · ~279,999 words
 - Verdict: corpus is large enough that graph structure adds value.
 
 ## Summary
-- 707 nodes · 728 edges · 68 communities (32 shown, 36 thin omitted)
+- 851 nodes · 873 edges · 80 communities (45 shown, 35 thin omitted)
 - Extraction: 100% EXTRACTED · 0% INFERRED · 0% AMBIGUOUS
 - Token cost: 0 input · 0 output
 
 ## Graph Freshness
-- Built from commit: `fbe3d34c`
+- Built from commit: `8d8a3d09`
 - Run `git rev-parse HEAD` and compare to check if the graph is stale.
 - Run `graphify update .` after code changes (no API cost).
 
@@ -80,18 +80,30 @@
 - [[_COMMUNITY_Community 65|Community 65]]
 - [[_COMMUNITY_Community 66|Community 66]]
 - [[_COMMUNITY_Community 67|Community 67]]
+- [[_COMMUNITY_Community 68|Community 68]]
+- [[_COMMUNITY_Community 69|Community 69]]
+- [[_COMMUNITY_Community 70|Community 70]]
+- [[_COMMUNITY_Community 71|Community 71]]
+- [[_COMMUNITY_Community 72|Community 72]]
+- [[_COMMUNITY_Community 73|Community 73]]
+- [[_COMMUNITY_Community 74|Community 74]]
+- [[_COMMUNITY_Community 75|Community 75]]
+- [[_COMMUNITY_Community 76|Community 76]]
+- [[_COMMUNITY_Community 77|Community 77]]
+- [[_COMMUNITY_Community 78|Community 78]]
+- [[_COMMUNITY_Community 79|Community 79]]
 
 ## God Nodes (most connected - your core abstractions)
-1. `tokenKinds` - 141 edges
-2. `Agent Behavior` - 13 edges
+1. `tokenKinds` - 187 edges
+2. `Noor UI/UX Upgrade Decisions` - 17 edges
 3. `Agent Behavior` - 13 edges
-4. `Visual foundations` - 13 edges
-5. `Add a section board to the Noor POC` - 9 edges
+4. `Agent Behavior` - 13 edges
+5. `Visual foundations` - 13 edges
 6. `Add a section board to the Noor POC` - 9 edges
 7. `Add a section board to the Noor POC` - 9 edges
-8. `useNoorDark()` - 8 edges
-9. `Noor POC conversion spec` - 8 edges
-10. `walkChildren()` - 7 edges
+8. `UX-03: Home landing and shared five-tab shell` - 9 edges
+9. `Add a section board to the Noor POC` - 9 edges
+10. `useNoorDark()` - 8 edges
 
 ## Surprising Connections (you probably didn't know these)
 - None detected - all connections are within the same source files.
@@ -99,11 +111,11 @@
 ## Import Cycles
 - None detected.
 
-## Communities (68 total, 36 thin omitted)
+## Communities (80 total, 35 thin omitted)
 
 ### Community 0 - "Community 0"
 Cohesion: 0.01
-Nodes (141): --body-h1-lh, --body-h1-size, --body-h1-tracking, --body-h2-lh, --body-h2-size, --body-h2-tracking, --body-h3-lh, --body-h3-size (+133 more)
+Nodes (187): --body-h1-lh, --body-h1-size, --body-h1-tracking, --body-h2-lh, --body-h2-size, --body-h2-tracking, --body-h3-lh, --body-h3-size (+179 more)
 
 ### Community 1 - "Community 1"
 Cohesion: 0.07
@@ -150,8 +162,8 @@ Cohesion: 0.48
 Nodes (5): IntroScreen(), Keypad(), KEYPAD_KEYS, OtpScreen(), PhoneScreen()
 
 ### Community 22 - "Community 22"
-Cohesion: 0.10
-Nodes (19): Agent Behavior, Commit Messages, Design System Rules, graphify, Layer Architecture — HARD RULES (do not violate), Project Structure, Rule 10 — Checkpoint after every significant step, Rule 11 — Match the codebase's conventions, even if you disagree (+11 more)
+Cohesion: 0.09
+Nodes (20): Agent Behavior, Canonical Product Flows — Read Before Journey Design, Commit Messages, Design System Rules, graphify, Layer Architecture — HARD RULES (do not violate), Project Structure, Rule 10 — Checkpoint after every significant step (+12 more)
 
 ### Community 23 - "Community 23"
 Cohesion: 0.14
@@ -182,12 +194,16 @@ Cohesion: 0.13
 Nodes (4): QAUM_AMP, QaumAudioPlayer(), qaumBars(), qaumTime()
 
 ### Community 34 - "Community 34"
-Cohesion: 0.21
-Nodes (9): HomeRow(), PRAYER_FRAMES, QAUM_EXTRA_FRAMES, QaumRow(), QURAN_EXTRA_FRAMES, QuranRow(), renderFrame(), SalaahRow() (+1 more)
+Cohesion: 0.15
+Nodes (13): HOME_DATA_FRAMES, HomeRow(), PRAYER_FRAMES, PROFILE_EXTRA_FRAMES, QAUM_DATA_FRAMES, QAUM_EXTRA_FRAMES, QaumRow(), QURAN_DATA_FRAMES (+5 more)
 
 ### Community 39 - "Community 39"
+Cohesion: 0.15
+Nodes (8): AUDIO_AMP, audioBars(), DUA_CATEGORIES, DUA_DETAIL, DUA_LIST, DuaDetailScreen(), FAVOURITE_ITEMS, fmtTime()
+
+### Community 40 - "Community 40"
 Cohesion: 0.22
-Nodes (7): AUDIO_AMP, audioBars(), DUA_CATEGORIES, DUA_DETAIL, DUA_LIST, DuaDetailScreen(), fmtTime()
+Nodes (5): DetailOverlay(), NAMES, SCHEMES, schemeStyle(), screenStyle
 
 ### Community 46 - "Community 46"
 Cohesion: 0.18
@@ -217,25 +233,73 @@ Nodes (10): description, name, private, scripts, build, deploy, preview, serve (
 Cohesion: 0.29
 Nodes (6): hosting, headers, ignore, public, site, trailingSlash
 
+### Community 68 - "Community 68"
+Cohesion: 0.14
+Nodes (14): Asma ul Husna design read and state specification — 2026-07-21, Before / After / Why, Before | After | Why, Before | After | Why, Dua & Dikhr design read and state specification — 2026-07-21, Motion and interaction specification, Motion and interaction specification, Motion specification (+6 more)
+
+### Community 69 - "Community 69"
+Cohesion: 0.22
+Nodes (5): OP_GROUPS, OP_STATES, OperationScreen(), StatusState(), titleFor()
+
+### Community 70 - "Community 70"
+Cohesion: 0.20
+Nodes (9): Motion and interaction specification, Noor specification, Noor UI/UX Upgrade Decisions, Program design read, UX-01 / UX-03 token and metrics reduction — 2026-07-21, UX-03 completion: Salaah, Profile, nudges, and shell behavior, UX-05 / UX-06 component-governance pass — 2026-07-21, UX-07: Masjid operations (+1 more)
+
+### Community 71 - "Community 71"
+Cohesion: 0.22
+Nodes (9): Approval status, Before / After / Why, Certification notes, Design read, Design-system impact, Motion and interaction specification, Screen and state inventory, UX-03: Home landing and shared five-tab shell (+1 more)
+
+### Community 72 - "Community 72"
+Cohesion: 0.25
+Nodes (8): Approval status, Before / After / Why, Certification notes, Design-system impact, Motion specification, Screen and state inventory, UX-02: Personal Details, UX Pro Max checklist
+
+### Community 73 - "Community 73"
+Cohesion: 0.33
+Nodes (6): Before / After / Why, Certification notes, Design read, Design-system and UX checklist, Motion specification, UX-04: Quran index and reader
+
+### Community 74 - "Community 74"
+Cohesion: 0.40
+Nodes (5): Before / After / Why, Design read and dials, Motion and interaction specification, UX-03 five-tab visual parity pass — 2026-07-21, UX Pro Max result
+
+### Community 75 - "Community 75"
+Cohesion: 0.50
+Nodes (4): Before / After / Why, Supplied-capture keyboard and registration-alignment repair — 2026-07-21, UX-05: Masjid discovery, registration, and claim, UX and motion specification
+
+### Community 76 - "Community 76"
+Cohesion: 0.67
+Nodes (3): Before | After | Why, Icon ownership, UX-01: Design-system reconciliation
+
+### Community 77 - "Community 77"
+Cohesion: 0.67
+Nodes (3): Before / After / Why, Motion and interaction specification, UX-02 / UX-03 supplied-capture repair pass — 2026-07-21
+
+### Community 78 - "Community 78"
+Cohesion: 0.67
+Nodes (3): Before / After / Why, Motion and interaction specification, UX-01 / UX-03 semantic and collection-governance closure — 2026-07-21
+
+### Community 79 - "Community 79"
+Cohesion: 0.67
+Nodes (3): Motion and interaction specification, Qibla recovery completion - 2026-07-21, UX Pro Max checklist
+
 ## Knowledge Gaps
-- **357 isolated node(s):** `eval_id`, `eval_name`, `prompt`, `assertions`, `eval_id` (+352 more)
+- **463 isolated node(s):** `eval_id`, `eval_name`, `prompt`, `assertions`, `eval_id` (+458 more)
   These have ≤1 connection - possible missing edges or undocumented components.
-- **36 thin communities (<3 nodes) omitted from report** — run `graphify query` to explore isolated nodes.
+- **35 thin communities (<3 nodes) omitted from report** — run `graphify query` to explore isolated nodes.
 
 ## Suggested Questions
 _Questions this graph is uniquely positioned to answer:_
 
 - **Why does `tokenKinds` connect `Community 0` to `Community 5`?**
-  _High betweenness centrality (0.045) - this node is a cross-community bridge._
-- **Why does `x-omelette` connect `Community 5` to `Community 0`?**
+  _High betweenness centrality (0.053) - this node is a cross-community bridge._
+- **Why does `Noor UI/UX Upgrade Decisions` connect `Community 70` to `Community 68`, `Community 71`, `Community 72`, `Community 73`, `Community 74`, `Community 75`, `Community 76`, `Community 77`, `Community 78`, `Community 79`?**
   _High betweenness centrality (0.006) - this node is a cross-community bridge._
+- **Why does `x-omelette` connect `Community 5` to `Community 0`?**
+  _High betweenness centrality (0.005) - this node is a cross-community bridge._
 - **What connects `eval_id`, `eval_name`, `prompt` to the rest of the system?**
-  _357 weakly-connected nodes found - possible documentation gaps or missing edges._
+  _463 weakly-connected nodes found - possible documentation gaps or missing edges._
 - **Should `Community 0` be split into smaller, more focused modules?**
-  _Cohesion score 0.014184397163120567 - nodes in this community are weakly interconnected._
+  _Cohesion score 0.0106951871657754 - nodes in this community are weakly interconnected._
 - **Should `Community 1` be split into smaller, more focused modules?**
   _Cohesion score 0.06918238993710692 - nodes in this community are weakly interconnected._
 - **Should `Community 2` be split into smaller, more focused modules?**
   _Cohesion score 0.05128205128205128 - nodes in this community are weakly interconnected._
-- **Should `Community 3` be split into smaller, more focused modules?**
-  _Cohesion score 0.08695652173913043 - nodes in this community are weakly interconnected._

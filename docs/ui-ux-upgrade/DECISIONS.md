@@ -381,6 +381,28 @@ The redesign changes no route name, repository contract, Arabic corpus, deep-lin
 
 All six journeys preserve their current brand illustration, information architecture, calculation logic, repositories, and route contracts. Physical compass, camera, location, audio, and adaptive-layout evidence is intentionally grouped into the final device pass.
 
+### Zakaat saved-record continuity — 2026-07-21
+
+The saved-record journey remains calm, accounting-led, and moderately dense. The card and summary keep Noor's existing surface, serif-title, emerald-result, and tabular breakdown language; the transition explains selection without animating repeated form fields or the calculation itself. The working dials remain `DESIGN_VARIANCE: 4`, `MOTION_INTENSITY: 3`, and `VISUAL_DENSITY: 5`.
+
+#### Before | After | Why
+
+| Before | After | Why |
+| --- | --- | --- |
+| A saved Zakaat row opens its summary in Compose but is not actionable in Noor | Make the full Noor row keyboard- and pointer-actionable while keeping Edit independent | Noor must specify the same route logic and accessible action hierarchy as the product |
+| The selected saved record loses its identity during the list-to-summary route replacement | Morph the stable record card bounds into the Zakaat Due hero using the saved record ID | The summary is a different composition of the same record, so a restrained container transform explains continuity |
+| Loading can delay repository-backed summary content until after navigation | Carry only the selected due amount as display metadata so the target hero exists immediately; repository data remains authoritative | A shared target must be present during the route transition without changing persistence or calculation contracts |
+
+#### Motion and interaction specification
+
+| Interaction | Purpose | Motion | Interruption | Reduced motion |
+| --- | --- | --- | --- | --- |
+| Saved card to due hero | Preserve record identity across Navigation 3 destinations | Shared bounds with Noor emphasized spatial spring; source details exit while the due hero enters | Back, predictive Back, or another navigation retargets immediately | Immediate destination replacement with no bounds travel |
+| Edit | Directly enter the existing calculation editor | Existing route transition; no shared element | Navigation dispatch prevents duplicate actions | Immediate replacement |
+| Swipe delete | Reveal a destructive action without confusing it with summary navigation | Existing tokenized gesture hint and direct drag | Drag reversal remains direct; confirmation owns completion | No automated hint travel |
+
+No calculation, repository, deletion, deep-link, route-order, or saved-record identity behavior changes. The optional transition amount is display-only and is replaced by repository data when loading completes.
+
 ### Sehri supplied-capture repair pass — 2026-07-21
 
 The supplied light/dark captures confirm that the map-first structure, native map treatment, serif headings, emerald actions, and compact provider metadata remain the right design direction. The repair keeps that identity while removing unstable text motion and making loading, empty, and failure states part of the same spatial journey. The working dials remain `DESIGN_VARIANCE: 4`, `MOTION_INTENSITY: 3`, and `VISUAL_DENSITY: 5`.
