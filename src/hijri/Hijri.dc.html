@@ -13,37 +13,9 @@
   <link rel="stylesheet" href="../_theme/poc.css">
   <link rel="stylesheet" href="../_theme/components.css">
   <link rel="stylesheet" href="../_theme/icons.css">
+  <link rel="stylesheet" href="./hijri.css">
   <script src="../_ds/noor-design-system-46f42e91-1858-412f-bdb6-560a6cc3df9f/_ds_bundle.js"></script>
   <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Rounded:opsz,wght,FILL,GRAD@24,400,0..1,0&amp;display=block">
-  <style>
-    body{background:var(--canvas-bg);padding:36px 32px 90px;min-height:100vh;box-sizing:border-box}
-    ::-webkit-scrollbar{display:none}*{-ms-overflow-style:none;scrollbar-width:none}
-    
-    /* Transition animations */
-    @keyframes stepin { from{transform:translateX(28px);opacity:0} to{transform:translateX(0);opacity:1} }
-    @keyframes stepback { from{transform:translateX(-28px);opacity:0} to{transform:translateX(0);opacity:1} }
-    .step-fwd { animation:stepin .35s cubic-bezier(.2,.8,.2,1) }
-    .step-back { animation:stepback .35s cubic-bezier(.2,.8,.2,1) }
-
-    /* Calendar-specific layout classes (shared between live prototype and static frames) */
-    .cal-card{background:color-mix(in oklab,var(--color-action-primary) 5%,var(--color-surface-primary));border:1px solid color-mix(in oklab,var(--color-action-primary) 25%,transparent);border-radius:20px;overflow:hidden}
-    .cal-hdr{display:grid;grid-template-columns:repeat(7,1fr);padding:14px 4px 12px}
-    .cal-hdr div{text-align:center;font-family:var(--font-body);font-size:12px;font-weight:700;color:var(--color-info-secondary)}
-    .cal-grid{display:grid;grid-template-columns:repeat(7,1fr)}
-    .cal-cell{text-align:center;padding:9px 2px;cursor:pointer;border-top:1px solid color-mix(in oklab,var(--color-action-primary) 12%,transparent);border-left:1px solid transparent;border-right:1px solid transparent;transition:background 160ms}
-    .cal-cell.row0{border-top-color:transparent}
-    .cal-g{font-family:var(--font-body);font-size:16px;font-weight:700;color:var(--color-info-primary);line-height:1.15}
-    .cal-h{font-family:var(--font-body);font-size:11px;color:var(--color-info-secondary);line-height:1.25;margin-top:1px}
-    .cal-cell.muted .cal-g{color:var(--color-info-faint);font-weight:600}
-    .cal-cell.muted .cal-h{color:var(--color-info-faint);opacity:.65}
-    .cal-cell.today{background:color-mix(in oklab,var(--color-action-primary) 14%,transparent);border-left-color:color-mix(in oklab,var(--color-action-primary) 40%,transparent);border-right-color:color-mix(in oklab,var(--color-action-primary) 40%,transparent)}
-    .cal-cell.today .cal-g,.cal-cell.today .cal-h{color:var(--color-action-primary)}
-
-    .evt-card{display:flex;align-items:center;gap:14px;background:color-mix(in oklab,var(--color-action-primary) 5%,var(--color-surface-primary));border:1px solid color-mix(in oklab,var(--color-action-primary) 22%,transparent);border-radius:16px;padding:15px 16px}
-    .evt-num{width:44px;height:44px;border-radius:50%;background:var(--color-action-primary);flex-shrink:0;display:flex;align-items:center;justify-content:center;font-family:var(--font-body);font-size:15px;font-weight:800;color:#fff}
-    .evt-title{font-family:var(--font-body);font-size:16px;font-weight:700;color:var(--color-info-primary)}
-    .evt-sub{font-family:var(--font-body);font-size:13px;color:var(--color-info-secondary);margin-top:2px}
-  </style>
 </helmet>
 
 <!-- Pre-load Home components for storyboard row and live device (hidden from rendering) -->
@@ -51,6 +23,8 @@
   <x-import component="PromptCard" from="../_theme/components.jsx" hint-size="0,0"></x-import>
   <x-import component="BottomNav" from="../home/storyboards/nav-bar.jsx" hint-size="0,0"></x-import>
   <x-import component="HomeScreen" from="../home/storyboards/screens.jsx" hint-size="0,0"></x-import>
+  <x-import component="Dialog" from="../_theme/components.jsx" hint-size="0,0"></x-import>
+  <x-import component="EmptyState" from="../_theme/components.jsx" hint-size="0,0"></x-import>
 </div>
 
 <!-- ── Page header ── -->
@@ -103,10 +77,13 @@
             <x-import component="CalendarScreen" from="./storyboards/screens.jsx"
                       month-idx="{{ monthIdx }}"
                       selected-idx="{{ selectedIdx }}"
+                      mode="{{ calendarMode }}"
                       on-select-day="{{ selectDay }}"
                       on-prev-month="{{ prevMonth }}"
                       on-next-month="{{ nextMonth }}"
                       on-back="{{ goHomeStage }}"
+                      on-retry="{{ retryCalendar }}"
+                      on-dismiss-error="{{ dismissCalendarError }}"
                       hint-size="100%,100%">
             </x-import>
           </div>
@@ -122,9 +99,10 @@
 <script type="text/x-dc" data-dc-script>
 class Component extends DCLogic {
   state = {
-    stage: location.hash === '#calendar' ? 'calendar' : 'home', // deep-link from Home Screen
+    stage: location.hash ? 'calendar' : 'home', // deep-link from Home Screen or a deterministic board state
     monthIdx: 1, // 0 = Dhul Hijjah, 1 = Muharram, 2 = Safar
     selectedIdx: 11, // Thu 9 Jun = 25 Muharram (today)
+    calendarMode: location.hash === '#loading' ? 'loading' : location.hash === '#error' ? 'error' : location.hash === '#empty' ? 'empty' : 'loaded',
     stepDir: 'fwd'
   };
 
@@ -133,35 +111,35 @@ class Component extends DCLogic {
   };
 
   selectFrame = (i) => {
-    if (i === 0) {
-      this.setState({ stage: 'home', stepDir: 'back' });
-    } else {
-      const frames = [
-        null,
-        { m: 1, s: 11 }, // Muharram, Today selected
-        { m: 2, s: -1 }, // Safar
-        { m: 0, s: -1 }  // Dhul Hijjah
-      ];
-      const target = frames[i];
-      this.setState({
-        stage: 'calendar',
-        monthIdx: target.m,
-        selectedIdx: target.s,
-        stepDir: this.state.stage === 'home' ? 'fwd' : 'none'
-      });
-    }
+    const frames = [
+      { m: 1, s: 11, mode: 'loading' },
+      { m: 1, s: 11, mode: 'loaded' },
+      { m: 1, s: 17, mode: 'loaded' },
+      { m: 2, s: -1, mode: 'loaded' },
+      { m: 0, s: -1, mode: 'loaded' },
+      { m: 2, s: -1, mode: 'empty' },
+      { m: 1, s: 11, mode: 'error' }
+    ];
+    const target = frames[i];
+    this.setState({
+      stage: 'calendar',
+      monthIdx: target.m,
+      selectedIdx: target.s,
+      calendarMode: target.mode,
+      stepDir: this.state.stage === 'home' ? 'fwd' : 'none'
+    });
   };
 
   prevMonth = () => {
-    this.setState(s => ({ monthIdx: Math.max(0, s.monthIdx - 1) }));
+    this.setState(s => ({ monthIdx: Math.max(0, s.monthIdx - 1), selectedIdx: -1, calendarMode: 'loaded' }));
   };
 
   nextMonth = () => {
-    this.setState(s => ({ monthIdx: Math.min(2, s.monthIdx + 1) }));
+    this.setState(s => ({ monthIdx: Math.min(2, s.monthIdx + 1), selectedIdx: -1, calendarMode: 'loaded' }));
   };
 
   goCalendarStage = () => {
-    this.setState({ stage: 'calendar', stepDir: 'fwd' });
+    this.setState({ stage: 'calendar', calendarMode: 'loaded', stepDir: 'fwd' });
   };
 
   goHomeStage = () => {
@@ -176,8 +154,16 @@ class Component extends DCLogic {
     window.location.href = '../dua-dikhr/Dua & Dikhr.dc.html#categories';
   };
 
+  retryCalendar = () => {
+    this.setState({ calendarMode: 'loaded' });
+  };
+
+  dismissCalendarError = () => {
+    this.setState({ calendarMode: 'loaded' });
+  };
+
   restart = () => {
-    this.setState({ stage: 'home', monthIdx: 1, selectedIdx: 11, stepDir: 'back' });
+    this.setState({ stage: 'home', monthIdx: 1, selectedIdx: 11, calendarMode: 'loaded', stepDir: 'back' });
   };
 
   renderVals() {
@@ -185,21 +171,20 @@ class Component extends DCLogic {
     
     // Map selectedIdx and stage to storyboard frame index
     let calendarActive = -1;
-    if (s.stage === 'home') {
-      calendarActive = 0;
-    } else if (s.stage === 'calendar') {
-      if (s.monthIdx === 1 && s.selectedIdx === 11) {
-        calendarActive = 1;
-      } else if (s.monthIdx === 2) {
-        calendarActive = 2;
-      } else if (s.monthIdx === 0) {
-        calendarActive = 3;
-      }
+    if (s.stage === 'calendar') {
+      if (s.calendarMode === 'loading') calendarActive = 0;
+      else if (s.calendarMode === 'error') calendarActive = 6;
+      else if (s.calendarMode === 'empty') calendarActive = 5;
+      else if (s.monthIdx === 1 && s.selectedIdx === 11) calendarActive = 1;
+      else if (s.monthIdx === 1 && s.selectedIdx !== 11) calendarActive = 2;
+      else if (s.monthIdx === 2) calendarActive = 3;
+      else if (s.monthIdx === 0) calendarActive = 4;
     }
 
     return {
       monthIdx: s.monthIdx,
       selectedIdx: s.selectedIdx,
+      calendarMode: s.calendarMode,
       calendarActive,
       isHomeStage: s.stage === 'home',
       isCalendarStage: s.stage === 'calendar',
@@ -212,7 +197,9 @@ class Component extends DCLogic {
       goHomeStage: this.goHomeStage,
       goAsma: this.goAsma,
       goDua: this.goDua,
-      restart: this.restart
+      restart: this.restart,
+      retryCalendar: this.retryCalendar,
+      dismissCalendarError: this.dismissCalendarError
     };
   }
 }

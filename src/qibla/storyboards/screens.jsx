@@ -16,6 +16,14 @@
 const FONT_B = 'var(--font-body)';
 const FONT_T = 'var(--font-title)';
 
+const QIBLA_AR_METRICS = Object.freeze({
+  kaabaTop: '20%',
+  kaabaSceneSize: 360,
+  kaabaImageSize: 240,
+  angleSize: 132,
+  edgeInset: 16,
+});
+
 // Fixed Qibla bearing used for the mock (≈ WNW from India). Each state passes a screen-relative
 // angle; heading is derived so the dial ticks/labels rotate consistently with the needle.
 const QIBLA_BEARING = 293;
@@ -242,10 +250,10 @@ function SmartQiblaScreen({ stage = 'searching', onClose, onPointQibla, onLayFla
 
       {/* Kaaba comes into view when aligned */}
       {showKaaba && (
-        <div style={{ position: 'absolute', top: '18%', left: 0, right: 0, display: 'flex', justifyContent: 'center' }}>
-          <div style={{ position: 'relative', width: 300, height: 300, display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+        <div style={{ position: 'absolute', top: QIBLA_AR_METRICS.kaabaTop, left: 0, right: 0, display: 'flex', justifyContent: 'center' }}>
+          <div style={{ position: 'relative', width: QIBLA_AR_METRICS.kaabaSceneSize, height: QIBLA_AR_METRICS.kaabaSceneSize, display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
             <div style={{ position: 'absolute', inset: 0, background: 'radial-gradient(circle, rgba(10,8,5,0.45) 0%, rgba(10,8,5,0.12) 55%, transparent 78%)' }} />
-            <img src="../../images/kaaba.webp" alt="Kaaba" style={{ width: 240, height: 240, objectFit: 'contain', position: 'relative' }} />
+            <img src="../../images/kaaba.webp" alt="Kaaba" style={{ width: QIBLA_AR_METRICS.kaabaImageSize, height: QIBLA_AR_METRICS.kaabaImageSize, objectFit: 'contain', position: 'relative' }} />
           </div>
         </div>
       )}
@@ -260,10 +268,10 @@ function SmartQiblaScreen({ stage = 'searching', onClose, onPointQibla, onLayFla
       )}
 
       {/* Live angle readout, bottom-left */}
-      <div style={{ position: 'absolute', bottom: 16, left: 16, width: 132, height: 132, zIndex: 6,
+      <div style={{ position: 'absolute', bottom: QIBLA_AR_METRICS.edgeInset, left: QIBLA_AR_METRICS.edgeInset, width: QIBLA_AR_METRICS.angleSize, height: QIBLA_AR_METRICS.angleSize, zIndex: 6,
         display: 'flex', alignItems: 'center', justifyContent: 'center',
         background: 'radial-gradient(circle, rgba(0,0,0,0.6) 0%, rgba(0,0,0,0.3) 45%, transparent 72%)' }}>
-        <span style={{ fontFamily: FONT_T, fontSize: 30, color: 'rgba(255,255,255,0.9)' }}>{angleDeg}°</span>
+        <span style={{ fontFamily: FONT_T, fontSize: 30, color: 'var(--color-info-on-media)' }}>{angleDeg}°</span>
       </div>
 
       {/* Mini compass, bottom-right */}

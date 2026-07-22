@@ -56,81 +56,105 @@ const MONTHS_DATA = [
 function CalendarScreen({
   monthIdx = 1,
   selectedIdx = 11,
+  mode = 'loaded',
   onSelectDay,
   onPrevMonth,
   onNextMonth,
-  onBack
+  onBack,
+  onRetry,
+  onDismissError
 }) {
   const currentMonth = MONTHS_DATA[monthIdx] || MONTHS_DATA[1];
   const days = currentMonth.days;
-  const events = currentMonth.events;
+  const events = mode === 'empty' ? [] : currentMonth.events;
+  const Dialog = window.Dialog;
+  const EmptyState = window.EmptyState;
+  const loading = mode === 'loading';
 
   return (
-    <div style={{ width: '100%', height: '100%', display: 'flex', flexDirection: 'column', overflow: 'hidden', background: 'var(--color-surface-primary)' }}>
-      
-      {/* AppBar (uses tokens, no hardcoded colors, theme-aware) */}
-      <div style={{ flexShrink: 0, display: 'flex', alignItems: 'center', gap: 14, padding: '62px 16px 8px' }}>
+    <div className="hijri-screen">
+      <div className="hijri-appbar">
         <button className="ib ib-tonal md" onClick={onBack} aria-label="Back">
-          <span className="mi" data-i="arrow_back"></span>
+          <span className="mi" data-i="arrow_back" aria-hidden="true"></span>
         </button>
-        <div>
-          <div style={{ fontFamily: 'var(--font-body)', fontSize: 24, fontWeight: 800, color: 'var(--color-info-primary)', lineHeight: 1.1 }}>
-            {currentMonth.name}
-          </div>
-          <div style={{ fontFamily: 'var(--font-body)', fontSize: 13, color: 'var(--color-info-secondary)', marginTop: 2 }}>
-            {currentMonth.gregorian}
-          </div>
+        <div className="hijri-appbar-copy">
+          <div className="hijri-title">{loading ? 'Hijri Calendar' : currentMonth.name}</div>
+          <div className="hijri-subtitle">{loading ? 'Preparing the current month' : currentMonth.gregorian}</div>
         </div>
       </div>
 
-      {/* Content wrapper */}
-      <div style={{ flex: 1, overflowY: 'auto', WebkitOverflowScrolling: 'touch', padding: '12px 16px 24px' }}>
-        
-        {/* Calendar Card */}
-        <div className="cal-card">
-          <div className="cal-hdr">
-            <div>Sun</div><div>Mon</div><div>Tue</div><div>Wed</div><div>Thu</div><div>Fri</div><div>Sat</div>
+      <div className="hijri-content">
+        {loading ? (
+          <div className="hijri-loading" role="status" aria-label="Loading Hijri calendar">
+            <div className="skeleton hijri-calendar-skeleton" aria-hidden="true"></div>
+            <div className="skeleton hijri-event-skeleton" aria-hidden="true"></div>
+            <div className="skeleton hijri-event-skeleton" aria-hidden="true"></div>
           </div>
-          <div className="cal-grid">
-            {days.map((c, i) => {
-              const isRow0 = i < 7;
-              const isSelected = i === selectedIdx;
-              const cellClass = `cal-cell${isRow0 ? ' row0' : ''}${c.muted ? ' muted' : ''}${isSelected ? ' today' : ''}`;
-              
-              return (
-                <div key={i} className={cellClass} onClick={() => onSelectDay && onSelectDay(i)}>
-                  <div className="cal-g">{c.g}</div>
-                  <div className="cal-h">{c.h}</div>
-                </div>
-              );
-            })}
-          </div>
-        </div>
-
-        {/* Month Navigation Buttons (prev and next buttons are to navigate between the months) */}
-        <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', margin: '18px 6px 0' }}>
-          <button className="ib ib-tonal" onClick={onPrevMonth} aria-label="Previous Month">
-            <span className="mi" data-i="chevron_left"></span>
-          </button>
-          <button className="ib ib-tonal" onClick={onNextMonth} aria-label="Next Month">
-            <span className="mi" data-i="chevron_right"></span>
-          </button>
-        </div>
-
-        {/* Events list */}
-        <div style={{ display: 'flex', flexDirection: 'column', gap: 12, marginTop: 22 }}>
-          {events.map((evt, idx) => (
-            <div key={idx} className="evt-card">
-              <div className="evt-num">{evt.num}</div>
-              <div>
-                <div className="evt-title">{evt.title}</div>
-                <div className="evt-sub">{evt.sub}</div>
+        ) : (
+          <>
+            <div className="hijri-calendar-card">
+              <div className="hijri-weekdays" aria-hidden="true">
+                {['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'].map((day) => <div key={day} className="hijri-weekday">{day}</div>)}
+              </div>
+              <div className="hijri-grid" role="grid" aria-label={currentMonth.name}>
+                {days.map((day, index) => {
+                  const selected = index === selectedIdx;
+                  const today = monthIdx === 1 && index === 11;
+                  const className = `hijri-day${index < 7 ? ' row-first' : ''}${day.muted ? ' muted' : ''}${selected ? ' selected' : ''}${today ? ' today' : ''}`;
+                  return (
+                    <button
+                      key={`${day.g}:${day.h}:${index}`}
+                      className={className}
+                      disabled={day.muted}
+                      onClick={() => onSelectDay && onSelectDay(index)}
+                      aria-pressed={selected}
+                      aria-label={`Gregorian ${day.g}, Hijri ${day.h}${today ? ', today' : ''}`}
+                    >
+                      <span className="hijri-day-gregorian" aria-hidden="true">{day.g}</span>
+                      <span className="hijri-day-hijri" aria-hidden="true">{day.h}</span>
+                    </button>
+                  );
+                })}
               </div>
             </div>
-          ))}
-        </div>
 
+            <div className="hijri-month-actions">
+              <button className="ib ib-tonal" disabled={monthIdx === 0} onClick={onPrevMonth} aria-label="Previous month">
+                <span className="mi" data-i="chevron_left" aria-hidden="true"></span>
+              </button>
+              <button className="ib ib-tonal" disabled={monthIdx === MONTHS_DATA.length - 1} onClick={onNextMonth} aria-label="Next month">
+                <span className="mi" data-i="chevron_right" aria-hidden="true"></span>
+              </button>
+            </div>
+
+            <div className={`hijri-events${events.length ? '' : ' hijri-events-empty'}`} aria-label="Islamic events">
+              {events.length ? events.map((event) => (
+                <button key={`${event.num}:${event.title}`} className="list-row-emphasized">
+                  <span className="list-row-emphasized-number" aria-hidden="true">{event.num}</span>
+                  <span className="list-row-emphasized-body">
+                    <span className="list-row-emphasized-title">{event.title}</span>
+                    <span className="list-row-emphasized-subtitle">{event.sub}</span>
+                  </span>
+                </button>
+              )) : EmptyState ? (
+                <EmptyState icon="event_busy" title={`No events for ${currentMonth.name}`} description="Swipe or use the month controls to explore another month." />
+              ) : null}
+            </div>
+          </>
+        )}
       </div>
+
+      {Dialog ? (
+        <Dialog
+          mode="sheet"
+          isOpen={mode === 'error'}
+          onClose={onDismissError}
+          title="We couldn't load the Hijri calendar"
+          description="Your last calendar view is still here. Check your connection and try again."
+          primary={{ text: 'Try again', onClick: onRetry }}
+          secondary={{ text: 'Dismiss', onClick: onDismissError }}
+        />
+      ) : null}
     </div>
   );
 }

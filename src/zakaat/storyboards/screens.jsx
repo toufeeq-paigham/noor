@@ -73,9 +73,9 @@ function ZakaatKeypad({ onPress }) {
 // ── Zakaat Empty Screen ──────────────────────────────────────────────────────
 function ZakaatEmptyScreen({ onCalculate, onBack }) {
   return (
-    <div style={{ width: '100%', height: '100%', display: 'flex', flexDirection: 'column', background: 'var(--color-surface-primary)' }}>
+    <div style={{ width: '100%', height: '100%', display: 'flex', flexDirection: 'column', background: 'var(--color-surface-primary)', position: 'relative', overflow: 'hidden' }}>
       {/* AppBar */}
-      <div style={{ flexShrink: 0, display: 'flex', alignItems: 'center', gap: 14, padding: '62px 16px 10px' }}>
+      <div className="app-bar" style={{ height: 'calc(var(--size-max) + var(--size-huge) + var(--control-h-lg) + var(--size-md))', padding: 'calc(var(--size-max) + var(--size-huge) + var(--size-sm)) var(--size-2xl) var(--size-md)' }}>
         <button className="ib ib-tonal md" onClick={onBack} aria-label="Back">
           <span className="mi" data-i="arrow_back"></span>
         </button>
@@ -83,13 +83,13 @@ function ZakaatEmptyScreen({ onCalculate, onBack }) {
       </div>
 
       {/* Empty State Content */}
-      <div style={{ flex: 1, display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', padding: '32px 24px', textAlign: 'center' }}>
+      <div style={{ flex: 1, display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', padding: 'calc(var(--size-max) + var(--size-huge) + var(--control-h-lg) + var(--size-md)) var(--size-huge) var(--size-max)', textAlign: 'center' }}>
         <span className="mi" style={{ fontSize: 72, color: 'var(--color-info-tertiary)', opacity: 'var(--opacity-low)', marginBottom: 20 }} data-i="money_bag"></span>
         <div style={{ fontFamily: 'var(--font-title)', fontSize: 28, color: 'var(--color-info-primary)', lineHeight: 1.2, marginBottom: 12 }}>
-          No Zakaats found
+          No Zakaat calculations yet
         </div>
         <div style={{ fontFamily: 'var(--font-body)', fontSize: 15, color: 'var(--color-info-secondary)', maxWidth: 280, margin: '0 auto 40px', lineHeight: 1.5 }}>
-          Try calculating Zakaat to find it here
+          Calculate your Zakaat to save a result here.
         </div>
         <button className="btn btn-filled lg" onClick={onCalculate} style={{ width: '100%' }}>
           Calculate Zakaat
@@ -104,7 +104,7 @@ function ZakaatListScreen({ records = [], onCalculate, onOpen, onEdit, onDelete,
   return (
     <div style={{ width: '100%', height: '100%', display: 'flex', flexDirection: 'column', background: 'var(--color-surface-primary)', overflow: 'hidden', position: 'relative' }}>
       {/* AppBar */}
-      <div style={{ flexShrink: 0, display: 'flex', alignItems: 'center', gap: 14, padding: '62px 16px 10px' }}>
+      <div className="app-bar" style={{ height: 'calc(var(--size-max) + var(--size-huge) + var(--control-h-lg) + var(--size-md))', padding: 'calc(var(--size-max) + var(--size-huge) + var(--size-sm)) var(--size-2xl) var(--size-md)' }}>
         <button className="ib ib-tonal md" onClick={onBack} aria-label="Back">
           <span className="mi" data-i="arrow_back"></span>
         </button>
@@ -112,7 +112,7 @@ function ZakaatListScreen({ records = [], onCalculate, onOpen, onEdit, onDelete,
       </div>
 
       {/* List content (scrolling) */}
-      <div style={{ flex: 1, overflowY: 'auto', WebkitOverflowScrolling: 'touch', padding: '16px 16px 100px' }}>
+      <div style={{ flex: 1, overflowY: 'auto', WebkitOverflowScrolling: 'touch', padding: 'calc(var(--size-max) + var(--size-huge) + var(--control-h-lg) + var(--size-huge)) var(--size-2xl) calc(var(--control-h-lg) + var(--size-max))' }}>
         {records.map((r, idx) => {
           const isFirst = idx === 0;
           return (
@@ -197,7 +197,7 @@ function ZakaatListScreen({ records = [], onCalculate, onOpen, onEdit, onDelete,
       </div>
 
       {/* Bottom Button */}
-      <div style={{ position: 'absolute', bottom: 20, left: 16, right: 16, zIndex: 10 }}>
+      <div className="noor-haze" style={{ position: 'absolute', bottom: 0, left: 0, right: 0, zIndex: 10, padding: 'var(--size-2xl) var(--size-2xl) var(--size-huge)', borderTopLeftRadius: 'var(--radius-huge)', borderTopRightRadius: 'var(--radius-huge)' }}>
         <button className="btn btn-filled lg" onClick={onCalculate} style={{ width: '100%' }}>
           Calculate more Zakaat
         </button>
@@ -222,9 +222,9 @@ function ZakaatListScreen({ records = [], onCalculate, onOpen, onEdit, onDelete,
 // ── Zakaat Loading Screen ────────────────────────────────────────────────────
 function ZakaatLoadingScreen() {
   return (
-    <div style={{ width: '100%', height: '100%', display: 'flex', flexDirection: 'column', background: 'var(--color-surface-primary)' }}>
+    <div style={{ width: '100%', height: '100%', display: 'flex', flexDirection: 'column', background: 'var(--color-surface-primary)', position: 'relative', overflow: 'hidden' }}>
       {/* AppBar */}
-      <div style={{ flexShrink: 0, display: 'flex', alignItems: 'center', gap: 14, padding: '62px 16px 10px' }}>
+      <div className="app-bar" style={{ height: 'calc(var(--size-max) + var(--size-huge) + var(--control-h-lg) + var(--size-md))', padding: 'calc(var(--size-max) + var(--size-huge) + var(--size-sm)) var(--size-2xl) var(--size-md)' }}>
         <button className="ib ib-tonal md" style={{ opacity: 0.3 }} disabled>
           <span className="mi" data-i="arrow_back"></span>
         </button>
@@ -232,7 +232,7 @@ function ZakaatLoadingScreen() {
       </div>
 
       {/* Loading state spinner */}
-      <div style={{ flex: 1, display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', gap: 20 }}>
+      <div style={{ flex: 1, display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', gap: 20, paddingTop: 'calc(var(--size-max) + var(--size-huge) + var(--control-h-lg) + var(--size-md))' }}>
         <div style={{
           width: 48, height: 48, borderRadius: '50%',
           border: '4px solid rgba(0, 201, 80, 0.1)',
@@ -325,7 +325,7 @@ function ZakaatStepScreen({
     <div style={{ width: '100%', height: '100%', position: 'relative', background: 'var(--color-surface-primary)', display: 'flex', flexDirection: 'column', overflow: 'hidden' }}>
       
       {/* Fixed wizard header */}
-      <div style={{ position: 'absolute', inset: '0 0 auto 0', zIndex: 20, padding: '62px 16px 12px', background: 'var(--color-surface-primary)' }}>
+      <div className="app-bar" style={{ height: 'calc(var(--size-max) + var(--size-max) + var(--size-max) + var(--control-h-lg) + var(--size-2xl))', zIndex: 20, padding: 'calc(var(--size-max) + var(--size-huge) + var(--size-sm)) var(--size-2xl) var(--size-xl)', flexDirection: 'column', alignItems: 'stretch', gap: 0 }}>
         <div style={{ display: 'flex', alignItems: 'center' }}>
           <button className="ib ib-tonal md" onClick={onBack} aria-label="Back">
             <span className="mi" data-i="arrow_back"></span>
@@ -460,10 +460,11 @@ function ZakaatStepScreen({
       </div>
 
       {/* Floating Action Button (FAB) Area at Bottom */}
-      <div style={{
-        position: 'absolute', bottom: activeField ? 340 : 20, left: 20, right: 20,
+      <div className="noor-haze" style={{
+        position: 'absolute', bottom: activeField ? 340 : 0, left: 0, right: 0,
         display: 'flex', justifyContent: 'space-between', alignItems: 'center',
-        pointerEvents: 'none', zIndex: 10
+        pointerEvents: 'none', zIndex: 10, padding: 'var(--size-xl) var(--size-xl) var(--size-huge)',
+        borderTopLeftRadius: 'var(--radius-huge)', borderTopRightRadius: 'var(--radius-huge)'
       }}>
         {/* Left Back Arrow (only steps > 1) */}
         {step > 1 ? (
@@ -575,7 +576,7 @@ function ZakaatSummaryScreen({ values = {}, onBack, onSave, titleTransitionName 
     <div style={{ width: '100%', height: '100%', position: 'relative', background: 'var(--color-surface-primary)', display: 'flex', flexDirection: 'column', overflow: 'hidden' }}>
       
       {/* AppBar */}
-      <div className="app-bar" style={{ padding: '62px 16px 10px', height: 110 }}>
+      <div className="app-bar" style={{ padding: 'calc(var(--size-max) + var(--size-huge) + var(--size-sm)) var(--size-2xl) var(--size-md)', height: 'calc(var(--size-max) + var(--size-huge) + var(--control-h-lg) + var(--size-md))' }}>
         <button className="ib ib-tonal md" onClick={onBack} aria-label="Back">
           <span className="mi" data-i="arrow_back"></span>
         </button>
@@ -583,7 +584,7 @@ function ZakaatSummaryScreen({ values = {}, onBack, onSave, titleTransitionName 
       </div>
 
       {/* Main scrolling breakdown */}
-      <div style={{ position: 'absolute', inset: '110px 0 0 0', overflowY: 'auto', WebkitOverflowScrolling: 'touch', padding: '16px 16px 40px' }}>
+      <div style={{ position: 'absolute', inset: 0, overflowY: 'auto', WebkitOverflowScrolling: 'touch', padding: 'calc(var(--size-max) + var(--size-huge) + var(--control-h-lg) + var(--size-huge)) var(--size-2xl) var(--size-max)' }}>
         
         {/* Due amount header */}
         <div style={{

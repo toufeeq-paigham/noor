@@ -1,13 +1,16 @@
-// Calendar view — static storyboard row (4 states: starting with Home Screen, then navigating months).
+// Calendar view — deterministic loading, selection, navigation, empty, and recovery states.
 // Rendered on the Hijri board via:
 //   <x-import component="CalendarRow" from="./storyboards/calendar-row.jsx" active="{{ calendarActive }}">
 // `active` = index of the frame the live device currently shows (-1 = none).
 
 const STORYBOARD_FRAMES = [
-  { name: 'Home tab — Islamic tools link', isHome: true },
-  { name: 'Muharram 1448 (Today selected)', monthIdx: 1, selectedIdx: 11 },
-  { name: 'Safar 1448 view', monthIdx: 2, selectedIdx: -1 },
-  { name: 'Dhul Hijjah 1447 view', monthIdx: 0, selectedIdx: -1 }
+  { name: 'Loading current month', monthIdx: 1, selectedIdx: 11, mode: 'loading' },
+  { name: 'Muharram — today selected', monthIdx: 1, selectedIdx: 11, mode: 'loaded' },
+  { name: 'Muharram — another date selected', monthIdx: 1, selectedIdx: 17, mode: 'loaded' },
+  { name: 'Safar — next month', monthIdx: 2, selectedIdx: -1, mode: 'loaded' },
+  { name: 'Dhul Hijjah — previous month', monthIdx: 0, selectedIdx: -1, mode: 'loaded' },
+  { name: 'Month with no events', monthIdx: 2, selectedIdx: -1, mode: 'empty' },
+  { name: 'Load failure — retry sheet', monthIdx: 1, selectedIdx: 11, mode: 'error' }
 ];
 
 function CalendarRow({ active = -1, onSelectFrame }) {
@@ -23,25 +26,14 @@ function CalendarRow({ active = -1, onSelectFrame }) {
           const ringClass = isActive ? 'is-active' : '';
           
           let screenContent = null;
-          if (f.isHome) {
-            const { HomeScreen, BottomNav } = window;
-            screenContent = (
-              <div style={{ display: 'flex', flexDirection: 'column', height: '100%', position: 'relative' }}>
-                <div style={{ flex: 1, position: 'relative', overflow: 'hidden' }}>
-                  {HomeScreen ? <HomeScreen /> : <div style={{ padding: 20, color: 'var(--color-info-secondary)' }}>Loading Home...</div>}
-                </div>
-                {BottomNav ? <BottomNav activeIndex={0} /> : null}
-              </div>
-            );
-          } else {
-            const { CalendarScreen } = window;
-            screenContent = CalendarScreen && (
-              <CalendarScreen
-                monthIdx={f.monthIdx}
-                selectedIdx={f.selectedIdx}
-              />
-            );
-          }
+          const { CalendarScreen } = window;
+          screenContent = CalendarScreen && (
+            <CalendarScreen
+              monthIdx={f.monthIdx}
+              selectedIdx={f.selectedIdx}
+              mode={f.mode}
+            />
+          );
 
           return (
             <div key={i} className="poc-board-item" onClick={() => onSelectFrame && onSelectFrame(i)}>
