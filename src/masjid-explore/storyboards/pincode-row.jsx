@@ -6,7 +6,7 @@
 const FRAMES = [
   { name: 'Empty state', query: '', focused: false },
   { name: 'Typing — suggestions', query: '5600', focused: true },
-  { name: 'Results', query: '560064', focused: true },
+  { name: 'Results — keyboard dismissed', query: '560064', focused: false },
 ];
 
 function PincodeRow({ active = -1, onSelectFrame }) {

@@ -449,7 +449,7 @@ function PincodeScreen({
 
       {/* Empty state — base layer (behind suggestions), hidden once results show */}
       {!complete && (
-        <div style={{ position: 'absolute', left: 0, right: 0, top: 0, bottom: focused ? PINCODE_KEYPAD_H : 0, display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', padding: '0 32px', textAlign: 'center' }}>
+        <div style={{ position: 'absolute', left: 0, right: 0, top: 0, bottom: focused ? PINCODE_KEYPAD_H : 0, display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'flex-start', padding: '132px 32px 0', textAlign: 'center' }}>
           <div style={{ width: 96, height: 96, borderRadius: '50%', background: 'color-mix(in oklab, var(--color-action-primary) 12%, transparent)', display: 'flex', alignItems: 'center', justifyContent: 'center', marginBottom: 22 }}>
             <span className="mi" style={{ fontSize: 46, color: 'var(--color-action-primary)' }} data-i="travel_explore"></span>
           </div>

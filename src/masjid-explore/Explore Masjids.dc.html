@@ -219,9 +219,10 @@ class Component extends DCLogic {
   pincodePress = (key) => this.setState(s => {
     if (key === 'backspace') return { pincodeQuery: s.pincodeQuery.slice(0, -1), pincodeFocused: true };
     if (s.pincodeQuery.length >= 6) return {};
-    return { pincodeQuery: s.pincodeQuery + key, pincodeFocused: true };
+    const nextQuery = s.pincodeQuery + key;
+    return { pincodeQuery: nextQuery, pincodeFocused: nextQuery.length < 6 };
   });
-  pickSuggestion = (pin) => this.setState({ pincodeQuery: pin, pincodeFocused: true });
+  pickSuggestion = (pin) => this.setState({ pincodeQuery: pin, pincodeFocused: false });
 
   goBack = () => { window.location.href = '../home/Home Screen.dc.html'; };
 

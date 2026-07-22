@@ -1407,7 +1407,7 @@ function NotificationNudgeSheet({ isOpen, onClose, onAllow }) {
         { icon: 'menu_book', title: 'Quran and duas at your fingertips.', caption: 'Gentle nudges to keep your daily practice consistent.' },
         { icon: 'campaign', title: 'Community updates in one place.', caption: 'Stay connected with your masjid and the broader ummah.' }
       ]}
-      primaryText="Allow notifications"
+      primaryText="Allow"
       onPrimary={onAllow}
       secondaryText="Maybe later"
     />
