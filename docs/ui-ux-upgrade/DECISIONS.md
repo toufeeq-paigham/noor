@@ -189,14 +189,17 @@ The Quran journey is a reading tool, not a decorative content page. Noor's Arabi
 | Arabic reader bounds and step values live as feature constants | Add min, default, max, and step values to Noor Arabic typography tokens | Reader typography policy is shared, testable, and no longer screen-owned |
 | POC route changes travel for 350ms with a local easing curve | Use Noor's 220ms standard motion and shared ease-out token | The transition feels responsive and follows reduced-motion policy |
 | Selecting a Surah or Juz row replaces its calligraphy with an unrelated route slide | Carry the selected Surah calligraphy into the reader app bar with a stable mode, Juz, and Surah identity | The morph explains exactly which reading context opened without animating the sacred text or the full high-frequency reader |
+| One app-wide Haze capture graph remains active while Navigation 3 composes the outgoing and incoming destinations | Give every root destination its own Haze capture graph while retaining one graph for the active Home shell | Incoming app bars and navigation chrome cannot sample colour or imagery from the previous route |
+| iOS applies a route-style push transition to direct bottom-tab selection, exposing a strip of the previous tab and mixing both Haze sources | Replace bottom tabs immediately; use Noor's 220ms entry fade and faster 140ms exit for root routes | Frequent tab selection stays responsive, the previous screen cannot leak at an edge, and route-level shared elements remain the purposeful spatial motion |
 
 ### Motion specification
 
 | Interaction | Purpose | Frequency | Motion | Reduced motion |
 | --- | --- | --- | --- | --- |
 | Surah/Juz tab change | Spatial continuity | Frequent | Existing interruptible pager motion | Page changes without decorative travel |
+| Home bottom-tab change | Direct destination selection | Frequent | Immediate replacement; selected-item feedback remains in the NavBar | Same behavior |
 | Index/reader data-state change | Explain resolved state | Occasional | Standard `AnimatedContent`; no content reflow choreography | Immediate state replacement |
-| Board route change | Spatial progression | Occasional | 220ms horizontal/opacity ease-out | Shared CSS token resolves to 1ms |
+| Root route change | State continuity without competing spatial travel | Occasional | 220ms fade-in with a faster 140ms fade-out | Immediate replacement |
 | Selected Surah calligraphy to reader title | Preserve selected reading context | Occasional | Shared-bounds morph using the emphasized Noor timing and ease-out; the surrounding route does not slide concurrently | Immediate title replacement with no positional travel |
 | Reader settings sheet | Preserve reader context | Occasional | Existing Noor sheet transition | Sheet appears without travel |
 | Arabic size step | Immediate reading feedback | Occasional | No animation; typography updates in place | Same behavior |
@@ -217,7 +220,9 @@ The Quran journey is a reading tool, not a decorative content page. Noor's Arabi
 - Noor exposes nine deterministic journey states plus Quran-tab loading, empty, and error frames at stable appended indices 34-36.
 - Noor production build passes and the live `#reader-error` DOM exposes the alert and Try again action.
 - Compose Android compilation passes after the state and typography-token changes.
-- Final paired light/dark and adaptive device screenshots remain delegated to the user's end-of-sprint verification pass.
+- Nine supplied dark iOS captures cover Quran loading, Surah content, Juz content, reader content, the settings sheet, and all translation/transliteration combinations. Their resolved geometry, typography, hierarchy, and controls follow the approved Noor specification.
+- The supplied transition capture exposed outgoing-screen Haze contamination and a previous-tab edge strip. Compose now owns Haze per root entry, replaces Home tabs immediately, and uses Noor motion tokens for root fades; no Noor visual component change was required.
+- The user explicitly verified and accepted the repaired Quran journey on 2026-07-22. UX-04 and the Quran-tab parity row are complete; no further captures are required unless explicitly reopened or a new regression is reported.
 
 ## UX-03 completion: Salaah, Profile, nudges, and shell behavior
 
@@ -383,6 +388,33 @@ This is a redesign-preserve pass for a high-frequency devotional reader. Noor's 
 
 The POC changes no route, repository contract, favourite behavior, deep-link identity, Arabic content, or playback contract. Device audio, native share, largest text, and final screenshot overlay remain part of the delegated evidence pass.
 
+### Dua & Dikhr final supplied-capture audit — 2026-07-22
+
+Thirteen iOS captures cover the complete observed path from Hisnul Muslim entry through categories,
+chapters, reader actions, audio, favourite persistence, native share, the Favourites filter, and
+reopening a saved Dua. Historical navigation strips in these captures are excluded by user direction.
+
+| Before | After | Why |
+| --- | --- | --- |
+| Compose centers a small decorative Bismillah in a largely empty loading screen while Noor reserves the final grid/list/reader geometry | Reuse a token-backed Noor `Skeleton` for category, chapter, and reader loading, with indeterminate progress semantics and a static reduced-motion state | Loading should explain the destination structure, reduce perceived delay, and be announced without relying on decoration |
+| The reader source/reference uses `info.faint`, a role intended for disabled or very-low-emphasis metadata | Use `info.secondary` in Noor and Compose while retaining the smaller text style | A hadith/source reference is meaningful reading content and must remain legible in dark mode |
+| Internal Favourites navigation carries `duaId`, but external reader links can only open the chapter at its first Dua | Accept the target as either `?duaId=` or a fourth path segment and preserve the full synthetic Back stack | A documented deep-link target must land on the requested content while Back still returns through Chapters and Hisnul Muslim |
+
+#### UX and accessibility verification
+
+- Category tiles retain semantic full-card actions and Noor media scrims; chapter and favourite rows retain stable domain keys.
+- Reader actions retain accessible icon-button targets, state-specific labels, and semantic audio progress.
+- The audio dock already reserves its own height plus navigation-safe clearance, so the final reader content remains reachable.
+- Loading now exposes an indeterminate progress state; reduced motion keeps the placeholders static.
+- Empty, data failure/retry, audio failure/retry, and content remain separate states.
+- No raw feature-level color, spacing, radius, size, opacity, or motion value was introduced.
+
+#### Motion and interaction note
+
+No new navigation motion was added. Existing category/chapter shared bounds remain interruptible and
+are omitted under reduced motion. Skeleton shimmer is the only continuous loading motion and becomes
+static when reduced motion is enabled; data resolution replaces the same final-shape geometry.
+
 ### Asma ul Husna design read and state specification — 2026-07-21
 
 This is a redesign-preserve pass for a devotional reference collection. The six Noor gradient schemes, Arabic-first tile hierarchy, calm serif app bar, emerald actions, and swipeable detail presentation remain authoritative. The working dials remain `DESIGN_VARIANCE: 4`, `MOTION_INTENSITY: 3`, and `VISUAL_DENSITY: 5`. A product review removed search and approved an in-context detail overlay modeled on Qaum's media viewer.
@@ -545,6 +577,39 @@ The supplied light/dark captures confirm that the map-first structure, native ma
 
 No new palette, typography family, route, repository contract, or feature-owned motion value is introduced.
 
+### Sehri final-capture repair pass — 2026-07-22
+
+Seven final iOS captures cover initial loading, recoverable failure, successful empty, populated map/carousel, and expanded list. Historical navigation-transition artifacts in this batch are explicitly excluded by user direction because they predate the accepted navigation fix. The map-first hierarchy, provider cards, empty/error distinction, actions, and Noor identity remain correct. The new work addresses native compositing and concurrency defects found by comparing the captures with current source.
+
+#### Before | After | Why
+
+| Before | After | Why |
+| --- | --- | --- |
+| The Sehri sheet still samples a native map through Haze, so incomplete platform tiles can bleed into or streak beneath the sheet | Use the shared semantic near-opaque persistent-sheet mode already established for native-map journeys | Native platform views cannot be sampled reliably on every target; essential contrast must never depend on that capture path |
+| `onStart` and permission-controller binding can each start location/search work | Gate initialization until both lifecycle and controller are ready, then start it once | One screen entry must produce one deterministic permission/location sequence |
+| An older default-location or panned-map request can finish after a newer request and replace its results | Assign each search a generation and ignore responses that are no longer current | Markers, count, cards, and empty/error state must describe the latest visible area |
+| Repeated sheet callbacks toggle list state and restored external detents do not reliably move the physical sheet | Make map/list intents idempotent, derive list visibility from stored state, and synchronize the requested detent | Restoration, interruption, and repeated callbacks must converge on one logical and visual mode |
+
+#### UX Pro Max checklist
+
+- Loading, recoverable error, successful empty, map/carousel, and expanded list remain distinct and readable.
+- The sheet retains full action targets, stable semantics, safe-area padding, and Noor semantic colors in light and dark themes.
+- Map and user coordinates remain intentionally separate: results follow the visible map area, while distance continues to describe distance from the user.
+- No raw feature color, typography, opacity, scrim, radius, elevation, or motion value was introduced.
+
+#### Motion and interaction specification
+
+| Interaction | Purpose | Timing / behavior | Interruption | Reduced motion |
+| --- | --- | --- | --- | --- |
+| Map/list sheet change | Explain density and spatial-context change | Existing Noor persistent-sheet detent plus compact content fade | Drag or a newer requested detent retargets the same sheet | Existing snap/no-fade path |
+| Search-area refresh | Communicate new data without losing map context | Existing inline semantic progress; late results are discarded | A newer pan, retry, or centering request becomes authoritative | Identical state behavior |
+| Native-map surface | Preserve depth and contrast | Static semantic near-opaque sheet; no native Haze sampling | Not applicable | Identical static surface |
+
+No route, repository contract, provider payload, contact/directions action, analytics behavior, or search-distance meaning changed in this pass.
+
+The user explicitly accepted and closed Sehri on 2026-07-22. It remains closed unless explicitly
+reopened or a later shared-system change introduces a regression.
+
 ## UX-07: Masjid operations
 
 ### Noor specification
@@ -697,3 +762,258 @@ This is parity tooling, not a product-state redesign. It applies the program's c
 | Baseline evidence depended on an operator reproducing board zoom and crop offsets | The capture URL, theme, route hash, dimensions, and native JPEG manifest are recorded with the evidence | A later agent can reproduce and audit the reference instead of trusting an unexplained image |
 
 Capture mode does not change tokens, theme mappings, component hierarchy, motion, application state, or navigation behavior. It is excluded when `capture=1` is absent.
+
+## Login-flow acceptance - 2026-07-22
+
+The user reviewed the final iOS evidence in `paigham-app/screenshots/final/login/` and approved the
+complete login journey: Splash/Intro, privacy and ATT, guest sign-in entry points, Phone, OTP, and
+the normal post-auth Home landing. The login design and Compose behavior are accepted for the
+current program. Earlier review observations are approved exceptions rather than parity blockers.
+Do not redesign, reopen, or request more login evidence unless the user explicitly asks or a new
+regression is reproduced.
+
+## Post-login onboarding supplied-capture repair pass - 2026-07-22
+
+### Design read
+
+The 32 supplied iOS captures preserve Paigham's established strengths: signed-in pending users are
+not presented as guests, the Brother/Sister illustrations remain immediately understandable, the
+follow selection reaches Personal Details, saving feedback sits above the action, and the success
+celebration remains a justified rare event. The confirmed defects are reachability, native-map
+material fallback, truthful copy, and one floating-player clearance issue rather than a need for a
+new visual direction. Dials remain `DESIGN_VARIANCE: 4`, `MOTION_INTENSITY: 3`, and
+`VISUAL_DENSITY: 5`.
+
+### Before | After | Why
+
+| Before | After | Why |
+| --- | --- | --- |
+| Personal Details keeps its fixed action behind the iOS keyboard | Apply IME clearance to the existing Noor bottom action while retaining outside-tap and Done dismissal | The user can always see and invoke Complete Setup without changing its component geometry |
+| A completed six-digit pincode leaves the numeric keyboard focused over loading/results | Committing six digits or choosing a suggestion dismisses focus; the POC results state now specifies the keyboard-dismissed outcome | A committed search should reveal results and actions instead of preserving an obsolete input mode |
+| The pincode empty prompt floats in the vertical center | Top-anchor it below the app bar using the same reading order as Phone, OTP, and registration | The first task appears where onboarding users already expect it |
+| The native map cannot reliably participate in Haze capture, leaving the persistent sheet transparent and producing transition artifacts | Give `PersistentSheetDialog` a native-layer-safe mode backed by Noor's semantic near-opaque surface and use it for Masjid Explorer | Text, illustration, and actions retain contrast while the map remains faintly contextual |
+| Personal Details says a follow request is membership verification | State that the profile is being completed before following the selected masjids, then confirm those masjids are followed after the server-backed refresh | The copy now describes the actual `followMasjids` contract and completion gate |
+| The rich notification sheet's long primary label wraps in a half-width action | Use the contextual action label `Allow`; the system permission prompt immediately follows | The action stays single-line at the canonical width without reducing touch size or type |
+| A bottom-docked Qaum audio player can cover the final post because the list reserves only navigation-bar space | Add token-derived list clearance only while the player is docked at the bottom | The player remains reachable without making the final post unreachable |
+
+### UX Pro Max checklist
+
+- Pending Home, Salaah, Qaum, and Profile identity states are logically correct in the supplied
+  evidence; no Guest regression is present.
+- Complete Setup remains a full-width target, is disabled while saving, and keeps the visible
+  `Saving details…` live status above it.
+- PIN input remains digit-limited; auto-search now ends input focus and retains loading, results,
+  no-result, error, retry, Guest, onboarding, and Browse branches.
+- Map content remains interactive outside the persistent sheet; the sheet no longer depends on
+  sampling the native map for essential contrast.
+- The rich notification explanation still precedes the OS prompt. Dismissal and permanently-denied
+  settings recovery are unchanged.
+- The repeated `Sourced Masjid 3` rows in the evidence have distinct stable IDs and reflect staging
+  fixture data; the UI does not deduplicate legitimate organisations by display name.
+- Fresh light/dark captures remain required for the repaired keyboard, map empty state, pincode
+  result, notification sheet, and bottom-docked audio state.
+
+### Motion and interaction specification
+
+| Interaction | Purpose | Timing / behavior | Interruption | Reduced motion |
+| --- | --- | --- | --- | --- |
+| PIN commit | End input mode and reveal resolved work | Immediate focus clear; existing loading/content state transition remains | Editing a new digit after Backspace restores ordinary input behavior | Identical focus behavior |
+| Explorer persistent sheet | Preserve map context without native capture artifacts | Existing detent motion; stable near-opaque surface replaces Haze sampling | Drag and map/list toggle remain interruptible | Existing detent snap behavior |
+| Personal Details saving | Confirm one ordered profile/follow/refresh operation | Existing tokenized indeterminate status above the action | Success or error removes progress immediately | Static status ring and text |
+| Success celebration | Mark rare onboarding completion | Existing one-shot tokenized celebration | Continue acts immediately after the action is available | Static success presentation |
+| Qaum audio dock | Preserve playback controls as their source scrolls away | Existing interruptible dock transition; list clearance changes with dock edge | Closing or returning to the source player removes the clearance | Existing no-travel fallback |
+
+No route, field order, selection payload, repository contract, follow order, nudge timing,
+permission order, analytics-sensitive action, or success gate changed in this pass.
+
+## Sehri and Masjid map interaction revalidation - 2026-07-22
+
+### Design read
+
+New iOS evidence reopened Sehri after the earlier acceptance. Noor's existing map-first hierarchy,
+complete provider card, visible pager indicator, serif heading, emerald actions, and direct pin
+selection remain authoritative. The defect was Compose geometry and camera ownership, so no new
+palette, type, card style, or parallel component was introduced. Dials remain
+`DESIGN_VARIANCE: 4`, `MOTION_INTENSITY: 3`, and `VISUAL_DENSITY: 5`.
+
+### Before | After | Why
+
+| Before | After | Why |
+| --- | --- | --- |
+| The Compose Sehri peek clips the provider card and hides Noor's pager indicator | Let the carousel measure at natural height and give the populated detent a generous component-metric allowance | The complete card and paging affordance are both part of the approved Noor peek state |
+| Search completion writes its request center into the controlled map camera | Separate viewport search state from explicit initial/My Location camera commands | Data arrival must not override a direct pan gesture |
+| Pin, card, carousel, or detent selection can move the map | Selection updates stable identity and sheet/card synchronization only | Content selection should preserve the user's chosen spatial context |
+| Dense areas collapse individual locations into cluster markers | Disable clustering in both discovery maps | The approved interaction is direct selection of an individual Masjid or Sehri provider |
+| Masjid results accumulate across old viewports | Latest successful viewport replaces markers/cards while retaining applicable follow state | Count, pins, cards, and empty state must describe the same visible search area |
+
+### UX Pro Max checklist
+
+- The native map retains pan, zoom, rotation, map-tap, pin-tap, and My Location behavior.
+- Loading is non-blocking; retry searches the last visible area; stale requests cannot replace a
+  newer area.
+- Pin selection and carousel paging retain stable semantics without a surprise viewport change.
+- The Sehri card actions and pager indicator remain visible at peek in light/dark and larger text.
+- No feature screen introduced raw visual values: card and detent geometry stays in component
+  metrics, and the shared Noor sheet/token surface remains unchanged.
+
+### Motion and interaction specification
+
+| Interaction | Purpose | Timing / behavior | Interruption | Reduced motion |
+| --- | --- | --- | --- | --- |
+| Native pan/zoom | Direct spatial manipulation | Platform gesture with no app-driven camera echo | Every new gesture owns the camera immediately | Identical direct manipulation |
+| Viewport refresh | Explain that nearby data is updating | Existing inline progress after the settled-area debounce | A newer gesture cancels/supersedes the older search | Identical state replacement |
+| Pin/card selection | Synchronize highlighted identity | Existing marker and pager feedback; no camera travel | A new selection retargets immediately | Existing snap behavior |
+| Map/list detent | Preserve spatial relationship between overview and list | Existing interruptible Noor sheet transition | Drag or reverse toggle retargets the detent | Existing no-travel replacement |
+
+No route, follow branch, repository contract, permission order, analytics action, shared transition,
+or Noor token/component API changed in this repair.
+
+## Zakaat final supplied-capture repair pass - 2026-07-22
+
+### Design read
+
+The fifteen supplied iOS captures preserve the approved accounting-led Zakaat journey: serif
+headings, compact progress, dark nested asset surfaces, emerald actions, explicit rate loading, and
+a dense but readable summary. The defects are shared-material composition, final-action sizing, and
+an interrupted gesture hint rather than a new visual direction. Dials remain
+`DESIGN_VARIANCE: 4`, `MOTION_INTENSITY: 3`, and `VISUAL_DENSITY: 5`.
+
+### Before | After | Why
+
+| Before | After | Why |
+| --- | --- | --- |
+| Zakaat scroll content begins after the AppBar and BottomBar, so the shared Haze materials have no pixels to sample | Let content scroll under both bars while safe opening and terminal insets remain part of the scroll content | Noor's progressive blur and frosted bottom material require real content behind them |
+| Several Zakaat storyboard AppBars and bottom action areas specify opaque feature-local containers | Use the shared progressive `app-bar` and `noor-haze` materials across empty, list, loading, wizard, and summary states | Every state now specifies the same component language Compose consumes |
+| The final expanded Calculate button competes with the circular Previous action | Keep Calculate intrinsic, preserve a flexible separation region, and retain the full Previous target | Both actions remain distinct without shrinking or wrapping either label |
+| The automated delete hint can remain offset during navigation and exposes an unexplained empty gap | Show the destructive layer during the hint and settle to zero before Summary or Edit begins | Gesture education must be interruptible and shared transitions must start from stable geometry |
+| “No Zakaats found” does not clearly name the missing saved objects | Use “No Zakaat calculations yet” and explain that calculating saves a result | Plain copy makes the empty state and its CTA outcome immediately understandable |
+
+### UX Pro Max checklist
+
+- Progressive AppBar and frosted BottomBar content respect status, navigation, and keyboard insets.
+- Previous, Next, Calculate, Back, and Edit retain platform-compliant Noor touch targets and named
+  semantics; disabled Calculate remains visibly and behaviorally disabled.
+- All six steps keep their action above the numeric keyboard, provide Done, and dismiss focus on
+  outside taps or navigation.
+- Loading, empty, populated, summary, destructive confirmation, and error/retry remain distinct.
+- The POC additions use established Noor variables/classes; Compose geometry and color remain token
+  or component-owned with no new feature-level visual literal.
+
+### Motion and interaction specification
+
+| Interaction | Purpose | Timing / behavior | Interruption | Reduced motion |
+| --- | --- | --- | --- | --- |
+| Progressive AppBar / frosted BottomBar | Preserve content context as it travels under fixed actions | Material sampling follows scroll directly; no timed travel | A new drag owns the content position immediately | Identical static material |
+| Swipe hint | Explain delete discoverability once | Existing Noor gesture tokens and destructive reveal | Summary, Edit, or user navigation stops it and settles the card before routing | No automated travel |
+| Saved card to due hero | Preserve selected-record identity | Existing typed shared bounds and emphasized Noor timing | Back or predictive Back retargets immediately | Immediate destination replacement |
+| Previous, Next, Calculate | Provide direct wizard feedback | Existing Noor press feedback only | Release or route/state change ends feedback | Static pressed-state replacement |
+
+No rate source, asset calculation, nisab rule, persistence model, route, shared-transition identity,
+or analytics-sensitive action changed in this repair.
+
+## Hijri, Qibla, and Asma supplied-capture repair pass - 2026-07-22
+
+### Design read
+
+The supplied captures confirm that Noor's devotional language remains the correct source: compact
+calendar density, a quiet compass-first permission hierarchy, camera content that stays visible
+beneath AR guidance, and an adaptive Asma collection whose detail remains spatially connected to the
+tapped tile. The defects were Compose hierarchy, component geometry, unsupported glyph rendering,
+and stale pager identity—not a need for a new style. Dials remain `DESIGN_VARIANCE: 4`,
+`MOTION_INTENSITY: 3`, and `VISUAL_DENSITY: 5`.
+
+### Before | After | Why
+
+| Before | After | Why |
+| --- | --- | --- |
+| Hijri used a weak month heading, narrow calendar gutters, and a remote subtitle glyph that expanded into adjacent text | Match Noor's bold month heading and 16dp calendar gutter; normalize the colliding honorific out of the display/default copy | The calendar regains Noor's hierarchy and devotional event copy remains readable |
+| Qibla placed permission content high, enlarged every AR overlay, and described camera access as QR-only | Match Noor's flexible compass-first permission composition, compact overlay metrics, lower guidance, and truthful dual-purpose camera rationale | The camera scene stays useful, the action hierarchy is calmer, and consent text explains actual behavior |
+| Asma allowed retained pager state to override a new tile tap and rendered louder square tiles | Give the active tapped index priority, recreate the pager for its stable origin, and match Noor's compact tile size/type roles | Tile identity remains exact across repeated opens while normal in-overlay swiping stays continuous |
+
+### UX Pro Max checklist
+
+- Hijri title, month actions, day selection, event rows, loading, empty, and retry use existing Noor
+  semantics and token roles; no touch target was reduced.
+- Qibla's primary action remains singular and labelled; location/camera recovery, safe areas, sensor
+  gating, and valid zero-degree readings are unchanged.
+- The native camera rationale now covers both guided Qibla alignment and masjid QR scanning.
+- Asma tiles retain semantic button behavior, stable collection keys, adaptive columns, a labelled
+  modal surface, explicit dismissal, and previous/next alternatives to swipe.
+- Fixed visual geometry remains in component metrics; screens did not add raw colors, spacing,
+  typography, opacity, scrims, or motion timing.
+- Physical-device light/dark, large-text, landscape, camera, and sensor evidence remains delegated.
+
+### Motion and interaction specification
+
+| Interaction | Purpose | Timing / behavior | Interruption | Reduced motion |
+| --- | --- | --- | --- | --- |
+| Hijri month paging | Preserve chronological continuity | Existing Noor pager duration and direction | A new arrow or swipe retargets immediately | Snap to the requested month |
+| Qibla heading and turn hint | Explain live physical direction | Existing interruptible sensor interpolation and Noor-governed hint pulse | Every sensor reading, alignment, recovery, or exit replaces it | Heading snaps; direction arrow remains static |
+| Asma tile to detail | Preserve the identity of the tapped name | Existing shared-bounds transition keyed by stable name origin | Close, Back, or a new origin replaces it | Immediate overlay replacement |
+| Asma detail swipe | Browse adjacent names without leaving context | Native pager tracks the gesture directly | Reverse or release settles to the nearest page | Same direct pager gesture; no source-to-card travel |
+
+No Hijri calendar calculation, event date, Qibla bearing/sensor algorithm, permission order, route,
+Asma corpus, deep-link contract, or analytics-sensitive action changed in this pass.
+
+## Qibla aligned-state spatial refinement - 2026-07-22
+
+### Design read
+
+This is a preserve-redesign correction to the approved camera-led Qibla experience. The physical
+device capture shows that the landmark, ambient depth, and degree readout need stronger spatial
+separation, not a new visual language. Dials remain `DESIGN_VARIANCE: 4`,
+`MOTION_INTENSITY: 3`, and `VISUAL_DENSITY: 5`.
+
+### Before | After | Why
+
+| Before | After | Why |
+| --- | --- | --- |
+| The top of the Kaaba scene intersects the translucent AppBar | Lower the aligned scene using explicit component metrics and a 20% Noor reference offset | Persistent chrome and sacred landmark no longer visually compete |
+| The radial depth field closely hugged the 240dp image | Expand the ambient field from 300dp to 360dp while preserving the image size | The wider, soft falloff suggests an immersive 3D volume without enlarging the focal asset |
+| Dark mode rendered the degree value black on a dark field | Use the theme-stable `onMedia` foreground role | Media overlays require fixed contrast rather than an inverse role whose meaning changes by theme |
+
+### UX Pro Max checklist
+
+- The close action and AppBar geometry remain unchanged and continue to respect the platform safe
+  area.
+- The Kaaba content now clears persistent chrome while the camera remains full-bleed.
+- The degree value uses a semantic media foreground that is white in both light and dark themes.
+- Geometry remains centralized in Qibla component metrics; no screen-level color or dimension was
+  introduced.
+- The larger radial field remains non-interactive and does not obscure the direction arrow, compass,
+  or angle readout.
+
+### Motion and interaction specification
+
+| Interaction | Purpose | Timing / behavior | Interruption | Reduced motion |
+| --- | --- | --- | --- | --- |
+| Kaaba aligned-state placement | Establish spatial hierarchy after alignment | Static component geometry; no new motion | Live bearing can remove the scene immediately | Identical static geometry |
+| Ambient radial depth | Separate the landmark from the live camera | Static radial falloff | Removed with the existing aligned-state visibility | Identical static field |
+| Degree readout | Communicate live correction angle | Existing sensor-driven value update | Every sensor reading replaces the value | Existing snap behavior |
+
+No bearing calculation, alignment threshold, haptic behavior, asset size, camera contract, route, or
+permission order changed.
+
+## Asma pager shared-element lifecycle correction - 2026-07-22
+
+The approved Noor overlay design remains unchanged. Follow-up Compose device evidence exposed a
+shared-element lifecycle defect when paging away from the tile that opened the overlay.
+
+| Before | After | Why |
+| --- | --- | --- |
+| The original grid tile could reappear while its off-screen detail page still held matching shared keys | Keep the stable origin hidden until the overlay closes | A shared key has one visible source and one visible destination during the intended container transform |
+| Pager state changed during movement | Commit the selected page only after the pager settles | Direct manipulation remains visually and logically coherent |
+| Shared bounds remained eligible during ordinary detail paging | Restrict the container transform to an idle pager settled on the original tile | Swiping and previous/next remain pager interactions, not repeated source-to-modal morphs |
+
+No Noor token, component geometry, copy, corpus, visual state, or route changed. The existing
+tile-to-overlay transition remains purposeful for spatial entry and return only; reduced motion keeps
+the existing immediate replacement.
+
+## Final non-Masjid flow acceptance - 2026-07-22
+
+The user verified and accepted the repaired Personal Details, Home and five-tab shell, Quran,
+Sehri, Dua and Dikhr, Asma ul Husna, Qibla, Hijri, and Zakaat journeys. The approved Noor designs,
+tokens, components, hierarchy, motion rules, and Compose parity behavior remain authoritative.
+Temporary device screenshots were removed from the repository workspace at the user's request.
+Only Masjid discovery/onboarding, role-backed Masjid operations, and their shared-surface
+certification remain open unless a completed journey is explicitly reopened.
