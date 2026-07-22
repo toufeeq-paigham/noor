@@ -305,6 +305,7 @@
   --opacity-prominent: .70;
   --opacity-high: .80;
   --opacity-emphasis: .86;
+  --opacity-near-opaque: .92;
   --opacity-opaque: 1;
 
   /* Semantic motion - mirrors MotionDefaults.value */

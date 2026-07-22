@@ -1229,6 +1229,12 @@
             "definedIn": "colors_and_type.css"
         },
         {
+            "name": "--opacity-near-opaque",
+            "value": ".92",
+            "kind": "other",
+            "definedIn": "colors_and_type.css"
+        },
+        {
             "name": "--opacity-opaque",
             "value": "1",
             "kind": "other",

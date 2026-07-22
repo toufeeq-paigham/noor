@@ -89,7 +89,7 @@
       { name: 'Dua & Dikhr', file: 'dua-dikhr/Dua & Dikhr.dc.html#categories', icon: 'volunteer_activism', meta: 'Section board · Hisnul Muslim · 5 states' },
       { name: 'Asma ul Husna', file: 'asma-ul-husna/Asma ul Husna.dc.html', icon: 'auto_awesome', meta: 'Section board · 99 names · detail overlay · 7 states' },
       { name: 'Qibla', file: 'qibla/Qibla.dc.html#permissions', icon: 'explore', meta: 'Section board · permissions → recovery → AR compass · 9 states' },
-      { name: 'Hijri', file: 'hijri/Hijri.dc.html', icon: 'calendar_month', meta: 'Section board · month grid · 3 states' },
+      { name: 'Hijri', file: 'hijri/Hijri.dc.html', icon: 'calendar_month', meta: 'Section board · adaptive calendar · 7 states' },
       { name: 'Zakaat', file: 'zakaat/Zakaat.dc.html', icon: 'savings', meta: 'Section board · 6-step calculator' }
     ]}
   ];
