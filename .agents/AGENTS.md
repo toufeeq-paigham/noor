@@ -183,11 +183,11 @@ grep -rnE '#[0-9a-fA-F]{3,8}' src/components src/_theme/components.css
 
 ## Canonical Product Flows — Read Before Journey Design
 
-The shared Paigham onboarding, user-state, nudge, and Salaah-timing rules live in
-`../paigham-app/docs/ui-ux-upgrade/FLOW_LOGIC.md`. Read that document before changing Noor journeys
-for authentication, onboarding, Home, Profile, Masjid discovery, or Salaah. Noor may improve how a
-flow is explained, but it must not silently change the product logic; approved logic changes must
-update that document in the same change.
+The shared Paigham product-flow, design-system, accessibility, motion, and certification rules live
+in `../paigham-app/.agents/rules/ui-ux-product.md`. Read that rule before changing Noor journeys for
+authentication, onboarding, Home, Profile, Masjid discovery, Salaah, or Compose parity. Noor may
+improve how a flow is explained, but it must not silently change product logic; approved changes
+must update the shared rule in the same change.
 
 ## Commit Messages
 
