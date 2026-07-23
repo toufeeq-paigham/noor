@@ -1209,8 +1209,8 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "app_store_screenshots_src_app_page",
-      "community": 32,
-      "community_name": "screenshot-editor.tsx",
+      "community": 77,
+      "community_name": "inspector.tsx",
       "norm_label": "page.tsx"
     },
     {
@@ -1220,8 +1220,8 @@
       "source_location": "L3",
       "_origin": "ast",
       "id": "app_store_screenshots_src_app_page_page",
-      "community": 32,
-      "community_name": "screenshot-editor.tsx",
+      "community": 77,
+      "community_name": "inspector.tsx",
       "norm_label": "page()"
     },
     {
@@ -1231,8 +1231,8 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "app_store_screenshots_src_components_editor_device_frames",
-      "community": 26,
-      "community_name": "slide-canvas.tsx",
+      "community": 32,
+      "community_name": "screenshot-editor.tsx",
       "norm_label": "device-frames.tsx"
     },
     {
@@ -1242,8 +1242,8 @@
       "source_location": "L6",
       "_origin": "ast",
       "id": "app_store_screenshots_src_components_editor_device_frames_frameprops",
-      "community": 26,
-      "community_name": "slide-canvas.tsx",
+      "community": 32,
+      "community_name": "screenshot-editor.tsx",
       "norm_label": "frameprops"
     },
     {
@@ -1253,8 +1253,8 @@
       "source_location": "L15",
       "_origin": "ast",
       "id": "app_store_screenshots_src_components_editor_device_frames_phone",
-      "community": 26,
-      "community_name": "slide-canvas.tsx",
+      "community": 32,
+      "community_name": "screenshot-editor.tsx",
       "norm_label": "phone()"
     },
     {
@@ -1264,8 +1264,8 @@
       "source_location": "L53",
       "_origin": "ast",
       "id": "app_store_screenshots_src_components_editor_device_frames_androidphone",
-      "community": 26,
-      "community_name": "slide-canvas.tsx",
+      "community": 32,
+      "community_name": "screenshot-editor.tsx",
       "norm_label": "androidphone()"
     },
     {
@@ -1275,8 +1275,8 @@
       "source_location": "L137",
       "_origin": "ast",
       "id": "app_store_screenshots_src_components_editor_device_frames_androidtabletp",
-      "community": 26,
-      "community_name": "slide-canvas.tsx",
+      "community": 32,
+      "community_name": "screenshot-editor.tsx",
       "norm_label": "androidtabletp()"
     },
     {
@@ -1286,8 +1286,8 @@
       "source_location": "L193",
       "_origin": "ast",
       "id": "app_store_screenshots_src_components_editor_device_frames_androidtabletl",
-      "community": 26,
-      "community_name": "slide-canvas.tsx",
+      "community": 32,
+      "community_name": "screenshot-editor.tsx",
       "norm_label": "androidtabletl()"
     },
     {
@@ -1297,8 +1297,8 @@
       "source_location": "L249",
       "_origin": "ast",
       "id": "app_store_screenshots_src_components_editor_device_frames_ipad",
-      "community": 26,
-      "community_name": "slide-canvas.tsx",
+      "community": 32,
+      "community_name": "screenshot-editor.tsx",
       "norm_label": "ipad()"
     },
     {
@@ -1308,8 +1308,8 @@
       "source_location": "L305",
       "_origin": "ast",
       "id": "app_store_screenshots_src_components_editor_device_frames_emptyslot",
-      "community": 26,
-      "community_name": "slide-canvas.tsx",
+      "community": 32,
+      "community_name": "screenshot-editor.tsx",
       "norm_label": "emptyslot()"
     },
     {
@@ -1352,8 +1352,8 @@
       "source_location": "L65",
       "_origin": "ast",
       "id": "app_store_screenshots_src_components_editor_inspector_inspector",
-      "community": 77,
-      "community_name": "inspector.tsx",
+      "community": 26,
+      "community_name": "slide-canvas.tsx",
       "norm_label": "inspector()"
     },
     {
@@ -1385,8 +1385,8 @@
       "source_location": "L502",
       "_origin": "ast",
       "id": "app_store_screenshots_src_components_editor_inspector_textelementpanel",
-      "community": 77,
-      "community_name": "inspector.tsx",
+      "community": 26,
+      "community_name": "slide-canvas.tsx",
       "norm_label": "textelementpanel()"
     },
     {
@@ -1462,8 +1462,8 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "app_store_screenshots_src_components_editor_screenshot_editor",
-      "community": 32,
-      "community_name": "screenshot-editor.tsx",
+      "community": 77,
+      "community_name": "inspector.tsx",
       "norm_label": "screenshot-editor.tsx"
     },
     {
@@ -1473,8 +1473,8 @@
       "source_location": "L31",
       "_origin": "ast",
       "id": "app_store_screenshots_src_components_editor_screenshot_editor_screenshoteditor",
-      "community": 32,
-      "community_name": "screenshot-editor.tsx",
+      "community": 77,
+      "community_name": "inspector.tsx",
       "norm_label": "screenshoteditor()"
     },
     {
@@ -1484,8 +1484,8 @@
       "source_location": "L710",
       "_origin": "ast",
       "id": "app_store_screenshots_src_components_editor_screenshot_editor_slugify",
-      "community": 32,
-      "community_name": "screenshot-editor.tsx",
+      "community": 77,
+      "community_name": "inspector.tsx",
       "norm_label": "slugify()"
     },
     {
@@ -1495,8 +1495,8 @@
       "source_location": "L719",
       "_origin": "ast",
       "id": "app_store_screenshots_src_components_editor_screenshot_editor_slideneedsscreenshot",
-      "community": 32,
-      "community_name": "screenshot-editor.tsx",
+      "community": 77,
+      "community_name": "inspector.tsx",
       "norm_label": "slideneedsscreenshot()"
     },
     {
@@ -1506,8 +1506,8 @@
       "source_location": "L724",
       "_origin": "ast",
       "id": "app_store_screenshots_src_components_editor_screenshot_editor_stamp",
-      "community": 32,
-      "community_name": "screenshot-editor.tsx",
+      "community": 77,
+      "community_name": "inspector.tsx",
       "norm_label": "stamp()"
     },
     {
@@ -1605,8 +1605,8 @@
       "source_location": "L42",
       "_origin": "ast",
       "id": "app_store_screenshots_src_components_editor_sidebar_sidebar",
-      "community": 20,
-      "community_name": "types.ts",
+      "community": 77,
+      "community_name": "inspector.tsx",
       "norm_label": "sidebar()"
     },
     {
@@ -1660,8 +1660,8 @@
       "source_location": "L64",
       "_origin": "ast",
       "id": "app_store_screenshots_src_components_editor_slide_canvas_getframefordevice",
-      "community": 26,
-      "community_name": "slide-canvas.tsx",
+      "community": 32,
+      "community_name": "screenshot-editor.tsx",
       "norm_label": "getframefordevice()"
     },
     {
@@ -1726,8 +1726,8 @@
       "source_location": "L211",
       "_origin": "ast",
       "id": "app_store_screenshots_src_components_editor_slide_canvas_caption",
-      "community": 77,
-      "community_name": "inspector.tsx",
+      "community": 26,
+      "community_name": "slide-canvas.tsx",
       "norm_label": "caption()"
     },
     {
@@ -2023,8 +2023,8 @@
       "source_location": "L49",
       "_origin": "ast",
       "id": "app_store_screenshots_src_components_editor_toolbar_toolbar",
-      "community": 32,
-      "community_name": "screenshot-editor.tsx",
+      "community": 77,
+      "community_name": "inspector.tsx",
       "norm_label": "toolbar()"
     },
     {
@@ -2045,8 +2045,8 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "app_store_screenshots_src_components_ui_button",
-      "community": 72,
-      "community_name": "@dnd-kit/core",
+      "community": 20,
+      "community_name": "types.ts",
       "norm_label": "button.tsx"
     },
     {
@@ -2056,8 +2056,8 @@
       "source_location": "L6",
       "_origin": "ast",
       "id": "app_store_screenshots_src_components_ui_button_buttonvariants",
-      "community": 72,
-      "community_name": "@dnd-kit/core",
+      "community": 20,
+      "community_name": "types.ts",
       "norm_label": "buttonvariants"
     },
     {
@@ -2067,8 +2067,8 @@
       "source_location": "L29",
       "_origin": "ast",
       "id": "app_store_screenshots_src_components_ui_button_buttonprops",
-      "community": 72,
-      "community_name": "@dnd-kit/core",
+      "community": 20,
+      "community_name": "types.ts",
       "norm_label": "buttonprops"
     },
     {
@@ -2078,8 +2078,8 @@
       "source_location": "L35",
       "_origin": "ast",
       "id": "app_store_screenshots_src_components_ui_button_button",
-      "community": 72,
-      "community_name": "@dnd-kit/core",
+      "community": 20,
+      "community_name": "types.ts",
       "norm_label": "button"
     },
     {
@@ -2298,8 +2298,8 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "app_store_screenshots_src_components_ui_label",
-      "community": 77,
-      "community_name": "inspector.tsx",
+      "community": 16,
+      "community_name": "toolbar.tsx",
       "norm_label": "label.tsx"
     },
     {
@@ -2309,8 +2309,8 @@
       "source_location": "L7",
       "_origin": "ast",
       "id": "app_store_screenshots_src_components_ui_label_labelvariants",
-      "community": 77,
-      "community_name": "inspector.tsx",
+      "community": 16,
+      "community_name": "toolbar.tsx",
       "norm_label": "labelvariants"
     },
     {
@@ -2320,8 +2320,8 @@
       "source_location": "L11",
       "_origin": "ast",
       "id": "app_store_screenshots_src_components_ui_label_label",
-      "community": 77,
-      "community_name": "inspector.tsx",
+      "community": 16,
+      "community_name": "toolbar.tsx",
       "norm_label": "label"
     },
     {
@@ -2463,8 +2463,8 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "app_store_screenshots_src_lib_constants",
-      "community": 20,
-      "community_name": "types.ts",
+      "community": 32,
+      "community_name": "screenshot-editor.tsx",
       "norm_label": "constants.ts"
     },
     {
@@ -2474,8 +2474,8 @@
       "source_location": "L4",
       "_origin": "ast",
       "id": "app_store_screenshots_src_lib_constants_canvas",
-      "community": 20,
-      "community_name": "types.ts",
+      "community": 32,
+      "community_name": "screenshot-editor.tsx",
       "norm_label": "canvas"
     },
     {
@@ -2485,8 +2485,8 @@
       "source_location": "L14",
       "_origin": "ast",
       "id": "app_store_screenshots_src_lib_constants_exportsize",
-      "community": 20,
-      "community_name": "types.ts",
+      "community": 32,
+      "community_name": "screenshot-editor.tsx",
       "norm_label": "exportsize"
     },
     {
@@ -2496,8 +2496,8 @@
       "source_location": "L16",
       "_origin": "ast",
       "id": "app_store_screenshots_src_lib_constants_export_sizes",
-      "community": 20,
-      "community_name": "types.ts",
+      "community": 32,
+      "community_name": "screenshot-editor.tsx",
       "norm_label": "export_sizes"
     },
     {
@@ -2507,8 +2507,8 @@
       "source_location": "L34",
       "_origin": "ast",
       "id": "app_store_screenshots_src_lib_constants_export_sizes_landscape",
-      "community": 20,
-      "community_name": "types.ts",
+      "community": 32,
+      "community_name": "screenshot-editor.tsx",
       "norm_label": "export_sizes_landscape"
     },
     {
@@ -2518,8 +2518,8 @@
       "source_location": "L39",
       "_origin": "ast",
       "id": "app_store_screenshots_src_lib_constants_supportslandscape",
-      "community": 32,
-      "community_name": "screenshot-editor.tsx",
+      "community": 77,
+      "community_name": "inspector.tsx",
       "norm_label": "supportslandscape()"
     },
     {
@@ -2540,8 +2540,8 @@
       "source_location": "L57",
       "_origin": "ast",
       "id": "app_store_screenshots_src_lib_constants_phone_screen",
-      "community": 26,
-      "community_name": "slide-canvas.tsx",
+      "community": 32,
+      "community_name": "screenshot-editor.tsx",
       "norm_label": "phone_screen"
     },
     {
@@ -2551,8 +2551,8 @@
       "source_location": "L67",
       "_origin": "ast",
       "id": "app_store_screenshots_src_lib_constants_phonew",
-      "community": 26,
-      "community_name": "slide-canvas.tsx",
+      "community": 32,
+      "community_name": "screenshot-editor.tsx",
       "norm_label": "phonew()"
     },
     {
@@ -2562,8 +2562,8 @@
       "source_location": "L70",
       "_origin": "ast",
       "id": "app_store_screenshots_src_lib_constants_phonewsmall",
-      "community": 26,
-      "community_name": "slide-canvas.tsx",
+      "community": 32,
+      "community_name": "screenshot-editor.tsx",
       "norm_label": "phonewsmall()"
     },
     {
@@ -2573,8 +2573,8 @@
       "source_location": "L73",
       "_origin": "ast",
       "id": "app_store_screenshots_src_lib_constants_tabletpw",
-      "community": 26,
-      "community_name": "slide-canvas.tsx",
+      "community": 32,
+      "community_name": "screenshot-editor.tsx",
       "norm_label": "tabletpw()"
     },
     {
@@ -2584,8 +2584,8 @@
       "source_location": "L76",
       "_origin": "ast",
       "id": "app_store_screenshots_src_lib_constants_tabletlw",
-      "community": 26,
-      "community_name": "slide-canvas.tsx",
+      "community": 32,
+      "community_name": "screenshot-editor.tsx",
       "norm_label": "tabletlw()"
     },
     {
@@ -2595,8 +2595,8 @@
       "source_location": "L79",
       "_origin": "ast",
       "id": "app_store_screenshots_src_lib_constants_ipadw",
-      "community": 26,
-      "community_name": "slide-canvas.tsx",
+      "community": 32,
+      "community_name": "screenshot-editor.tsx",
       "norm_label": "ipadw()"
     },
     {
@@ -2606,8 +2606,8 @@
       "source_location": "L86",
       "_origin": "ast",
       "id": "app_store_screenshots_src_lib_constants_themes",
-      "community": 20,
-      "community_name": "types.ts",
+      "community": 32,
+      "community_name": "screenshot-editor.tsx",
       "norm_label": "themes"
     },
     {
@@ -2639,8 +2639,8 @@
       "source_location": "L160",
       "_origin": "ast",
       "id": "app_store_screenshots_src_lib_constants_device_label",
-      "community": 20,
-      "community_name": "types.ts",
+      "community": 16,
+      "community_name": "toolbar.tsx",
       "norm_label": "device_label"
     },
     {
@@ -2661,8 +2661,8 @@
       "source_location": "L181",
       "_origin": "ast",
       "id": "app_store_screenshots_src_lib_constants_layout_hint",
-      "community": 77,
-      "community_name": "inspector.tsx",
+      "community": 32,
+      "community_name": "screenshot-editor.tsx",
       "norm_label": "layout_hint"
     },
     {
@@ -2749,8 +2749,8 @@
       "source_location": "L110",
       "_origin": "ast",
       "id": "app_store_screenshots_src_lib_defaults_default_project",
-      "community": 79,
-      "community_name": "storage.ts",
+      "community": 59,
+      "community_name": "constants.ts",
       "norm_label": "default_project"
     },
     {
@@ -2771,8 +2771,8 @@
       "source_location": "L140",
       "_origin": "ast",
       "id": "app_store_screenshots_src_lib_defaults_detectplatform",
-      "community": 32,
-      "community_name": "screenshot-editor.tsx",
+      "community": 77,
+      "community_name": "inspector.tsx",
       "norm_label": "detectplatform()"
     },
     {
@@ -2848,8 +2848,8 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "app_store_screenshots_src_lib_image_cache",
-      "community": 26,
-      "community_name": "slide-canvas.tsx",
+      "community": 72,
+      "community_name": "@dnd-kit/core",
       "norm_label": "image-cache.ts"
     },
     {
@@ -2859,8 +2859,8 @@
       "source_location": "L5",
       "_origin": "ast",
       "id": "app_store_screenshots_src_lib_image_cache_cache",
-      "community": 26,
-      "community_name": "slide-canvas.tsx",
+      "community": 72,
+      "community_name": "@dnd-kit/core",
       "norm_label": "cache"
     },
     {
@@ -2870,8 +2870,8 @@
       "source_location": "L6",
       "_origin": "ast",
       "id": "app_store_screenshots_src_lib_image_cache_failed",
-      "community": 26,
-      "community_name": "slide-canvas.tsx",
+      "community": 72,
+      "community_name": "@dnd-kit/core",
       "norm_label": "failed"
     },
     {
@@ -2881,8 +2881,8 @@
       "source_location": "L8",
       "_origin": "ast",
       "id": "app_store_screenshots_src_lib_image_cache_fetchasdataurl",
-      "community": 26,
-      "community_name": "slide-canvas.tsx",
+      "community": 72,
+      "community_name": "@dnd-kit/core",
       "norm_label": "fetchasdataurl()"
     },
     {
@@ -2892,8 +2892,8 @@
       "source_location": "L24",
       "_origin": "ast",
       "id": "app_store_screenshots_src_lib_image_cache_preloadimages",
-      "community": 26,
-      "community_name": "slide-canvas.tsx",
+      "community": 72,
+      "community_name": "@dnd-kit/core",
       "norm_label": "preloadimages()"
     },
     {
@@ -2903,8 +2903,8 @@
       "source_location": "L44",
       "_origin": "ast",
       "id": "app_store_screenshots_src_lib_image_cache_img",
-      "community": 26,
-      "community_name": "slide-canvas.tsx",
+      "community": 32,
+      "community_name": "screenshot-editor.tsx",
       "norm_label": "img()"
     },
     {
@@ -2914,8 +2914,8 @@
       "source_location": "L51",
       "_origin": "ast",
       "id": "app_store_screenshots_src_lib_image_cache_setimage",
-      "community": 26,
-      "community_name": "slide-canvas.tsx",
+      "community": 72,
+      "community_name": "@dnd-kit/core",
       "norm_label": "setimage()"
     },
     {
@@ -2936,8 +2936,8 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "app_store_screenshots_src_lib_locale",
-      "community": 32,
-      "community_name": "screenshot-editor.tsx",
+      "community": 79,
+      "community_name": "storage.ts",
       "norm_label": "locale.ts"
     },
     {
@@ -2947,8 +2947,8 @@
       "source_location": "L9",
       "_origin": "ast",
       "id": "app_store_screenshots_src_lib_locale_picktext",
-      "community": 77,
-      "community_name": "inspector.tsx",
+      "community": 26,
+      "community_name": "slide-canvas.tsx",
       "norm_label": "picktext()"
     },
     {
@@ -2958,8 +2958,8 @@
       "source_location": "L24",
       "_origin": "ast",
       "id": "app_store_screenshots_src_lib_locale_resolvescreenshot",
-      "community": 72,
-      "community_name": "@dnd-kit/core",
+      "community": 26,
+      "community_name": "slide-canvas.tsx",
       "norm_label": "resolvescreenshot()"
     },
     {
@@ -2980,8 +2980,8 @@
       "source_location": "L41",
       "_origin": "ast",
       "id": "app_store_screenshots_src_lib_locale_writelocalized",
-      "community": 32,
-      "community_name": "screenshot-editor.tsx",
+      "community": 77,
+      "community_name": "inspector.tsx",
       "norm_label": "writelocalized()"
     },
     {
@@ -3167,8 +3167,8 @@
       "source_location": "L14",
       "_origin": "ast",
       "id": "app_store_screenshots_src_lib_types_slidelayout",
-      "community": 20,
-      "community_name": "types.ts",
+      "community": 32,
+      "community_name": "screenshot-editor.tsx",
       "norm_label": "slidelayout"
     },
     {
@@ -3233,8 +3233,8 @@
       "source_location": "L46",
       "_origin": "ast",
       "id": "app_store_screenshots_src_lib_types_localizedtext",
-      "community": 32,
-      "community_name": "screenshot-editor.tsx",
+      "community": 79,
+      "community_name": "storage.ts",
       "norm_label": "localizedtext"
     },
     {
@@ -3266,8 +3266,8 @@
       "source_location": "L71",
       "_origin": "ast",
       "id": "app_store_screenshots_src_lib_types_themeid",
-      "community": 20,
-      "community_name": "types.ts",
+      "community": 32,
+      "community_name": "screenshot-editor.tsx",
       "norm_label": "themeid"
     },
     {
@@ -3288,8 +3288,8 @@
       "source_location": "L90",
       "_origin": "ast",
       "id": "app_store_screenshots_src_lib_types_projectstate",
-      "community": 79,
-      "community_name": "storage.ts",
+      "community": 59,
+      "community_name": "constants.ts",
       "norm_label": "projectstate"
     },
     {
@@ -11667,16 +11667,6 @@
       "id": "docs_ui_ux_upgrade_decisions_ux_04_quran_index_and_reader"
     },
     {
-      "label": "Before / After / Why",
-      "file_type": "document",
-      "source_file": "docs/ui-ux-upgrade/DECISIONS.md",
-      "source_location": "L181",
-      "community": 70,
-      "norm_label": "before / after / why",
-      "community_name": "Noor UI/UX Upgrade Decisions",
-      "id": "docs_ui_ux_upgrade_decisions_before_after_why_181"
-    },
-    {
       "label": "Design-system and UX checklist",
       "file_type": "document",
       "source_file": "docs/ui-ux-upgrade/DECISIONS.md",
@@ -11715,16 +11705,6 @@
       "norm_label": "design read and dials",
       "community_name": "Noor UI/UX Upgrade Decisions",
       "id": "docs_ui_ux_upgrade_decisions_design_read_and_dials"
-    },
-    {
-      "label": "Motion and interaction specification",
-      "file_type": "document",
-      "source_file": "docs/ui-ux-upgrade/DECISIONS.md",
-      "source_location": "L250",
-      "community": 70,
-      "norm_label": "motion and interaction specification",
-      "community_name": "Noor UI/UX Upgrade Decisions",
-      "id": "docs_ui_ux_upgrade_decisions_motion_and_interaction_specification_250"
     },
     {
       "label": "UX Pro Max result",
@@ -30136,6 +30116,16 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "docs/ui-ux-upgrade/DECISIONS.md",
+      "source_location": "L181",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "docs_ui_ux_upgrade_decisions_ux_04_quran_index_and_reader",
+      "target": "docs_ui_ux_upgrade_decisions_before_after_why_118"
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "docs/ui-ux-upgrade/DECISIONS.md",
       "source_location": "L269",
       "weight": 1.0,
       "confidence_score": 1.0,
@@ -30196,6 +30186,16 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "docs/ui-ux-upgrade/DECISIONS.md",
+      "source_location": "L250",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "docs_ui_ux_upgrade_decisions_ux_03_five_tab_visual_parity_pass_2026_07_21",
+      "target": "docs_ui_ux_upgrade_decisions_motion_and_interaction_specification"
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "docs/ui-ux-upgrade/DECISIONS.md",
       "source_location": "L537",
       "weight": 1.0,
       "confidence_score": 1.0,
@@ -30216,16 +30216,6 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "docs/ui-ux-upgrade/DECISIONS.md",
-      "source_location": "L181",
-      "weight": 1.0,
-      "confidence_score": 1.0,
-      "source": "docs_ui_ux_upgrade_decisions_ux_04_quran_index_and_reader",
-      "target": "docs_ui_ux_upgrade_decisions_before_after_why_181"
-    },
-    {
-      "relation": "contains",
-      "confidence": "EXTRACTED",
-      "source_file": "docs/ui-ux-upgrade/DECISIONS.md",
       "source_location": "L204",
       "weight": 1.0,
       "confidence_score": 1.0,
@@ -30241,16 +30231,6 @@
       "confidence_score": 1.0,
       "source": "docs_ui_ux_upgrade_decisions_ux_03_five_tab_visual_parity_pass_2026_07_21",
       "target": "docs_ui_ux_upgrade_decisions_design_read_and_dials"
-    },
-    {
-      "relation": "contains",
-      "confidence": "EXTRACTED",
-      "source_file": "docs/ui-ux-upgrade/DECISIONS.md",
-      "source_location": "L250",
-      "weight": 1.0,
-      "confidence_score": 1.0,
-      "source": "docs_ui_ux_upgrade_decisions_ux_03_five_tab_visual_parity_pass_2026_07_21",
-      "target": "docs_ui_ux_upgrade_decisions_motion_and_interaction_specification_250"
     },
     {
       "relation": "contains",
@@ -30594,5 +30574,5 @@
     }
   ],
   "hyperedges": [],
-  "built_at_commit": "9de2403b9c2e24d835030ae758773390f36d535c"
+  "built_at_commit": "53505408674247c12ada3efb2b50e3a733443534"
 }

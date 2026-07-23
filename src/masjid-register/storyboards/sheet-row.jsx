@@ -9,12 +9,12 @@ function buildManageTiles(primaryId) {
 }
 function buildFollowRows(checkedId) {
   const data = window.MASJID_FOLLOW_DATA || [];
-  return data.map((f, i) => ({ ...f, showHeader: i === 0 || data[i - 1].city !== f.city, checked: f.id === checkedId }));
+  return data.map((f) => ({ ...f, checked: f.id === checkedId }));
 }
 
 function sheetFrames() {
   return [
-    { name: 'Sheet · Manage', tab: 'manage', primary: 'dargha' },
+    { name: 'Sheet · Manage + pending', tab: 'manage', primary: 'dargha', registration: true },
     { name: 'Sheet · Follow', tab: 'follow', primary: 'subhania' }
   ];
 }
@@ -22,7 +22,8 @@ function sheetFrames() {
 function frame(f, globalIdx, active, onSelectFrame) {
   const { ProfileScreen, MyMasjidsSheet, BottomNav } = window;
   const ring = active === globalIdx ? 'is-active' : '';
-  const data = { isOpen: true, tab: f.tab, manageTiles: buildManageTiles(f.primary), followRows: buildFollowRows(f.primary), onClose: noop, onRegister: noop, onExplore: noop, onFind: noop };
+  const registration = f.registration ? { ...(window.MASJID_REGISTRATION_DATA || {}), onOpen: noop } : null;
+  const data = { isOpen: true, tab: f.tab, manageTiles: buildManageTiles(f.primary), followRows: buildFollowRows(f.primary), registration, onClose: noop, onRegister: noop, onFind: noop };
   return (
     <div key={globalIdx} className="poc-board-item" onClick={() => onSelectFrame && onSelectFrame(globalIdx)}>
       <div className={`noor-frame ${ring}`} style={{ '--s': '0.46', cursor: 'pointer' }}>

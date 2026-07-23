@@ -80,7 +80,7 @@
       { name: 'Quran', file: 'Quran.dc.html#home', icon: 'auto_stories', meta: 'Section board · Home → index → reader · 9 states' }
     ]},
     { id: 'masjid', num: '04', title: 'Masjid', items: [
-      { name: 'Masjid Onboarding', file: 'masjid-register/Masjid Onboarding.dc.html#entry', icon: 'add_home_work', meta: 'Section board · My Masjids sheet · wizard · outcome · 19 states' },
+      { name: 'Masjid Onboarding', file: 'masjid-register/Masjid Onboarding.dc.html#entry', icon: 'add_home_work', meta: 'Section board · My Masjids sheet · screen-by-screen storyboard · 41 states' },
       { name: 'Explore Masjids', file: 'masjid-explore/Explore Masjids.dc.html#map', icon: 'travel_explore', meta: 'Section board · map · list · pincode · QR · 10 states' },
       { name: 'Masjid Operations', file: 'masjid-operations/Masjid Operations.dc.html', icon: 'admin_panel_settings', meta: 'Section board · admin · members · posts · timings · 30 states' }
     ]},

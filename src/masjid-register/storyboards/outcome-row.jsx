@@ -27,10 +27,10 @@ function frame(f, globalIdx, active, onSelectFrame) {
   );
 }
 
-function OutcomeRow({ active = -1, onSelectFrame, offset = 16 }) {
+function OutcomeRow({ active = -1, onSelectFrame, offset = 39 }) {
   return (
     <div>
-      <div className="poc-row-label"><span className="mi" data-i="verified"></span> 04 · Outcome · {OUTCOME_FRAMES.length} states</div>
+      <div className="poc-row-label"><span className="mi" data-i="verified"></span> 12 · Outcome · {OUTCOME_FRAMES.length} states</div>
       <div className="poc-board">
         {OUTCOME_FRAMES.map((f, k) => frame(f, offset + k, active, onSelectFrame))}
       </div>
