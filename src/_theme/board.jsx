@@ -31,11 +31,13 @@ function BoardHeader({ title, subtitle }) {
 // Optional props: restart (handler → renders the Restart pill under the device),
 // hint (one-line .poc-live-hint caption under the pane).
 function BoardLive({ scale = 0.82, restart, hint, children }) {
-  const isCaptureMode = new URLSearchParams(window.location.search).get('capture') === '1';
+  const captureMode = new URLSearchParams(window.location.search).get('capture');
+  const isCaptureMode = captureMode === '1' || captureMode === 'android';
+  const isAndroidCapture = captureMode === 'android';
   const resolvedScale = isCaptureMode ? 1 : scale;
 
   return (
-    <div className={`poc-live${isCaptureMode ? ' is-capture' : ''}`}>
+    <div className={`poc-live${isCaptureMode ? ' is-capture' : ''}${isAndroidCapture ? ' is-android-capture' : ''}`}>
       <div className="noor-frame" style={{ '--s': String(resolvedScale) }}>
         <div className="noor-frame-inner">{children}</div>
       </div>

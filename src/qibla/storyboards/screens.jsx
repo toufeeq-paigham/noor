@@ -228,6 +228,8 @@ function RecoveryQiblaScreen({ reason = 'location', onRetry, onClose }) {
 // ══════════════════════════════════════════════════════════════════════
 function SmartQiblaScreen({ stage = 'searching', onClose, onPointQibla, onLayFlat, onHoldUpright, onTurnAway }) {
   const pointing = stage === 'inview';
+  const captureMode = new URLSearchParams(window.location.search).get('capture');
+  const isAssetCapture = captureMode === 'android' || captureMode === '1';
   const showArrows = stage === 'searching' || stage === 'horizontal';
   const showScrim = stage === 'horizontal';
   const showKaaba = stage === 'inview';
@@ -235,7 +237,7 @@ function SmartQiblaScreen({ stage = 'searching', onClose, onPointQibla, onLayFla
   const qiblaRel = ((angleDeg % 360) + 360) % 360;
   const heading = ((QIBLA_BEARING - qiblaRel) % 360 + 360) % 360;
   const isLeft = angleDeg < 0;
-  const hasDemo = !!(onPointQibla || onLayFlat || onHoldUpright || onTurnAway);
+  const hasDemo = !isAssetCapture && !!(onPointQibla || onLayFlat || onHoldUpright || onTurnAway);
 
   const demoItems = stage === 'searching'
     ? [{ icon: 'near_me', label: 'Point to Qibla', onClick: onPointQibla }, { icon: 'phone_iphone', label: 'Lay phone flat', onClick: onLayFlat }]
@@ -253,7 +255,12 @@ function SmartQiblaScreen({ stage = 'searching', onClose, onPointQibla, onLayFla
         <div style={{ position: 'absolute', top: QIBLA_AR_METRICS.kaabaTop, left: 0, right: 0, display: 'flex', justifyContent: 'center' }}>
           <div style={{ position: 'relative', width: QIBLA_AR_METRICS.kaabaSceneSize, height: QIBLA_AR_METRICS.kaabaSceneSize, display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
             <div style={{ position: 'absolute', inset: 0, background: 'radial-gradient(circle, rgba(10,8,5,0.45) 0%, rgba(10,8,5,0.12) 55%, transparent 78%)' }} />
-            <img src="../../images/kaaba.webp" alt="Kaaba" style={{ width: QIBLA_AR_METRICS.kaabaImageSize, height: QIBLA_AR_METRICS.kaabaImageSize, objectFit: 'contain', position: 'relative' }} />
+            <img src="../../images/kaaba.webp" alt="Kaaba" style={{
+              width: isAssetCapture ? 340 : QIBLA_AR_METRICS.kaabaImageSize,
+              height: isAssetCapture ? 340 : QIBLA_AR_METRICS.kaabaImageSize,
+              objectFit: 'contain',
+              position: 'relative',
+            }} />
           </div>
         </div>
       )}

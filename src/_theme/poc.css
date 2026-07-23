@@ -124,6 +124,7 @@ html.noor-canvas-mode .poc-frames {
   justify-content: flex-start;
   gap: 0;
   z-index: 2147483647;
+  background: #000;
 }
 .poc-live.is-capture .poc-play,
 .poc-live.is-capture .poc-live-hint { display: none; }
@@ -240,6 +241,17 @@ body:has(.poc-live.is-capture) #noor-nav-scrim { display: none !important; }
   border-radius: 100px;
   background: rgba(0, 0, 0, 0.25);
   z-index: 60;
+}
+
+/* Asset capture only: expose a clean rectangular app surface for Android
+   device frames. The app UI keeps its own platform-safe top spacing. */
+.poc-live.is-android-capture .noor-screen {
+  border-radius: 0;
+  box-shadow: none;
+}
+.poc-live.is-android-capture .noor-screen > .noor-island,
+.poc-live.is-android-capture .noor-screen > .noor-home {
+  display: none;
 }
 [data-theme="dark"] .noor-screen > .noor-home { background: rgba(255, 255, 255, 0.7); }
 
