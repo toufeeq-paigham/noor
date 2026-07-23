@@ -1,16 +1,16 @@
-# Graph Report - noor  (2026-07-22)
+# Graph Report - noor  (2026-07-23)
 
 ## Corpus Check
-- 103 files · ~376,488 words
+- 104 files · ~617,492 words
 - Verdict: corpus is large enough that graph structure adds value.
 
 ## Summary
-- 1144 nodes · 1614 edges · 88 communities (55 shown, 33 thin omitted)
-- Extraction: 93% EXTRACTED · 7% INFERRED · 0% AMBIGUOUS · INFERRED: 118 edges (avg confidence: 0.72)
+- 1150 nodes · 1640 edges · 83 communities (51 shown, 32 thin omitted)
+- Extraction: 90% EXTRACTED · 10% INFERRED · 0% AMBIGUOUS · INFERRED: 163 edges (avg confidence: 0.52)
 - Token cost: 0 input · 0 output
 
 ## Graph Freshness
-- Built from commit: `c77b0ff0`
+- Built from commit: `7d601a08`
 - Run `git rev-parse HEAD` and compare to check if the graph is stale.
 - Run `graphify update .` after code changes (no API cost).
 
@@ -82,20 +82,15 @@
 - package.json
 - hosting
 - Handler
-- UX-06: Islamic content and tools
+- zakaat/storyboards/screens.jsx
 - masjid-operations/storyboards/screens.jsx
 - Noor UI/UX Upgrade Decisions
 - devDependencies
-- UX-03: Home landing and shared five-tab shell
-- UX-04: Quran index and reader
-- UX-03 five-tab visual parity pass — 2026-07-21
-- UX-05: Masjid discovery, registration, and claim
-- Sehri supplied-capture repair pass — 2026-07-21
+- @dnd-kit/core
 - inspector.tsx
 - components.json
 - storage.ts
 - App Store Screenshots — Editor Template
-- defaults.ts
 - upload/route.ts
 - project/route.ts
 - layout.tsx
@@ -129,7 +124,7 @@
 ## Import Cycles
 - None detected.
 
-## Communities (88 total, 33 thin omitted)
+## Communities (83 total, 32 thin omitted)
 
 ### Community 0 - "tokenKinds"
 Cohesion: 0.01
@@ -173,15 +168,15 @@ Nodes (19): Agent Behavior, Commit Messages, Design System Rules, graphify, Laye
 
 ### Community 16 - "toolbar.tsx"
 Cohesion: 0.08
-Nodes (31): Props, SaveStatus(), Toolbar(), Card, CardContent, CardHeader, CardTitle, DialogContent (+23 more)
+Nodes (28): Props, SaveStatus(), Card, CardContent, CardHeader, CardTitle, DialogContent, DialogDescription (+20 more)
 
 ### Community 17 - "Section board — annotated skeletons"
 Cohesion: 0.29
 Nodes (6): 1. The board page — `<section>/<Section>.dc.html`, 2. A storyboard row — `<section>/storyboards/<flow>-row.jsx`, 3. Shared screen components — `<section>/storyboards/screens.jsx`, Index registration, Pre-loading cross-section components, Section board — annotated skeletons
 
 ### Community 20 - "types.ts"
-Cohesion: 0.12
-Nodes (26): PreviewStage(), Props, Props, Sidebar(), DeckCanvas(), getCanvas(), SlideCanvas(), Props (+18 more)
+Cohesion: 0.14
+Nodes (24): PreviewStage(), Props, Props, Sidebar(), DeckCanvas(), getCanvas(), SlideCanvas(), Props (+16 more)
 
 ### Community 22 - "Agent Behavior"
 Cohesion: 0.10
@@ -200,8 +195,8 @@ Cohesion: 0.29
 Nodes (6): 1. The board page — `<section>/<Section>.dc.html`, 2. A storyboard row — `<section>/storyboards/<flow>-row.jsx`, 3. Shared screen components — `<section>/storyboards/screens.jsx`, Index registration, Pre-loading cross-section components, Section board — annotated skeletons
 
 ### Community 26 - "slide-canvas.tsx"
-Cohesion: 0.10
-Nodes (23): backgroundFor(), clampRect(), DeckCanvasProps, DeckEditHandlers, defaultElementZ(), EditableText(), EditHandlers, FeatureGraphicCanvas() (+15 more)
+Cohesion: 0.08
+Nodes (40): AndroidPhone(), AndroidTabletL(), AndroidTabletP(), FrameProps, IPad(), Phone(), backgroundFor(), clampRect() (+32 more)
 
 ### Community 27 - "eval-0-dua-dikhr-section/eval_metadata.json"
 Cohesion: 0.40
@@ -216,8 +211,8 @@ Cohesion: 0.07
 Nodes (26): compilerOptions, allowJs, esModuleInterop, incremental, isolatedModules, jsx, lib, module (+18 more)
 
 ### Community 32 - "screenshot-editor.tsx"
-Cohesion: 0.13
-Nodes (14): ScreenshotEditor(), ACCEPTED, Props, ScreenshotPicker(), hasTheme(), themeById(), cache, didFail() (+6 more)
+Cohesion: 0.18
+Nodes (11): ScreenshotEditor(), rectFor(), SlideElements(), Toolbar(), hasTheme(), supportsLandscape(), themeById(), detectPlatform() (+3 more)
 
 ### Community 33 - "home/storyboards/screens.jsx"
 Cohesion: 0.12
@@ -239,13 +234,17 @@ Nodes (6): DetailOverlay(), GridScreen(), NAMES, SCHEMES, schemeStyle(), screenS
 Cohesion: 0.16
 Nodes (5): ExploreListScreen(), ExploreMapScreen(), masjidCardTransitionName(), MASJIDS, PIN_KEYS
 
+### Community 45 - "zakaat/storyboards/screens.jsx"
+Cohesion: 0.36
+Nodes (8): baseData(), claimResults(), journeyGroups(), JourneyRows(), MASLAKS, noop(), ROLES, selectedOptions()
+
 ### Community 46 - "states-row.jsx"
 Cohesion: 0.20
 Nodes (10): GUEST_STATES, GuestRow, makeRow(), NO_MASJID_STATES, NO_TRACK, NoMasjidRow, NOTIF_STATES, NotifRow (+2 more)
 
 ### Community 56 - "masjid-register/storyboards/screens.jsx"
-Cohesion: 0.12
-Nodes (7): CLAIM_DATA, FOLLOW_DATA, MANAGE_DATA, MASLAK_LIST, ROLE_LIST, WIZARD_SUB, WIZARD_TITLE
+Cohesion: 0.08
+Nodes (9): CLAIM_DATA, FOLLOW_DATA, MANAGE_DATA, MASLAK_LIST, REGISTRATION_DATA, ROLE_LIST, STATE_LIST, WIZARD_SUB (+1 more)
 
 ### Community 57 - "qibla/storyboards/screens.jsx"
 Cohesion: 0.25
@@ -256,8 +255,8 @@ Cohesion: 0.52
 Nodes (6): buildFollowRows(), buildManageTiles(), frame(), noop(), sheetFrames(), SheetRow()
 
 ### Community 59 - "constants.ts"
-Cohesion: 0.14
-Nodes (21): AndroidPhone(), AndroidTabletL(), AndroidTabletP(), FrameProps, IPad(), Phone(), getFrameForDevice(), CANVAS (+13 more)
+Cohesion: 0.61
+Nodes (7): en(), fgStarter(), ipadStarter(), makeStarterSlides(), newSlide(), nid(), tabletStarter()
 
 ### Community 60 - "wizard-row.jsx"
 Cohesion: 0.70
@@ -279,61 +278,37 @@ Nodes (10): description, name, private, scripts, build, deploy, preview, serve (
 Cohesion: 0.29
 Nodes (6): hosting, headers, ignore, public, site, trailingSlash
 
-### Community 68 - "UX-06: Islamic content and tools"
-Cohesion: 0.20
-Nodes (10): Asma ul Husna design read and state specification — 2026-07-21, Before / After / Why, Before | After | Why, Dua & Dikhr design read and state specification — 2026-07-21, Motion and interaction specification, Motion specification, Motion specification, UX-06: Islamic content and tools (+2 more)
-
 ### Community 69 - "masjid-operations/storyboards/screens.jsx"
 Cohesion: 0.22
 Nodes (5): OP_GROUPS, OP_STATES, OperationScreen(), StatusState(), titleFor()
 
 ### Community 70 - "Noor UI/UX Upgrade Decisions"
-Cohesion: 0.15
-Nodes (12): Before / After / Why, Motion and interaction specification, Motion and interaction specification, Noor specification, Noor UI/UX Upgrade Decisions, Program design read, UX-01 / UX-03 token and metrics reduction — 2026-07-21, UX-02 / UX-03 supplied-capture repair pass — 2026-07-21 (+4 more)
+Cohesion: 0.07
+Nodes (43): Approval status, Asma ul Husna design read and state specification — 2026-07-21, Before | After | Why, Before / After / Why, Before / After / Why, Before / After / Why, Certification notes, Design read (+35 more)
 
 ### Community 71 - "devDependencies"
 Cohesion: 0.09
 Nodes (22): devDependencies, autoprefixer, postcss, tailwindcss, @types/node, @types/react, @types/react-dom, typescript (+14 more)
 
-### Community 72 - "UX-03: Home landing and shared five-tab shell"
-Cohesion: 0.18
-Nodes (14): Approval status, Before / After / Why, Before / After / Why, Certification notes, Design-system impact, Motion and interaction specification, Motion and interaction specification, Qibla recovery completion - 2026-07-21 (+6 more)
-
-### Community 73 - "UX-04: Quran index and reader"
-Cohesion: 0.33
-Nodes (6): Before / After / Why, Certification notes, Design read, Design-system and UX checklist, Motion specification, UX-04: Quran index and reader
-
-### Community 74 - "UX-03 five-tab visual parity pass — 2026-07-21"
-Cohesion: 0.40
-Nodes (5): Before / After / Why, Design read and dials, Motion and interaction specification, UX-03 five-tab visual parity pass — 2026-07-21, UX Pro Max result
-
-### Community 75 - "UX-05: Masjid discovery, registration, and claim"
-Cohesion: 0.50
-Nodes (4): Before / After / Why, Supplied-capture keyboard and registration-alignment repair — 2026-07-21, UX-05: Masjid discovery, registration, and claim, UX and motion specification
-
-### Community 76 - "Sehri supplied-capture repair pass — 2026-07-21"
-Cohesion: 0.33
-Nodes (6): Before | After | Why, Icon ownership, Motion and interaction specification, Screen-state and UX checklist, Sehri supplied-capture repair pass — 2026-07-21, UX-01: Design-system reconciliation
+### Community 72 - "@dnd-kit/core"
+Cohesion: 0.21
+Nodes (9): ACCEPTED, Props, ScreenshotPicker(), cache, didFail(), failed, fetchAsDataUrl(), preloadImages() (+1 more)
 
 ### Community 77 - "inspector.tsx"
-Cohesion: 0.17
-Nodes (17): ActiveElementPanel(), defaultZ(), ELEMENT_LABEL, elementLabel(), ElementTransformControls(), Inspector(), Props, TextElementPanel() (+9 more)
+Cohesion: 0.18
+Nodes (18): ActiveElementPanel(), defaultZ(), ELEMENT_LABEL, elementLabel(), ElementTransformControls(), Inspector(), Props, TextElementPanel() (+10 more)
 
 ### Community 78 - "components.json"
 Cohesion: 0.11
 Nodes (17): aliases, components, hooks, lib, ui, utils, iconLibrary, rsc (+9 more)
 
 ### Community 79 - "storage.ts"
-Cohesion: 0.29
-Nodes (13): DEFAULT_PROJECT, coerceLocalized(), applyUpdater(), cleanTextElement(), cleanTransform(), loadFromFile(), loadFromLocalStorage(), mergeWithDefaults() (+5 more)
+Cohesion: 0.23
+Nodes (15): DEFAULT_PROJECT, coerceLocalized(), applyUpdater(), cleanTextElement(), cleanTransform(), loadFromFile(), loadFromLocalStorage(), mergeWithDefaults() (+7 more)
 
 ### Community 80 - "App Store Screenshots — Editor Template"
 Cohesion: 0.25
 Nodes (7): Adding screenshots, App Store Screenshots — Editor Template, Customizing, Exporting, Notes, Quick start, What's inside
-
-### Community 81 - "defaults.ts"
-Cohesion: 0.61
-Nodes (7): en(), fgStarter(), ipadStarter(), makeStarterSlides(), newSlide(), nid(), tabletStarter()
 
 ### Community 82 - "upload/route.ts"
 Cohesion: 0.50
@@ -343,22 +318,26 @@ Nodes (4): MIME_EXT, parseDataUrl(), POST(), UPLOAD_DIR_REL
 Cohesion: 0.83
 Nodes (3): filePath(), GET(), POST()
 
+### Community 84 - "layout.tsx"
+Cohesion: 0.40
+Nodes (3): bodyFont, displayFont, metadata
+
 ## Knowledge Gaps
-- **547 isolated node(s):** `$schema`, `style`, `rsc`, `tsx`, `config` (+542 more)
+- **538 isolated node(s):** `$schema`, `style`, `rsc`, `tsx`, `config` (+533 more)
   These have ≤1 connection - possible missing edges or undocumented components.
-- **33 thin communities (<3 nodes) omitted from report** — run `graphify query` to explore isolated nodes.
+- **32 thin communities (<3 nodes) omitted from report** — run `graphify query` to explore isolated nodes.
 
 ## Suggested Questions
 _Questions this graph is uniquely positioned to answer:_
 
-- **Why does `react` connect `react` to `screenshot-editor.tsx`, `home/storyboards/screens.jsx`, `support.js`, `useNoorDark`, `dependencies`, `inspector.tsx`, `zakaat/storyboards/screens.jsx`, `toolbar.tsx`, `types.ts`, `slide-canvas.tsx`?**
-  _High betweenness centrality (0.080) - this node is a cross-community bridge._
+- **Why does `react` connect `react` to `screenshot-editor.tsx`, `home/storyboards/screens.jsx`, `support.js`, `zakaat/storyboards/screens.jsx`, `useNoorDark`, `dependencies`, `@dnd-kit/core`, `inspector.tsx`, `toolbar.tsx`, `types.ts`, `slide-canvas.tsx`?**
+  _High betweenness centrality (0.074) - this node is a cross-community bridge._
 - **Why does `dependencies` connect `dependencies` to `react`, `devDependencies`?**
-  _High betweenness centrality (0.038) - this node is a cross-community bridge._
+  _High betweenness centrality (0.036) - this node is a cross-community bridge._
 - **Why does `tokenKinds` connect `tokenKinds` to `x-omelette`?**
-  _High betweenness centrality (0.029) - this node is a cross-community bridge._
+  _High betweenness centrality (0.022) - this node is a cross-community bridge._
 - **What connects `$schema`, `style`, `rsc` to the rest of the system?**
-  _547 weakly-connected nodes found - possible documentation gaps or missing edges._
+  _538 weakly-connected nodes found - possible documentation gaps or missing edges._
 - **Should `tokenKinds` be split into smaller, more focused modules?**
   _Cohesion score 0.0106951871657754 - nodes in this community are weakly interconnected._
 - **Should `support.js` be split into smaller, more focused modules?**

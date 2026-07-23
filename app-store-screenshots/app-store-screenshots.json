@@ -1,0 +1,351 @@
+{
+  "schemaVersion": 2,
+  "appName": "Paigham",
+  "themeId": "paigham-illuminated",
+  "connectedCanvas": false,
+  "locales": [
+    "en"
+  ],
+  "locale": "en",
+  "device": "iphone",
+  "orientation": "portrait",
+  "appIcon": "/app-icon.png",
+  "slidesByDevice": {
+    "iphone": [
+      {
+        "id": "paigham-ios-home",
+        "layout": "hero",
+        "label": {
+          "en": "YOUR DAY IN FAITH"
+        },
+        "headline": {
+          "en": "Faith, through\nyour day"
+        },
+        "screenshot": "/screenshots/apple/iphone/{locale}/01-home.jpg",
+        "transforms": {
+          "device": {
+            "x": 280,
+            "y": 1150,
+            "width": 760,
+            "height": 1549,
+            "rotation": 0,
+            "zIndex": 3
+          }
+        }
+      },
+      {
+        "id": "paigham-ios-masjid",
+        "layout": "device-bottom",
+        "label": {
+          "en": "YOUR MASJID"
+        },
+        "headline": {
+          "en": "Follow a masjid\nyou trust"
+        },
+        "screenshot": "/screenshots/apple/iphone/{locale}/02-masjid.jpg",
+        "transforms": {
+          "device": {
+            "x": 280,
+            "y": 1100,
+            "width": 760,
+            "height": 1549,
+            "rotation": 0,
+            "zIndex": 3
+          }
+        }
+      },
+      {
+        "id": "paigham-ios-salaah",
+        "layout": "device-top",
+        "label": {
+          "en": "PRAYER, IN STEP"
+        },
+        "headline": {
+          "en": "Prayer times from\nyour masjid"
+        },
+        "screenshot": "/screenshots/apple/iphone/{locale}/03-salaah.jpg",
+        "inverted": true,
+        "transforms": {
+          "device": {
+            "x": 320,
+            "y": 340,
+            "width": 680,
+            "height": 1385,
+            "rotation": 0,
+            "zIndex": 3
+          }
+        }
+      },
+      {
+        "id": "paigham-ios-quran",
+        "layout": "device-bottom",
+        "label": {
+          "en": "QUR'AN"
+        },
+        "headline": {
+          "en": "Read. Reflect.\nReturn anytime."
+        },
+        "screenshot": "/screenshots/apple/iphone/{locale}/04-quran.jpg",
+        "transforms": {
+          "device": {
+            "x": 280,
+            "y": 1100,
+            "width": 760,
+            "height": 1549,
+            "rotation": 0,
+            "zIndex": 3
+          }
+        }
+      },
+      {
+        "id": "paigham-ios-qaum",
+        "layout": "hero",
+        "label": {
+          "en": "QAUM"
+        },
+        "headline": {
+          "en": "Your community,\ncloser"
+        },
+        "screenshot": "/screenshots/apple/iphone/{locale}/05-qaum.jpg",
+        "transforms": {
+          "device": {
+            "x": 280,
+            "y": 1150,
+            "width": 760,
+            "height": 1549,
+            "rotation": 0,
+            "zIndex": 3
+          }
+        }
+      },
+      {
+        "id": "paigham-ios-qibla",
+        "layout": "device-top",
+        "label": {
+          "en": "QIBLA"
+        },
+        "headline": {
+          "en": "Face the Qibla\nwith confidence"
+        },
+        "screenshot": "/screenshots/apple/iphone/{locale}/06-qibla.jpg",
+        "inverted": true,
+        "transforms": {
+          "device": {
+            "x": 320,
+            "y": 340,
+            "width": 680,
+            "height": 1385,
+            "rotation": 0,
+            "zIndex": 3
+          }
+        }
+      },
+      {
+        "id": "paigham-ios-more",
+        "layout": "two-devices",
+        "label": {
+          "en": "MORE FOR EVERY DAY"
+        },
+        "headline": {
+          "en": "Dua and remembrance,\nclose at hand"
+        },
+        "screenshot": "/screenshots/apple/iphone/{locale}/07-dua.jpg",
+        "screenshotSecondary": "/screenshots/apple/iphone/{locale}/08-asma.jpg",
+        "transforms": {
+          "deviceSecondary": {
+            "x": 100,
+            "y": 1480,
+            "width": 560,
+            "height": 1141,
+            "rotation": -4,
+            "zIndex": 2
+          },
+          "device": {
+            "x": 610,
+            "y": 1350,
+            "width": 640,
+            "height": 1304,
+            "rotation": 3,
+            "zIndex": 3
+          }
+        }
+      }
+    ],
+    "android": [
+      {
+        "id": "paigham-android-home",
+        "layout": "hero",
+        "label": {
+          "en": "YOUR DAY IN FAITH"
+        },
+        "headline": {
+          "en": "Faith, through\nyour day"
+        },
+        "screenshot": "/screenshots/android/phone/{locale}/01-home.jpg",
+        "transforms": {
+          "device": {
+            "x": 230,
+            "y": 520,
+            "width": 620,
+            "height": 1291,
+            "rotation": 0,
+            "zIndex": 3
+          }
+        }
+      },
+      {
+        "id": "paigham-android-masjid",
+        "layout": "device-bottom",
+        "label": {
+          "en": "YOUR MASJID"
+        },
+        "headline": {
+          "en": "Follow a masjid\nyou trust"
+        },
+        "screenshot": "/screenshots/android/phone/{locale}/02-masjid.jpg",
+        "transforms": {
+          "device": {
+            "x": 230,
+            "y": 520,
+            "width": 620,
+            "height": 1291,
+            "rotation": 0,
+            "zIndex": 3
+          }
+        }
+      },
+      {
+        "id": "paigham-android-salaah",
+        "layout": "device-top",
+        "label": {
+          "en": "PRAYER, IN STEP"
+        },
+        "headline": {
+          "en": "Prayer times from\nyour masjid"
+        },
+        "screenshot": "/screenshots/android/phone/{locale}/03-salaah.jpg",
+        "inverted": true,
+        "transforms": {
+          "device": {
+            "x": 290,
+            "y": 90,
+            "width": 500,
+            "height": 1042,
+            "rotation": 0,
+            "zIndex": 3
+          }
+        }
+      },
+      {
+        "id": "paigham-android-quran",
+        "layout": "device-bottom",
+        "label": {
+          "en": "QUR'AN"
+        },
+        "headline": {
+          "en": "Read. Reflect.\nReturn anytime."
+        },
+        "screenshot": "/screenshots/android/phone/{locale}/04-quran.jpg",
+        "transforms": {
+          "device": {
+            "x": 230,
+            "y": 520,
+            "width": 620,
+            "height": 1291,
+            "rotation": 0,
+            "zIndex": 3
+          }
+        }
+      },
+      {
+        "id": "paigham-android-qaum",
+        "layout": "hero",
+        "label": {
+          "en": "QAUM"
+        },
+        "headline": {
+          "en": "Your community,\ncloser"
+        },
+        "screenshot": "/screenshots/android/phone/{locale}/05-qaum.jpg",
+        "transforms": {
+          "device": {
+            "x": 230,
+            "y": 520,
+            "width": 620,
+            "height": 1291,
+            "rotation": 0,
+            "zIndex": 3
+          }
+        }
+      },
+      {
+        "id": "paigham-android-qibla",
+        "layout": "device-top",
+        "label": {
+          "en": "QIBLA"
+        },
+        "headline": {
+          "en": "Face the Qibla\nwith confidence"
+        },
+        "screenshot": "/screenshots/android/phone/{locale}/06-qibla.jpg",
+        "inverted": true,
+        "transforms": {
+          "device": {
+            "x": 290,
+            "y": 90,
+            "width": 500,
+            "height": 1042,
+            "rotation": 0,
+            "zIndex": 3
+          }
+        }
+      },
+      {
+        "id": "paigham-android-more",
+        "layout": "two-devices",
+        "label": {
+          "en": "MORE FOR EVERY DAY"
+        },
+        "headline": {
+          "en": "Dua and remembrance,\nclose at hand"
+        },
+        "screenshot": "/screenshots/android/phone/{locale}/07-dua.jpg",
+        "screenshotSecondary": "/screenshots/android/phone/{locale}/08-asma.jpg",
+        "transforms": {
+          "deviceSecondary": {
+            "x": 80,
+            "y": 830,
+            "width": 450,
+            "height": 938,
+            "rotation": -4,
+            "zIndex": 2
+          },
+          "device": {
+            "x": 500,
+            "y": 740,
+            "width": 500,
+            "height": 1042,
+            "rotation": 3,
+            "zIndex": 3
+          }
+        }
+      }
+    ],
+    "ipad": [],
+    "android-7": [],
+    "android-10": [],
+    "feature-graphic": [
+      {
+        "id": "paigham-feature-graphic",
+        "layout": "feature-graphic",
+        "label": {
+          "en": "PRAYER · QUR'AN · COMMUNITY"
+        },
+        "headline": {
+          "en": "Faith, through your day"
+        },
+        "screenshot": ""
+      }
+    ]
+  }
+}
