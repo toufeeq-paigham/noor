@@ -21,11 +21,8 @@
     ::-webkit-scrollbar{display:none}*{-ms-overflow-style:none;scrollbar-width:none}
     
     /* Profile Gradient Hero */
-    .p-hero{background:radial-gradient(ellipse at top right, color-mix(in oklab, var(--color-action-primary) 20%, transparent) 0%, transparent 60%),radial-gradient(ellipse at top left, color-mix(in oklab, var(--color-action-secondary) 12%, transparent) 0%, transparent 55%),var(--color-surface-primary)}
     [data-theme="dark"] .p-hero{background:radial-gradient(ellipse at top right, rgba(0,80,50,0.6) 0%, rgba(9,9,11,0) 60%),radial-gradient(ellipse at top left, rgba(0,40,30,0.4) 0%, rgba(9,9,11,0) 55%),var(--color-surface-primary)}
     
-    .prow{cursor:pointer;transition:background .15s ease}
-    .prow:active{background:color-mix(in oklab, var(--color-info-primary) 8%, transparent)}
     .pbtn{cursor:pointer;transition:filter .15s ease}
     .pbtn:active{filter:brightness(0.9)}
 
@@ -38,11 +35,6 @@
     .qaum-post-media img{display:block;width:100%;height:100%;object-fit:cover}
     .qaum-post-media.expanded{height:100%;aspect-ratio:auto;margin:0;cursor:default;background:var(--color-surface-primary)}
     .qaum-post-media.expanded img{object-fit:contain}
-    .qaum-media-overlay{position:absolute;inset:0;z-index:500;display:flex;box-sizing:border-box;padding:calc(var(--size-max) + var(--size-2xl)) var(--size-xl) var(--size-2xl);background:var(--color-surface-scrim);animation:qaum-media-fade var(--motion-standard) var(--ease-out)}
-    .qaum-media-viewer{position:relative;display:flex;flex:1;min-width:0;min-height:0;box-sizing:border-box;padding-top:calc(var(--control-h-lg) + var(--size-xl))}
-    .qaum-media-close{position:absolute;top:0;right:0;z-index:1;width:var(--control-h-lg);height:var(--control-h-lg);display:inline-flex;align-items:center;justify-content:center;border:1px solid var(--color-neutral-border);border-radius:var(--radius-circle);padding:0;background:var(--color-action-background);color:var(--color-info-primary);cursor:pointer;transition:background var(--motion-quick) var(--ease-out)}
-    .qaum-media-close .mi{font-size:var(--icon-md)}
-    .qaum-media-close:active{background:var(--color-action-primary-tint)}
     @keyframes qaum-media-fade{from{opacity:0}to{opacity:1}}
     ::view-transition-group(qaum-post-post1-media-0){animation-duration:var(--motion-emphasized);animation-timing-function:var(--ease-out)}
     @media (prefers-reduced-motion:reduce){.qaum-media-overlay{animation:none}::view-transition-group(qaum-post-post1-media-0),::view-transition-group(masjid-admin-masjid-e-bilal-title){animation-duration:0ms}}
@@ -107,6 +99,12 @@
           <!-- TAB 0: HOME SCREEN -->
           <sc-if value="{{ isHomeTab }}">
             <x-import component="HomeScreen" from="./storyboards/screens.jsx"
+                      managed-masjid="{{ profileManagedName }}"
+                      managed-attention="{{ profileManagedAttention }}"
+                      managed-role="{{ profileManagedRole }}"
+                      managed-stats="{{ profileManagedStats }}"
+                      managed-stats-loading="{{ managedStatsLoading }}"
+                      on-manage-masjid="{{ goMasjidAdmin }}"
                       hero-sel="{{ homeHeroSel }}"
                       on-suhoor-tap="{{ toggleSuhoor }}"
                       on-iftaar-tap="{{ toggleIftaar }}"
@@ -151,6 +149,7 @@
           <!-- TAB 1: QAUM SCREEN -->
           <sc-if value="{{ isQaumTab }}">
             <x-import component="QaumScreen" from="./storyboards/screens.jsx"
+                      on-manage-masjid="{{ qaumManageMasjid }}"
                       likes="{{ qaumLikes }}"
                       on-like="{{ toggleQaumLike }}"
                       audio-playing="{{ qaumAudioPlaying }}"
@@ -173,6 +172,8 @@
                       media-transition-enabled="{{ qaumMediaTransitionEnabled }}"
                       on-open-media="{{ openQaumMedia }}"
                       on-close-media="{{ closeQaumMedia }}"
+                      on-send-paigham="{{ qaumSendPaigham }}"
+                      send-target="{{ qaumSendTarget }}"
                       hint-size="100%,100%">
             </x-import>
           </sc-if>
@@ -217,6 +218,7 @@
                       notif-nudge="{{ salaahNotifNudge }}"
                       on-close-notif-nudge="{{ closeSalaahNudge }}"
                       on-allow-notif="{{ allowNotif }}"
+                      on-edit-timings="{{ salaahEditTimings }}"
                       hint-size="100%,100%">
             </x-import>
           </sc-if>
@@ -228,6 +230,8 @@
                       phone="{{ profilePhone }}"
                       show-my-masjids="{{ profileHasMasjid }}"
                       show-managed-masjid="{{ profileManagedMasjid }}"
+                      managed-count="{{ profileManagedCount }}"
+                      managed-attention="{{ profileManagedAttention }}"
                       masjid-name="{{ homeMasjidLabel }}"
                       on-my-masjids="{{ goMyMasjids }}"
                       on-manage-masjid="{{ goMasjidAdmin }}"
@@ -377,7 +381,9 @@ class Component extends DCLogic {
     profileUserName: "Toufeeq",
     profilePhone: "+91 87928 13003",
     profileHasMasjid: true,
-    profileManagedMasjid: false
+    profileManagedMasjid: false,
+    managedStatsLoading: false,
+    managedFirstRun: false
   };
 
   componentDidMount() {
@@ -415,6 +421,10 @@ class Component extends DCLogic {
       else if (hash === '#profile-pending') this.syncLiveStateToFrame(38);
       else if (hash === '#qaum-media') this.syncLiveStateToFrame(39);
       else if (hash === '#profile-admin') this.syncLiveStateToFrame(40);
+      else if (hash === '#home-managed') this.syncLiveStateToFrame(41);
+      else if (hash === '#qaum-managed') this.syncLiveStateToFrame(42);
+      else if (hash === '#home-managed-loading') this.syncLiveStateToFrame(43);
+      else if (hash === '#home-managed-new') this.syncLiveStateToFrame(44);
     }
   }
 
@@ -474,7 +484,13 @@ class Component extends DCLogic {
       // 39 · Qaum media detail retains the feed behind a semantic overlay
       { activeTab: 1, qaumMediaOpen: true, qaumAudioPlaying: false, qaumAudioProgress: 0, qaumDock: 'none' },
       // 40 · Active committee membership opens the matching admin console
-      { activeTab: 4, profileHasMasjid: true, profileManagedMasjid: true }
+      { activeTab: 4, profileHasMasjid: true, profileManagedMasjid: true },
+      // 41-42 · The same membership surfaces a console entry on Home and Qaum
+      { activeTab: 0, profileHasMasjid: true, profileManagedMasjid: true, homeHeroSel: null, homeActivePrayer: 'Maghrib' },
+      { activeTab: 1, profileHasMasjid: true, profileManagedMasjid: true, qaumAudioPlaying: false, qaumAudioProgress: 0, qaumDock: 'none' },
+      // 43-44 · The console tile's own data states: stats still loading, and a masjid with none yet
+      { activeTab: 0, profileHasMasjid: true, profileManagedMasjid: true, homeHeroSel: null, homeActivePrayer: 'Maghrib', managedStatsLoading: true },
+      { activeTab: 0, profileHasMasjid: true, profileManagedMasjid: true, homeHeroSel: null, homeActivePrayer: 'Maghrib', managedFirstRun: true }
     ];
     clearInterval(this._audioTimer);
     this.setState({
@@ -498,6 +514,8 @@ class Component extends DCLogic {
       profilePhone: '+91 87928 13003',
       profileHasMasjid: true,
       profileManagedMasjid: false,
+      managedStatsLoading: false,
+      managedFirstRun: false,
       salaahNudgeClosed: false,
       salaahLoginSheet: false,
       ...states[idx],
@@ -781,6 +799,18 @@ class Component extends DCLogic {
     window.location.href = '../masjid-operations/Masjid Operations.dc.html#admin';
   };
 
+  // Qaum's send shortcut skips the console and lands straight in compose, targeting the
+  // primary managed masjid. The target is changeable inside the wizard, so a member who
+  // manages several masjids never pays a picker before starting.
+  goSendPaigham = () => {
+    window.location.href = '../masjid-operations/Masjid Operations.dc.html#create';
+  };
+
+  // Timings are public — this is not gated on managing the masjid.
+  goEditTimings = () => {
+    window.location.href = '../masjid-operations/Masjid Operations.dc.html#salaah';
+  };
+
   goSehri = () => {
     window.location.href = '../sehri/Sehri.dc.html#permission';
   };
@@ -906,6 +936,30 @@ class Component extends DCLogic {
       profileUserName: s.profileUserName,
       profilePhone: s.profilePhone,
       profileHasMasjid: s.profileHasMasjid,
+      profileManagedCount: 2,
+      profileManagedAttention: s.managedFirstRun ? 0 : 3,
+      // The console entry appears on Home, Qaum and Profile for a committee member.
+      profileManagedName: s.profileManagedMasjid ? (s.managedFirstRun ? 'Masjid-e-Mohammadi' : 'Masjid E Bilal') : null,
+      profileManagedRole: 'Chairman',
+      // Mirrors the console's own three numbers; a newly approved masjid has none of them yet.
+      profileManagedStats: s.managedFirstRun
+        ? [
+            { value: '0', label: 'Followers' },
+            { value: '0', label: 'Paighams' },
+            { value: '0', label: 'Reactions' }
+          ]
+        : [
+            { value: '1.3k', label: 'Followers', delta: '+12' },
+            { value: '96', label: 'Paighams', delta: '+3' },
+            { value: '3.1k', label: 'Reactions', delta: '+148' }
+          ],
+      managedStatsLoading: s.managedStatsLoading,
+      qaumManageMasjid: s.profileManagedMasjid ? this.goMasjidAdmin : null,
+      qaumSendPaigham: s.profileManagedMasjid ? this.goSendPaigham : null,
+      qaumSendTarget: s.profileManagedMasjid || null,
+      // Public: shown whenever the Salaah tab is backed by a real masjid. The screen itself
+      // hides it on the approximate-location fallback.
+      salaahEditTimings: this.goEditTimings,
       profileManagedMasjid: s.profileManagedMasjid,
       toggleProfileLogoutSheet: this.toggleProfileLogoutSheet,
 

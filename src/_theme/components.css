@@ -125,6 +125,17 @@
 .choice-card-art{font-size:var(--title-h2-size);line-height:var(--title-h2-lh);flex-shrink:0}
 .choice-card-label{font-size:var(--body-m-size);line-height:var(--body-m-lh);font-weight:700}
 .choice-card-support{font-size:var(--body-s-size);line-height:var(--body-s-lh);font-weight:400;color:var(--color-info-secondary);margin-top:var(--size-sm)}
+/* `.rich` — a leading icon tile, three lines of copy and a trailing radio mark, for
+   choices that need explaining (audience, plan, delivery option). Stacks vertically. */
+.choice-card.rich{align-items:flex-start;gap:var(--size-xl);padding:var(--size-2xl);border-color:var(--color-neutral-border);background:var(--color-surface-card);transition:border-color var(--motion-quick) var(--ease-out),background var(--motion-quick) var(--ease-out),transform var(--motion-press) var(--ease-out)}
+.choice-card.rich:active{transform:scale(.995)}
+.choice-card.rich.selected{border:1px solid var(--color-action-primary);background:color-mix(in oklab,var(--color-action-primary) 7%,var(--color-surface-card));color:var(--color-info-primary)}
+.choice-card-copy{flex:1;min-width:0;display:flex;flex-direction:column;gap:2px}
+.choice-card-copy strong{font:700 15px/1.35 var(--font-body);color:var(--color-info-primary)}
+.choice-card-copy>span{font:12.5px/1.4 var(--font-body);color:var(--color-info-primary)}
+.choice-card-copy small{font:11.5px/1.45 var(--font-body);color:var(--color-info-secondary)}
+.choice-card-mark{flex-shrink:0;font-size:var(--icon-md);color:var(--color-info-faint)}
+.choice-card.rich.selected .choice-card-mark{color:var(--color-action-primary)}
 /* Code variant — fixed-length numeric entry (pincode · PIN · passcode): large, bold,
    letter-spaced, tabular figures so every digit reads distinctly. NOT for free text. */
 .input.code .inner{min-height:48px}
@@ -344,6 +355,272 @@
 .empty-state-description{max-width:30ch;margin-top:var(--size-md);font-family:var(--font-body);font-size:var(--body-s-size);line-height:var(--body-s-lh);color:var(--color-info-secondary)}
 .empty-state-action{margin-top:var(--size-2xl)}
 
+
+/* ── Icon tile & Avatar (.icon-tile / .avatar) ──
+   The leading mark on a row, card or header. `.icon-tile` holds a glyph on the action tint
+   (`.accent` inverts it onto the action fill); `.avatar` holds an initial on the same
+   scale. `--tile` sets the size for either (default 40px). */
+.icon-tile,.avatar{width:var(--tile,40px);height:var(--tile,40px);display:inline-flex;align-items:center;justify-content:center;flex-shrink:0;box-sizing:border-box;background:var(--color-action-background);color:var(--color-action-primary)}
+.icon-tile{border-radius:var(--radius-xl)}
+.avatar{border-radius:var(--radius-circle);font-family:var(--font-body);font-size:calc(var(--tile,40px) * .38);font-weight:800}
+.icon-tile.accent,.avatar.accent{background:var(--color-action-primary);color:var(--color-action-primary-inverse)}
+/* `.masjid-mark` is the photo form of the same tile: the masjid's own picture when it has
+   one, so the identity block reads as that masjid and not a generic glyph. */
+.masjid-mark{width:var(--tile,48px);height:var(--tile,48px);flex-shrink:0;overflow:hidden;border-radius:var(--radius-xl);background:var(--color-surface-secondary);display:inline-block}
+.masjid-mark img{width:100%;height:100%;display:block;object-fit:cover}
+.masjid-mark.round{border-radius:var(--radius-circle)}
+.icon-tile .mi{font-size:calc(var(--tile,40px) * .5)}
+
+/* ── Stat tile (.stat-tile) — one headline number with its label ──
+   Sits in a row of two to four; the row owns the gap. */
+.stat-tile{flex:1;min-width:0;box-sizing:border-box;padding:var(--size-xl) var(--size-lg);border:1px solid var(--color-neutral-border);border-radius:var(--radius-2xl);background:var(--color-surface-card);text-align:center}
+.stat-tile>.mi{font-size:18px;color:var(--color-action-primary)}
+.stat-tile-value{margin-top:2px;font-family:var(--font-title);font-size:20px;color:var(--color-info-primary)}
+.stat-tile-label{font-family:var(--font-body);font-size:11px;color:var(--color-info-secondary)}
+
+/* ── Floating action (.fab) — a screen's one persistent create/edit action ──
+   Arrives EXTENDED (icon + label) and collapses to a circle on `.compact`, so the action
+   names itself when the reader lands and stops covering content once they start scrolling.
+   The screen owns placement: `.fab` positions itself bottom-right of its nearest positioned
+   ancestor, and the screen overrides `bottom` to clear its own chrome (nav bar, docked
+   player, safe area). One per screen — a second FAB means the screen has two primary
+   actions and needs a different pattern. */
+.fab{position:absolute;right:16px;bottom:24px;z-index:60;display:inline-flex;align-items:center;
+  gap:var(--size-md);height:56px;min-width:56px;padding:0 20px;box-sizing:border-box;cursor:pointer;
+  border:none;border-radius:var(--radius-circle);font-family:var(--font-body);font-size:15px;
+  font-weight:700;line-height:1;white-space:nowrap;background:var(--color-action-primary);
+  color:var(--color-action-primary-inverse);box-shadow:var(--shadow-elevated);
+  transition:padding var(--motion-standard) var(--ease-out),
+    bottom var(--motion-standard) var(--ease-out),
+    transform var(--motion-press) var(--ease-out)}
+.fab>.mi{flex-shrink:0;font-size:var(--icon-md)}
+/* The label collapses by width, not display, so the circle and the pill are the same element
+   animating — swapping nodes would restart the transition and flash the icon. */
+.fab-label{overflow:hidden;max-width:200px;
+  transition:max-width var(--motion-standard) var(--ease-out),opacity var(--motion-quick) var(--ease-out)}
+.fab.compact{padding:0;justify-content:center;gap:0}
+.fab.compact .fab-label{max-width:0;opacity:0}
+.fab:active{transform:scale(.96)}
+@media(prefers-reduced-motion:reduce){
+  .fab{transition:none}
+  .fab:active{transform:none}
+  .fab-label{transition:none}
+}
+
+/* ── Step bar (.stepbar) — linear progress through a known number of steps ──
+   One `<span>` per step, `.on` for reached. Pair with a "Step N of M" count in the app bar.
+   Used by the masjid registration wizard and the send-a-paigham wizard. */
+.stepbar{display:flex;gap:5px}
+.stepbar>span{flex:1;height:4px;border-radius:var(--radius-xs);background:var(--color-action-background);transition:background var(--motion-standard) var(--ease-out)}
+.stepbar>span.on{background:var(--color-action-primary)}
+@media(prefers-reduced-motion:reduce){.stepbar>span{transition:none}}
+
+/* ── Time select (.time-select) — hour · minute · AM/PM ──
+   Three picker fields on one row, each opening its own menu. Backed by "HH:mm", displayed
+   as 12-hour, mirroring the Compose TimeSelectField. */
+.time-select{display:flex;gap:var(--size-md)}
+.time-select>*{flex:1;min-width:0}
+
+/* ── Docked action (.docked-action) — the screen's committed action ──
+   Pinned below the scrolling body: asynchronous progress or a helper line ABOVE a
+   full-width primary, never inside it (the button keeps its label and geometry). */
+.docked-action{flex-shrink:0;display:flex;flex-direction:column;gap:var(--size-lg);box-sizing:border-box;padding:var(--size-xl) var(--size-2xl) 26px;background:var(--color-surface-primary)}
+.docked-action.bordered{border-top:1px solid var(--color-neutral-border)}
+.docked-action>.btn{width:100%}
+.docked-action-note{font-family:var(--font-body);font-size:12px;line-height:1.5;text-align:center;color:var(--color-info-secondary)}
+
+/* ── Paigham preview (.post-preview) ──
+   What a follower will receive, shown to the author before sending: masjid identity,
+   the message or the audio player, the photo grid, and the reaction footer. This is an
+   AUTHORING surface — the Home feed card is its own construction. */
+.post-preview{overflow:hidden;border:1px solid var(--color-neutral-border);border-radius:var(--radius-card);background:var(--color-surface-card)}
+.post-preview-head{display:flex;align-items:center;gap:var(--size-lg);padding:var(--size-2xl) var(--size-2xl) var(--size-xl)}
+.post-preview-id{flex:1;min-width:0;display:flex;flex-direction:column}
+.post-preview-id strong{font:700 14.5px/1.3 var(--font-body);color:var(--color-info-primary);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.post-preview-id small{font:11.5px/1.4 var(--font-body);color:var(--color-info-secondary)}
+.post-preview-body{padding:0 var(--size-2xl) var(--size-2xl);font:15px/1.55 var(--font-body);color:var(--color-info-primary);white-space:pre-wrap}
+.post-preview .aplayer{margin:0 var(--size-2xl) var(--size-2xl)}
+.post-preview-photos{display:grid;gap:2px}
+.post-preview-photos.count-1{grid-template-columns:1fr}
+.post-preview-photos.count-2,.post-preview-photos.count-3,.post-preview-photos.count-4{grid-template-columns:1fr 1fr}
+.post-preview-photos img{width:100%;height:118px;display:block;object-fit:cover}
+.post-preview-photos.count-1 img{height:180px}
+.post-preview-foot{display:flex;align-items:center;gap:var(--size-md);padding:var(--size-xl) var(--size-2xl);border-top:1px solid var(--color-neutral-border);font:11.5px/1.4 var(--font-body);color:var(--color-info-secondary)}
+
+/* ── Manage entry (.manage-entry) — the door into the masjid console ──
+   A card, not a settings row: the masjid's own mark, an eyebrow that names the
+   relationship, the masjid name (the shared element into the console) and your role, with
+   an optional count of what is waiting inside. Lives on the Profile tab. */
+.manage-entry{display:flex;align-items:center;gap:var(--size-lg);width:100%;box-sizing:border-box;padding:var(--size-xl);text-align:left;cursor:pointer;font-family:var(--font-body);color:var(--color-info-primary);border:1px solid color-mix(in oklab,var(--color-action-primary) 26%,transparent);border-radius:var(--radius-card);background:var(--gradient-emerald),var(--color-surface-card);transition:transform var(--motion-press) var(--ease-out)}
+.manage-entry:active{transform:scale(.995)}
+.manage-entry-copy{flex:1;min-width:0;display:flex;flex-direction:column;gap:1px}
+.manage-entry-eyebrow{font-size:10.5px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--color-action-primary)}
+.manage-entry-name{font-family:var(--font-title);font-size:19px;letter-spacing:-.2px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.manage-entry-role{font-size:11.5px;color:var(--color-info-secondary);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.manage-entry-go{flex-shrink:0;font-size:20px;color:var(--color-info-faint)}
+/* `.compact` — the Home-tab form: one line of copy, tighter, quieter. Same component so
+   the two entry points cannot drift apart. */
+.manage-entry.compact{padding:var(--size-lg) var(--size-xl);border-radius:var(--radius-2xl)}
+.manage-entry.compact .manage-entry-name{font-family:var(--font-body);font-size:14px;font-weight:700;letter-spacing:0}
+/* `.stacked` — carries a glimpse of the console's own numbers under the identity row, so the
+   entry point previews what is inside instead of only naming it. The whole card stays one tap
+   target; the numbers are a preview, not controls — inside the console the same figures are
+   row values and feed context. `.manage-entry-main` holds the identity row once the card
+   becomes a column. */
+.manage-entry.stacked{flex-direction:column;align-items:stretch;gap:var(--size-lg)}
+.manage-entry-main{display:flex;align-items:center;gap:var(--size-lg);min-width:0}
+.manage-entry-stats{display:flex;align-items:stretch;padding-top:var(--size-lg);border-top:1px solid color-mix(in oklab,var(--color-action-primary) 16%,transparent)}
+/* Equal thirds, aligned to the card. The top hairline is the only rule that earns its keep —
+   vertical dividers between three numbers are decoration, and the columns already read. */
+.manage-entry-stat{flex:1;min-width:0;display:flex;flex-direction:column;gap:1px}
+.manage-entry-stat-fig{display:flex;align-items:baseline;gap:var(--size-sm);min-width:0}
+.manage-entry-stat-value{font-family:var(--font-body);font-size:15px;font-weight:700;font-variant-numeric:tabular-nums;color:var(--color-info-primary)}
+/* The delta is why the strip is worth its height: a total that never moves becomes wallpaper,
+   whereas "+12 this week" is news. Omit it rather than render a zero. */
+.manage-entry-stat-delta{font-family:var(--font-body);font-size:10.5px;font-weight:700;font-variant-numeric:tabular-nums;white-space:nowrap;color:var(--color-action-primary)}
+/* A fall is not an error — it reads in secondary ink rather than the destructive tone, so the
+   card never alarms a committee member about a quiet week. */
+.manage-entry-stat-delta.down{color:var(--color-info-secondary)}
+.manage-entry-stat-label{font-family:var(--font-body);font-size:10px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--color-info-secondary)}
+/* First run: a masjid with nothing yet gets an invitation, not three zeros. */
+.manage-entry-hint{display:flex;align-items:center;gap:var(--size-md);padding-top:var(--size-lg);border-top:1px solid color-mix(in oklab,var(--color-action-primary) 16%,transparent);font:12px/1.35 var(--font-body);color:var(--color-info-secondary);text-align:left}
+.manage-entry-hint>.mi{flex-shrink:0;font-size:16px;color:var(--color-action-primary)}
+@media(prefers-reduced-motion:reduce){.manage-entry{transition:none}.manage-entry:active{transform:none}}
+
+/* ── Feed post (.feed-post) — the paigham card ──
+   The Qaum feed's post construction: 44px identity mark, name + sub, body copy with an
+   inline "Show more", optional media, then the reaction row with the time trailing. A flat
+   row separated by a hairline — never a floating card. The masjid console reuses it and adds
+   `.feed-post-admin` (audience + reach) plus a `⋮` control in the header.
+   NOTE: src/home/storyboards/screens.jsx still builds this inline; migrate it to these
+   classes in a Home-focused pass so there is one construction. */
+.feed-post{padding:var(--size-2xl) var(--size-2xl) 14px;border-bottom:1px solid var(--color-neutral-border)}
+.feed-post:last-child{border-bottom:0}
+.feed-post-head{display:flex;align-items:flex-start;gap:var(--size-lg);margin-bottom:var(--size-lg)}
+.feed-post-id{flex:1;min-width:0;display:flex;flex-direction:column;gap:1px}
+.feed-post-name{font:700 var(--body-m-size)/1.3 var(--font-body);color:var(--color-info-primary);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.feed-post-sub{font:var(--body-xs-size)/1.4 var(--font-body);color:var(--color-info-secondary)}
+.feed-post-body{margin-bottom:var(--size-lg);font:var(--body-s-size)/1.5 var(--font-body);color:color-mix(in oklab,var(--color-info-primary) 85%,transparent)}
+.feed-post-more{font-weight:700;color:var(--color-info-primary);cursor:pointer}
+.feed-post-actions{display:flex;align-items:center;gap:var(--size-xl)}
+.feed-post-react{width:28px;height:28px;display:inline-flex;align-items:center;justify-content:center;flex-shrink:0;border:0;border-radius:var(--radius-circle);background:var(--color-action-background);color:var(--color-info-secondary)}
+.feed-post-react .mi{font-size:14px}
+.feed-post-count{font:var(--body-xs-size)/1 var(--font-body);color:var(--color-info-secondary)}
+.feed-post-time{margin-left:auto;font:var(--body-xs-size)/1 var(--font-body);color:var(--color-info-faint)}
+.feed-post-admin{display:flex;align-items:center;gap:var(--size-md);margin-top:var(--size-lg);font:var(--body-xs-size)/1.4 var(--font-body);color:var(--color-info-tertiary)}
+.feed-post-admin .mi{font-size:13px}
+
+/* ── Shared Home constructions ──
+   These live in the kit because the Home screens module is embedded by several boards
+   (Quran, Sehri, Dua, Hijri, Zakaat, nudge states, masjid onboarding) — a page-local
+   definition would leave all of them unstyled.
+     .p-hero            Profile header wash (brand + secondary radial over the surface)
+     .prow              Tappable prayer row
+     .qaum-media-*      Full-screen media viewer for a paigham's photo */
+.p-hero{background:radial-gradient(ellipse at top right, color-mix(in oklab, var(--color-action-primary) 20%, transparent) 0%, transparent 60%),radial-gradient(ellipse at top left, color-mix(in oklab, var(--color-action-secondary) 12%, transparent) 0%, transparent 55%),var(--color-surface-primary)}
+.prow{cursor:pointer;transition:background .15s ease}
+.prow:active{background:color-mix(in oklab, var(--color-info-primary) 8%, transparent)}
+.qaum-media-overlay{position:absolute;inset:0;z-index:500;display:flex;box-sizing:border-box;padding:calc(var(--size-max) + var(--size-2xl)) var(--size-xl) var(--size-2xl);background:var(--color-surface-scrim);animation:qaum-media-fade var(--motion-standard) var(--ease-out)}
+.qaum-media-viewer{position:relative;display:flex;flex:1;min-width:0;min-height:0;box-sizing:border-box;padding-top:calc(var(--control-h-lg) + var(--size-xl))}
+.qaum-media-close{position:absolute;top:0;right:0;z-index:1;width:var(--control-h-lg);height:var(--control-h-lg);display:inline-flex;align-items:center;justify-content:center;border:1px solid var(--color-neutral-border);border-radius:var(--radius-circle);padding:0;background:var(--color-action-background);color:var(--color-info-primary);cursor:pointer;transition:background var(--motion-quick) var(--ease-out)}
+.qaum-media-close .mi{font-size:var(--icon-md)}
+.qaum-media-close:active{background:var(--color-action-primary-tint)}
+
+/* ── Live capture stage (.camera-stage) ──
+   Full-bleed capture surface on a black ground: top bar (close · title/hint · secondary
+   control), a rounded viewport with an optional framing guide and location card, then either
+   a shutter row or, once captured, a use/retake action pair. `.selfie` mirrors the preview.
+   Shared by masjid registration (entrance + identity photos) and by cropping a paigham
+   photo. Screens may extend it — e.g. a crop frame — but the shell lives here. */
+.camera-stage{position:absolute;inset:0;z-index:260;display:flex;flex-direction:column;background:var(--color-neutral-black);color:var(--color-neutral-white)}
+.camera-topbar{height:104px;display:flex;align-items:flex-end;justify-content:space-between;gap:12px;padding:0 18px 14px;box-sizing:border-box;background:linear-gradient(180deg,color-mix(in oklab,var(--color-neutral-black) 96%,transparent),transparent)}
+.camera-title{min-width:0;text-align:center;font-family:var(--font-body);font-size:15px;font-weight:700}
+.camera-title small{display:block;margin-top:3px;font-size:11px;font-weight:500;color:color-mix(in oklab,var(--color-neutral-white) 72%,transparent)}
+.camera-viewport{position:relative;flex:none;height:min(560px,calc(100% - 254px));min-height:320px;margin:0 14px;overflow:hidden;border-radius:var(--radius-huge);background:var(--color-neutral-black)}
+.camera-viewport img,.capture-thumbnail img,.review-photo img{width:100%;height:100%;display:block;object-fit:cover;object-position:center}
+.camera-viewport.selfie img,.capture-thumbnail.selfie.camera-source img,.review-photo.selfie.camera-source img{transform:scaleX(-1)}
+.camera-guide{position:absolute;inset:16px;border:1px solid color-mix(in oklab,var(--color-neutral-white) 44%,transparent);border-radius:calc(var(--radius-huge) - 4px);pointer-events:none}
+.camera-guide.selfie{inset:15% 20%;border-radius:48%}
+.camera-controls{height:150px;display:grid;grid-template-columns:1fr 84px 1fr;align-items:center;padding:8px 28px 24px;box-sizing:border-box}
+.camera-control{justify-self:center;color:var(--color-neutral-white)}
+.camera-shutter{width:72px;height:72px;display:flex;align-items:center;justify-content:center;justify-self:center;border:3px solid var(--color-neutral-white);border-radius:var(--radius-circle);background:transparent;cursor:pointer}
+.camera-shutter::after{content:"";width:56px;height:56px;border-radius:var(--radius-circle);background:var(--color-neutral-white);transition:transform var(--motion-press) var(--ease-out)}
+.camera-shutter:active::after{transform:scale(.88)}
+.camera-capture-actions{display:flex;flex-direction:column;align-items:center;gap:6px;padding:14px 18px 24px}
+.camera-capture-actions .camera-use-photo{width:100%}
+.camera-capture-actions .camera-retake-photo{min-height:44px;color:color-mix(in oklab,var(--color-neutral-white) 78%,transparent)}
+.camera-location-card{position:absolute;left:var(--size-xl);top:var(--size-xl);display:flex;align-items:center;gap:var(--size-md);max-width:calc(100% - var(--size-huge) * 2);min-height:var(--control-h-md);padding:var(--size-sm) var(--size-xl);box-sizing:border-box;border:1px solid color-mix(in oklab,var(--color-neutral-white) 24%,transparent);border-radius:var(--radius-xl);background:color-mix(in oklab,var(--color-neutral-black) 72%,transparent);backdrop-filter:blur(var(--size-xl)) saturate(125%);-webkit-backdrop-filter:blur(var(--size-xl)) saturate(125%);font-family:var(--font-body);color:var(--color-neutral-white)}
+.camera-location-card>.mi{flex-shrink:0;font-size:var(--icon-sm);color:var(--color-action-primary)}
+.camera-location-copy{min-width:0;display:flex;flex:1;flex-direction:column}
+.camera-location-copy strong{font-size:var(--body-xs-size);line-height:var(--body-xs-lh);color:var(--color-action-primary)}
+.camera-location-copy span{overflow:hidden;text-overflow:ellipsis;white-space:nowrap;font-size:var(--body-xs-size);font-weight:600;line-height:var(--body-xs-lh)}
+.camera-location-status{position:absolute;left:16px;top:16px;display:flex;align-items:center;gap:6px;min-height:32px;padding:0 10px;border:1px solid color-mix(in oklab,var(--color-neutral-white) 22%,transparent);border-radius:var(--radius-xl);background:color-mix(in oklab,var(--color-neutral-black) 72%,transparent);backdrop-filter:blur(12px);-webkit-backdrop-filter:blur(12px);font:700 10.5px/1 var(--font-body);color:var(--color-neutral-white)}
+.camera-location-status .mi{font-size:16px;color:var(--color-action-primary)}
+.camera-location-status.warning .mi{color:var(--color-status-warning)}
+.camera-location-recovery{position:absolute;left:16px;right:16px;top:64px;display:flex;align-items:center;gap:10px;padding:12px;border:1px solid color-mix(in oklab,var(--color-status-warning) 44%,transparent);border-radius:var(--radius-xl);background:color-mix(in oklab,var(--color-neutral-black) 84%,transparent);backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px);font:11px/1.45 var(--font-body);color:var(--color-neutral-white)}
+.camera-location-recovery div{flex:1}
+.camera-location-recovery .btn{flex-shrink:0}
+.capture-thumbnail{position:relative;width:100%;aspect-ratio:4/3;max-height:248px;overflow:hidden;border:1px solid var(--color-neutral-border);border-radius:var(--radius-2xl);background:var(--color-surface-secondary)}
+
+/* ── Picker field (.picker-field) — a read-only field that opens a picker ──
+   The tap target for a choice made elsewhere (option sheet, dropdown menu, date/time
+   picker). Pair `.picker-field-value` with a filled choice and
+   `.picker-field-placeholder` with an empty one. */
+.picker-field{position:relative;width:100%;min-height:var(--control-h-lg);display:flex;align-items:center;justify-content:space-between;gap:10px;box-sizing:border-box;padding:0 var(--size-2xl);border:1px solid var(--color-input-border);border-radius:var(--radius-2xl);background:var(--color-input-background);color:var(--color-info-primary);font-family:var(--font-body);font-size:16px;text-align:left;cursor:pointer;overflow:hidden;transition:border-color var(--motion-quick) var(--ease-out),transform var(--motion-press) var(--ease-out)}
+.picker-field:active{transform:scale(.99)}
+.picker-field.error{border-color:var(--color-input-border-error)}
+.picker-field-placeholder{color:var(--color-input-text-placeholder)}
+.picker-field-value{font-weight:600;color:var(--color-input-text-primary)}
+.picker-field .mi{font-size:22px;color:var(--color-info-secondary)}
+
+/* ── Guided capture panel (.photo-guided-* / .photo-guidance-*) ──
+   Teaches a photo before the camera opens: a framed example with corner guides, an
+   optional location chip, and a short list of icon + strong + small guidance rows.
+   Shared by masjid registration (entrance / identity photos) and by composing a
+   paigham (notice photos). */
+.photo-guided-panel{display:flex;flex-direction:column;gap:var(--size-xl)}
+.photo-guided-panel.error .photo-guided-preview{border-color:var(--color-status-error)}
+.photo-guided-preview{position:relative;height:calc(var(--illustration-lg) + var(--size-huge));overflow:hidden;border:1px solid color-mix(in oklab,var(--color-action-primary) 34%,var(--color-neutral-border));border-radius:var(--radius-2xl);background:var(--color-surface-secondary)}
+.photo-guided-preview>img{width:100%;height:100%;display:block;object-fit:cover}
+.photo-guided-preview::after{content:"";position:absolute;inset:0;background:linear-gradient(180deg,color-mix(in oklab,var(--color-surface-media-scrim) 18%,transparent),transparent 46%,color-mix(in oklab,var(--color-surface-media-scrim) 24%,transparent));pointer-events:none}
+.photo-guided-frame{position:absolute;z-index:1;inset:calc(var(--size-max) + var(--size-huge)) var(--size-2xl) var(--size-2xl);border:1px dashed color-mix(in oklab,var(--color-info-on-media) 56%,transparent);border-radius:var(--radius-card)}
+.photo-guide-corner{position:absolute;width:var(--size-huge);height:var(--size-huge);border-color:var(--color-info-on-media)}
+.photo-guide-corner.top-left{top:calc(var(--size-xs) * -1);left:calc(var(--size-xs) * -1);border-top:var(--size-xs) solid;border-left:var(--size-xs) solid;border-top-left-radius:var(--radius-md)}
+.photo-guide-corner.top-right{top:calc(var(--size-xs) * -1);right:calc(var(--size-xs) * -1);border-top:var(--size-xs) solid;border-right:var(--size-xs) solid;border-top-right-radius:var(--radius-md)}
+.photo-guide-corner.bottom-left{bottom:calc(var(--size-xs) * -1);left:calc(var(--size-xs) * -1);border-bottom:var(--size-xs) solid;border-left:var(--size-xs) solid;border-bottom-left-radius:var(--radius-md)}
+.photo-guide-corner.bottom-right{right:calc(var(--size-xs) * -1);bottom:calc(var(--size-xs) * -1);border-right:var(--size-xs) solid;border-bottom:var(--size-xs) solid;border-bottom-right-radius:var(--radius-md)}
+.photo-guided-location{position:absolute;z-index:2;left:var(--size-xl);top:var(--size-xl);display:flex;align-items:center;gap:var(--size-md);max-width:calc(100% - var(--size-huge) * 2);min-height:var(--control-h-md);padding:var(--size-sm) var(--size-xl);box-sizing:border-box;border:1px solid color-mix(in oklab,var(--color-info-on-media) 22%,transparent);border-radius:var(--radius-xl);background:color-mix(in oklab,var(--color-surface-media-scrim) 70%,transparent);backdrop-filter:blur(var(--size-xl));-webkit-backdrop-filter:blur(var(--size-xl));color:var(--color-info-on-media)}
+.photo-guided-location>.mi{flex-shrink:0;font-size:var(--icon-sm);color:var(--color-action-primary)}
+.photo-guided-location>span{min-width:0;display:flex;flex-direction:column}
+.photo-guided-location strong,.photo-guided-location small{overflow:hidden;text-overflow:ellipsis;white-space:nowrap;font-family:var(--font-body);font-size:var(--body-xs-size);line-height:var(--body-xs-lh)}
+.photo-guided-location small{color:var(--color-info-on-media-secondary)}
+.photo-guidance-list{display:flex;flex-direction:column;gap:var(--size-md)}
+.photo-guidance-row{display:flex;align-items:center;gap:var(--size-xl)}
+.photo-guidance-row>.mi{width:var(--control-h-md);height:var(--control-h-md);display:flex;align-items:center;justify-content:center;flex-shrink:0;border-radius:var(--radius-xl);background:color-mix(in oklab,var(--color-action-primary) 10%,transparent);font-size:var(--icon-sm);color:var(--color-action-primary)}
+.photo-guidance-row>span{min-width:0;display:flex;flex-direction:column}
+.photo-guidance-row strong{font:700 var(--body-xs-size)/var(--body-xs-lh) var(--font-body);color:var(--color-info-primary)}
+.photo-guidance-row small{font:var(--body-xs-size)/var(--body-xs-lh) var(--font-body);color:var(--color-info-secondary)}
+
+/* ── Toggle row (.toggle-row) — a switch/checkbox setting with an explanation ──
+   Icon tile + title + description + trailing control. Used by member permissions and any
+   settings list. The trailing slot takes a `.sw`, a `.cb`, or a `.badge` when the setting
+   is not available yet. Rows separate themselves; the container owns the surface. */
+.toggle-row{display:flex;align-items:center;gap:var(--size-xl);padding:var(--size-xl) var(--size-sm);border-bottom:1px solid var(--color-neutral-border)}
+.toggle-row:last-child{border-bottom:0}
+.toggle-row-icon{width:var(--control-h-md);height:var(--control-h-md);display:flex;align-items:center;justify-content:center;flex-shrink:0;border-radius:var(--radius-xl);background:var(--color-action-background);color:var(--color-action-primary)}
+.toggle-row-icon .mi{font-size:var(--icon-sm)}
+.toggle-row-copy{min-width:0;flex:1;display:flex;flex-direction:column;gap:2px}
+.toggle-row-copy strong{font:700 var(--body-s-size)/var(--body-s-lh) var(--font-body);color:var(--color-info-primary)}
+.toggle-row-copy small{font:var(--body-xs-size)/var(--body-xs-lh) var(--font-body);color:var(--color-info-secondary)}
+.toggle-row[aria-disabled="true"] .toggle-row-copy{opacity:var(--opacity-emphasis)}
+
+/* ── Revolving loader (.loader) — the screen/section scale loading atom (RevolvingLoader).
+   `.btn-spinner` stays the inline, button-scale variant. `.loader.sm` suits a list row. */
+.loader{display:inline-block;width:44px;height:44px;box-sizing:border-box;flex-shrink:0;border-radius:var(--radius-circle);border:4px solid var(--color-surface-secondary);border-top-color:var(--color-action-primary);animation:noor-revolve var(--motion-celebration) linear infinite}
+.loader.sm{width:24px;height:24px;border-width:3px}
+@keyframes noor-revolve{to{transform:rotate(360deg)}}
+@media(prefers-reduced-motion:reduce){.loader{animation:none;border-color:var(--color-action-primary) var(--color-surface-secondary) var(--color-action-primary) var(--color-action-primary)}}
+
 /* Still loading placeholder: the geometry matches Compose shimmer while the
    storyboard remains motion-free for reduced-motion inspection. */
 .skeleton{display:inline-block;box-sizing:border-box;background:color-mix(in oklab,var(--color-info-faint) 24%,var(--color-surface-card))}
@@ -352,3 +629,16 @@
    the action keeps its normal label and geometry while disabled. */
 .inline-loading-status{display:flex;align-items:center;justify-content:center;gap:var(--size-md);font-family:var(--font-body);font-size:var(--body-s-size);line-height:var(--body-s-lh);color:var(--color-info-secondary)}
 .inline-loading-status .btn-spinner{flex-shrink:0}
+
+/* ── Snackbar (.snack) — transient confirmation for a completed action ──
+   Inverse surface (never a literal dark): --color-info-primary ground with
+   --color-info-primary-inverse content. `.snack.docked` floats it above the
+   screen's bottom edge; the leading glyph carries the status tint. */
+.snack{display:flex;align-items:center;gap:var(--size-lg);box-sizing:border-box;padding:var(--size-xl) var(--size-2xl);border-radius:var(--radius-xl);background:var(--color-info-primary);box-shadow:var(--shadow-card)}
+.snack-copy{flex:1;min-width:0;font-family:var(--font-body);font-size:var(--body-s-size);line-height:var(--body-s-lh);font-weight:600;color:var(--color-info-primary-inverse)}
+.snack-icon{flex-shrink:0;font-size:var(--icon-sm);color:var(--color-status-success)}
+.snack-icon.error{color:var(--color-status-error)}
+.snack-close{flex-shrink:0;border:0;padding:0;background:transparent;display:inline-flex;align-items:center;cursor:pointer;font-size:var(--icon-sm);color:color-mix(in oklab,var(--color-info-primary-inverse) 60%,transparent)}
+.snack.docked{position:absolute;left:var(--size-2xl);right:var(--size-2xl);bottom:calc(var(--size-max) + var(--size-2xl));z-index:120;animation:noor-snack-in var(--motion-emphasized) var(--ease-out)}
+@keyframes noor-snack-in{from{opacity:0;transform:translateY(var(--size-xl))}to{opacity:1;transform:translateY(0)}}
+@media(prefers-reduced-motion:reduce){.snack.docked{animation:none}}

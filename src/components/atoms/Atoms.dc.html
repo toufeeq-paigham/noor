@@ -84,6 +84,27 @@
           <button class="ib ib-tonal"><span class="mi" data-i="notifications"></span></button>
         </div>
       </div>
+
+      <hr style="border:none;border-top:1px solid var(--color-neutral-border);margin:8px 0">
+
+      <div>
+        <div class="lbl">Floating Action (.fab)</div>
+        <div class="cp-sub" style="margin:0 0 10px">
+          A screen's one persistent create/edit action. Extended on arrival, <code>.compact</code>
+          once the reader scrolls. Normally <code>position:absolute</code> bottom-right of the
+          screen; shown inline here so both states sit side by side.
+        </div>
+        <div class="row"><div class="lbl rowlbl">Extended</div>
+          <button class="fab" style="position:relative;right:auto;bottom:auto">
+            <span class="mi" data-i="campaign"></span><span class="fab-label">Send a paigham</span>
+          </button>
+        </div>
+        <div class="row"><div class="lbl rowlbl">Compact</div>
+          <button class="fab compact" style="position:relative;right:auto;bottom:auto" aria-label="Send a paigham">
+            <span class="mi" data-i="campaign"></span><span class="fab-label">Send a paigham</span>
+          </button>
+        </div>
+      </div>
     </div>
   </div>
 
@@ -221,7 +242,38 @@
     </div>
   </div>
 
-  <!-- 9. Surface -->
+  <!-- Icon tile & Avatar -->
+  <div class="cp-card">
+    <div class="cp-head">
+      <div class="cp-h">Icon tile &amp; Avatar</div>
+      <div class="cp-sub">The leading mark on a row, card or header. <code>.icon-tile</code> carries a glyph, <code>.avatar</code> an initial; <code>.accent</code> inverts onto the action fill and <code>--tile</code> sets the size (default 40px).</div>
+    </div>
+    <div class="row" style="gap:18px">
+      <span class="icon-tile"><span class="mi" data-i="mosque"></span></span>
+      <span class="icon-tile accent"><span class="mi" data-i="mosque"></span></span>
+      <span class="icon-tile" style="--tile:48px"><span class="mi" data-i="campaign"></span></span>
+      <span class="icon-tile" style="--tile:36px"><span class="mi" data-i="mic"></span></span>
+      <span class="avatar">S</span>
+      <span class="avatar accent" style="--tile:48px">A</span>
+      <span class="avatar" style="--tile:32px">Y</span>
+    </div>
+  </div>
+
+  <!-- 9. Loader -->
+  <div class="cp-card">
+    <div class="cp-head">
+      <div class="cp-h">Loader</div>
+      <div class="cp-sub">RevolvingLoader — screen and section scale. <code>.btn-spinner</code> is the inline button-scale variant; reduced motion freezes the ring instead of hiding it.</div>
+    </div>
+    <div style="display:flex;align-items:center;gap:28px;flex-wrap:wrap">
+      <div style="text-align:center"><span class="loader"></span><div class="lbl" style="margin-top:8px">.loader</div></div>
+      <div style="text-align:center"><span class="loader sm"></span><div class="lbl" style="margin-top:8px">.loader.sm</div></div>
+      <div style="text-align:center"><span class="btn-spinner" style="color:var(--color-action-primary)"></span><div class="lbl" style="margin-top:8px">.btn-spinner</div></div>
+      <div class="inline-loading-status"><span class="btn-spinner"></span>Publishing timings…</div>
+    </div>
+  </div>
+
+  <!-- 10. Surface -->
   <div class="cp-card">
     <div class="cp-head">
       <div class="cp-h">Surface</div>

@@ -10,7 +10,7 @@ const STORYBOARD_FRAMES = [
   { id: 'home-att-prompt', name: 'Home — ATT Tracking Prompt', tab: 0, component: 'HomeScreen', props: { heroSel: null, userName: 'Guest', masjidName: 'Bangalore (Approx.)', prayer: 'Asr', loginNudge: true, onSignInTap: () => {} }, attDialog: true },
   { id: 'qaum', name: 'Qaum — community Feed', tab: 1, component: 'QaumScreen', props: {} },
   { id: 'quran', name: 'Quran — Surah Listing', tab: 2, component: 'QuranScreen', props: {} },
-  { id: 'salaah', name: 'Salaah — Bilal Timings', tab: 3, component: 'SalaahScreen', props: {} },
+  { id: 'salaah', name: 'Salaah — Bilal Timings', tab: 3, component: 'SalaahScreen', props: { onEditTimings: () => {} } },
   { id: 'profile', name: 'Profile — User Settings', tab: 4, component: 'ProfileScreen', props: {} }
 ];
 
@@ -103,6 +103,8 @@ const PROFILE_EXTRA_FRAMES = [
     component: 'ProfileScreen',
     props: {
       showManagedMasjid: true,
+      managedCount: 2,
+      managedAttention: 3,
       onMyMasjids: () => {},
       onManageMasjid: () => {},
       onRegister: () => {},
@@ -111,6 +113,75 @@ const PROFILE_EXTRA_FRAMES = [
       onTerms: () => {},
       onPrivacy: () => {},
       onAbout: () => {}
+    }
+  }
+];
+
+// Committee-member entry points into the masjid console, plus the console tile's own data states.
+// Appended at global indices 41-44 so every existing frame index and hash deep-link stays stable.
+const MANAGED_ENTRY_FRAMES = [
+  {
+    id: 'home-managed',
+    name: 'Home — Committee Member',
+    tab: 0,
+    component: 'HomeScreen',
+    props: { heroSel: null, managedMasjid: 'Masjid E Bilal', managedAttention: 3, onManageMasjid: () => {} }
+  },
+  {
+    id: 'qaum-managed',
+    name: 'Qaum — Committee Member',
+    tab: 1,
+    component: 'QaumScreen',
+    props: { onManageMasjid: () => {}, onSendPaigham: () => {}, sendTarget: 'Masjid E Bilal' }
+  },
+  {
+    // The label steps aside once the reader starts moving through the feed.
+    id: 'qaum-fab-compact',
+    name: 'Qaum — Send FAB Collapsed',
+    tab: 1,
+    component: 'QaumScreen',
+    props: { onManageMasjid: () => {}, onSendPaigham: () => {}, sendTarget: 'Masjid E Bilal', fabCompact: true }
+  },
+  {
+    // The mini player docks to the same corner, so the FAB lifts clear of it.
+    id: 'qaum-fab-player',
+    name: 'Qaum — Send FAB Over Player',
+    tab: 1,
+    component: 'QaumScreen',
+    props: {
+      onManageMasjid: () => {}, onSendPaigham: () => {}, sendTarget: 'Masjid E Bilal',
+      audioPlaying: true, audioProgress: 9, dock: 'bottom', dockBottomOffset: 12
+    }
+  },
+  {
+    id: 'home-managed-loading',
+    name: 'Home — Console Stats Loading',
+    tab: 0,
+    component: 'HomeScreen',
+    props: {
+      heroSel: null,
+      managedMasjid: 'Masjid E Bilal',
+      managedRole: 'Secretary',
+      managedStatsLoading: true,
+      onManageMasjid: () => {}
+    }
+  },
+  {
+    id: 'home-managed-new',
+    name: 'Home — Newly Approved Masjid',
+    tab: 0,
+    component: 'HomeScreen',
+    props: {
+      heroSel: null,
+      managedMasjid: 'Masjid-e-Mohammadi',
+      managedRole: 'Chairman',
+      managedAttention: 0,
+      managedStats: [
+        { value: '0', label: 'Followers' },
+        { value: '0', label: 'Paighams' },
+        { value: '0', label: 'Reactions' }
+      ],
+      onManageMasjid: () => {}
     }
   }
 ];
@@ -201,6 +272,9 @@ function HomeRow({ active = 0, onSelectFrame }) {
       </div>
       <div className="poc-board">
         {renderFrame(STORYBOARD_FRAMES[0], 0, active, onSelectFrame)}
+        {renderFrame(MANAGED_ENTRY_FRAMES[0], 41, active, onSelectFrame)}
+        {renderFrame(MANAGED_ENTRY_FRAMES[2], 43, active, onSelectFrame)}
+        {renderFrame(MANAGED_ENTRY_FRAMES[3], 44, active, onSelectFrame)}
         {HOME_DATA_FRAMES.map((f, i) => renderFrame(f, 37 + i, active, onSelectFrame))}
       </div>
     </div>
@@ -211,11 +285,12 @@ function QaumRow({ active = 0, onSelectFrame }) {
   return (
     <div>
       <div className="poc-row-label">
-        <span className="mi" data-i="groups"></span> 03 · Qaum Tab — Community Feed, Data States, Media &amp; Audio · 8 states
+        <span className="mi" data-i="groups"></span> 03 · Qaum Tab — Community Feed, Data States, Media &amp; Audio · 9 states
       </div>
       <div className="poc-board">
         {/* Base feed (idle audio) at global index 4, then the audio-player variations at 13-15 */}
         {renderFrame(STORYBOARD_FRAMES[4], 4, active, onSelectFrame)}
+        {renderFrame(MANAGED_ENTRY_FRAMES[1], 42, active, onSelectFrame)}
         {QAUM_EXTRA_FRAMES.map((f, i) => renderFrame(f, 13 + i, active, onSelectFrame))}
         {QAUM_DATA_FRAMES.map((f, i) => renderFrame(f, 31 + i, active, onSelectFrame))}
         {QAUM_MEDIA_FRAMES.map((f, i) => renderFrame(f, 39 + i, active, onSelectFrame))}

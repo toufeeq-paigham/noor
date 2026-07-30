@@ -39,9 +39,25 @@ function HomeScreen({
   notifNudge = false,       // signed-in with masjid, notifs off (InlineNudge.NotificationPermission)
   onCloseNotifNudge,
   onAllowNotif,
-  trackingLoading = false
+  trackingLoading = false,
+  managedMasjid = null,      // masjid name when this member manages one → console tile
+  managedAttention = 0,
+  managedRole = 'Chairman',  // your standing in this masjid — why the tile is here at all
+  // The three numbers the console leads with. Same values, same labels, same order — Home is a
+  // preview of that screen, so a mismatch here would read as two different masjids. `delta` is
+  // the movement since last week; omitted when nothing moved rather than shown as +0.
+  managedStats = [
+    { value: '1.3k', label: 'Followers', delta: '+12' },
+    { value: '96', label: 'Paighams', delta: '+3' },
+    { value: '3.1k', label: 'Reactions', delta: '+148' }
+  ],
+  managedStatsLoading = false,
+  onManageMasjid
 }) {
   const { PromptCard } = window;
+  // First run is derived from the numbers themselves, so the prompt and the strip can never
+  // disagree about whether this masjid has anything to show yet.
+  const managedFirstRun = managedStats.every((s) => String(s.value) === '0');
   const bellIcon = notifOn ? 'notifications' : 'notifications_off';
   const bellFill = notifOn ? 1 : 0;
   const bellOpacity = notifOn ? 0.9 : 0.5;
@@ -177,6 +193,59 @@ function HomeScreen({
           <div style={{ display: 'flex', justifyContent: 'center', padding: '10px 0 6px' }}>
             <div style={{ width: 'var(--control-h-md)', height: 'var(--size-sm)', background: 'var(--color-info-faint)', borderRadius: 'var(--radius-xs)' }} />
           </div>
+
+          {/* Console tile — first thing in the sheet for a committee member, so managing the
+              masjid never means going hunting in Profile. Absent for everyone else. The eyebrow
+              carries your standing (the reason the tile exists); the strip previews the console's
+              own three numbers with the week's movement, so the door shows what is behind it. */}
+          {managedMasjid && onManageMasjid ? (
+            <div style={{ padding: '4px 20px 0' }}>
+              <button className="manage-entry compact stacked" onClick={onManageMasjid}>
+                <span className="manage-entry-main">
+                  <span className="masjid-mark" style={{ '--tile': '38px' }}>
+                    <img src="../../images/masjid-camera-preview.png" alt="" />
+                  </span>
+                  <span className="manage-entry-copy">
+                    <span className="manage-entry-eyebrow">{managedRole}</span>
+                    <span className="manage-entry-name">{managedMasjid}</span>
+                  </span>
+                  {managedAttention ? <span className="badge sm amber">{managedAttention} waiting</span> : null}
+                  <span className="mi manage-entry-go" data-i="chevron_right"></span>
+                </span>
+                {managedStatsLoading ? (
+                  /* The placeholders wear the real value/label classes, so their line boxes are
+                     the loaded ones and the tile cannot change height when the numbers arrive. */
+                  <span className="manage-entry-stats" aria-hidden="true">
+                    {managedStats.map((s) => (
+                      <span className="manage-entry-stat" key={s.label}>
+                        <span className="manage-entry-stat-fig">
+                          <span className="manage-entry-stat-value skeleton" style={{ width: 34, color: 'transparent', borderRadius: 6 }}>0</span>
+                        </span>
+                        <span className="manage-entry-stat-label skeleton" style={{ width: 52, color: 'transparent', borderRadius: 6 }}>0</span>
+                      </span>
+                    ))}
+                  </span>
+                ) : managedFirstRun ? (
+                  <span className="manage-entry-hint">
+                    <span className="mi" data-i="campaign" aria-hidden="true"></span>
+                    Send your first paigham — your followers will see it straight away.
+                  </span>
+                ) : (
+                  <span className="manage-entry-stats">
+                    {managedStats.map((s) => (
+                      <span className="manage-entry-stat" key={s.label}>
+                        <span className="manage-entry-stat-fig">
+                          <span className="manage-entry-stat-value">{s.value}</span>
+                          {s.delta ? <span className={`manage-entry-stat-delta${String(s.delta).startsWith('-') ? ' down' : ''}`}>{s.delta}</span> : null}
+                        </span>
+                        <span className="manage-entry-stat-label">{s.label}</span>
+                      </span>
+                    ))}
+                  </span>
+                )}
+              </button>
+            </div>
+          ) : null}
 
           <div style={{ padding: '14px 20px 24px' }}>
             <div style={{ display: 'flex', alignItems: 'baseline', justifyContent: 'space-between', marginBottom: 16 }}>
@@ -578,7 +647,14 @@ function QaumScreen({
   mediaOpen = false,
   mediaTransitionEnabled = false,
   onOpenMedia,
-  onCloseMedia
+  onCloseMedia,
+  onManageMasjid,         // present only for a committee member → the masjid console
+  // Send-a-paigham shortcut. Present only for a member who may post; the paigham targets
+  // `sendTarget` (their primary managed masjid) and the target is changeable inside compose,
+  // so managing several masjids never costs a picker before the action.
+  onSendPaigham,
+  sendTarget = null,
+  fabCompact = false      // storyboard override; the live device lets scroll position decide
 }) {
   const { PromptCard, EmptyState } = window;
   const APP_BAR_H = 96;
@@ -588,8 +664,13 @@ function QaumScreen({
   const inlineRef = React.useRef(null);
   const [scrollDock, setScrollDock] = React.useState('none');
 
+  // The FAB label gets out of the way once the reader starts moving; 24px is past the couple
+  // of pixels a rubber-band overscroll produces, so the label does not flicker at rest.
+  const [fabScrolled, setFabScrolled] = React.useState(false);
+
   const recomputeDock = () => {
     const feedEl = feedRef.current, inlEl = inlineRef.current;
+    if (feedEl) setFabScrolled(feedEl.scrollTop > 24);
     if (!feedEl || !inlEl) return;
     // Layout coords (offsetTop/scrollTop/clientHeight) are unscaled, so this stays correct
     // even though the live device is rendered at 0.82 scale.
@@ -765,7 +846,15 @@ function QaumScreen({
           When the player docks UP, it pins into the app bar's bottom edge (like the Dua
           tab bar), so the bar grows to hold the title + the mini player. */}
       <div aria-hidden={mediaOpen ? true : undefined} className="app-bar" style={{ flexDirection: 'column', alignItems: 'stretch', gap: 0, height: effectiveDock === 'top' ? APP_BAR_H + 58 : APP_BAR_H, padding: '54px 14px 10px' }}>
-        <div className="ab-title" style={{ paddingLeft: 4 }}>Qaum</div>
+        <div style={{ display: 'flex', alignItems: 'center', gap: 10 }}>
+          <div className="ab-title" style={{ paddingLeft: 4, flex: 1 }}>Qaum</div>
+          {/* Committee members post from here, so the console is one tap away. */}
+          {onManageMasjid ? (
+            <button className="ib ib-tonal" onClick={onManageMasjid} aria-label="Open the masjid console">
+              <span className="mi" data-i="dashboard"></span>
+            </button>
+          ) : null}
+        </div>
         {effectiveDock === 'top' && (
           <div style={{ marginTop: 12 }}>
             <QaumAudioPlayer playing={audioPlaying} progress={audioProgress} onToggle={onToggleAudio} onClose={onCloseAudio} />
@@ -783,6 +872,21 @@ function QaumScreen({
           className="dock-bottom"
           style={{ bottom: dockBottomOffset }}
         />
+      )}
+
+      {/* Send a paigham — the committee's one action on this tab. It sits above the nav bar,
+          and lifts clear of the mini player when that docks to the same corner. Hidden while
+          the media viewer is open: nothing floats over a full-screen image. */}
+      {onSendPaigham && !mediaOpen && (
+        <button
+          className={`fab ${fabScrolled || fabCompact ? 'compact' : ''}`}
+          onClick={onSendPaigham}
+          aria-label={sendTarget ? `Send a paigham from ${sendTarget}` : 'Send a paigham'}
+          style={{ bottom: effectiveDock === 'bottom' ? dockBottomOffset + 68 : 104 }}
+        >
+          <span className="mi" data-i="campaign" aria-hidden="true"></span>
+          <span className="fab-label">Send a paigham</span>
+        </button>
       )}
 
       {mediaOpen && (
@@ -989,12 +1093,20 @@ function SalaahScreen({
   onFindMasjid,
   notifNudge = false,       // signed-in with masjid, notifs off (InlineNudge.NotificationPermission)
   onCloseNotifNudge,
-  onAllowNotif
+  onAllowNotif,
+  // Timings are public — anyone signed in may correct any masjid's times. The shortcut only
+  // appears when the times on screen actually belong to a masjid: the approximate-location
+  // fallback has no record to publish to, so there is nothing there to update.
+  onEditTimings,
+  fabCompact = false        // storyboard override; the live device lets scroll position decide
 }) {
   const { PromptCard, Dialog } = window;
   // No masjid followed (guest or signed-in): approximate city timings — no iqama
   // config, so Iqama mirrors Azaan and the date pager row shows.
   const approx = guest || noMasjid;
+  // The correction shortcut needs a masjid record behind the numbers on screen.
+  const showEditFab = !!onEditTimings && !approx;
+  const [fabScrolled, setFabScrolled] = React.useState(false);
   const prayerData = approx ? [
     { name: 'Fajr', azaan: '4:42 AM', iqama: '4:42 AM' },
     { name: 'Zohar', azaan: '12:26 PM', iqama: '12:26 PM' },
@@ -1051,7 +1163,10 @@ function SalaahScreen({
     <div style={{ position: 'relative', width: '100%', height: '100%', overflow: 'hidden', background: 'var(--color-surface-primary)' }}>
 
       {/* Scrollable content — scrolls under the app bar */}
-      <div style={{ position: 'absolute', inset: 0, overflowY: 'auto', WebkitOverflowScrolling: 'touch', paddingTop: SAL_APPBAR_H, paddingBottom: 80 }}>
+      <div
+        onScroll={(e) => setFabScrolled(e.target.scrollTop > 24)}
+        style={{ position: 'absolute', inset: 0, overflowY: 'auto', WebkitOverflowScrolling: 'touch', paddingTop: SAL_APPBAR_H, paddingBottom: showEditFab ? 150 : 80 }}
+      >
         <div style={{ padding: '4px 16px 16px', display: 'flex', flexDirection: 'column', gap: 20 }}>
 
         {/* Guest sign-in nudge (PromptCard.error, NudgeInline.kt Salaah copy) */}
@@ -1220,6 +1335,21 @@ function SalaahScreen({
         </div>
       )}
 
+      {/* Update timings — public, so this is not gated on a role. It only appears when the
+          times shown belong to a masjid; the approximate-location fallback has no record to
+          publish to. Clears the nav bar the same distance as the Qaum FAB. */}
+      {showEditFab && (
+        <button
+          className={`fab ${fabScrolled || fabCompact ? 'compact' : ''}`}
+          onClick={onEditTimings}
+          aria-label={`Update salaah timings for ${masjidName}`}
+          style={{ bottom: 104 }}
+        >
+          <span className="mi" data-i="mosque_clock2" aria-hidden="true"></span>
+          <span className="fab-label">Update timings</span>
+        </button>
+      )}
+
       {/* Guest LoginSheet (LoginSheet.kt defaults) — auth-gated taps land here */}
       <Dialog
         mode="sheet"
@@ -1271,6 +1401,8 @@ function ProfileScreen({
   masjidName = "Masjid E Bilal",
   showMyMasjids = true,
   showManagedMasjid = false,
+  managedCount = 1,          // how many masjids this member manages (the console switches between them)
+  managedAttention = 0,      // things waiting inside the console (suggestions, unaccepted invites)
   onMyMasjids,             // tap the My Masjids row → open My Masjids sheet (masjid-register board)
   onManageMasjid,
   adminTransitionEnabled = false,
@@ -1298,15 +1430,8 @@ function ProfileScreen({
     showMyMasjids && onMyMasjids
       ? [
           { icon: 'mosque', label: 'My Masjids', value: masjidName, onClick: onMyMasjids },
-          showManagedMasjid && onManageMasjid ? {
-            icon: 'account_balance',
-            label: masjidName,
-            value: 'Admin',
-            onClick: onManageMasjid,
-            transitionName: adminTransitionEnabled ? PROFILE_ADMIN_TRANSITION_NAME : 'none'
-          } : null,
           { icon: 'add', label: 'Register a Masjid', onClick: onRegister }
-        ].filter(Boolean)
+        ]
       : [{ icon: 'add', label: 'Register a Masjid', onClick: onRegister }],
     [
       { icon: 'groups_outlined', label: 'Invite your Friends', onClick: onInvite },
@@ -1334,6 +1459,28 @@ function ProfileScreen({
             <div style={{ fontFamily: 'var(--font-body)', fontSize: 15, color: 'var(--color-info-secondary)' }}>{phone}</div>
           </div>
         </div>
+
+        {/* Console entry — the only door into the masjid console. A card, not a settings
+            row: the masjid's mark, its name, your role, and what is waiting for you. */}
+        {showManagedMasjid && onManageMasjid ? (
+          <div style={{ padding: '4px 16px 0' }}>
+            <button className="manage-entry" onClick={onManageMasjid}>
+              <span className="masjid-mark" style={{ '--tile': '46px' }}>
+                <img src="../../images/masjid-camera-preview.png" alt="" />
+              </span>
+              <span className="manage-entry-copy">
+                <span className="manage-entry-eyebrow">You manage this masjid</span>
+                <span
+                  className="manage-entry-name"
+                  style={{ viewTransitionName: adminTransitionEnabled ? PROFILE_ADMIN_TRANSITION_NAME : 'none' }}
+                >{masjidName}</span>
+                <span className="manage-entry-role">Chairman · full admin{managedCount > 1 ? ` · and ${managedCount - 1} more` : ''}</span>
+              </span>
+              {managedAttention ? <span className="badge sm amber" aria-label={`${managedAttention} need your attention`}>{managedAttention}</span> : null}
+              <span className="mi manage-entry-go" data-i="chevron_right"></span>
+            </button>
+          </div>
+        ) : null}
 
         {/* Settings cards */}
         <div style={{ padding: '8px 16px', display: 'flex', flexDirection: 'column', gap: 16 }}>

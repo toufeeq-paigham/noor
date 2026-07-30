@@ -5,6 +5,9 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <script src="../support.js"></script>
 <script src="../_theme/chrome.js"></script>
+<!-- Shared state model + storyboard frame table. Plain JS in <head> so it is ready
+     before the page logic below constructs its initial state. -->
+<script src="./storyboards/ops-state.js"></script>
 </head>
 <body>
 <x-dc>
@@ -18,34 +21,768 @@
   <style>
     body{background:var(--canvas-bg);padding:36px 32px 90px;min-height:100vh;box-sizing:border-box}
     ::-webkit-scrollbar{display:none}*{-ms-overflow-style:none;scrollbar-width:none}
-    .op-screen{width:100%;height:100%;background:var(--color-surface-primary);color:var(--color-info-primary);font-family:var(--font-body);display:flex;flex-direction:column;position:relative;overflow:hidden}
-    .op-topbar{height:72px;padding:16px;box-sizing:border-box;display:flex;align-items:center;gap:var(--size-md);border-bottom:1px solid var(--color-neutral-border);flex-shrink:0}.op-title{font-family:var(--font-title);font-size:22px;flex:1;text-align:center}.op-top-spacer{width:48px}
-    .op-content{padding:var(--size-2xl);display:flex;flex-direction:column;gap:var(--size-lg);overflow:auto;flex:1;box-sizing:border-box}.op-status{flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;padding:var(--size-3xl);gap:var(--size-xl);box-sizing:border-box}.op-status-icon{font-size:var(--icon-2xl);color:var(--color-action-primary)}.op-status-icon.error{color:var(--color-status-error)}.op-status-icon.success{color:var(--color-status-success)}.op-status-title{font-family:var(--font-title);font-size:22px;color:var(--color-info-primary)}.op-status-copy{font-size:14px;line-height:1.55;color:var(--color-info-secondary)}
-    .op-loader{width:48px;height:48px;border-radius:50%;border:4px solid var(--color-surface-secondary);border-top-color:var(--color-action-primary);animation:opspin var(--motion-celebration) linear infinite}@keyframes opspin{to{transform:rotate(360deg)}}
-    .op-hero,.op-card{background:var(--color-surface-card);border:1px solid var(--color-neutral-border);border-radius:var(--radius-xl);padding:var(--size-xl);display:flex;align-items:center;gap:var(--size-xl)}.op-hero>.mi{font-size:var(--icon-xl);color:var(--color-action-primary)}
-    .op-row{min-height:64px;display:flex;align-items:center;gap:var(--size-lg);border-bottom:1px solid var(--color-neutral-border);padding:var(--size-md) 0;box-sizing:border-box}.op-row-icon{font-size:var(--icon-md);color:var(--color-action-primary)}.op-row-icon.destructive{color:var(--color-status-error)}.op-row-copy{min-width:0;flex:1}.op-row-title{font-size:15px;font-weight:700}.op-row-sub{font-size:13px;color:var(--color-info-secondary);margin-top:4px}.op-chevron{color:var(--color-info-faint)}
-    .op-search,.op-field{min-height:52px;padding:var(--size-lg);box-sizing:border-box;border-radius:var(--radius-lg);background:var(--color-input-background);color:var(--color-info-secondary);display:flex;align-items:center;gap:var(--size-md);border:1px solid var(--color-input-border)}.op-field{min-height:152px;align-items:flex-start}.op-field.invalid{border-color:var(--color-status-error)}.op-field-error{font-size:12px;color:var(--color-status-error)}.op-media-row,.op-actions{display:flex;gap:var(--size-md)}.op-media-row>* ,.op-actions>*{flex:1}.op-progress{height:4px;background:var(--color-surface-secondary);border-radius:var(--radius-circle);overflow:hidden}.op-progress span{display:block;width:64%;height:100%;background:var(--color-action-primary)}
-    .op-dialog-scrim{position:absolute;inset:0;background:var(--color-surface-scrim);display:flex;align-items:center;justify-content:center;padding:var(--size-2xl);z-index:4}.op-dialog{background:var(--color-surface-primary);border-radius:var(--radius-2xl);padding:var(--size-2xl);display:flex;flex-direction:column;gap:var(--size-lg);width:100%;box-sizing:border-box}.op-destructive{background:var(--color-action-destructive)!important}.op-summary,.op-time{display:flex;justify-content:space-between;align-items:center;gap:var(--size-md);padding:var(--size-lg) 0;border-bottom:1px solid var(--color-neutral-border)}.op-time span:nth-child(2){margin-left:auto;color:var(--color-info-secondary)}
+    /* Page chrome only — component constructions live in _theme/components.css. */
+    .ops-rec-dot{width:12px;height:12px;flex-shrink:0;border-radius:var(--radius-circle);
+      background:var(--color-status-error);animation:ops-pulse var(--motion-celebration) ease-in-out infinite}
+    @keyframes ops-pulse{0%,100%{opacity:1}50%{opacity:var(--opacity-low)}}
+    @keyframes ops-step{from{transform:translateX(24px);opacity:0}to{transform:translateX(0);opacity:1}}
+    .ops-step{animation:ops-step var(--motion-standard) cubic-bezier(.2,.8,.2,1)}
+
+
+    /* ── Console header & feed chrome (page layout for the console screen) ── */
+    .console-head{display:flex;align-items:center;gap:var(--size-lg);padding:54px 16px 14px;box-sizing:border-box}
+    .console-head-copy{flex:1;min-width:0}
+    .console-head-name{display:flex;align-items:center;gap:var(--size-md);max-width:100%;padding:0;border:0;background:transparent;text-align:left;font:inherit;color:inherit}
+    .console-head-title{min-width:0;font-family:var(--font-title);font-size:23px;line-height:1.15;letter-spacing:-.4px;color:var(--color-info-primary);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+    .console-head-verified{flex-shrink:0;font-size:var(--icon-sm);color:var(--color-neutral-brand)}
+    .console-head-swap{flex-shrink:0;font-size:20px;color:var(--color-info-secondary)}
+    .console-head-name:active .console-head-swap{color:var(--color-action-primary)}
+    .console-head-role{margin-top:2px;font-size:12px;color:var(--color-info-secondary);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+    .console-group{margin-top:var(--size-xl);border:1px solid var(--color-neutral-border);border-radius:var(--radius-card);background:var(--color-surface-card);padding:0 var(--size-lg)}
+    .console-group>.list-item+.list-item{border-top:1px solid var(--color-neutral-border)}
+    /* `.attention` — the pending-work queue. Same list construction, tinted so the block
+       reads as work owed rather than as another navigation card. */
+    .console-group.attention{margin-top:0;border-color:color-mix(in oklab,var(--color-action-primary) 40%,transparent);
+      background:var(--gradient-emerald),var(--color-surface-card)}
+    .console-eyebrow{padding:var(--size-2xl) 4px var(--size-lg);font-family:var(--font-body);font-size:10.5px;
+      font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:var(--color-info-secondary)}
+
+    /* Today's salaah — the published strip doubling as the door into the editor. The whole
+       card is one target; the grid inside is the Salaah screen's published construction. */
+    .console-salaah{display:block;width:100%;box-sizing:border-box;margin-top:var(--size-xl);padding:var(--size-xl);
+      text-align:left;cursor:pointer;font:inherit;color:inherit;border:1px solid var(--color-neutral-border);
+      border-radius:var(--radius-card);background:var(--color-surface-card);
+      transition:transform var(--motion-press) var(--ease-out)}
+    .console-salaah:active{transform:scale(.995)}
+    .console-salaah-head{display:flex;align-items:baseline;justify-content:space-between;gap:var(--size-lg);
+      margin-bottom:var(--size-lg);font-family:var(--font-body);font-size:10.5px;font-weight:700;
+      letter-spacing:.1em;text-transform:uppercase;color:var(--color-info-secondary)}
+    .console-salaah-head>span:last-child{font-size:11px;font-weight:500;letter-spacing:0;text-transform:none;
+      white-space:nowrap;color:var(--color-info-tertiary)}
+    .console-salaah-foot{display:flex;align-items:center;gap:var(--size-md);margin-top:var(--size-lg);
+      padding-top:var(--size-lg);border-top:1px solid var(--color-neutral-border);
+      font-family:var(--font-body);font-size:12.5px;line-height:1.4;color:var(--color-info-primary)}
+    .console-salaah-foot>span:first-child{flex:1;min-width:0}
+    .console-salaah-foot .mi{flex-shrink:0;font-size:20px;color:var(--color-info-faint)}
+    @media(prefers-reduced-motion:reduce){.console-salaah{transition:none}.console-salaah:active{transform:none}}
+    .console-feedhead{position:sticky;top:0;z-index:2;display:flex;align-items:baseline;gap:var(--size-md);padding:var(--size-2xl) 20px var(--size-lg);box-sizing:border-box;background:color-mix(in oklab,var(--color-surface-primary) 92%,transparent);backdrop-filter:blur(12px);-webkit-backdrop-filter:blur(12px)}
+    .console-feedhead-title{flex:1;font-family:var(--font-title);font-size:18px;letter-spacing:-.2px;color:var(--color-info-primary)}
+    .console-feedhead-count{font-size:12px;color:var(--color-info-secondary)}
+    .console-day{padding:var(--size-lg) 20px var(--size-md);font-family:var(--font-body);font-size:10.5px;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:var(--color-info-tertiary);background:var(--color-surface-secondary)}
+
+
+    /* ── Committee screen ── */
+    .committee-summary{display:flex;align-items:center;gap:var(--size-lg);padding:var(--size-xl);box-sizing:border-box;border:1px solid var(--color-neutral-border);border-radius:var(--radius-card);background:var(--gradient-emerald),var(--color-surface-card)}
+    .member-caps{display:flex;align-items:center;gap:var(--size-md);min-width:0}
+    .member-role{font-size:12px;color:var(--color-info-secondary);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+    .member-cap{flex-shrink:0;font-size:15px;color:var(--color-info-faint);opacity:var(--opacity-emphasis)}
+    .member-cap.on{color:var(--color-action-primary);opacity:1}
+    .committee-label{display:flex;align-items:baseline;gap:var(--size-md);padding:var(--size-max) 4px var(--size-lg);font-family:var(--font-body);font-size:10.5px;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:var(--color-info-secondary)}
+    .committee-label>span{padding:1px 7px;border-radius:var(--radius-circle);background:var(--color-action-background);font-size:10px;letter-spacing:0;color:var(--color-info-primary)}
+    .committee-note{padding:var(--size-lg) 4px 0;font-family:var(--font-body);font-size:11px;line-height:1.5;color:var(--color-info-tertiary)}
+    .committee-legend{display:flex;flex-wrap:wrap;gap:var(--size-md) var(--size-xl);padding:var(--size-max) 4px var(--size-md);font-family:var(--font-body);font-size:10.5px;color:var(--color-info-tertiary)}
+    .committee-legend>span{display:inline-flex;align-items:center;gap:4px}
+    .committee-legend .mi{font-size:14px;color:var(--color-action-primary)}
+
+
+    /* ── Followers screen ── */
+    .followers-hero{display:flex;align-items:center;gap:var(--size-lg);padding:var(--size-xl);box-sizing:border-box;border:1px solid var(--color-neutral-border);border-radius:var(--radius-card);background:var(--gradient-emerald),var(--color-surface-card)}
+    .followers-hero-value{font-family:var(--font-title);font-size:28px;letter-spacing:-.6px;line-height:1.05;color:var(--color-info-primary)}
+    .followers-hero-label{margin-top:2px;font-family:var(--font-body);font-size:11.5px;color:var(--color-info-secondary)}
+    .followers-more{display:flex;align-items:center;justify-content:space-between;gap:var(--size-lg);padding:var(--size-xl) 4px 0;font-family:var(--font-body);font-size:11.5px;color:var(--color-info-secondary)}
+    .followers-note{display:flex;align-items:flex-start;gap:var(--size-md);padding:var(--size-max) 4px 0;font-family:var(--font-body);font-size:11px;line-height:1.5;color:var(--color-info-tertiary)}
+    .followers-note .mi{flex-shrink:0;font-size:14px}
+
+    /* ── Masjid details screen ── */
+    .detail-hero{position:relative;flex-shrink:0;height:172px;overflow:hidden;background:var(--color-surface-secondary)}
+    .detail-hero img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover}
+    .detail-hero::after{content:"";position:absolute;inset:0;background:linear-gradient(180deg,transparent 30%,var(--color-surface-media-scrim) 100%)}
+    .detail-hero-copy{position:absolute;z-index:1;left:var(--size-2xl);right:var(--size-2xl);bottom:var(--size-xl)}
+    .detail-hero-name{font-family:var(--font-title);font-size:24px;letter-spacing:-.4px;color:var(--color-neutral-white)}
+    .detail-hero-meta{display:flex;align-items:center;gap:var(--size-md);margin-top:var(--size-md)}
+    .detail-hero-code{font-family:var(--font-body);font-size:11px;font-variant-numeric:tabular-nums;letter-spacing:.06em;color:color-mix(in oklab,var(--color-neutral-white) 84%,transparent)}
+    .detail-group-label{padding:var(--size-max) 4px var(--size-lg);font-family:var(--font-body);font-size:10.5px;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:var(--color-info-secondary)}
+    .detail-group{margin-top:0;padding:0 var(--size-2xl)}
+    .detail-field{display:flex;flex-direction:column;gap:2px;padding:var(--size-xl) 0}
+    .detail-group .detail-field+.detail-field{border-top:1px solid var(--color-neutral-border)}
+    .detail-label{font-family:var(--font-body);font-size:11.5px;color:var(--color-info-secondary)}
+    .detail-value{font-family:var(--font-body);font-size:14px;line-height:1.45;color:var(--color-info-primary)}
+    .detail-value.mono{font-variant-numeric:tabular-nums;letter-spacing:.02em}
+    .detail-correction{margin-top:var(--size-max);border:1px solid var(--color-neutral-border);border-radius:var(--radius-card);background:var(--color-surface-card)}
+    .detail-note{padding:var(--size-max) 4px 0;font-family:var(--font-body);font-size:11px;line-height:1.5;color:var(--color-info-tertiary)}
+
+    /* ── Member screen header ── */
+    .member-head-name{font-family:var(--font-title);font-size:21px;letter-spacing:-.3px;color:var(--color-info-primary);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+    .member-head-meta{display:flex;align-items:center;gap:var(--size-md);margin-top:2px;font-family:var(--font-body);font-size:12px;color:var(--color-info-secondary)}
+
+    /* ── Salaah timings: the published baseline ── */
+    .timings-published{padding:var(--size-xl);box-sizing:border-box;border:1px solid var(--color-neutral-border);border-radius:var(--radius-card);background:var(--color-surface-card)}
+    .timings-published-head{display:flex;align-items:baseline;justify-content:space-between;gap:var(--size-lg);margin-bottom:var(--size-lg);font-family:var(--font-body);font-size:10.5px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--color-info-secondary)}
+    .timings-published-head>span:last-child{font-weight:500;letter-spacing:0;text-transform:none;font-size:11px;color:var(--color-info-tertiary)}
+    .timings-published-grid{display:grid;grid-template-columns:repeat(6,1fr);gap:var(--size-sm)}
+    .timings-published-grid>span{display:flex;flex-direction:column;align-items:center;gap:1px;padding:var(--size-md) 2px;border-radius:var(--radius-lg);background:color-mix(in oklab,var(--color-info-primary) 4%,transparent)}
+    .timings-published-grid b{font-family:var(--font-body);font-size:10px;font-weight:700;color:var(--color-info-primary)}
+    .timings-published-grid small{font-family:var(--font-body);font-size:9.5px;white-space:nowrap;color:var(--color-info-secondary)}
+    .timings-published-grid>span.changed{background:color-mix(in oklab,var(--color-status-warning) 18%,transparent)}
+    .timings-published-grid>span.changed small{text-decoration:line-through}
+    /* `.next` — the prayer the console is counting down to. Only the hub sets it; the Salaah
+       editor marks changes instead. */
+    .timings-published-grid>span.next{background:var(--color-action-background)}
+    .timings-published-grid>span.next b{color:var(--color-action-primary)}
+    /* How many recorded changes there are — the record's weight, at a glance. */
+    .timings-history-count{flex-shrink:0;min-width:22px;padding:1px 7px;border-radius:var(--radius-circle);
+      background:var(--color-action-background);font-family:var(--font-body);font-size:11px;font-weight:700;
+      text-align:center;color:var(--color-action-primary)}
+
+
+    /* ── Invitations inbox ── */
+    .invite-summary{font-family:var(--font-body);font-size:10.5px;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:var(--color-info-secondary)}
+    .invite-card{box-sizing:border-box;padding:var(--size-2xl);border:1px solid var(--color-neutral-border);border-radius:var(--radius-card);background:var(--color-surface-card)}
+    .invite-card.accepted{border-color:color-mix(in oklab,var(--color-status-success) 40%,transparent);background:color-mix(in oklab,var(--color-status-success) 7%,var(--color-surface-card))}
+    .invite-card.expired{background:var(--color-surface-secondary)}
+    .invite-card.expired .invite-card-name,.invite-card.expired .invite-card-caps{opacity:var(--opacity-high)}
+    .invite-card-head{display:flex;align-items:center;gap:var(--size-lg)}
+    .invite-card-id{flex:1;min-width:0}
+    .invite-card-name{font-family:var(--font-title);font-size:18px;letter-spacing:-.2px;color:var(--color-info-primary);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+    .invite-card-city{margin-top:1px;font-family:var(--font-body);font-size:11.5px;color:var(--color-info-secondary);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+    .invite-card-tick{flex-shrink:0;font-size:var(--icon-md);color:var(--color-status-success)}
+    .invite-card-open{width:100%;margin-top:var(--size-xl)}
+    .invite-card-role{display:flex;align-items:baseline;gap:var(--size-md);margin-top:var(--size-xl);font-family:var(--font-body)}
+    .invite-card-role-label{font-size:11px;color:var(--color-info-secondary)}
+    .invite-card-role strong{font-size:14px;color:var(--color-info-primary)}
+    .invite-card-caps{display:flex;flex-direction:column;gap:var(--size-md);margin-top:var(--size-lg);padding:var(--size-lg) var(--size-xl);border-radius:var(--radius-2xl);background:var(--color-action-background)}
+    .invite-card-caps-label{font-family:var(--font-body);font-size:10.5px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--color-action-primary)}
+    .invite-card-caps-list{display:flex;flex-direction:column;gap:5px}
+    .invite-card-cap{display:flex;align-items:center;gap:var(--size-md);font-family:var(--font-body);font-size:12.5px;color:var(--color-info-primary)}
+    .invite-card-cap .mi{flex-shrink:0;font-size:15px;color:var(--color-action-primary)}
+    .invite-card-caps-none{font-family:var(--font-body);font-size:11.5px;line-height:1.45;color:var(--color-info-secondary)}
+    .invite-card-from{display:flex;align-items:center;gap:var(--size-md);margin-top:var(--size-lg);font-family:var(--font-body);font-size:11px;color:var(--color-info-secondary)}
+    .invite-card-actions{display:flex;gap:var(--size-md);margin-top:var(--size-xl)}
+    .invite-card-actions>.btn{flex:1}
+    .invite-card-note{margin-top:var(--size-lg);font-family:var(--font-body);font-size:11px;line-height:1.5;color:var(--color-info-tertiary)}
+    .invite-foot{padding:var(--size-lg) 4px 0;font-family:var(--font-body);font-size:11px;line-height:1.5;text-align:center;color:var(--color-info-tertiary)}
+
+    /* ── Compose-a-paigham wizard (feature construction, same idiom as the
+       registration wizard's page CSS). Tokens only. ── */
+    .cmp-screen{width:100%;height:100%;box-sizing:border-box;position:relative;overflow:hidden;display:flex;flex-direction:column;background:var(--color-surface-primary);font-family:var(--font-body);color:var(--color-info-primary)}
+    .cmp-appbar{flex-shrink:0;display:flex;flex-direction:column;gap:var(--size-xl);padding:54px 20px 14px;box-sizing:border-box}
+    .cmp-appbar-row{display:flex;align-items:center;gap:var(--size-xl)}
+    .cmp-appbar-title{flex:1;min-width:0;font-size:23px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+    .cmp-step-count{flex-shrink:0;font-size:12px;font-weight:700;white-space:nowrap;color:var(--color-info-secondary)}
+    .cmp-body{flex:1;min-height:0;overflow-y:auto;overscroll-behavior:contain;padding:12px 20px 18px;box-sizing:border-box}
+    .cmp-head{margin-bottom:var(--size-huge)}
+    .cmp-title{font-family:var(--font-title);font-size:27px;line-height:1.18;letter-spacing:-.5px}
+    .cmp-sub{margin-top:var(--size-lg);font-size:14.5px;line-height:1.55;color:var(--color-info-secondary)}
+
+    /* step 1 · message / voice */
+    .cmp-textarea .inner{align-items:flex-start;min-height:168px;padding:14px 16px}
+    .cmp-textarea textarea{width:100%;border:0;outline:0;background:transparent;resize:none;white-space:pre-wrap;font-family:var(--font-body);font-size:16px;line-height:1.5;color:var(--color-input-text)}
+    .cmp-counter-row{display:flex;align-items:flex-start;gap:var(--size-xl);margin-top:var(--size-sm)}
+    .cmp-counter-row .helper{flex:1;margin-top:0}
+    .cmp-counter{flex-shrink:0;font-size:12px;font-variant-numeric:tabular-nums;color:var(--color-info-tertiary)}
+    .cmp-counter.over{font-weight:700;color:var(--color-status-error)}
+    .cmp-or{display:flex;align-items:center;gap:var(--size-xl);margin:var(--size-huge) 0}
+    .cmp-or::before,.cmp-or::after{content:"";flex:1;height:1px;background:var(--color-neutral-border)}
+    .cmp-or>span{font-size:12px;font-weight:700;text-transform:uppercase;letter-spacing:.08em;color:var(--color-info-tertiary)}
+    .cmp-record-cta{width:100%}
+    .cmp-record-note{margin-top:var(--size-lg);text-align:center;font-size:12px;line-height:1.5;color:var(--color-info-secondary)}
+    .cmp-mic-blocked{display:flex;align-items:flex-start;gap:var(--size-lg);margin-top:var(--size-xl);padding:var(--size-xl);border-radius:var(--radius-2xl);background:color-mix(in oklab,var(--color-status-error) 8%,transparent);font-size:12.5px;line-height:1.5;color:var(--color-status-error)}
+    .cmp-mic-blocked .mi{flex-shrink:0;font-size:var(--icon-sm)}
+    .cmp-audio-card{display:flex;flex-direction:column;gap:var(--size-xl)}
+    .cmp-audio-ready,.cmp-audio-failed{display:flex;align-items:center;gap:var(--size-lg);font-size:12.5px;line-height:1.45}
+    .cmp-audio-ready{color:var(--color-status-success)}
+    .cmp-audio-failed{flex-wrap:wrap;color:var(--color-status-error)}
+    .cmp-audio-failed>span:nth-child(2){flex:1;min-width:140px}
+    .cmp-audio-remove{width:100%}
+
+    /* step 2 · photos */
+    .cmp-add-photo{width:100%}
+    .cmp-photo-grid{display:grid;grid-template-columns:1fr 1fr;gap:var(--size-lg)}
+    .cmp-photo,.cmp-photo-add{position:relative;aspect-ratio:1;overflow:hidden;border-radius:var(--radius-2xl);background:var(--color-surface-secondary)}
+    .cmp-photo{border:1px solid var(--color-neutral-border)}
+    .cmp-photo img{width:100%;height:100%;display:block;object-fit:cover}
+    .cmp-photo-veil{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:var(--size-sm);border:0;background:color-mix(in oklab,var(--color-surface-media-scrim) 62%,transparent);color:var(--color-neutral-white);font-family:var(--font-body);font-size:11px;font-weight:700}
+    .cmp-photo-veil.failed{cursor:pointer}
+    .cmp-photo-veil .mi{font-size:var(--icon-md)}
+    .cmp-photo-remove{position:absolute;top:6px;right:6px;width:30px;height:30px;display:inline-flex;align-items:center;justify-content:center;border:0;border-radius:var(--radius-circle);padding:0;cursor:pointer;background:color-mix(in oklab,var(--color-info-primary) 78%,transparent);color:var(--color-info-primary-inverse)}
+    .cmp-photo-remove .mi{font-size:var(--icon-sm)}
+    .cmp-photo-add{display:flex;flex-direction:column;align-items:center;justify-content:center;gap:2px;cursor:pointer;border:1px dashed var(--color-input-border);background:var(--color-input-background);color:var(--color-action-primary);font-family:var(--font-body);font-size:11px;font-weight:700}
+    .cmp-photo-add .mi{font-size:var(--icon-md)}
+    .cmp-photo-meta{display:flex;align-items:center;gap:var(--size-xl);margin-top:var(--size-xl)}
+    .cmp-photo-meta .helper{margin-top:0}
+
+    /* step 3 · audience */
+    .cmp-audience-group{display:flex;flex-direction:column;gap:var(--size-lg)}
+
+    /* step 4 · review — the follower-facing preview */
+    .cmp-review-list{margin-top:var(--size-2xl);border:1px solid var(--color-neutral-border);border-radius:var(--radius-2xl);background:var(--color-surface-card)}
+    .cmp-review-row{display:flex;align-items:center;gap:var(--size-lg);padding:12px var(--size-2xl);border-bottom:1px solid var(--color-neutral-border)}
+    .cmp-review-copy{flex:1;min-width:0;display:flex;flex-direction:column}
+    .cmp-review-copy small{font-size:11.5px;color:var(--color-info-secondary)}
+    .cmp-review-copy strong{font-size:14px;font-weight:600}
+
+    /* full-screen recorder stage */
+    .rec-stage{position:absolute;inset:0;z-index:260;display:flex;flex-direction:column;background:var(--color-neutral-black);color:var(--color-neutral-white)}
+    .rec-topbar{height:104px;display:flex;align-items:flex-end;justify-content:space-between;gap:var(--size-xl);padding:0 18px 14px;box-sizing:border-box}
+    .rec-title{min-width:0;text-align:center;font-family:var(--font-body);font-size:15px;font-weight:700}
+    .rec-title small{display:block;margin-top:3px;font-size:11px;font-weight:500;color:color-mix(in oklab,var(--color-neutral-white) 72%,transparent)}
+    .rec-control-spacer{width:48px;flex-shrink:0}
+    .rec-stage .rec-control{background:color-mix(in oklab,var(--color-neutral-white) 16%,transparent);color:var(--color-neutral-white)}
+    .rec-stagearea{flex:1;min-height:0;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:var(--size-huge);padding:0 24px}
+    .rec-wave{display:flex;align-items:center;gap:3px;width:100%;height:120px}
+    .rec-wave i{flex:1;min-width:2px;border-radius:var(--radius-xs);background:color-mix(in oklab,var(--color-neutral-white) 34%,transparent);height:var(--h)}
+    .rec-wave.live i{background:var(--color-action-primary);animation:rec-bounce var(--motion-emphasized) ease-in-out infinite alternate}
+    .rec-wave.static i{background:color-mix(in oklab,var(--color-action-primary) 72%,transparent)}
+    @keyframes rec-bounce{from{transform:scaleY(.35)}to{transform:scaleY(1)}}
+    .rec-time{font-family:var(--font-body);font-size:38px;font-weight:600;font-variant-numeric:tabular-nums;letter-spacing:-.5px}
+    .rec-live-label{display:flex;align-items:center;gap:var(--size-md);font-family:var(--font-body);font-size:12px;font-weight:700;text-transform:uppercase;letter-spacing:.08em;color:color-mix(in oklab,var(--color-neutral-white) 78%,transparent)}
+    .rec-live-label.calm{color:var(--color-action-primary)}
+    .rec-controls{display:flex;flex-direction:column;align-items:center;gap:var(--size-lg);padding:0 24px 40px}
+    .rec-stop{width:72px;height:72px;display:flex;align-items:center;justify-content:center;border:3px solid var(--color-neutral-white);border-radius:var(--radius-circle);background:transparent;cursor:pointer}
+    .rec-stop::after{content:"";width:30px;height:30px;border-radius:var(--radius-md);background:var(--color-status-error);transition:transform var(--motion-press) var(--ease-out)}
+    .rec-stop:active::after{transform:scale(.86)}
+    .rec-hint{font-family:var(--font-body);font-size:12px;color:color-mix(in oklab,var(--color-neutral-white) 68%,transparent)}
+    .rec-actions{display:flex;flex-direction:column;align-items:center;gap:var(--size-md);padding:0 20px 34px}
+    .rec-actions .btn-filled{width:100%}
+    .rec-actions .btn-link{color:var(--color-neutral-white)}
+    .rec-blocked{flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:var(--size-xl);padding:24px 28px 40px;text-align:center}
+    .rec-blocked>.mi{font-size:44px;color:var(--color-action-primary)}
+    .rec-blocked strong{font-family:var(--font-title);font-size:22px;font-weight:400}
+    .rec-blocked>span{font-family:var(--font-body);font-size:13.5px;line-height:1.55;color:color-mix(in oklab,var(--color-neutral-white) 76%,transparent)}
+    .rec-blocked .btn-filled{width:100%;margin-top:var(--size-md)}
+    .rec-blocked .btn-link{color:var(--color-neutral-white)}
+
+    /* photo library sheet + crop stage */
+    .cmp-picker{max-height:86%}
+    .cmp-picker-head{display:flex;align-items:center;justify-content:space-between;gap:var(--size-xl)}
+    .cmp-picker-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:var(--size-md);margin-top:var(--size-2xl);overflow-y:auto}
+    .cmp-picker-item{position:relative;aspect-ratio:1;overflow:hidden;border:0;border-radius:var(--radius-xl);padding:0;cursor:pointer;background:var(--color-surface-secondary)}
+    .cmp-picker-item img{width:100%;height:100%;display:block;object-fit:cover}
+    .cmp-picker-item:active{transform:scale(.97)}
+    .cmp-crop .camera-viewport{height:min(420px,calc(100% - 254px))}
+    .cmp-crop-frame{position:absolute;inset:24px;border:1px solid color-mix(in oklab,var(--color-neutral-white) 82%,transparent);border-radius:var(--radius-md);pointer-events:none}
+    .cmp-crop-frame>span{position:absolute;width:22px;height:22px;border:2px solid var(--color-neutral-white)}
+    .cmp-crop-frame>span:nth-child(1){top:-2px;left:-2px;border-right:0;border-bottom:0}
+    .cmp-crop-frame>span:nth-child(2){top:-2px;right:-2px;border-left:0;border-bottom:0}
+    .cmp-crop-frame>span:nth-child(3){bottom:-2px;left:-2px;border-right:0;border-top:0}
+    .cmp-crop-frame>span:nth-child(4){bottom:-2px;right:-2px;border-left:0;border-top:0}
+
     @view-transition{navigation:auto}
     ::view-transition-group(masjid-admin-masjid-e-bilal-title){animation-duration:var(--motion-emphasized);animation-timing-function:var(--ease-out)}
-    @media(prefers-reduced-motion:reduce){.op-loader{animation:none}::view-transition-group(masjid-admin-masjid-e-bilal-title){animation-duration:0ms}}
+    @media(prefers-reduced-motion:reduce){
+      .ops-rec-dot,.ops-step{animation:none}
+      .rec-wave.live i{animation:none;transform:none}
+      ::view-transition-group(masjid-admin-masjid-e-bilal-title){animation-duration:0ms}
+    }
   </style>
 </helmet>
-<div style="display:none"><x-import component="OperationScreen" from="./storyboards/screens.jsx" hint-size="0,0"></x-import></div>
-<x-import component="BoardHeader" from="../_theme/board.jsx" title="Masjid Operations — Admin & Publishing" subtitle="Noor specification for the Compose-only administration journeys: permissions, content, empty, loading, destructive confirmation, failure, and success states." hint-size="1440px,92px"></x-import>
-<div class="poc-stage"><div class="poc-frames"><x-import component="OperationsBoard" from="./storyboards/screens.jsx" active="{{ active }}" on-select-frame="{{ selectFrame }}" hint-size="1600px,4200px"></x-import></div><x-import component="BoardLive" from="../_theme/board.jsx" restart="{{ restart }}" hint-size="400px,900px"><x-import component="IOSDevice" from="../ios-frame.jsx" hint-size="402px,874px"><div style="width:100%;height:100%;position:relative;overflow:hidden"><x-import component="OperationScreen" from="./storyboards/screens.jsx" data="{{ activeData }}" admin-transition-enabled="true" hint-size="100%,100%"></x-import></div></x-import></x-import></div>
+
+<!-- Component layer: loads Dialog/EmptyState/ListItem onto window for the screens -->
+<x-import component="Dialog" from="../_theme/components.jsx" hint-size="0,0"></x-import>
+<!-- Screen kit loader (the screens are used by both the board and the device below) -->
+<div style="display:none">
+  <x-import component="ConsoleScreen" from="./storyboards/screens.jsx" hint-size="0,0"></x-import>
+  <x-import component="ComposePostScreen" from="./storyboards/compose-post.jsx" hint-size="0,0"></x-import>
+</div>
+
+<x-import component="BoardHeader" from="../_theme/board.jsx"
+          title="Masjid Operations — the committee admin console"
+          subtitle="Every screen a masjid committee touches. A hub with one full screen per destination — paighams, committee and per-member permissions, followers, salaah timings, masjid details — plus the guided send flow and the invitation inbox. Permissions are capabilities granted per member, and the registry is built to take azaan, live bayan and payments without new layout."
+          hint-size="1440px,92px"></x-import>
+
+<div class="poc-stage">
+  <div class="poc-frames">
+    <x-import component="OpsBoard" from="./storyboards/board-rows.jsx"
+              active="{{ activeFrame }}" on-select-frame="{{ selectFrame }}"
+              hint-size="1600px,5200px"></x-import>
+  </div>
+
+  <x-import component="BoardLive" from="../_theme/board.jsx" restart="{{ restart }}"
+            hint="Fully interactive: open a destination, grant or revoke a member's permissions, invite someone with a starting set, edit and publish timings, or send a paigham end to end."
+            hint-size="400px,900px">
+    <x-import component="IOSDevice" from="../ios-frame.jsx" hint-size="402px,874px">
+      <div style="width:100%;height:100%;position:relative;overflow:hidden;background:var(--color-surface-primary)">
+
+        <sc-if value="{{ isConsole }}">
+          <div class="{{ stepAnim }}" style="position:absolute;inset:0">
+            <x-import component="ConsoleScreen" from="./storyboards/screens.jsx"
+                      data="{{ data }}" transition-enabled="true" hint-size="100%,100%"></x-import>
+          </div>
+        </sc-if>
+
+        <sc-if value="{{ isCreate }}">
+          <div class="{{ stepAnim }}" style="position:absolute;inset:0">
+            <x-import component="ComposePostScreen" from="./storyboards/compose-post.jsx"
+                      data="{{ data }}" hint-size="100%,100%"></x-import>
+          </div>
+        </sc-if>
+
+        <sc-if value="{{ isSent }}">
+          <div class="{{ stepAnim }}" style="position:absolute;inset:0">
+            <x-import component="PostSentScreen" from="./storyboards/screens.jsx"
+                      data="{{ data }}" hint-size="100%,100%"></x-import>
+          </div>
+        </sc-if>
+
+        <sc-if value="{{ isInvitations }}">
+          <div class="{{ stepAnim }}" style="position:absolute;inset:0">
+            <x-import component="InvitationsScreen" from="./storyboards/screens.jsx"
+                      data="{{ data }}" hint-size="100%,100%"></x-import>
+          </div>
+        </sc-if>
+
+      </div>
+    </x-import>
+  </x-import>
+</div>
 </x-dc>
 <script type="text/x-dc" data-dc-script>
 class Component extends DCLogic {
-  state = { active: 0 };
-  componentDidMount() {
-    if (window.location.hash === '#admin') this.setState({ active: 1 });
-  }
-  selectFrame = index => this.setState({ active: index });
-  restart = () => this.setState({ active: 0 });
+  // Entry points used by the Index / other boards.
+  HASH_ROUTES = {
+    '#admin': {},
+    '#home': {},
+    '#members': { dest: 'members' },
+    '#followers': { dest: 'followers' },
+    '#member': { dest: 'member', memberId: 'm3' },
+    '#can-post': { caps: ['post'], role: 'IMAM' },
+    '#view-only': { caps: [], role: 'MUEZZIN' },
+    '#salaah': { dest: 'salaah' },
+    '#details': { dest: 'details' },
+    '#invite': { dest: 'invite' },
+    '#create': { route: 'create' },
+    '#invitations': { route: 'invitations' },
+    '#locked': { consoleStatus: 'locked', role: 'MEMBER' },
+  };
+
+  state = window.opsApplyPatch(window.OPS_DEFAULT_STATE, this.HASH_ROUTES[window.location.hash] || {});
+
+  _timers = [];
+
+  componentWillUnmount() { this.clearTimers(); }
+
+  clearTimers = () => {
+    this._timers.forEach((t) => { clearTimeout(t); clearInterval(t); });
+    this._timers = [];
+  };
+
+  after = (ms, fn) => { this._timers.push(setTimeout(fn, ms)); };
+
+  patch = (p) => this.setState((s) => window.opsApplyPatch(s, p));
+
+  // Transient confirmation. Mirrors the ShowToast effects the ViewModels already emit.
+  toast = (kind, message, tone) => {
+    this.patch({ snack: { kind, message, tone: tone || 'success' } });
+    this.after(2600, () => this.patch({ snack: null }));
+  };
+
+  hide = (id) => this.setState((s) => window.opsApplyPatch(s, { hidden: s.hidden.concat([id]) }));
+
+  // ── Navigation ──
+  onBack = () => {
+    const s = this.state;
+    if (s.route === 'create') { this.onComposeBack(); return; }
+    if (s.route === 'sent') { this.patch({ route: 'console', dest: 'home', stepDir: 'back' }); return; }
+    if (s.route === 'invitations') { this.patch({ route: 'console', stepDir: 'back' }); return; }
+    if (s.dest === 'member' || s.dest === 'invite') { this.transitionTo({ dest: 'members', memberId: null, openMenu: null }); return; }
+    if (s.dest !== 'home') { this.onCloseDest(); return; }
+    window.location.href = '../home/Home Screen.dc.html';
+  };
+  onHome = () => { window.location.href = '../home/Home Screen.dc.html'; };
+  onExplore = () => { window.location.href = '../masjid-explore/Explore Masjids.dc.html#map'; };
+
+  // Hub → destination. The row label and the destination title share a view-transition
+  // name, so the push reads as a container transform instead of a cut.
+  transitionTo = (patch) => {
+    const update = () => this.patch(patch);
+    const reduced = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    if (!reduced && document.startViewTransition) document.startViewTransition(update);
+    else update();
+  };
+  onOpenDest = (dest) => this.transitionTo({ dest, openMenu: null, memberId: null, postMenuFor: null, expandedPrayer: null, stepDir: 'none' });
+  onCloseDest = () => this.transitionTo({ dest: 'home', openMenu: null, memberId: null, expandedPrayer: null, stepDir: 'none' });
+
+  onOpenAttention = (id) => {
+    if (id === 'pending-invites') this.onOpenDest('members');
+  };
+
+  onCloseSnack = () => this.patch({ snack: null });
+  onCancelConfirm = () => this.patch({ confirm: null });
+
+  // ── Retry / reload ──
+  onRetry = () => {
+    const s = this.state;
+    if (s.route === 'invitations') {
+      this.patch({ invitationsStatus: 'loading' });
+      this.after(900, () => this.patch({ invitationsStatus: 'loaded' }));
+      return;
+    }
+    if (s.consoleStatus === 'error') {
+      this.patch({ consoleStatus: 'loading' });
+      this.after(900, () => this.patch({ consoleStatus: 'loaded' }));
+      return;
+    }
+    if (s.dest === 'home') {
+      this.patch({ postsStatus: 'loading' });
+      this.after(900, () => this.patch({ postsStatus: 'loaded' }));
+    } else if (s.dest === 'members') {
+      this.patch({ membersStatus: 'loading' });
+      this.after(900, () => this.patch({ membersStatus: 'loaded' }));
+    } else if (s.dest === 'salaah') {
+      this.patch({ salaahStatus: 'loading' });
+      this.after(900, () => this.patch({ salaahStatus: 'loaded' }));
+    }
+  };
+  // ── Followers ──
+  onLoadFollowers = () => {
+    this.patch({ followersLoadingMore: true });
+    this.after(900, () => this.setState((st) => window.opsApplyPatch(st, {
+      followersLoadingMore: false,
+      followersPage: Math.min((st.followersPage || 4) + 2, (window.OPS_FOLLOWERS || []).length),
+    })));
+  };
+
+  // ── Masjid details ──
+  onRequestCorrection = () => this.toast('correction-requested', 'Paigham support will call you about the correction');
+
+  onRetryFollowers = () => {
+    this.patch({ followersStatus: 'loading' });
+    this.after(900, () => this.patch({ followersStatus: 'loaded' }));
+  };
+
+  // ── Posts ──
+  onCreatePost = () => this.patch({ route: 'create', stepDir: 'fwd', postMenuFor: null, post: window.OPS_DEFAULT_STATE.post });
+
+  // ── Masjid switcher ──
+  onOpenSwitcher = () => this.patch({ switcherOpen: true, postMenuFor: null });
+  onCloseSwitcher = () => this.patch({ switcherOpen: false });
+  onPickMasjid = (masjidId) => {
+    const pick = (window.OPS_MANAGED || []).find((m) => m.id === masjidId);
+    // Switching from inside compose retargets the draft; it must not throw the author back
+    // to the hub and lose what they have written.
+    const composing = this.state.route === 'create';
+    this.patch(Object.assign(
+      { switcherOpen: false, masjidId, role: pick ? pick.role : this.state.role },
+      composing ? {} : { dest: 'home' },
+    ));
+    if (pick) this.toast('masjid-switched', composing ? `Sending from ${pick.name}` : `Now managing ${pick.name}`);
+  };
+
+  onTogglePostMenu = (postMenuFor) => this.patch({ postMenuFor });
+
+  onDeletePost = (post) => this.patch({ confirm: { kind: 'deletePost', id: post.id }, postMenuFor: null });
+
+  // ── Committee & permissions ──
+  onOpenMember = (member) => this.transitionTo({ dest: 'member', memberId: member.id, openMenu: null });
+  onPickRole = (role) => {
+    const id = this.state.memberId;
+    const member = (window.OPS_MEMBERS || []).find((m) => m.id === id);
+    this.setState((st) => window.opsApplyPatch(st, {
+      openMenu: null,
+      roleOverrides: Object.assign({}, st.roleOverrides, { [id]: role }),
+    }));
+    this.toast('role-changed', `${member ? member.name : 'Member'} is now ${window.opsRoleLabel(role)}`);
+  };
+  // Capability toggles are the whole permission model: grant or revoke one at a time.
+  onToggleCapability = (memberId, capId) => {
+    const data = window.buildOpsData(this.state, {});
+    const member = (data.members.items || []).find((m) => m.id === memberId);
+    if (!member) return;
+    const current = member.caps || [];
+    const next = current.indexOf(capId) === -1
+      ? current.concat([capId])
+      : current.filter((c) => c !== capId);
+    this.setState((st) => window.opsApplyPatch(st, {
+      capOverrides: Object.assign({}, st.capOverrides, { [memberId]: next }),
+    }));
+    const cap = (window.OPS_CAPS || {}).find ? window.OPS_CAPS.find(capId) : null;
+    const label = cap ? cap.label : capId;
+    this.toast('cap-changed', current.indexOf(capId) === -1
+      ? `${member.name} can now: ${label}`
+      : `${label} removed for ${member.name}`);
+  };
+  onOpenRemove = (member) => this.patch({ confirm: { kind: 'removeMember', id: member.id } });
+
+  // The invite is a destination screen, so opening it is navigation, not a flag.
+  onOpenInvite = () => this.transitionTo({
+    dest: 'invite', memberId: null, openMenu: null,
+    invite: { phone: '', role: null, caps: [], sending: false, error: null },
+  });
+  onInvitePhone = (phone) => this.patch({ invite: { phone, error: null } });
+  onInviteRole = (role) => this.patch({ invite: { role }, openMenu: null });
+  onInviteCapability = (capId) => this.setState((st) => {
+    const caps = st.invite.caps || [];
+    return window.opsApplyPatch(st, {
+      invite: { caps: caps.indexOf(capId) === -1 ? caps.concat([capId]) : caps.filter((c) => c !== capId) },
+    });
+  });
+  onSendInvite = () => {
+    const invite = this.state.invite;
+    if ((invite.phone || '').replace(/\D/g, '').length < 10) {
+      this.patch({ invite: { error: 'Enter a valid 10-digit mobile number.' }, openMenu: null });
+      return;
+    }
+    this.patch({ invite: { sending: true, error: null }, openMenu: null });
+    this.after(1000, () => {
+      const id = `m-invited-${Date.now()}`;
+      this.setState((st) => window.opsApplyPatch(st, {
+        dest: 'members',
+        invite: { phone: '', role: null, caps: [], sending: false, error: null },
+        extraMembers: st.extraMembers.concat([{
+          id, name: `+91 ${st.invite.phone}`, phone: `+91 ${st.invite.phone}`,
+          role: st.invite.role, status: 'INVITED', caps: st.invite.caps,
+        }]),
+      }));
+      this.toast('invite-sent', 'Invitation sent · valid for 7 days');
+    });
+  };
+
+  // ── Salaah ──
+  onTogglePrayer = (expandedPrayer) => this.patch({ expandedPrayer, openMenu: null });
+  onOpenMenu = (openMenu) => this.patch({ openMenu });
+  onConfigChange = (prayer, prayerPatch) => {
+    this.setState((s) => {
+      const base = s.salaahConfig || window.OPS_SALAAH_CONFIG;
+      const next = Object.assign({}, base);
+      next[prayer] = Object.assign({}, base[prayer], prayerPatch);
+      return window.opsApplyPatch(s, { salaahConfig: next, salaahDirty: true, openMenu: null });
+    });
+  };
+  onNoteChange = (salaahNote) => this.patch({ salaahNote });
+  // Publishing is public and unreviewed, so the confirmation is the only pause between an
+  // edit and every follower seeing it. Keep it.
+  onSubmitSalaah = () => this.patch({ confirm: { kind: 'publishSalaah' } });
+  onOpenHistory = () => this.patch({ salaahHistoryOpen: true });
+  onCloseHistory = () => this.patch({ salaahHistoryOpen: false });
+  // "Done" after publishing returns to the Salaah tab of the console.
+  onDone = () => {
+    this.patch({
+      route: 'console',
+      dest: 'salaah',
+      salaahStatus: 'loaded',
+      salaahDirty: false,
+      expandedPrayer: null,
+      salaahNote: '',
+      stepDir: 'back',
+    });
+  };
+
+  // ── Send a paigham (the compose wizard) ──
+  STEPS = ['message', 'photos', 'audience', 'review'];
+
+  onMessage = (message) => this.patch({ post: { message } });
+
+  onGoToStep = (step) => this.patch({ post: { step }, stepDir: 'back' });
+
+  onNextStep = () => {
+    const post = this.state.post;
+    const i = this.STEPS.indexOf(post.step || 'message');
+    if (i < this.STEPS.length - 1) { this.patch({ post: { step: this.STEPS[i + 1] }, stepDir: 'fwd' }); return; }
+    // Step 4 IS the confirmation — sending happens straight from the review.
+    this.patch({ post: { submitting: true } });
+    this.after(1400, () => this.patch({ route: 'sent', stepDir: 'fwd', post: { submitting: false } }));
+  };
+
+  // Back steps through the wizard; leaving step 1 with content asks before discarding.
+  onComposeBack = () => {
+    const post = this.state.post;
+    const i = this.STEPS.indexOf(post.step || 'message');
+    if (i > 0) { this.patch({ post: { step: this.STEPS[i - 1] }, stepDir: 'back' }); return; }
+    const hasDraft = (post.message || '').trim().length > 0 || !!post.audio || (post.photos || []).length > 0;
+    if (hasDraft) { this.patch({ confirm: { kind: 'discardDraft' } }); return; }
+    this.patch({ route: 'console', dest: 'home', stepDir: 'back' });
+  };
+
+  // recorder stage
+  onOpenRecorder = () => {
+    if (this.state.post.micBlocked) { this.patch({ post: { recorder: { stage: 'blocked' } } }); return; }
+    this.onStartRecording();
+  };
+  onStartRecording = () => {
+    this.patch({ post: { recorder: { stage: 'recording', elapsed: '0:00' } } });
+    let seconds = 0;
+    const tick = setInterval(() => {
+      const rec = this.state.post.recorder;
+      if (!rec || rec.stage !== 'recording') { clearInterval(tick); return; }
+      seconds += 1;
+      this.patch({ post: { recorder: { stage: 'recording', elapsed: `${Math.floor(seconds / 60)}:${String(seconds % 60).padStart(2, '0')}` } } });
+    }, 1000);
+    this._timers.push(tick);
+  };
+  onStopRecording = () => this.setState((st) => window.opsApplyPatch(st, {
+    post: { recorder: { stage: 'review', elapsed: (st.post.recorder || {}).elapsed || '0:04' } },
+  }));
+  onCloseRecorder = () => this.patch({ post: { recorder: null } });
+  onRetryMic = () => this.patch({ post: { micBlocked: false, recorder: { stage: 'recording', elapsed: '0:00' } } });
+  onUseRecording = () => {
+    const duration = (this.state.post.recorder || {}).elapsed || '0:24';
+    this.patch({ post: { recorder: null, audio: { uploading: true, failed: false, duration } } });
+    this.after(1300, () => this.patch({ post: { audio: { uploading: false, failed: false, playing: false, progress: 0.32, duration } } }));
+  };
+  onRemoveAudio = () => this.patch({ post: { audio: null } });
+  onRetryAudio = () => {
+    const duration = (this.state.post.audio || {}).duration || '0:24';
+    this.patch({ post: { audio: { uploading: true, failed: false, duration } } });
+    this.after(1100, () => this.patch({ post: { audio: { uploading: false, failed: false, playing: false, progress: 0.32, duration } } }));
+  };
+  onToggleAudio = () => this.setState((st) => window.opsApplyPatch(st, {
+    post: { audio: Object.assign({}, st.post.audio, { playing: !(st.post.audio || {}).playing }) },
+  }));
+
+  // photo library → crop → upload
+  onOpenPicker = () => this.patch({ post: { picker: true } });
+  onClosePicker = () => this.patch({ post: { picker: false } });
+  onPickPhoto = (src) => this.patch({ post: { picker: false, crop: { src, rotation: 0 } } });
+  onRotateCrop = () => this.setState((st) => window.opsApplyPatch(st, {
+    post: { crop: Object.assign({}, st.post.crop, { rotation: (((st.post.crop || {}).rotation || 0) + 90) % 360 }) },
+  }));
+  onCancelCrop = () => this.patch({ post: { crop: null } });
+  onUseCrop = () => {
+    const src = (this.state.post.crop || {}).src;
+    const id = `ph-${Date.now()}`;
+    this.setState((st) => window.opsApplyPatch(st, {
+      post: { crop: null, photos: st.post.photos.concat([{ id, src, uploading: true }]) },
+    }));
+    this.after(1100, () => this.setState((st) => window.opsApplyPatch(st, {
+      post: { photos: st.post.photos.map((ph) => (ph.id === id ? { id, src } : ph)) },
+    })));
+  };
+  onRemovePhoto = (index) => this.setState((st) => window.opsApplyPatch(st, {
+    post: { photos: st.post.photos.filter((_, i) => i !== index) },
+  }));
+  onRetryPhoto = (index) => {
+    this.setState((st) => window.opsApplyPatch(st, {
+      post: { photos: st.post.photos.map((ph, i) => (i === index ? Object.assign({}, ph, { failed: false, uploading: true }) : ph)) },
+    }));
+    this.after(1000, () => this.setState((st) => window.opsApplyPatch(st, {
+      post: { photos: st.post.photos.map((ph, i) => (i === index ? { id: ph.id, src: ph.src } : ph)) },
+    })));
+  };
+
+  onAudience = (audience) => this.patch({ post: { audience } });
+
+  onAnother = () => this.patch({ route: 'create', stepDir: 'fwd', post: window.OPS_DEFAULT_STATE.post });
+
+  // ── Invitations ──
+  onAccept = (invitation) => {
+    this.patch({ invitationActioningId: invitation.id });
+    this.after(900, () => {
+      // The card becomes the success state and offers the console — accepting a role is
+      // only useful if it hands you the thing you were given.
+      this.patch({ invitationActioningId: null, invitationAcceptedId: invitation.id });
+      this.toast('invitation-accepted', 'Invitation accepted');
+    });
+  };
+  onOpenAcceptedConsole = (invitation) => {
+    this.clearTimers();
+    const managed = (window.OPS_MANAGED || []).find((m) => m.name === invitation.name);
+    this.patch({
+      route: 'console',
+      dest: 'home',
+      stepDir: 'fwd',
+      invitationAcceptedId: null,
+      hidden: this.state.hidden.concat([invitation.id]),
+      masjidId: managed ? managed.id : this.state.masjidId,
+      role: invitation.role,
+      caps: invitation.caps || [],
+    });
+  };
+  onDecline = (invitation) => this.patch({ confirm: { kind: 'declineInvitation', id: invitation.id } });
+
+  // ── One confirm handler; the pending descriptor decides what actually happens ──
+  onConfirmAction = () => {
+    const confirm = this.state.confirm;
+    if (!confirm) return;
+    this.patch({ confirm: null });
+
+    if (confirm.kind === 'deletePost') {
+      this.patch({ deletingId: confirm.id });
+      this.after(800, () => { this.hide(confirm.id); this.patch({ deletingId: null }); this.toast('post-deleted', 'Post deleted'); });
+      return;
+    }
+    if (confirm.kind === 'removeMember') {
+      const member = (window.OPS_MEMBERS || []).find((m) => m.id === confirm.id);
+      this.hide(confirm.id);
+      if (this.state.dest === 'member') this.transitionTo({ dest: 'members', memberId: null });
+      this.toast('member-removed', `${member ? member.name : 'Member'} removed from the committee`);
+      return;
+    }
+    if (confirm.kind === 'declineInvitation') {
+      this.patch({ invitationActioningId: confirm.id });
+      this.after(700, () => { this.hide(confirm.id); this.patch({ invitationActioningId: null }); this.toast('invitation-declined', 'Invitation declined'); });
+      return;
+    }
+    if (confirm.kind === 'discardDraft') {
+      this.clearTimers();
+      this.patch({ route: 'console', dest: 'home', stepDir: 'back', post: window.OPS_DEFAULT_STATE.post });
+      return;
+    }
+    if (confirm.kind === 'publishSalaah') {
+      this.patch({ salaahSaving: true });
+      this.after(1100, () => this.patch({ salaahSaving: false, salaahStatus: 'saved' }));
+    }
+  };
+
+  // ── Board ⇄ device ──
+  selectFrame = (index) => {
+    this.clearTimers();
+    const frame = (window.OPS_FRAMES || [])[index];
+    if (!frame) return;
+    this.setState(Object.assign(window.opsFrameState(frame), { stepDir: 'none' }));
+  };
+
+  restart = () => {
+    this.clearTimers();
+    this.setState(window.opsApplyPatch(window.OPS_DEFAULT_STATE, { stepDir: 'none' }));
+  };
+
   renderVals() {
-    const states = window.MASJID_OPERATION_STATES || [];
-    return { active: this.state.active, activeData: states[this.state.active] || states[0], selectFrame: this.selectFrame, restart: this.restart };
+    const s = this.state;
+    const handlers = {
+      onBack: this.onBack, onHome: this.onHome, onExplore: this.onExplore,
+      onOpenDest: this.onOpenDest, onCloseDest: this.onCloseDest, onOpenAttention: this.onOpenAttention,
+      onRetry: this.onRetry, onRetryFollowers: this.onRetryFollowers,
+      onLoadFollowers: this.onLoadFollowers,
+      onRequestCorrection: this.onRequestCorrection,
+      onCloseSnack: this.onCloseSnack, onCancelConfirm: this.onCancelConfirm,
+      onConfirmAction: this.onConfirmAction,
+      onCreatePost: this.onCreatePost, onDeletePost: this.onDeletePost,
+      onOpenSwitcher: this.onOpenSwitcher, onCloseSwitcher: this.onCloseSwitcher,
+      onPickMasjid: this.onPickMasjid, onTogglePostMenu: this.onTogglePostMenu,
+      onToggleMemberMenu: this.onToggleMemberMenu,
+      onOpenMember: this.onOpenMember, onPickRole: this.onPickRole,
+      onToggleCapability: this.onToggleCapability,
+      onOpenRemove: this.onOpenRemove, onOpenInvite: this.onOpenInvite,
+      onInvitePhone: this.onInvitePhone, onInviteRole: this.onInviteRole,
+      onInviteCapability: this.onInviteCapability, onSendInvite: this.onSendInvite,
+      onTogglePrayer: this.onTogglePrayer, onOpenMenu: this.onOpenMenu, onConfigChange: this.onConfigChange,
+      onNoteChange: this.onNoteChange, onSubmitSalaah: this.onSubmitSalaah,
+      onOpenHistory: this.onOpenHistory, onCloseHistory: this.onCloseHistory,
+      onDone: this.onDone,
+      onMessage: this.onMessage, onNextStep: this.onNextStep, onGoToStep: this.onGoToStep,
+      onOpenRecorder: this.onOpenRecorder, onStartRecording: this.onStartRecording,
+      onStopRecording: this.onStopRecording, onCloseRecorder: this.onCloseRecorder,
+      onRetryMic: this.onRetryMic, onUseRecording: this.onUseRecording,
+      onRemoveAudio: this.onRemoveAudio, onRetryAudio: this.onRetryAudio, onToggleAudio: this.onToggleAudio,
+      onOpenPicker: this.onOpenPicker, onClosePicker: this.onClosePicker, onPickPhoto: this.onPickPhoto,
+      onRotateCrop: this.onRotateCrop, onCancelCrop: this.onCancelCrop, onUseCrop: this.onUseCrop,
+      onRemovePhoto: this.onRemovePhoto, onRetryPhoto: this.onRetryPhoto,
+      onAudience: this.onAudience, onAnother: this.onAnother,
+      onAccept: this.onAccept, onDecline: this.onDecline,
+      onOpenAcceptedConsole: this.onOpenAcceptedConsole,
+    };
+
+    return {
+      data: window.buildOpsData ? window.buildOpsData(s, handlers) : {},
+      isConsole: s.route === 'console',
+      isCreate: s.route === 'create',
+      isSent: s.route === 'sent',
+      isInvitations: s.route === 'invitations',
+      stepAnim: s.stepDir && s.stepDir !== 'none' ? 'ops-step' : '',
+      activeFrame: window.opsActiveFrameIndex ? window.opsActiveFrameIndex(s) : -1,
+      selectFrame: this.selectFrame,
+      restart: this.restart,
+    };
   }
 }
 </script>

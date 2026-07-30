@@ -17,14 +17,14 @@ const GUEST_STATES = [
   { id: 'home-guest-sheet', name: 'Home — Profile Sign-in Sheet', tab: 0, component: 'HomeScreen', sheet: 'profile', props: { heroSel: null, userName: 'Guest', masjidName: 'Bangalore (Approx.)', prayer: 'Asr', loginNudge: true, onSignInTap: () => {} } },
   { id: 'qaum-guest', name: 'Qaum — Guest Sign-in Nudge', tab: 1, component: 'QaumScreen', sheet: null, props: { loginNudge: true, onSignInTap: () => {} } },
   { id: 'qaum-guest-signin', name: 'Qaum — Sign in to Paigham Sheet', tab: 1, component: 'QaumScreen', sheet: 'guestSignin', props: { loginNudge: true, onSignInTap: () => {} } },
-  { id: 'salaah-guest', name: 'Salaah — Guest (Approx. Timings)', tab: 3, component: 'SalaahScreen', sheet: null, props: { guest: true, loginNudge: true, onSignInTap: () => {} } }
+  { id: 'salaah-guest', name: 'Salaah — Guest (Approx. Timings)', tab: 3, component: 'SalaahScreen', sheet: null, props: { guest: true, loginNudge: true, onSignInTap: () => {}, onEditTimings: () => {} } }
 ];
 
 const NO_MASJID_STATES = [
   { id: 'home-no-masjid', name: 'Home — Follow-a-Masjid Nudge', tab: 0, component: 'HomeScreen', sheet: null, props: { heroSel: null, userName: 'Toufeeq Ahamed', masjidName: 'Bangalore (Approx.)', prayer: 'Asr', followNudge: true, onFindMasjid: () => {} } },
   { id: 'qaum-no-masjid', name: 'Qaum — Follow-a-Masjid Nudge', tab: 1, component: 'QaumScreen', sheet: null, props: { followNudge: true, onFindMasjid: () => {} } },
   { id: 'qaum-masjid-sheet', name: 'Qaum — Pick Your Masjid Sheet', tab: 1, component: 'QaumScreen', sheet: 'masjid', props: { followNudge: true, onFindMasjid: () => {} } },
-  { id: 'salaah-no-masjid', name: 'Salaah — No Masjid (Approx.)', tab: 3, component: 'SalaahScreen', sheet: null, props: { noMasjid: true, followNudge: true, onFindMasjid: () => {}, prayersChecked: NO_TRACK } },
+  { id: 'salaah-no-masjid', name: 'Salaah — No Masjid (Approx.)', tab: 3, component: 'SalaahScreen', sheet: null, props: { noMasjid: true, followNudge: true, onFindMasjid: () => {}, prayersChecked: NO_TRACK, onEditTimings: () => {} } },
   { id: 'salaah-masjid-sheet', name: 'Salaah — Pick Your Masjid Sheet', tab: 3, component: 'SalaahScreen', sheet: 'masjid', props: { noMasjid: true, followNudge: true, onFindMasjid: () => {}, prayersChecked: NO_TRACK } }
 ];
 
