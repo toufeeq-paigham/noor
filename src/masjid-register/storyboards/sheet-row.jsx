@@ -15,7 +15,7 @@ function buildFollowRows(checkedId) {
 function sheetFrames() {
   return [
     { name: 'Sheet · Manage + pending', tab: 'manage', primary: 'dargha', registration: true },
-    { name: 'Sheet · Follow', tab: 'follow', primary: 'subhania' }
+    { name: 'Sheet · Following only', tab: 'follow', primary: 'subhania', followingOnly: true }
   ];
 }
 
@@ -23,7 +23,16 @@ function frame(f, globalIdx, active, onSelectFrame) {
   const { ProfileScreen, MyMasjidsSheet, BottomNav } = window;
   const ring = active === globalIdx ? 'is-active' : '';
   const registration = f.registration ? { ...(window.MASJID_REGISTRATION_DATA || {}), onOpen: noop } : null;
-  const data = { isOpen: true, tab: f.tab, manageTiles: buildManageTiles(f.primary), followRows: buildFollowRows(f.primary), registration, onClose: noop, onRegister: noop, onFind: noop };
+  const data = {
+    isOpen: true,
+    tab: f.tab,
+    manageTiles: f.followingOnly ? [] : buildManageTiles(f.primary),
+    followRows: f.followingOnly ? buildFollowRows(f.primary).slice(0, 1) : buildFollowRows(f.primary),
+    registration,
+    onClose: noop,
+    onRegister: noop,
+    onFind: noop
+  };
   return (
     <div key={globalIdx} className="poc-board-item" onClick={() => onSelectFrame && onSelectFrame(globalIdx)}>
       <div className={`noor-frame ${ring}`} style={{ '--s': '0.46', cursor: 'pointer' }}>

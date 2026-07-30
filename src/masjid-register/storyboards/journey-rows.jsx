@@ -93,7 +93,7 @@ function baseData(overrides = {}) {
 function claimResults(selectedId) {
   return (window.MASJID_CLAIM_DATA || []).map((masjid) => ({
     ...masjid,
-    selected: masjid.id === selectedId,
+    selected: masjid.claimStatus === 'claimable' && masjid.id === selectedId,
     onSelect: noop,
   }));
 }
@@ -109,7 +109,7 @@ function journeyGroups() {
       label: '03 · Pincode lookup',
       frames: [
         { name: 'Empty', data: baseData() },
-        { name: 'Validation feedback', data: baseData({ errors: { pincode: 'Enter a valid 6-digit pincode.' }, ctaFeedback: 'Check the highlighted field and try again.' }) },
+        { name: 'Validation feedback', data: baseData({ errors: { pincode: 'Enter a valid 6-digit pincode.' } }) },
         { name: 'Searching', data: baseData({ step: 'searching', pincode: '400001', ctaLabel: 'Searching nearby', ctaDisabled: true, ctaBusy: true }) },
       ],
     },
@@ -117,7 +117,7 @@ function journeyGroups() {
       icon: 'travel_explore',
       label: '04 · Existing masjid search',
       frames: [
-        { name: 'Choose masjid', data: baseData({ step: 'claimList', progressIndex: 2, pincode: '400001', claimResults: claimResults(null), errors: { claim: 'Choose your masjid, or add it manually.' }, ctaFeedback: 'Choose a masjid to continue.' }) },
+        { name: 'Choose masjid', data: baseData({ step: 'claimList', progressIndex: 2, pincode: '400001', claimResults: claimResults(null), errors: { claim: 'Choose your masjid, or add it manually.' } }) },
         { name: 'Masjid selected', data: baseData({ step: 'claimList', progressIndex: 2, pincode: '400001', claimResults: claimResults(1) }) },
         { name: 'No result', data: baseData({ step: 'claimEmpty', progressIndex: 2, pincode: '560001', ctaLabel: 'Register manually' }) },
       ],
@@ -127,8 +127,8 @@ function journeyGroups() {
       label: '05 · Masjid details and location',
       frames: [
         { name: 'Pincode auto-filled', data: baseData({ step: 'register', progressIndex: 2, pincode: '400016' }) },
-        { name: 'Validation feedback', data: baseData({ step: 'register', progressIndex: 2, pincode: '400016', masjidName: '', address: '', city: '', stateVal: '', pinDropped: false, locationResolved: false, errors: { masjidName: 'Enter the masjid name.', address: 'Enter an address or nearby landmark.', city: 'Enter the city.', stateVal: 'Enter the state.', pinDropped: 'Pin the masjid entrance on the map.' }, ctaFeedback: 'Check the highlighted fields and try again.' }) },
-        { name: 'Manual city fallback', data: baseData({ step: 'register', progressIndex: 2, pincode: '400016', city: '', stateVal: '', locationResolved: false, locationLookupFailed: true }) },
+        { name: 'Validation feedback', data: baseData({ step: 'register', progressIndex: 2, pincode: '400016', masjidName: '', address: '', city: '', stateVal: '', pinDropped: false, locationResolved: false, errors: { masjidName: 'Enter the masjid name.', address: 'Enter an address or nearby landmark.', city: 'Enter the town or locality.', stateVal: 'Enter the state.', pinDropped: 'Pin the masjid entrance on the map.' } }) },
+        { name: 'Manual locality fallback', data: baseData({ step: 'register', progressIndex: 2, pincode: '400016', city: '', stateVal: '', locationResolved: false, locationLookupFailed: true }) },
         { name: 'Expanded location', data: baseData({ step: 'register', progressIndex: 2, pincode: '400016', locationExpanded: true }) },
         { name: 'State selection sheet', data: baseData({ step: 'register', progressIndex: 2, pincode: '400016', stateSheetOpen: true }) },
       ],
@@ -138,7 +138,7 @@ function journeyGroups() {
       label: '06 · Contact',
       frames: [
         { name: 'Filled', data: baseData({ step: 'contact', progressIndex: 3 }) },
-        { name: 'Validation feedback', data: baseData({ step: 'contact', progressIndex: 3, contactName: '', errors: { contactName: 'Enter the name of the person we should contact.' }, ctaFeedback: 'Check the highlighted field and try again.' }) },
+        { name: 'Validation feedback', data: baseData({ step: 'contact', progressIndex: 3, contactName: '', errors: { contactName: 'Enter the name of the person we should contact.' } }) },
       ],
     },
     {
@@ -146,7 +146,7 @@ function journeyGroups() {
       label: '07 · Role',
       frames: [
         { name: 'Unselected', data: baseData({ step: 'role', progressIndex: 4 }) },
-        { name: 'Validation feedback', data: baseData({ step: 'role', progressIndex: 4, errors: { role: 'Select your role at this masjid.' }, ctaFeedback: 'Select a role to continue.' }) },
+        { name: 'Validation feedback', data: baseData({ step: 'role', progressIndex: 4, errors: { role: 'Select your role at this masjid.' } }) },
         { name: 'Frosted selection sheet', data: baseData({ step: 'role', progressIndex: 4, roleSheetOpen: true, roleOptions: selectedOptions(ROLES, 'Chairman') }) },
       ],
     },
@@ -155,7 +155,7 @@ function journeyGroups() {
       label: '08 · Maslak',
       frames: [
         { name: 'Unselected', data: baseData({ step: 'maslak', progressIndex: 5 }) },
-        { name: 'Validation feedback', data: baseData({ step: 'maslak', progressIndex: 5, errors: { maslak: 'Select the maslak followed by this masjid.' }, ctaFeedback: 'Select a maslak to continue.' }) },
+        { name: 'Validation feedback', data: baseData({ step: 'maslak', progressIndex: 5, errors: { maslak: 'Select the maslak followed by this masjid.' } }) },
         { name: 'Frosted selection sheet', data: baseData({ step: 'maslak', progressIndex: 5, maslakSheetOpen: true, maslakOptions: selectedOptions(MASLAKS, 'Ahle Hadith') }) },
       ],
     },
@@ -163,12 +163,11 @@ function journeyGroups() {
       icon: 'photo_camera',
       label: '09 · Masjid photo',
       frames: [
-        { name: 'Live capture', data: baseData({ step: 'photo', progressIndex: 6, ctaLabel: 'Continue' }) },
-        { name: 'Permission rationale', data: baseData({ step: 'photo', progressIndex: 6, cameraMode: 'masjid', cameraPermission: 'unknown' }) },
+        { name: 'Guided journey', data: baseData({ step: 'photo', progressIndex: 6, ctaLabel: 'Continue' }) },
         { name: 'Camera viewport', data: baseData({ step: 'photo', progressIndex: 6, cameraMode: 'masjid', cameraPermission: 'granted', cameraStage: 'ready' }) },
         { name: 'Exact capture review', data: baseData({ step: 'photo', progressIndex: 6, cameraMode: 'masjid', cameraPermission: 'granted', cameraStage: 'captured' }) },
-        { name: 'Permission denied', data: baseData({ step: 'photo', progressIndex: 6, cameraMode: 'masjid', cameraPermission: 'denied' }) },
-        { name: 'Photo and location added', data: baseData({ step: 'photo', progressIndex: 6, photoTaken: true, photoLocationAttached: true, photoSrc: '../images/masjid-camera-preview.png' }) },
+        { name: 'Photo and location added', data: baseData({ step: 'photo', progressIndex: 6, photoTaken: true, photoLocationAttached: true, photoSrc: '../../images/masjid-camera-preview.png' }) },
+        { name: 'Outside entrance range', data: baseData({ step: 'photo', progressIndex: 6, cameraMode: 'masjid', cameraPermission: 'granted', cameraStage: 'ready', captureLocationStatus: 'outside' }) },
         { name: 'Location unavailable', data: baseData({ step: 'photo', progressIndex: 6, cameraMode: 'masjid', cameraPermission: 'granted', cameraStage: 'ready', captureLocationStatus: 'unavailable' }) },
       ],
     },
@@ -176,20 +175,17 @@ function journeyGroups() {
       icon: 'person',
       label: '10 · Identity photo',
       frames: [
-        { name: 'Required photo', data: baseData({ step: 'selfie', progressIndex: 7, errors: { selfie: 'Add an identity photo to continue.' } }) },
-        { name: 'Permission rationale', data: baseData({ step: 'selfie', progressIndex: 7, cameraMode: 'selfie', cameraPermission: 'unknown' }) },
+        { name: 'Guided journey', data: baseData({ step: 'selfie', progressIndex: 7 }) },
         { name: 'Camera viewport', data: baseData({ step: 'selfie', progressIndex: 7, cameraMode: 'selfie', cameraPermission: 'granted', cameraStage: 'ready' }) },
         { name: 'Exact capture review', data: baseData({ step: 'selfie', progressIndex: 7, cameraMode: 'selfie', cameraPermission: 'granted', cameraStage: 'captured' }) },
-        { name: 'Permission denied', data: baseData({ step: 'selfie', progressIndex: 7, cameraMode: 'selfie', cameraPermission: 'denied' }) },
-        { name: 'Photo added', data: baseData({ step: 'selfie', progressIndex: 7, selfieTaken: true, selfieSrc: '../images/identity-camera-preview.png' }) },
+        { name: 'Photo added', data: baseData({ step: 'selfie', progressIndex: 7, selfieTaken: true, selfieSrc: '../../images/identity-camera-preview.png' }) },
       ],
     },
     {
       icon: 'receipt_long',
       label: '11 · Review and submit',
       frames: [
-        { name: 'Complete submission', data: baseData({ step: 'review', progressIndex: 8, ctaLabel: 'Submit for verification', photoTaken: true, photoLocationAttached: true, selfieTaken: true, photoSrc: '../images/masjid-camera-preview.png', selfieSrc: '../images/identity-camera-preview.png' }) },
-        { name: 'Optional photo skipped', data: baseData({ step: 'review', progressIndex: 8, ctaLabel: 'Submit for verification', photoTaken: false, selfieTaken: true, selfieSrc: '../images/identity-camera-preview.png' }) },
+        { name: 'Complete submission', data: baseData({ step: 'review', progressIndex: 8, ctaLabel: 'Submit for verification', photoTaken: true, photoLocationAttached: true, selfieTaken: true, photoSrc: '../../images/masjid-camera-preview.png', selfieSrc: '../../images/identity-camera-preview.png' }) },
       ],
     },
   ];

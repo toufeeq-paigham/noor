@@ -3,13 +3,16 @@
 // Renders the shared WizardScreen from ./screens.jsx with representative per-step data.
 
 function buildClaimResults(selectedId) {
-  return (window.MASJID_CLAIM_DATA || []).map((m) => ({ ...m, selected: m.id === selectedId }));
+  return (window.MASJID_CLAIM_DATA || []).map((m) => ({
+    ...m,
+    selected: m.claimStatus === 'claimable' && m.id === selectedId,
+  }));
 }
 
 // Built per-render (not at module load) so window.MASJID_CLAIM_DATA from screens.jsx is populated.
 function wizardFrames() {
   return [
-  { name: 'Pincode', data: { step: 'pincode', progressIndex: 1, ctaLabel: 'Continue', ctaDisabled: true, pincode: '' } },
+  { name: 'Pincode', data: { step: 'pincode', progressIndex: 1, ctaLabel: 'Continue', ctaDisabled: false, pincode: '' } },
   { name: 'Searching', data: { step: 'searching', progressIndex: 1, ctaLabel: 'Continue', ctaDisabled: true, pincode: '400001' } },
   { name: 'Claim list', data: { step: 'claimList', progressIndex: 2, ctaLabel: 'Continue', ctaDisabled: false, pincode: '400001', claimResults: buildClaimResults(1) } },
   { name: 'No results', data: { step: 'claimEmpty', progressIndex: 2, ctaLabel: 'Register manually', ctaDisabled: false, pincode: '560001' } },
@@ -17,7 +20,7 @@ function wizardFrames() {
   { name: 'Contact name', data: { step: 'contact', progressIndex: 3, ctaLabel: 'Continue', ctaDisabled: false, contactName: 'Salim Shaikh' } },
   { name: 'Role', data: { step: 'role', progressIndex: 4, ctaLabel: 'Continue', ctaDisabled: false, roleDisplay: 'Chairman', roleFilled: true } },
   { name: 'Maslak', data: { step: 'maslak', progressIndex: 5, ctaLabel: 'Continue', ctaDisabled: false, maslakDisplay: 'Ahle Hadith', maslakFilled: true } },
-  { name: 'Masjid photo', data: { step: 'photo', progressIndex: 6, ctaLabel: 'Skip for now', ctaDisabled: false, showSkipLink: false, photoTaken: false } },
+  { name: 'Masjid photo', data: { step: 'photo', progressIndex: 6, ctaLabel: 'Continue', ctaDisabled: false, showSkipLink: false, photoTaken: false } },
   { name: 'Identity selfie', data: { step: 'selfie', progressIndex: 7, ctaLabel: 'Continue', ctaDisabled: false, selfieTaken: true, cameraDenied: false } },
   { name: 'Review & submit', data: { step: 'review', progressIndex: 8, ctaLabel: 'Submit for verification', ctaDisabled: false, masjidLocked: false, masjidSummaryName: 'Masjid-e-Noor', masjidSummaryAddr: 'Kabutar Khana, Mumbai, Maharashtra', contactName: 'Salim Shaikh', role: 'Chairman', maslak: 'Ahle Hadith', photoTaken: true } }
   ];

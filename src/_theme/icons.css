@@ -42,6 +42,7 @@
 [data-i="expand_more"]{--mi:url("../_ds/icons/expand_more.svg")}
 [data-i="explore"]{--mi:url("../_ds/icons/explore.svg")}
 [data-i="favorite"]{--mi:url("../_ds/icons/favorite.svg");--mif:url("../_ds/icons/favorite__fill.svg")}
+[data-i="filter_center_focus"]{--mi:url("../_ds/icons/filter_center_focus.svg")}
 [data-i="format_list_bulleted"]{--mi:url("../_ds/icons/format_list_bulleted.svg")}
 [data-i="format_quote"]{--mi:url("../_ds/icons/format_quote.svg")}
 [data-i="front_hand"]{--mi:url("../_ds/icons/front_hand.svg")}
@@ -62,6 +63,8 @@
 [data-i="mail"]{--mi:url("../_ds/icons/mail.svg")}
 [data-i="map"]{--mi:url("../_ds/icons/map.svg")}
 [data-i="menu_book"]{--mi:url("../_ds/icons/menu_book.svg");--mif:url("../_ds/icons/menu_book__fill.svg")}
+[data-i="mic"]{--mi:url("../_ds/icons/mic.svg")}
+[data-i="more_vert"]{--mi:url("../_ds/icons/more_vert.svg")}
 [data-i="mosque"]{--mi:url("../_ds/icons/mosque.svg");--mif:url("../_ds/icons/mosque__fill.svg")}
 [data-i="mosque_clock2"]{--mi:url("../_ds/icons/mosque_clock2.svg")}
 [data-i="my_location"]{--mi:url("../_ds/icons/my_location.svg")}
@@ -95,11 +98,13 @@
 [data-i="shield"]{--mi:url("../_ds/icons/shield.svg")}
 [data-i="splitscreen"]{--mi:url("../_ds/icons/splitscreen.svg")}
 [data-i="star"]{--mi:url("../_ds/icons/star.svg");--mif:url("../_ds/icons/star__fill.svg")}
+[data-i="stop"]{--mi:url("../_ds/icons/stop.svg")}
 [data-i="swap_horiz"]{--mi:url("../_ds/icons/swap_horiz.svg")}
 [data-i="travel_explore"]{--mi:url("../_ds/icons/travel_explore.svg")}
 [data-i="unfold_more"]{--mi:url("../_ds/icons/unfold_more.svg")}
 [data-i="verified"]{--mi:url("../_ds/icons/verified.svg")}
 [data-i="videocam_off"]{--mi:url("../_ds/icons/videocam_off.svg")}
+[data-i="visibility_off"]{--mi:url("../_ds/icons/visibility_off.svg")}
 [data-i="volume_off"]{--mi:url("../_ds/icons/volume_off.svg")}
 [data-i="volume_up"]{--mi:url("../_ds/icons/volume_up.svg")}
 [data-i="volunteer_activism"]{--mi:url("../_ds/icons/volunteer_activism.svg")}

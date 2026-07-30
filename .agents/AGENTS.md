@@ -150,13 +150,22 @@ SCREENS/BOARDS  consume Components; only rarely Foundation tokens directly
    Inverse surfaces (snackbars, tooltips) use `--color-info-primary` + `--color-info-primary-inverse`,
    never a literal dark.
 
-Self-check before finishing any DS/screen change — the first must be empty; the second may only
-return whitelisted hits:
+Self-check before finishing any DS/screen change — the first two greps must be empty (the
+second may only return whitelisted hits), and the class audit must pass:
 
 ```bash
 grep -rnE '\-\-noor-' src/components src/_theme/components.css src/*.dc.html src/home src/onboarding
 grep -rnE '#[0-9a-fA-F]{3,8}' src/components src/_theme/components.css
+python3 tools/check_classes.py
 ```
+
+`tools/check_classes.py` fails when a page uses a class nothing defines — the silent failure
+mode of this repo, where a screen borrows a construction that only another page's helmet
+styles and renders unstyled with no error. For every `*.dc.html` it resolves the classes used
+by the page **and by every `.jsx` module it x-imports**, against the kit, the page's own
+`<style>`/stylesheet, and the utilities `support.js` injects. If it reports a class, either
+promote the construction to `components.css` (plus its Atoms/Molecules/Organisms reference
+entry) or define it in that page's helmet — never leave it owned by a different page.
 
 ## Design System Rules
 

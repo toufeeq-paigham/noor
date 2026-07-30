@@ -166,23 +166,29 @@ function BottomSheet({
 //   'alert' → centred modal card (all corners rounded)
 //   'sheet' → bottom sheet (top-rounded + drag handle)
 // Styling is the .dlg / .dlg-scrim kit in components.css. Keep it mounted and toggle `isOpen`.
-// When both actions are omitted it falls back to Ok + Cancel, exactly like the Kotlin.
+// Actions follow the Kotlin `AlertAction?` contract: omit (undefined) to get the Ok / Cancel
+// default, pass `null` to render NO button on that side (a sheet whose actions live in its
+// body, or a single-action dismiss). `destructive` promotes the primary to DestructiveButton
+// for irreversible actions (delete, remove, reject).
 function Dialog({
   mode = 'alert',            // 'alert' | 'sheet'
   isOpen,
   onClose,
   title,
   description,
-  primary,                   // { text, onClick }
-  secondary,                 // { text, onClick }
+  primary,                   // { text, onClick } | null
+  secondary,                 // { text, onClick } | null
+  destructive = false,       // primary uses the destructive fill
   children,                  // optional content slot
   cornerClose,               // optional () => void — floating close button pinned to the sheet's top-right corner
   dismissOnScrim = true
 }) {
   if (!isOpen) return null;
   const isSheet = mode === 'sheet';
-  const prim = primary || { text: 'Ok', onClick: onClose };
-  const sec = secondary || (primary ? null : { text: 'Cancel', onClick: onClose });
+  const prim = primary === null ? null : (primary || { text: 'Ok', onClick: onClose });
+  const sec = secondary === null
+    ? null
+    : (secondary || (primary ? null : { text: 'Cancel', onClick: onClose }));
 
   return (
     <div
@@ -203,7 +209,7 @@ function Dialog({
         {children ? <div className="dlg-body">{children}</div> : null}
         {(prim || sec) && (
           <div className="dlg-actions">
-            {prim && <button className="btn btn-filled" onClick={prim.onClick}>{prim.text}</button>}
+            {prim && <button className={`btn ${destructive ? 'btn-destructive' : 'btn-filled'}`} onClick={prim.onClick}>{prim.text}</button>}
             {sec && <button className="btn btn-tonal" onClick={sec.onClick}>{sec.text}</button>}
           </div>
         )}
@@ -263,15 +269,57 @@ function RichNudgeSheet({ isOpen, onClose, illustration, icon, title, descriptio
   );
 }
 
-function EmptyState({ icon, title, description, iconLabel, style = {} }) {
+// ── EmptyState — quiet absence, a recoverable failure, or a finished outcome ──
+// `tone` colours the icon well: 'neutral' (default) uses the action tint, 'error' the error
+// tint, 'success' the success tint. `action` renders a Noor button underneath, so a screen
+// never has to rebuild the empty/error/success trio itself:
+//   <EmptyState tone="error" icon="error" title="Couldn't load posts"
+//               description="Check your connection and try again."
+//               action={{ text: 'Try again', onClick: retry }} />
+const EMPTY_STATE_TONES = {
+  neutral: { bg: 'color-mix(in oklab, var(--color-action-primary) 10%, transparent)', fg: 'var(--color-action-primary)' },
+  error: { bg: 'color-mix(in oklab, var(--color-status-error) 12%, transparent)', fg: 'var(--color-status-error)' },
+  success: { bg: 'color-mix(in oklab, var(--color-status-success) 14%, transparent)', fg: 'var(--color-status-success)' },
+};
+
+function EmptyState({
+  icon, title, description, iconLabel, tone = 'neutral', action, titleStyle = {}, style = {},
+}) {
   if (!title) return null;
+  const palette = EMPTY_STATE_TONES[tone] || EMPTY_STATE_TONES.neutral;
   return (
-    <div className="empty-state" style={style}>
-      <div className="empty-state-icon" aria-hidden={iconLabel ? undefined : true} aria-label={iconLabel}>
+    <div className="empty-state" role={tone === 'error' ? 'alert' : undefined} style={style}>
+      <div
+        className="empty-state-icon"
+        aria-hidden={iconLabel ? undefined : true}
+        aria-label={iconLabel}
+        style={tone === 'neutral' ? undefined : { background: palette.bg, color: palette.fg }}
+      >
         <span className="mi" data-i={icon || 'info'}></span>
       </div>
-      <div className="empty-state-title">{title}</div>
+      <div className="empty-state-title" style={titleStyle}>{title}</div>
       {description ? <div className="empty-state-description">{description}</div> : null}
+      {action ? (
+        <div className="empty-state-action">
+          <button className={`btn ${action.filled ? 'btn-filled' : 'btn-tonal'} lg`} onClick={action.onClick}>
+            {action.icon ? <span className="mi" style={{ fontSize: 20 }} data-i={action.icon}></span> : null}
+            {action.text}
+          </button>
+        </div>
+      ) : null}
+    </div>
+  );
+}
+
+// ── Loader — the screen/section scale loading state (RevolvingLoader + label) ──
+function Loader({ label, style = {} }) {
+  return (
+    <div style={{
+      flex: 1, display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center',
+      gap: 14, padding: 32, ...style,
+    }}>
+      <span className="loader" aria-hidden="true"></span>
+      {label ? <div style={{ fontFamily: 'var(--font-body)', fontSize: 13, color: 'var(--color-info-secondary)' }} role="status">{label}</div> : null}
     </div>
   );
 }
@@ -348,4 +396,4 @@ function SearchBar({
   );
 }
 
-Object.assign(window, { PromptCard, BottomSheet, Dialog, RichNudgeSheet, EmptyState, ListItem, SearchBar });
+Object.assign(window, { PromptCard, BottomSheet, Dialog, RichNudgeSheet, EmptyState, Loader, ListItem, SearchBar });

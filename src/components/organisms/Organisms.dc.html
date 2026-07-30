@@ -42,7 +42,7 @@
   <div class="cp-card">
     <div class="cp-head">
       <div class="cp-h">Dialog</div>
-      <div class="cp-sub">One token-styled component — <code>&lt;Dialog mode="alert|sheet"&gt;</code> — for both centred alerts and bottom sheets. TitleH2 + BodyMedium + a primary (Filled) / secondary (Tonal) action row on a frosted surface. Mirrors NoorUI <code>AlertDialog</code> / <code>SheetDialog</code>.</div>
+      <div class="cp-sub">One token-styled component — <code>&lt;Dialog mode="alert|sheet"&gt;</code> — for both centred alerts and bottom sheets. TitleH2 + BodyMedium + a primary (Filled) / secondary (Tonal) action row on a frosted surface. Mirrors NoorUI <code>AlertDialog</code> / <code>SheetDialog</code>. Pass <code>destructive</code> for an irreversible primary, and an explicit <code>null</code> action to render no button on that side (sheets whose actions live in the body).</div>
     </div>
     <div style="display:flex;gap:16px;flex-wrap:wrap">
 
@@ -59,6 +59,25 @@
                     description="This dua will be removed from your favourites. You can add it back anytime."
                     primary="{{ alertPrimary }}"
                     secondary="{{ alertSecondary }}"
+                    hint-size="100%,100%">
+          </x-import>
+        </div>
+      </div>
+
+      <!-- Alert · destructive primary -->
+      <div style="flex:1;min-width:280px">
+        <div style="font-family:var(--font-body);font-size:12px;font-weight:700;color:var(--color-info-secondary);margin-bottom:8px">destructive</div>
+        <div class="dlg-stage">
+          <button class="btn btn-tonal" onClick="{{ openDestructive }}">Open destructive</button>
+          <x-import component="Dialog" from="../../_theme/components.jsx"
+                    mode="alert"
+                    is-open="{{ destructiveOpen }}"
+                    on-close="{{ closeDestructive }}"
+                    destructive="true"
+                    title="Remove this member?"
+                    description="They lose all admin access to this masjid. Their posts stay published. You can invite them again later."
+                    primary="{{ destructivePrimary }}"
+                    secondary="{{ destructiveSecondary }}"
                     hint-size="100%,100%">
           </x-import>
         </div>
@@ -82,6 +101,228 @@
         </div>
       </div>
 
+    </div>
+  </div>
+
+  <!-- Docked action -->
+  <div class="cp-card">
+    <div class="cp-head">
+      <div class="cp-h">Docked action</div>
+      <div class="cp-sub">The screen's committed action, pinned below the scrolling body. Asynchronous progress or a helper line goes <em>above</em> the button — never inside it, so the label and geometry never shift. <code>.bordered</code> adds the hairline when content scrolls beneath.</div>
+    </div>
+    <div style="display:flex;gap:16px;flex-wrap:wrap">
+      <div style="flex:1;min-width:260px;border:1px solid var(--color-neutral-border);border-radius:var(--radius-2xl);overflow:hidden">
+        <div class="docked-action bordered">
+          <div class="docked-action-note">Edit a prayer to enable publishing.</div>
+          <button class="btn btn-filled lg" disabled>Save &amp; publish</button>
+        </div>
+      </div>
+      <div style="flex:1;min-width:260px;border:1px solid var(--color-neutral-border);border-radius:var(--radius-2xl);overflow:hidden">
+        <div class="docked-action bordered">
+          <div class="inline-loading-status" role="status"><span class="btn-spinner"></span>Publishing timings…</div>
+          <button class="btn btn-filled lg" disabled>Save &amp; publish</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Manage entry -->
+  <div class="cp-card">
+    <div class="cp-head">
+      <div class="cp-h">Manage entry</div>
+      <div class="cp-sub">The door into the masjid console, for a member of its committee. A card rather than a settings row: the masjid's own mark, an eyebrow naming the relationship, the masjid name (the shared element into the console) and an optional amber count of what is waiting inside. Two forms of one component so the entry points cannot drift — the full card on Profile, and <code>.compact</code> on Home. Add <code>.stacked</code> to carry a second tier: either the console's three numbers with the week's movement (<code>.manage-entry-stat-delta</code>, <code>.down</code> for a fall, in secondary ink so a quiet week never alarms) or a <code>.manage-entry-hint</code> for a masjid with nothing yet. The whole card stays a single tap target, so those numbers are a glimpse, not controls.</div>
+    </div>
+    <div style="max-width:420px;display:flex;flex-direction:column;gap:12px">
+      <button class="manage-entry">
+        <span class="masjid-mark" style="--tile:46px"><img src="../../../images/masjid-camera-preview.png" alt="" /></span>
+        <span class="manage-entry-copy">
+          <span class="manage-entry-eyebrow">You manage this masjid</span>
+          <span class="manage-entry-name">Masjid E Bilal</span>
+          <span class="manage-entry-role">Chairman · full admin · and 1 more</span>
+        </span>
+        <span class="badge sm amber" aria-label="3 need your attention">3</span>
+        <span class="mi manage-entry-go" data-i="chevron_right"></span>
+      </button>
+      <button class="manage-entry compact stacked">
+        <span class="manage-entry-main">
+          <span class="masjid-mark" style="--tile:38px"><img src="../../../images/masjid-camera-preview.png" alt="" /></span>
+          <span class="manage-entry-copy">
+            <span class="manage-entry-eyebrow">Chairman</span>
+            <span class="manage-entry-name">Masjid E Bilal</span>
+          </span>
+          <span class="badge sm amber">3 waiting</span>
+          <span class="mi manage-entry-go" data-i="chevron_right"></span>
+        </span>
+        <span class="manage-entry-stats">
+          <span class="manage-entry-stat">
+            <span class="manage-entry-stat-fig">
+              <span class="manage-entry-stat-value">1.3k</span>
+              <span class="manage-entry-stat-delta">+12</span>
+            </span>
+            <span class="manage-entry-stat-label">Followers</span>
+          </span>
+          <span class="manage-entry-stat">
+            <span class="manage-entry-stat-fig">
+              <span class="manage-entry-stat-value">96</span>
+              <span class="manage-entry-stat-delta">+3</span>
+            </span>
+            <span class="manage-entry-stat-label">Paighams</span>
+          </span>
+          <span class="manage-entry-stat">
+            <span class="manage-entry-stat-fig">
+              <span class="manage-entry-stat-value">3.1k</span>
+              <span class="manage-entry-stat-delta down">-24</span>
+            </span>
+            <span class="manage-entry-stat-label">Reactions</span>
+          </span>
+        </span>
+      </button>
+      <button class="manage-entry compact stacked">
+        <span class="manage-entry-main">
+          <span class="masjid-mark" style="--tile:38px"><img src="../../../images/masjid-camera-preview.png" alt="" /></span>
+          <span class="manage-entry-copy">
+            <span class="manage-entry-eyebrow">Chairman</span>
+            <span class="manage-entry-name">Masjid-e-Mohammadi</span>
+          </span>
+          <span class="mi manage-entry-go" data-i="chevron_right"></span>
+        </span>
+        <span class="manage-entry-hint">
+          <span class="mi" data-i="campaign" aria-hidden="true"></span>
+          Send your first paigham — your followers will see it straight away.
+        </span>
+      </button>
+      <button class="manage-entry compact">
+        <span class="masjid-mark" style="--tile:38px"><img src="../../../images/masjid-camera-preview.png" alt="" /></span>
+        <span class="manage-entry-copy">
+          <span class="manage-entry-eyebrow">Secretary</span>
+          <span class="manage-entry-name">Dargha Masjid 3</span>
+        </span>
+        <span class="mi manage-entry-go" data-i="chevron_right"></span>
+      </button>
+    </div>
+  </div>
+
+  <!-- Feed post -->
+  <div class="cp-card">
+    <div class="cp-head">
+      <div class="cp-h">Feed post</div>
+      <div class="cp-sub">The paigham card as the Qaum feed renders it — identity mark, name + sub, body with an inline "Show more", optional media, then reactions with the time trailing. Flat rows split by a hairline, never floating cards. The masjid console reuses it and adds an admin meta line and a <code>⋮</code> control.</div>
+    </div>
+    <div style="max-width:420px;border:1px solid var(--color-neutral-border);border-radius:var(--radius-card);overflow:hidden;background:var(--color-surface-primary)">
+      <article class="feed-post">
+        <div class="feed-post-head">
+          <span class="avatar accent" style="--tile:44px">B</span>
+          <span class="feed-post-id">
+            <span class="feed-post-name">Masjid E Bilal</span>
+            <span class="feed-post-sub">Sent by Ayaan Khan</span>
+          </span>
+          <button class="ib ib-tonal md" aria-label="Paigham options"><span class="mi" data-i="more_vert"></span></button>
+        </div>
+        <div class="feed-post-body">Jumah bayan begins at 1:00 PM this week. Please be seated by 12:45 PM, in shaa Allah. <span class="feed-post-more">Show more</span></div>
+        <div class="feed-post-actions">
+          <span class="feed-post-react"><span class="mi" data-i="favorite"></span></span>
+          <span class="feed-post-count">42</span>
+          <span class="feed-post-time">Today · 9:12 AM</span>
+        </div>
+        <div class="feed-post-admin"><span class="mi" data-i="groups"></span>My Masjid · seen by 1,284 followers</div>
+      </article>
+      <article class="feed-post">
+        <div class="feed-post-head">
+          <span class="avatar accent" style="--tile:44px">B</span>
+          <span class="feed-post-id">
+            <span class="feed-post-name">Masjid E Bilal</span>
+            <span class="feed-post-sub">Sent by Hafiz Bilal Ahmed</span>
+          </span>
+        </div>
+        <div class="aplayer" style="margin-bottom:10px">
+          <button class="ap-toggle" aria-label="Play"><span class="mi fill" data-i="play_arrow"></span></button>
+          <span class="ap-time">1:24</span>
+          <div class="ap-wave"><i class="on" style="--h:40%"></i><i class="on" style="--h:70%"></i><i class="on" style="--h:52%"></i><i style="--h:86%"></i><i style="--h:64%"></i><i style="--h:44%"></i><i style="--h:74%"></i><i style="--h:58%"></i></div>
+        </div>
+        <div class="feed-post-actions">
+          <span class="feed-post-react"><span class="mi" data-i="favorite"></span></span>
+          <span class="feed-post-count">16</span>
+          <span class="feed-post-time">Today · 7:40 AM</span>
+        </div>
+      </article>
+    </div>
+  </div>
+
+  <!-- Paigham preview -->
+  <div class="cp-card">
+    <div class="cp-head">
+      <div class="cp-h">Paigham preview</div>
+      <div class="cp-sub">What a follower will receive, shown to the author before sending: masjid identity, the message or audio player, the photo grid and the reaction footer. An <em>authoring</em> surface — the Home feed card is its own construction.</div>
+    </div>
+    <div class="post-preview" style="max-width:420px">
+      <div class="post-preview-head">
+        <span class="icon-tile accent" style="--tile:38px;border-radius:var(--radius-circle)"><span class="mi fill" data-i="mosque"></span></span>
+        <span class="post-preview-id"><strong>Masjid E Bilal</strong><small>Just now · My Masjid</small></span>
+        <span class="badge sm jade">Live</span>
+      </div>
+      <div class="post-preview-body">Taraweeh begins after Isha from tomorrow, in shaa Allah. Please bring your own musallah for the first week.</div>
+      <div class="post-preview-photos count-2">
+        <img src="../../../images/masjid-camera-preview.png" alt="">
+        <img src="../../../images/isha_masjid.webp" alt="">
+      </div>
+      <div class="post-preview-foot"><span class="mi" data-i="favorite"></span><span>Followers can react as soon as it arrives.</span></div>
+    </div>
+  </div>
+
+  <!-- Live capture stage -->
+  <div class="cp-card">
+    <div class="cp-head">
+      <div class="cp-h">Live capture stage</div>
+      <div class="cp-sub">Full-bleed capture surface: top bar (close · title/hint · secondary control), rounded viewport with framing guide and optional location card, then the shutter row — or a use/retake pair once captured. <code>.selfie</code> mirrors the preview. Shared by masjid registration and by cropping a paigham photo.</div>
+    </div>
+    <div style="position:relative;height:520px;max-width:340px;border-radius:var(--radius-huge);overflow:hidden">
+      <div class="camera-stage">
+        <div class="camera-topbar">
+          <button class="ib ib-tonal camera-control" aria-label="Close camera"><span class="mi" data-i="close"></span></button>
+          <div class="camera-title">Masjid photo<small>Keep the entrance within the frame</small></div>
+          <button class="ib ib-tonal camera-control" aria-label="Switch camera"><span class="mi" data-i="swap_horiz"></span></button>
+        </div>
+        <div class="camera-viewport">
+          <img src="../../../images/masjid-camera-preview.png" alt="Camera preview of a masjid entrance">
+          <div class="camera-guide"></div>
+          <div class="camera-location-card">
+            <span class="mi fill" data-i="location_on"></span>
+            <div class="camera-location-copy"><strong>Within entrance range</strong><span>Kabutar Khana, Mumbai</span></div>
+          </div>
+        </div>
+        <div class="camera-controls">
+          <button class="ib ib-tonal camera-control" aria-label="Refresh location"><span class="mi" data-i="my_location"></span></button>
+          <button class="camera-shutter" aria-label="Take photo"></button>
+          <button class="ib ib-tonal camera-control" aria-label="Toggle flash"><span class="mi" data-i="wb_sunny"></span></button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Guided capture panel -->
+  <div class="cp-card">
+    <div class="cp-head">
+      <div class="cp-h">Guided capture panel</div>
+      <div class="cp-sub">Shows what a good photo looks like before the camera opens: framed example with corner guides, an optional location chip, and a guidance list. Shared by masjid registration (entrance &amp; identity photos) and by composing a paigham (notice photos).</div>
+    </div>
+    <div class="photo-guided-panel" style="max-width:420px">
+      <div class="photo-guided-preview">
+        <img src="../../../images/masjid-camera-preview.png" alt="Example of a framed masjid entrance photo">
+        <div class="photo-guided-frame" aria-hidden="true">
+          <span class="photo-guide-corner top-left"></span>
+          <span class="photo-guide-corner top-right"></span>
+          <span class="photo-guide-corner bottom-left"></span>
+          <span class="photo-guide-corner bottom-right"></span>
+        </div>
+        <div class="photo-guided-location">
+          <span class="mi fill" data-i="location_on"></span>
+          <span><strong>At the entrance pin</strong><small>Kabutar Khana, Mumbai</small></span>
+        </div>
+      </div>
+      <div class="photo-guidance-list">
+        <div class="photo-guidance-row"><span class="mi" data-i="filter_center_focus"></span><span><strong>Frame the entrance</strong><small>Include the masjid name when visible</small></span></div>
+        <div class="photo-guidance-row"><span class="mi" data-i="my_location"></span><span><strong>Stay near the pinned location</strong><small>The live capture is matched to the entrance pin</small></span></div>
+      </div>
     </div>
   </div>
 
@@ -238,6 +479,7 @@
 class Component extends DCLogic {
   state = {
     alertOpen: false,
+    destructiveOpen: false,
     sheetOpen: false,
     richSheetOpen: false,
     apPlaying: false,
@@ -251,6 +493,8 @@ class Component extends DCLogic {
 
   openAlert = () => this.setState({ alertOpen: true });
   closeAlert = () => this.setState({ alertOpen: false });
+  openDestructive = () => this.setState({ destructiveOpen: true });
+  closeDestructive = () => this.setState({ destructiveOpen: false });
   openSheet = () => this.setState({ sheetOpen: true });
   closeSheet = () => this.setState({ sheetOpen: false });
   openRichSheet = () => this.setState({ richSheetOpen: true });
@@ -296,6 +540,11 @@ class Component extends DCLogic {
       closeAlert: this.closeAlert,
       alertPrimary: { text: 'Delete', onClick: this.closeAlert },
       alertSecondary: { text: 'Cancel', onClick: this.closeAlert },
+      destructiveOpen: s.destructiveOpen,
+      openDestructive: this.openDestructive,
+      closeDestructive: this.closeDestructive,
+      destructivePrimary: { text: 'Remove member', onClick: this.closeDestructive },
+      destructiveSecondary: { text: 'Cancel', onClick: this.closeDestructive },
       sheetOpen: s.sheetOpen,
       openSheet: this.openSheet,
       closeSheet: this.closeSheet,

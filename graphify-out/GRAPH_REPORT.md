@@ -1,16 +1,16 @@
-# Graph Report - noor  (2026-07-23)
+# Graph Report - noor  (2026-07-30)
 
 ## Corpus Check
-- 104 files · ~617,492 words
+- 108 files · ~640,584 words
 - Verdict: corpus is large enough that graph structure adds value.
 
 ## Summary
-- 1146 nodes · 1640 edges · 83 communities (51 shown, 32 thin omitted)
-- Extraction: 90% EXTRACTED · 10% INFERRED · 0% AMBIGUOUS · INFERRED: 163 edges (avg confidence: 0.52)
+- 1247 nodes · 1780 edges · 93 communities (57 shown, 36 thin omitted)
+- Extraction: 90% EXTRACTED · 10% INFERRED · 0% AMBIGUOUS · INFERRED: 180 edges (avg confidence: 0.52)
 - Token cost: 0 input · 0 output
 
 ## Graph Freshness
-- Built from commit: `53505408`
+- Built from commit: `64c98c58`
 - Run `git rev-parse HEAD` and compare to check if the graph is stale.
 - Run `graphify update .` after code changes (no API cost).
 
@@ -51,6 +51,7 @@
 - home/storyboards/screens.jsx
 - tabs-row.jsx
 - nav-bar.jsx
+- components.jsx
 - hijri/storyboards/screens.jsx
 - calendar-row.jsx
 - dua-dikhr/storyboards/screens.jsx
@@ -73,7 +74,7 @@
 - masjid-register/storyboards/screens.jsx
 - qibla/storyboards/screens.jsx
 - sheet-row.jsx
-- constants.ts
+- SalaahTab
 - wizard-row.jsx
 - outcome-row.jsx
 - ar-row.jsx
@@ -87,6 +88,10 @@
 - Noor UI/UX Upgrade Decisions
 - devDependencies
 - @dnd-kit/core
+- describeConfig
+- defaults.ts
+- board-rows.jsx
+- describeConfig
 - inspector.tsx
 - components.json
 - storage.ts
@@ -96,10 +101,15 @@
 - layout.tsx
 - next.config.mjs
 - tailwind.config.ts
+- VARIATION_OPTIONS
+- compose-post.jsx
+- check_classes.py
+- @dnd-kit/sortable
+- ConsolePost
 
 ## God Nodes (most connected - your core abstractions)
 1. `tokenKinds` - 187 edges
-2. `react` - 54 edges
+2. `react` - 55 edges
 3. `Noor UI/UX Upgrade Decisions` - 17 edges
 4. `compilerOptions` - 16 edges
 5. `ScreenshotEditor()` - 15 edges
@@ -124,7 +134,7 @@
 ## Import Cycles
 - None detected.
 
-## Communities (83 total, 32 thin omitted)
+## Communities (93 total, 36 thin omitted)
 
 ### Community 0 - "tokenKinds"
 Cohesion: 0.01
@@ -211,16 +221,16 @@ Cohesion: 0.07
 Nodes (26): compilerOptions, allowJs, esModuleInterop, incremental, isolatedModules, jsx, lib, module (+18 more)
 
 ### Community 32 - "screenshot-editor.tsx"
-Cohesion: 0.11
-Nodes (25): AndroidPhone(), AndroidTabletL(), AndroidTabletP(), FrameProps, IPad(), Phone(), getFrameForDevice(), CANVAS (+17 more)
+Cohesion: 0.28
+Nodes (9): CommitteeBody(), ConsoleScreen(), destTransitionName(), DetailsBody(), InvitationCard(), MemberBody(), MemberRow(), OPS_CAPS (+1 more)
 
 ### Community 33 - "home/storyboards/screens.jsx"
 Cohesion: 0.12
 Nodes (6): QAUM_AMP, QaumAudioPlayer(), qaumBars(), QaumScreen(), qaumTime(), SalaahScreen()
 
 ### Community 34 - "tabs-row.jsx"
-Cohesion: 0.14
-Nodes (17): HOME_DATA_FRAMES, HomePrayerRow(), HomeRow(), PRAYER_FRAMES, PROFILE_EXTRA_FRAMES, ProfileRow(), QAUM_DATA_FRAMES, QAUM_EXTRA_FRAMES (+9 more)
+Cohesion: 0.13
+Nodes (18): HOME_DATA_FRAMES, HomePrayerRow(), HomeRow(), MANAGED_ENTRY_FRAMES, PRAYER_FRAMES, PROFILE_EXTRA_FRAMES, ProfileRow(), QAUM_DATA_FRAMES (+10 more)
 
 ### Community 39 - "dua-dikhr/storyboards/screens.jsx"
 Cohesion: 0.15
@@ -243,7 +253,7 @@ Cohesion: 0.20
 Nodes (10): GUEST_STATES, GuestRow, makeRow(), NO_MASJID_STATES, NO_TRACK, NoMasjidRow, NOTIF_STATES, NotifRow (+2 more)
 
 ### Community 56 - "masjid-register/storyboards/screens.jsx"
-Cohesion: 0.08
+Cohesion: 0.07
 Nodes (9): CLAIM_DATA, FOLLOW_DATA, MANAGE_DATA, MASLAK_LIST, REGISTRATION_DATA, ROLE_LIST, STATE_LIST, WIZARD_SUB (+1 more)
 
 ### Community 57 - "qibla/storyboards/screens.jsx"
@@ -254,9 +264,9 @@ Nodes (3): bpt(), CompassDial(), QIBLA_AR_METRICS
 Cohesion: 0.52
 Nodes (6): buildFollowRows(), buildManageTiles(), frame(), noop(), sheetFrames(), SheetRow()
 
-### Community 59 - "constants.ts"
-Cohesion: 0.42
-Nodes (9): DEFAULT_PROJECT, en(), fgStarter(), ipadStarter(), makeStarterSlides(), newSlide(), nid(), tabletStarter() (+1 more)
+### Community 59 - "SalaahTab"
+Cohesion: 1.00
+Nodes (3): salaahChangeCount(), salaahChanged(), SalaahTab()
 
 ### Community 60 - "wizard-row.jsx"
 Cohesion: 0.70
@@ -279,8 +289,8 @@ Cohesion: 0.29
 Nodes (6): hosting, headers, ignore, public, site, trailingSlash
 
 ### Community 69 - "masjid-operations/storyboards/screens.jsx"
-Cohesion: 0.22
-Nodes (5): OP_GROUPS, OP_STATES, OperationScreen(), StatusState(), titleFor()
+Cohesion: 0.05
+Nodes (14): CONSOLE_DESTINATIONS, IQAMA_OPTIONS, OPS_CAPABILITIES, OPS_FOLLOWERS, OPS_INVITATIONS, OPS_MANAGED, OPS_MASJID, OPS_MEMBERS (+6 more)
 
 ### Community 70 - "Noor UI/UX Upgrade Decisions"
 Cohesion: 0.09
@@ -293,6 +303,18 @@ Nodes (22): devDependencies, autoprefixer, postcss, tailwindcss, @types/node, @t
 ### Community 72 - "@dnd-kit/core"
 Cohesion: 0.21
 Nodes (9): ACCEPTED, Props, ScreenshotPicker(), cache, didFail(), failed, fetchAsDataUrl(), preloadImages() (+1 more)
+
+### Community 73 - "describeConfig"
+Cohesion: 0.67
+Nodes (3): describeConfig(), PrayerCard(), VARIANT_OPTIONS
+
+### Community 74 - "defaults.ts"
+Cohesion: 0.42
+Nodes (9): DEFAULT_PROJECT, en(), fgStarter(), ipadStarter(), makeStarterSlides(), newSlide(), nid(), tabletStarter() (+1 more)
+
+### Community 76 - "describeConfig"
+Cohesion: 0.25
+Nodes (9): ConsoleHome(), countLabel(), fmt12(), latestTimingChange(), MasjidSwitcherSheet(), nextPrayer(), postDay(), prayerMinutes() (+1 more)
 
 ### Community 77 - "inspector.tsx"
 Cohesion: 0.14
@@ -322,22 +344,34 @@ Nodes (3): filePath(), GET(), POST()
 Cohesion: 0.40
 Nodes (3): bodyFont, displayFont, metadata
 
+### Community 90 - "compose-post.jsx"
+Cohesion: 0.12
+Nodes (9): CMP_AUDIENCE, CMP_LIBRARY, CMP_STEPS, CMP_WAVE, cmpMessageState(), CmpMessageStep(), CmpPostPreview(), CmpReviewStep() (+1 more)
+
+### Community 91 - "check_classes.py"
+Cohesion: 0.57
+Nodes (6): classes_used(), globals_defined(), main(), modules_for(), The .jsx modules a page pulls in, one hop deep., read()
+
+### Community 93 - "@dnd-kit/sortable"
+Cohesion: 0.11
+Nodes (25): AndroidPhone(), AndroidTabletL(), AndroidTabletP(), FrameProps, IPad(), Phone(), getFrameForDevice(), CANVAS (+17 more)
+
 ## Knowledge Gaps
-- **534 isolated node(s):** `$schema`, `style`, `rsc`, `tsx`, `config` (+529 more)
+- **551 isolated node(s):** `$schema`, `style`, `rsc`, `tsx`, `config` (+546 more)
   These have ≤1 connection - possible missing edges or undocumented components.
-- **32 thin communities (<3 nodes) omitted from report** — run `graphify query` to explore isolated nodes.
+- **36 thin communities (<3 nodes) omitted from report** — run `graphify query` to explore isolated nodes.
 
 ## Suggested Questions
 _Questions this graph is uniquely positioned to answer:_
 
-- **Why does `react` connect `react` to `home/storyboards/screens.jsx`, `support.js`, `zakaat/storyboards/screens.jsx`, `useNoorDark`, `dependencies`, `@dnd-kit/core`, `inspector.tsx`, `toolbar.tsx`, `types.ts`, `slide-canvas.tsx`?**
-  _High betweenness centrality (0.075) - this node is a cross-community bridge._
+- **Why does `react` connect `react` to `home/storyboards/screens.jsx`, `support.js`, `zakaat/storyboards/screens.jsx`, `useNoorDark`, `dependencies`, `@dnd-kit/core`, `describeConfig`, `inspector.tsx`, `toolbar.tsx`, `types.ts`, `slide-canvas.tsx`?**
+  _High betweenness centrality (0.100) - this node is a cross-community bridge._
 - **Why does `dependencies` connect `dependencies` to `react`, `devDependencies`?**
-  _High betweenness centrality (0.036) - this node is a cross-community bridge._
-- **Why does `tokenKinds` connect `tokenKinds` to `x-omelette`?**
-  _High betweenness centrality (0.024) - this node is a cross-community bridge._
+  _High betweenness centrality (0.039) - this node is a cross-community bridge._
+- **Why does `ConsoleHome()` connect `describeConfig` to `screenshot-editor.tsx`, `react`, `masjid-operations/storyboards/screens.jsx`?**
+  _High betweenness centrality (0.031) - this node is a cross-community bridge._
 - **What connects `$schema`, `style`, `rsc` to the rest of the system?**
-  _534 weakly-connected nodes found - possible documentation gaps or missing edges._
+  _551 weakly-connected nodes found - possible documentation gaps or missing edges._
 - **Should `tokenKinds` be split into smaller, more focused modules?**
   _Cohesion score 0.0106951871657754 - nodes in this community are weakly interconnected._
 - **Should `support.js` be split into smaller, more focused modules?**

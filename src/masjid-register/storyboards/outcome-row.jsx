@@ -4,7 +4,7 @@
 
 const OUTCOME_FRAMES = [
   { name: 'Submitting', data: { variant: 'submitting' } },
-  { name: 'Under review', data: { variant: 'pending', contactName: 'Salim Shaikh', masjidSummaryName: 'Masjid-e-Noor', role: 'Chairman', submittedDate: '5 Jul 2026' } },
+  { name: 'Under review', data: { variant: 'pending', contactName: 'Salim Shaikh', masjidSummaryName: 'Masjid-e-Noor', masjidSummaryAddr: 'Kabutar Khana, Mumbai, Maharashtra · 400016', role: 'Chairman', submittedDate: '5 Jul 2026', photoSrc: '../../images/masjid-camera-preview.png', selfieSrc: '../../images/identity-camera-preview.png' } },
   { name: 'Rejected', data: { variant: 'rejected', contactName: 'Salim Shaikh' } }
 ];
 
@@ -27,7 +27,7 @@ function frame(f, globalIdx, active, onSelectFrame) {
   );
 }
 
-function OutcomeRow({ active = -1, onSelectFrame, offset = 39 }) {
+function OutcomeRow({ active = -1, onSelectFrame, offset = 38 }) {
   return (
     <div>
       <div className="poc-row-label"><span className="mi" data-i="verified"></span> 12 · Outcome · {OUTCOME_FRAMES.length} states</div>

@@ -93,7 +93,7 @@
   <div class="cp-card">
     <div class="cp-head">
       <div class="cp-h">ChoiceCard</div>
-      <div class="cp-sub">Accessible radio-style surfaces for short mutually exclusive choices.</div>
+      <div class="cp-sub">Accessible radio-style surfaces for short mutually exclusive choices. <code>.rich</code> adds a leading icon tile, a reach/meta line and a trailing radio mark for choices that need explaining.</div>
     </div>
     <div class="choice-group" role="radiogroup" aria-label="How should we address you?" style="max-width:500px">
       <button class="choice-card selected" role="radio" aria-checked="true">
@@ -103,6 +103,18 @@
       <button class="choice-card" role="radio" aria-checked="false">
         <span class="mi" data-i="radio_button_unchecked"></span>
         <span><span class="choice-card-label">Sister</span><span class="choice-card-support">Use feminine address</span></span>
+      </button>
+    </div>
+    <div class="choice-group" role="radiogroup" aria-label="Audience" style="flex-direction:column;max-width:460px;margin-top:16px">
+      <button class="choice-card rich selected" role="radio" aria-checked="true">
+        <span class="icon-tile"><span class="mi" data-i="mosque"></span></span>
+        <span class="choice-card-copy"><strong>My Masjid</strong><span>1,284 followers of Masjid E Bilal</span><small>Everyone who follows this masjid for timings and updates.</small></span>
+        <span class="mi choice-card-mark" data-i="radio_button_checked"></span>
+      </button>
+      <button class="choice-card rich" role="radio" aria-checked="false">
+        <span class="icon-tile"><span class="mi" data-i="groups"></span></span>
+        <span class="choice-card-copy"><strong>My Maslak</strong><span>Followers of masjids sharing your maslak</span><small>A wider circle — use it for programmes open to everyone.</small></span>
+        <span class="mi choice-card-mark" data-i="radio_button_unchecked"></span>
       </button>
     </div>
   </div>
@@ -326,7 +338,7 @@
       <div class="cp-h">NavigationBar</div>
       <div class="cp-sub">Segmented bottom tab bar — a row of nav-item atoms with an active glow, the app-level sibling of the TabBar segmented control.</div>
     </div>
-    <div class="nb-scaffold" style="height:80px">
+    <div style="height:80px">
       <div class="nb-bar" style="position:relative">
         <div class="nb-glow" style="left:40%"></div>
         <div class="nb-nav">
@@ -340,19 +352,114 @@
     </div>
   </div>
 
+  <!-- Picker field -->
+  <div class="cp-card">
+    <div class="cp-head">
+      <div class="cp-h">Picker field</div>
+      <div class="cp-sub">A read-only field that opens a picker elsewhere — option sheet, dropdown menu, time picker. <code>.picker-field-value</code> for a made choice, <code>.picker-field-placeholder</code> for an empty one, <code>.error</code> for a failed one. Used by masjid registration (role, maslak, state) and the salaah editors.</div>
+    </div>
+    <div style="display:flex;flex-direction:column;gap:12px;max-width:420px">
+      <button class="picker-field"><span class="picker-field-placeholder">Select your role</span><span class="mi" data-i="expand_more"></span></button>
+      <button class="picker-field"><span class="picker-field-value">Chairman</span><span class="mi" data-i="expand_more"></span></button>
+      <button class="picker-field error"><span class="picker-field-placeholder">Select maslak</span><span class="mi" data-i="expand_more"></span></button>
+    </div>
+  </div>
+
+  <!-- Guidance list -->
+  <div class="cp-card">
+    <div class="cp-head">
+      <div class="cp-h">Guidance list</div>
+      <div class="cp-sub">Icon + <code>strong</code> + <code>small</code> rows that teach a step before it starts. Pairs with the guided capture panel (organisms).</div>
+    </div>
+    <div class="photo-guidance-list" style="max-width:420px">
+      <div class="photo-guidance-row"><span class="mi" data-i="filter_center_focus"></span><span><strong>Fill the frame</strong><small>Crop out the wall around a notice</small></span></div>
+      <div class="photo-guidance-row"><span class="mi" data-i="wb_sunny"></span><span><strong>Keep text readable</strong><small>Even light, no glare on the paper</small></span></div>
+    </div>
+  </div>
+
+  <!-- Toggle row -->
+  <div class="cp-card">
+    <div class="cp-head">
+      <div class="cp-h">Toggle row</div>
+      <div class="cp-sub">A setting with an explanation: icon tile + title + description + trailing control. The trailing slot takes a Switch, a Checkbox, or a Badge when the setting is not available yet. Drives committee permissions.</div>
+    </div>
+    <div style="max-width:460px;background:var(--color-surface-card);border:1px solid var(--color-neutral-border);border-radius:var(--radius-2xl);padding:4px 12px">
+      <div class="toggle-row">
+        <span class="toggle-row-icon"><span class="mi" data-i="campaign"></span></span>
+        <span class="toggle-row-copy"><strong>Send paighams</strong><small>Write, record and send updates to followers</small></span>
+        <button class="sw on" role="switch" aria-checked="true" aria-label="Send paighams"></button>
+      </div>
+      <div class="toggle-row">
+        <span class="toggle-row-icon"><span class="mi" data-i="groups"></span></span>
+        <span class="toggle-row-copy"><strong>Manage the committee</strong><small>Invite members and set what each one can do</small></span>
+        <button class="sw" role="switch" aria-checked="false" aria-label="Manage the committee"></button>
+      </div>
+      <div class="toggle-row" aria-disabled="true">
+        <span class="toggle-row-icon"><span class="mi" data-i="volume_up"></span></span>
+        <span class="toggle-row-copy"><strong>Give the azaan</strong><small>Call the azaan from the app</small></span>
+        <span class="badge sm gold">Soon</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- Stat tile -->
+  <div class="cp-card">
+    <div class="cp-head">
+      <div class="cp-h">Stat tile</div>
+      <div class="cp-sub">One headline number with its label. Sits in a row of two to four; the row owns the gap.</div>
+    </div>
+    <div style="display:flex;gap:8px;max-width:420px">
+      <div class="stat-tile"><span class="mi" data-i="groups"></span><div class="stat-tile-value">1.3k</div><div class="stat-tile-label">Followers</div></div>
+      <div class="stat-tile"><span class="mi" data-i="campaign"></span><div class="stat-tile-value">96</div><div class="stat-tile-label">Paighams</div></div>
+      <div class="stat-tile"><span class="mi" data-i="favorite"></span><div class="stat-tile-value">3.1k</div><div class="stat-tile-label">Reactions</div></div>
+    </div>
+  </div>
+
+  <!-- Step bar -->
+  <div class="cp-card">
+    <div class="cp-head">
+      <div class="cp-h">Step bar</div>
+      <div class="cp-sub">Linear progress through a known number of steps — one <code>span</code> each, <code>.on</code> for reached. Pair with a "Step N of M" count in the app bar. Used by the masjid registration wizard and the send-a-paigham wizard.</div>
+    </div>
+    <div style="display:flex;flex-direction:column;gap:14px;max-width:420px">
+      <div class="stepbar" role="progressbar" aria-valuemin="1" aria-valuemax="4" aria-valuenow="1"><span class="on"></span><span></span><span></span><span></span></div>
+      <div class="stepbar" role="progressbar" aria-valuemin="1" aria-valuemax="4" aria-valuenow="3"><span class="on"></span><span class="on"></span><span class="on"></span><span></span></div>
+      <div class="stepbar" role="progressbar" aria-valuemin="1" aria-valuemax="8" aria-valuenow="6"><span class="on"></span><span class="on"></span><span class="on"></span><span class="on"></span><span class="on"></span><span class="on"></span><span></span><span></span></div>
+    </div>
+  </div>
+
+  <!-- Time select -->
+  <div class="cp-card">
+    <div class="cp-head">
+      <div class="cp-h">Time select</div>
+      <div class="cp-sub">Hour · minute · AM/PM — three picker fields on one row, each opening its own menu. Backed by <code>"HH:mm"</code>, displayed as 12-hour, mirroring the Compose <code>TimeSelectField</code>.</div>
+    </div>
+    <div style="max-width:420px">
+      <div class="flabel">Jamaat time</div>
+      <div class="time-select">
+        <button class="picker-field"><span class="picker-field-value">5</span><span class="mi" data-i="expand_more"></span></button>
+        <button class="picker-field"><span class="picker-field-value">30</span><span class="mi" data-i="expand_more"></span></button>
+        <button class="picker-field"><span class="picker-field-value">AM</span><span class="mi" data-i="expand_more"></span></button>
+      </div>
+    </div>
+  </div>
+
   <!-- Snackbar -->
   <div class="cp-card">
     <div class="cp-head">
       <div class="cp-h">Snackbar</div>
-      <div class="cp-sub">Transient feedback — icon + message + dismiss. A simple combo, so it lives with the molecules.</div>
+      <div class="cp-sub">Transient feedback — icon + message + dismiss. A simple combo, so it lives with the molecules. Add <code>docked</code> to float it above a screen's bottom edge.</div>
     </div>
     <div style="display:flex;flex-direction:column;gap:12px;max-width:500px">
-      <div style="background:var(--color-info-primary);border-radius:12px;padding:14px 16px;display:flex;align-items:center;justify-content:space-between;box-shadow:var(--shadow-card)">
-        <div style="display:flex;align-items:center;gap:10px">
-          <span class="mi" style="color:var(--color-status-success);font-size:20px" data-i="check_circle"></span>
-          <span style="font-family:var(--font-body);font-size:14px;color:var(--color-info-primary-inverse);font-weight:600">Tasbih count saved successfully</span>
-        </div>
-        <span class="mi" style="color:color-mix(in oklab,var(--color-info-primary-inverse) 60%,transparent);font-size:18px;cursor:pointer" data-i="close"></span>
+      <div class="snack">
+        <span class="mi snack-icon" data-i="check_circle"></span>
+        <span class="snack-copy">Tasbih count saved successfully</span>
+        <button class="snack-close" aria-label="Dismiss"><span class="mi" data-i="close"></span></button>
+      </div>
+      <div class="snack">
+        <span class="mi snack-icon error" data-i="error"></span>
+        <span class="snack-copy">Couldn't remove that member</span>
+        <button class="snack-close" aria-label="Dismiss"><span class="mi" data-i="close"></span></button>
       </div>
     </div>
   </div>

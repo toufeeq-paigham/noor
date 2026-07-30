@@ -25,25 +25,69 @@
     @keyframes stepback { from{transform:translateX(-28px);opacity:0} to{transform:translateX(0);opacity:1} }
     .step-fwd { animation:stepin var(--motion-emphasized) var(--ease-out) }
     .step-back { animation:stepback var(--motion-standard) var(--ease-out) }
-    .masjid-switch-action{min-width:92px;gap:6px}
+    .masjid-switch-action{min-width:92px;min-height:var(--control-h-lg);gap:6px}
     .masjid-switch-action .mi{font-size:18px}
-    .registration-tile,.register-masjid-tile{width:100%;min-height:108px;box-sizing:border-box;border-radius:16px;font-family:var(--font-body);cursor:pointer}
-    .registration-tile{display:flex;align-items:center;gap:10px;padding:12px;text-align:left;background:color-mix(in oklab,var(--color-status-warning) 8%,var(--color-surface-card));border:1px solid color-mix(in oklab,var(--color-status-warning) 40%,var(--color-neutral-border))}
-    .registration-tile-icon{width:34px;height:34px;display:inline-flex;align-items:center;justify-content:center;flex-shrink:0;border-radius:10px;background:color-mix(in oklab,var(--color-status-warning) 14%,transparent);color:var(--color-status-warning)}
-    .registration-tile-copy{min-width:0;display:flex;flex:1;flex-direction:column;align-items:flex-start;gap:3px}
-    .registration-tile-title{max-width:100%;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;font-size:13px;font-weight:700;color:var(--color-info-primary)}
-    .registration-tile-subtitle{font-size:10.5px;line-height:1.35;color:var(--color-info-secondary)}
-    .registration-tile-chevron{font-size:18px;color:var(--color-info-secondary)}
+    .my-masjids-sheet{max-height:84%;overflow:hidden}
+    .my-masjids-header{display:flex;align-items:flex-start;justify-content:space-between;gap:var(--size-xl);margin-bottom:var(--size-xl);flex-shrink:0}
+    .my-masjids-heading{min-width:0;display:flex;flex-direction:column;gap:var(--size-sm)}
+    .my-masjids-subtitle{font:var(--body-xs-size)/var(--body-sm-lh) var(--font-body);color:var(--color-info-secondary)}
+    .my-masjids-primary{display:grid;grid-template-columns:auto minmax(0,1fr) auto;align-items:center;gap:var(--size-xl);padding:var(--size-xl);margin-bottom:var(--size-xl);border:1px solid color-mix(in oklab,var(--color-action-primary) 28%,var(--color-neutral-border));border-radius:var(--radius-2xl);background:color-mix(in oklab,var(--color-action-primary) 7%,var(--color-surface-card))}
+    .my-masjids-primary-icon{width:var(--control-h-lg);height:var(--control-h-lg);display:flex;align-items:center;justify-content:center;border-radius:var(--radius-xl);background:color-mix(in oklab,var(--color-action-primary) 13%,transparent);color:var(--color-action-primary)}
+    .my-masjids-primary-icon .mi{font-size:var(--icon-sm)}
+    .my-masjids-primary-copy{min-width:0}
+    .my-masjids-eyebrow{display:block;margin-bottom:var(--size-xs);font:700 var(--body-xs-size)/var(--body-xs-lh) var(--font-body);letter-spacing:.04em;text-transform:uppercase;color:var(--color-action-primary)}
+    .my-masjids-primary-name{display:block;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;font:700 var(--body-sm-size)/var(--body-sm-lh) var(--font-body);color:var(--color-info-primary)}
+    .my-masjids-primary-note{display:block;font:var(--body-xs-size)/var(--body-xs-lh) var(--font-body);color:var(--color-info-secondary)}
+    .my-masjids-current{display:inline-flex;align-items:center;gap:var(--size-sm);font:700 var(--body-xs-size)/var(--body-xs-lh) var(--font-body);color:var(--color-action-primary)}
+    .my-masjids-current .mi{font-size:var(--icon-xs)}
+    .my-masjids-tabs{margin-bottom:var(--size-xl)}
+    .my-masjids-tabs .tab{min-height:var(--control-h-lg);display:flex;align-items:center;justify-content:center;gap:var(--size-sm);border:0;background:transparent}
+    .my-masjids-tabs .tab.active{background:var(--color-action-primary)}
+    .my-masjids-tab-count{min-width:var(--control-h-sm);padding:var(--size-xs) var(--size-sm);box-sizing:border-box;border-radius:var(--radius-pill);background:color-mix(in oklab,currentColor 12%,transparent);font-size:var(--body-xs-size);line-height:1}
+    .my-masjids-section-head{display:flex;align-items:center;justify-content:space-between;gap:var(--size-xl);margin:0 var(--size-xs) var(--size-md);font-family:var(--font-body)}
+    .my-masjids-section-head strong{font-size:var(--body-sm-size);line-height:var(--body-sm-lh);color:var(--color-info-primary)}
+    .my-masjids-section-head span{font-size:var(--body-xs-size);line-height:var(--body-xs-lh);color:var(--color-info-secondary)}
+    .my-masjids-scroll{min-height:0;overflow-y:auto;overscroll-behavior:contain}
+    .my-masjids-follow-list{overflow:hidden;margin-bottom:var(--size-xl);border:1px solid var(--color-neutral-border);border-radius:var(--radius-2xl);background:var(--color-surface-card)}
+    .my-masjids-follow-row{min-height:calc(var(--control-h-lg) + var(--size-2xl));display:flex;align-items:center;gap:var(--size-xl);padding:var(--size-xl);box-sizing:border-box;border-bottom:1px solid var(--color-neutral-border)}
+    .my-masjids-follow-row:last-child{border-bottom:0}
+    .my-masjids-follow-row.current{background:color-mix(in oklab,var(--color-action-primary) 6%,var(--color-surface-card))}
+    .my-masjids-avatar{width:var(--control-h-lg);height:var(--control-h-lg);display:flex;align-items:center;justify-content:center;flex-shrink:0;border-radius:var(--radius-xl);background:var(--color-input-background);color:var(--color-info-secondary);font:700 var(--body-sm-size)/1 var(--font-title)}
+    .my-masjids-follow-row.current .my-masjids-avatar{background:var(--color-action-primary);color:var(--color-action-primary-inverse)}
+    .my-masjids-row-copy{min-width:0;flex:1}
+    .my-masjids-row-name{overflow:hidden;text-overflow:ellipsis;white-space:nowrap;font:700 var(--body-sm-size)/var(--body-sm-lh) var(--font-body);color:var(--color-info-primary)}
+    .my-masjids-row-meta{font:var(--body-xs-size)/var(--body-xs-lh) var(--font-body);color:var(--color-info-secondary)}
+    .my-masjids-discovery{padding-top:var(--size-xs)}
+    .my-masjids-discovery .btn{width:100%}
+    @media (max-width:375px){
+      .my-masjids-primary{grid-template-columns:auto minmax(0,1fr)}
+      .my-masjids-primary .my-masjids-current{grid-column:2}
+      .masjid-switch-action{min-width:var(--control-h-lg);padding-inline:var(--size-xl)}
+      .masjid-switch-action span:last-child{display:none}
+    }
+    @media (prefers-reduced-motion:reduce){
+      .my-masjids-sheet,.my-masjids-sheet *{scroll-behavior:auto}
+    }
+    .registration-tile,.register-masjid-tile{width:100%;box-sizing:border-box;border-radius:var(--radius-2xl);font-family:var(--font-body);cursor:pointer}
+    .registration-tile{min-height:calc(var(--control-h-lg) + var(--size-2xl));display:flex;align-items:center;gap:var(--size-xl);padding:var(--size-xl);text-align:left;background:var(--color-surface-card);border:1px solid var(--color-neutral-border);transition:transform var(--motion-press) var(--ease-out),background var(--motion-quick) var(--ease-out),border-color var(--motion-quick) var(--ease-out)}
+    .registration-tile:active{transform:scale(.99);background:var(--color-surface-secondary)}
+    .registration-tile:focus-visible{outline:2px solid var(--color-action-primary);outline-offset:2px}
+    .registration-tile-icon{width:var(--control-h-md);height:var(--control-h-md);display:inline-flex;align-items:center;justify-content:center;flex-shrink:0;border-radius:var(--radius-xl);background:color-mix(in oklab,var(--color-status-warning) 12%,transparent);color:var(--color-status-warning)}
+    .registration-tile.rejected .registration-tile-icon{background:color-mix(in oklab,var(--color-status-error) 10%,transparent);color:var(--color-status-error)}
+    .registration-tile-icon .mi{font-size:var(--icon-sm)}
+    .registration-tile-copy{min-width:0;display:flex;flex:1;flex-direction:column;align-items:flex-start;gap:var(--size-xs)}
+    .registration-tile-title{max-width:100%;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;font:700 var(--body-sm-size)/var(--body-sm-lh) var(--font-body);color:var(--color-info-primary)}
+    .registration-tile-meta{display:flex;align-items:center;flex-wrap:wrap;gap:var(--size-sm);font:var(--body-xs-size)/var(--body-xs-lh) var(--font-body);color:var(--color-info-secondary)}
+    .registration-tile-state{display:inline-flex;align-items:center;gap:var(--size-xs);font-weight:700;color:var(--color-status-warning)}
+    .registration-tile.rejected .registration-tile-state{color:var(--color-status-error)}
+    .registration-tile-state .mi{font-size:var(--icon-xs)}
+    .registration-tile-separator{color:var(--color-info-faint)}
+    .registration-tile-chevron{font-size:var(--icon-sm);color:var(--color-info-secondary)}
+    .register-masjid-tile{min-height:108px}
     .register-masjid-tile{display:flex;flex-direction:column;align-items:center;justify-content:center;gap:6px;padding:12px;border:1.5px dashed var(--color-info-faint);background:transparent;color:var(--color-info-secondary);font-size:11px;font-weight:700}
     .register-masjid-tile .mi{font-size:22px}
     .masjid-manage-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px;margin-bottom:14px}
     .masjid-manage-grid-item-wide{grid-column:1 / -1}
-    .picker-field{position:relative;width:100%;min-height:var(--control-h-lg);display:flex;align-items:center;justify-content:space-between;gap:10px;box-sizing:border-box;padding:0 var(--size-2xl);border:1px solid var(--color-input-border);border-radius:var(--radius-2xl);background:var(--color-input-background);color:var(--color-info-primary);font-family:var(--font-body);font-size:16px;text-align:left;cursor:pointer;overflow:hidden;transition:border-color var(--motion-quick) var(--ease-out),transform var(--motion-press) var(--ease-out)}
-    .picker-field:active{transform:scale(.99)}
-    .picker-field.error{border-color:var(--color-input-border-error)}
-    .picker-field-placeholder{color:var(--color-input-text-placeholder)}
-    .picker-field-value{font-weight:600;color:var(--color-input-text-primary)}
-    .picker-field .mi{font-size:22px;color:var(--color-info-secondary)}
     .wizard-option-scrim{background:color-mix(in oklab,var(--color-surface-scrim) 88%,transparent);backdrop-filter:blur(8px) saturate(120%);-webkit-backdrop-filter:blur(8px) saturate(120%)}
     .wizard-option-sheet{max-height:68%;overflow:hidden;background:color-mix(in oklab,var(--color-surface-primary) 94%,transparent);backdrop-filter:blur(30px) saturate(165%);-webkit-backdrop-filter:blur(30px) saturate(165%)}
     .wizard-option-header{display:flex;align-items:center;justify-content:space-between;gap:12px;margin-bottom:var(--size-xl);flex-shrink:0}
@@ -61,52 +105,20 @@
     .wizard-map-status{position:absolute;left:10px;right:10px;bottom:10px;display:flex;align-items:center;gap:8px;padding:9px 10px;border-radius:12px;background:color-mix(in oklab,var(--color-surface-primary) 90%,transparent);backdrop-filter:blur(16px);-webkit-backdrop-filter:blur(16px);font-family:var(--font-body);font-size:11.5px;font-weight:600;color:var(--color-info-primary)}
     .resolved-location{display:flex;align-items:flex-start;gap:10px;padding:12px;margin-bottom:16px;border:1px solid color-mix(in oklab,var(--color-action-primary) 34%,var(--color-neutral-border));border-radius:var(--radius-xl);background:color-mix(in oklab,var(--color-action-primary) 6%,var(--color-surface-card))}
     .resolved-location .mi{font-size:20px;color:var(--color-action-primary)}
-    .camera-stage{position:absolute;inset:0;z-index:260;display:flex;flex-direction:column;background:var(--color-neutral-black);color:var(--color-neutral-white)}
-    .camera-topbar{height:104px;display:flex;align-items:flex-end;justify-content:space-between;gap:12px;padding:0 18px 14px;box-sizing:border-box;background:linear-gradient(180deg,color-mix(in oklab,var(--color-neutral-black) 96%,transparent),transparent)}
-    .camera-title{min-width:0;text-align:center;font-family:var(--font-body);font-size:15px;font-weight:700}
-    .camera-title small{display:block;margin-top:3px;font-size:11px;font-weight:500;color:color-mix(in oklab,var(--color-neutral-white) 72%,transparent)}
-    .camera-viewport{position:relative;flex:none;height:min(560px,calc(100% - 254px));min-height:320px;margin:0 14px;overflow:hidden;border-radius:var(--radius-huge);background:var(--color-neutral-black)}
-    .camera-viewport img,.capture-thumbnail img,.review-photo img{width:100%;height:100%;display:block;object-fit:cover;object-position:center}
-    .camera-viewport.selfie img,.capture-thumbnail.selfie.camera-source img,.review-photo.selfie.camera-source img{transform:scaleX(-1)}
-    .camera-guide{position:absolute;inset:16px;border:1px solid color-mix(in oklab,var(--color-neutral-white) 44%,transparent);border-radius:calc(var(--radius-huge) - 4px);pointer-events:none}
-    .camera-guide.selfie{inset:15% 20%;border-radius:48%}
-    .camera-help{position:absolute;left:18px;right:18px;bottom:18px;padding:10px 12px;border-radius:12px;background:color-mix(in oklab,var(--color-neutral-black) 72%,transparent);backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px);font-family:var(--font-body);font-size:12px;line-height:1.4;text-align:center}
-    .camera-controls{height:150px;display:grid;grid-template-columns:1fr 84px 1fr;align-items:center;padding:8px 28px 24px;box-sizing:border-box}
-    .camera-control{justify-self:center;color:var(--color-neutral-white)}
-    .camera-shutter{width:72px;height:72px;display:flex;align-items:center;justify-content:center;justify-self:center;border:3px solid var(--color-neutral-white);border-radius:var(--radius-circle);background:transparent;cursor:pointer}
-    .camera-shutter::after{content:"";width:56px;height:56px;border-radius:var(--radius-circle);background:var(--color-neutral-white);transition:transform var(--motion-press) var(--ease-out)}
-    .camera-shutter:active::after{transform:scale(.88)}
-    .camera-capture-actions{display:flex;flex-direction:column;align-items:center;gap:6px;padding:14px 18px 24px}
-    .camera-capture-actions .camera-use-photo{width:100%}
-    .camera-capture-actions .camera-retake-photo{min-height:44px;color:color-mix(in oklab,var(--color-neutral-white) 78%,transparent)}
-    .camera-permission{flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;overflow-y:auto;padding:24px 32px 32px;text-align:center}
-    .camera-permission-icon{width:76px;height:76px;display:flex;align-items:center;justify-content:center;margin-bottom:20px;border-radius:var(--radius-circle);background:color-mix(in oklab,var(--color-neutral-white) 10%,transparent)}
-    .camera-permission-icon .mi{font-size:36px}
-    .camera-permission h2{margin:0 0 10px;font-family:var(--font-title);font-size:27px;font-weight:700;line-height:1.15}
-    .camera-permission p{margin:0 0 24px;max-width:300px;font:14px/1.55 var(--font-body);color:color-mix(in oklab,var(--color-neutral-white) 72%,transparent)}
-    .camera-permission .btn{width:100%;max-width:300px}
-    .camera-permission-steps{max-width:300px;margin:0 0 24px;padding:12px 14px;border-radius:var(--radius-xl);background:color-mix(in oklab,var(--color-neutral-white) 8%,transparent);font:12px/1.5 var(--font-body);text-align:left}
-    .camera-location-card{position:absolute;left:16px;top:16px;display:flex;align-items:center;gap:9px;width:min(214px,calc(100% - 32px));min-height:62px;padding:7px;box-sizing:border-box;border:1px solid color-mix(in oklab,var(--color-neutral-white) 24%,transparent);border-radius:var(--radius-xl);background:color-mix(in oklab,var(--color-neutral-black) 78%,transparent);box-shadow:0 10px 30px color-mix(in oklab,var(--color-neutral-black) 28%,transparent);backdrop-filter:blur(16px) saturate(125%);-webkit-backdrop-filter:blur(16px) saturate(125%);font-family:var(--font-body);color:var(--color-neutral-white)}
-    .camera-location-map{position:relative;width:48px;height:48px;flex:0 0 48px;overflow:hidden;border-radius:10px;background:color-mix(in oklab,var(--color-action-primary) 16%,var(--color-neutral-black))}
-    .camera-location-map::before{content:"";position:absolute;inset:-8px;background-image:linear-gradient(color-mix(in oklab,var(--color-neutral-white) 10%,transparent) 1px,transparent 1px),linear-gradient(90deg,color-mix(in oklab,var(--color-neutral-white) 10%,transparent) 1px,transparent 1px);background-size:13px 13px;transform:rotate(-8deg)}
-    .camera-location-road{position:absolute;left:-10px;right:-10px;height:4px;border-radius:4px;background:color-mix(in oklab,var(--color-neutral-white) 42%,transparent)}
-    .camera-location-road.road-one{top:18px;transform:rotate(-16deg)}
-    .camera-location-road.road-two{top:29px;transform:rotate(31deg)}
-    .camera-location-map .mi{position:absolute;left:50%;top:50%;z-index:1;font-size:22px;color:var(--color-action-primary);transform:translate(-50%,-52%);filter:drop-shadow(0 2px 4px color-mix(in oklab,var(--color-neutral-black) 46%,transparent))}
-    .camera-location-copy{min-width:0;display:flex;flex:1;flex-direction:column;gap:2px}
-    .camera-location-copy strong{font-size:10.5px;line-height:1.1;color:var(--color-action-primary)}
-    .camera-location-copy span,.camera-location-copy small{overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
-    .camera-location-copy span{font-size:10.5px;font-weight:700;line-height:1.25}
-    .camera-location-copy small{font-size:8.5px;line-height:1.25;color:color-mix(in oklab,var(--color-neutral-white) 70%,transparent)}
-    .camera-location-status{position:absolute;left:16px;top:16px;display:flex;align-items:center;gap:6px;min-height:32px;padding:0 10px;border:1px solid color-mix(in oklab,var(--color-neutral-white) 22%,transparent);border-radius:var(--radius-xl);background:color-mix(in oklab,var(--color-neutral-black) 72%,transparent);backdrop-filter:blur(12px);-webkit-backdrop-filter:blur(12px);font:700 10.5px/1 var(--font-body);color:var(--color-neutral-white)}
-    .camera-location-status .mi{font-size:16px;color:var(--color-action-primary)}
-    .camera-location-status.warning .mi{color:var(--color-status-warning)}
-    .camera-location-recovery{position:absolute;left:16px;right:16px;top:64px;display:flex;align-items:center;gap:10px;padding:12px;border:1px solid color-mix(in oklab,var(--color-status-warning) 44%,transparent);border-radius:var(--radius-xl);background:color-mix(in oklab,var(--color-neutral-black) 84%,transparent);backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px);font:11px/1.45 var(--font-body);color:var(--color-neutral-white)}
-    .camera-location-recovery div{flex:1}
-    .camera-location-recovery .btn{flex-shrink:0}
     .photo-source-panel{position:relative;overflow:hidden;padding:18px;border:1px solid color-mix(in oklab,var(--color-action-primary) 34%,var(--color-neutral-border));border-radius:var(--radius-2xl);background:var(--gradient-emerald),var(--color-surface-card);box-shadow:0 18px 36px -28px color-mix(in oklab,var(--color-action-primary) 60%,transparent)}
     .photo-source-panel::after{content:"";position:absolute;width:140px;height:140px;right:-76px;top:-76px;border-radius:var(--radius-circle);background:color-mix(in oklab,var(--color-action-primary) 10%,transparent);pointer-events:none}
     .photo-source-panel.error{border-color:color-mix(in oklab,var(--color-status-error) 62%,var(--color-neutral-border));background:var(--gradient-emerald),color-mix(in oklab,var(--color-status-error) 3%,var(--color-surface-card))}
+    .identity-guided-preview{position:relative;min-height:calc(var(--illustration-lg) + var(--size-huge));display:flex;align-items:center;justify-content:center;overflow:hidden;margin-bottom:var(--size-xl);border:1px solid color-mix(in oklab,var(--color-action-primary) 34%,var(--color-neutral-border));border-radius:var(--radius-2xl);background:var(--gradient-emerald),var(--color-surface-card)}
+    .identity-guided-glow{position:absolute;width:var(--illustration-lg);height:var(--illustration-lg);border-radius:var(--radius-circle);background:color-mix(in oklab,var(--color-action-primary) 13%,transparent);filter:blur(var(--size-max))}
+    .identity-guided-face{position:relative;width:var(--illustration-sm);height:var(--illustration-lg);display:flex;align-items:center;justify-content:center;border:1px dashed color-mix(in oklab,var(--color-action-primary) 58%,transparent);border-radius:48%;color:var(--color-action-primary)}
+    .identity-guided-face>.mi{font-size:var(--icon-lg)}
+    .identity-guide-corner{position:absolute;width:var(--size-huge);height:var(--size-huge);border-color:var(--color-action-primary)}
+    .identity-guide-corner.top-left{top:calc(var(--size-xs) * -1);left:calc(var(--size-xs) * -1);border-top:var(--size-xs) solid;border-left:var(--size-xs) solid;border-top-left-radius:var(--radius-md)}
+    .identity-guide-corner.top-right{top:calc(var(--size-xs) * -1);right:calc(var(--size-xs) * -1);border-top:var(--size-xs) solid;border-right:var(--size-xs) solid;border-top-right-radius:var(--radius-md)}
+    .identity-guide-corner.bottom-left{bottom:calc(var(--size-xs) * -1);left:calc(var(--size-xs) * -1);border-bottom:var(--size-xs) solid;border-left:var(--size-xs) solid;border-bottom-left-radius:var(--radius-md)}
+    .identity-guide-corner.bottom-right{right:calc(var(--size-xs) * -1);bottom:calc(var(--size-xs) * -1);border-right:var(--size-xs) solid;border-bottom:var(--size-xs) solid;border-bottom-right-radius:var(--radius-md)}
+    .identity-private-chip{position:absolute;left:50%;bottom:var(--size-xl);display:flex;align-items:center;gap:var(--size-sm);min-height:var(--control-h-sm);padding:0 var(--size-xl);transform:translateX(-50%);border:1px solid color-mix(in oklab,var(--color-action-primary) 24%,var(--color-neutral-border));border-radius:var(--radius-pill);background:color-mix(in oklab,var(--color-surface-card) 88%,transparent);backdrop-filter:blur(var(--size-xl));-webkit-backdrop-filter:blur(var(--size-xl));font:700 var(--body-xs-size)/var(--body-xs-lh) var(--font-body);white-space:nowrap;color:var(--color-info-primary)}
+    .identity-private-chip>.mi{font-size:var(--icon-xs);color:var(--color-action-primary)}
     .photo-source-intro{position:relative;z-index:1;display:flex;align-items:flex-start;gap:12px;margin-bottom:18px}
     .photo-source-icon{width:54px;height:54px;display:flex;align-items:center;justify-content:center;flex-shrink:0;border:1px solid color-mix(in oklab,var(--color-action-primary) 24%,transparent);border-radius:var(--radius-xl);background:color-mix(in oklab,var(--color-action-primary) 13%,var(--color-surface-card));box-shadow:0 12px 24px -18px color-mix(in oklab,var(--color-action-primary) 72%,transparent);color:var(--color-action-primary)}
     .photo-source-icon .mi{font-size:26px}
@@ -118,18 +130,58 @@
     .photo-source-note .mi{flex-shrink:0;margin-top:1px;font-size:15px;color:var(--color-action-primary)}
     .photo-source-error{position:relative;z-index:1;display:flex;align-items:flex-start;gap:7px;margin:13px -2px -2px;padding:10px 11px;border-radius:var(--radius-xl);background:color-mix(in oklab,var(--color-status-error) 8%,var(--color-surface-card));font:12px/1.4 var(--font-body);color:var(--color-input-text-error)}
     .photo-source-error .mi{flex-shrink:0;font-size:17px}
-    .capture-thumbnail{position:relative;width:100%;aspect-ratio:4/3;max-height:248px;overflow:hidden;border:1px solid var(--color-neutral-border);border-radius:var(--radius-2xl);background:var(--color-surface-secondary)}
     .photo-retake-action{width:100%;margin-top:10px}
     .photo-remove-action{width:100%;margin-top:6px;color:var(--color-status-error)}
     .review-photo-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px}
     .review-photo{position:relative;height:148px;overflow:hidden;border:1px solid var(--color-neutral-border);border-radius:var(--radius-xl);background:var(--color-surface-secondary)}
-    .review-photo-label{position:absolute;left:8px;bottom:8px;display:flex;flex-direction:column;gap:2px;padding:6px 8px;border-radius:9px;background:color-mix(in oklab,var(--color-action-secondary-inverse) 78%,transparent);backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px);font-family:var(--font-body);color:var(--color-neutral-white)}
+    .review-photo-label{position:absolute;left:8px;bottom:8px;display:flex;flex-direction:column;gap:2px;padding:6px 8px;border-radius:9px;background:color-mix(in oklab,var(--color-surface-media-scrim) 78%,transparent);backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px);font-family:var(--font-body);color:var(--color-info-on-media)}
     .review-photo-label strong{font-size:10px;line-height:1.1}
     .review-photo-label small{font-size:8.5px;line-height:1.1;color:color-mix(in oklab,var(--color-neutral-white) 72%,transparent)}
-    .review-photo-edit{position:absolute;top:6px;right:6px;min-width:44px;min-height:44px;padding:0 10px;border:1px solid color-mix(in oklab,var(--color-neutral-white) 22%,transparent);border-radius:var(--radius-xl);background:color-mix(in oklab,var(--color-action-secondary-inverse) 72%,transparent);backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px);font:700 10px/1 var(--font-body);color:var(--color-neutral-white);cursor:pointer}
+    .review-photo-edit{position:absolute;top:6px;right:6px;min-width:44px;min-height:44px;padding:0 10px;border:1px solid color-mix(in oklab,var(--color-info-on-media) 22%,transparent);border-radius:var(--radius-xl);background:color-mix(in oklab,var(--color-surface-media-scrim) 72%,transparent);backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px);font:700 10px/1 var(--font-body);color:var(--color-info-on-media);cursor:pointer}
     .review-section{margin-bottom:18px}
     .review-section-head{display:flex;align-items:center;justify-content:space-between;gap:12px;margin-bottom:8px}
     .review-section-title{font:700 11px/1.2 var(--font-body);letter-spacing:.06em;text-transform:uppercase;color:var(--color-info-secondary)}
+    .review-folio-live{display:flex;flex-direction:column;gap:var(--size-xl)}
+    .review-folio-kicker{font:700 var(--body-xs-size)/var(--body-xs-lh) var(--font-body);letter-spacing:.08em;text-transform:uppercase;color:var(--color-action-primary)}
+    .review-full-address{display:flex;align-items:flex-start;gap:var(--size-sm);margin-top:calc(var(--size-xl) * -1);font:var(--body-xs-size)/var(--body-sm-lh) var(--font-body);color:var(--color-info-secondary)}
+    .review-full-address>.mi{flex-shrink:0;margin-top:var(--size-xs);font-size:var(--icon-xs);color:var(--color-action-primary)}
+    .review-evidence-map{position:relative;height:var(--illustration-sm);overflow:hidden;border:1px solid var(--color-neutral-border);border-radius:var(--radius-2xl);background:var(--color-surface-secondary)}
+    .review-evidence-pin{position:absolute;left:50%;top:52%;transform:translate(-50%,-100%);color:var(--color-action-primary)}
+    .review-evidence-pin>.mi{font-size:var(--icon-lg)}
+    .review-evidence-label{position:absolute;left:var(--size-xl);right:var(--size-xl);bottom:var(--size-xl);display:flex;flex-direction:column;padding:var(--size-sm) var(--size-xl);border:1px solid color-mix(in oklab,var(--color-neutral-border) 70%,transparent);border-radius:var(--radius-xl);background:color-mix(in oklab,var(--color-surface-card) 90%,transparent);backdrop-filter:blur(var(--size-xl));-webkit-backdrop-filter:blur(var(--size-xl));font-family:var(--font-body)}
+    .review-evidence-label strong{font-size:var(--body-xs-size);color:var(--color-info-primary)}
+    .review-evidence-label small{font-size:var(--body-xs-size);color:var(--color-info-secondary)}
+    .review-photo-grid.featured .review-photo{height:var(--illustration-sm)}
+    .review-folio-sheet{overflow:hidden;border:1px solid var(--color-neutral-border);border-radius:var(--radius-2xl);background:var(--color-surface-card)}
+    .review-folio-sheet-head{display:flex;align-items:center;justify-content:space-between;gap:var(--size-xl);padding:var(--size-xl);border-bottom:1px solid var(--color-neutral-border);font:700 var(--body-sm-size)/var(--body-sm-lh) var(--font-body);color:var(--color-info-primary)}
+    .review-folio-row{display:flex;align-items:flex-start;justify-content:space-between;gap:var(--size-xl);padding:var(--size-md) var(--size-xl);border-bottom:1px solid var(--color-neutral-border);font:var(--body-xs-size)/var(--body-sm-lh) var(--font-body)}
+    .review-folio-row>span{color:var(--color-info-secondary)}
+    .review-folio-row>strong{max-width:62%;text-align:right;color:var(--color-info-primary)}
+    .review-edit-application{width:calc(100% - var(--size-xl) * 2);margin:var(--size-xl)}
+    .pending-folio-live{width:100%;height:100%;display:flex;flex-direction:column;box-sizing:border-box;overflow:hidden;background:var(--color-surface-primary)}
+    .pending-folio-scroll{flex:1;overflow-y:auto;padding:calc(var(--size-max) + var(--size-huge)) var(--size-2xl) var(--size-2xl)}
+    .pending-receipt{overflow:hidden;border:1px solid var(--color-neutral-border);border-radius:var(--radius-2xl);background:var(--color-surface-card)}
+    .pending-receipt-head{display:flex;align-items:flex-start;gap:var(--size-xl);padding:var(--size-xl)}
+    .pending-receipt-head>span:last-child{min-width:0;display:flex;flex-direction:column}
+    .pending-receipt-head strong{font:700 var(--body-m-size)/var(--body-m-lh) var(--font-body);color:var(--color-info-primary)}
+    .pending-receipt-head small{font:var(--body-xs-size)/var(--body-sm-lh) var(--font-body);color:var(--color-info-secondary)}
+    .pending-receipt-icon{width:var(--control-h-lg);height:var(--control-h-lg);display:flex;align-items:center;justify-content:center;flex-shrink:0;border-radius:var(--radius-xl);background:var(--color-action-background);color:var(--color-action-primary)}
+    .pending-receipt-divider{height:1px;margin:0 var(--size-xl);background:var(--color-neutral-border)}
+    .pending-status{display:flex;align-items:center;gap:var(--size-xl);padding:var(--size-xl)}
+    .pending-status>.mi{font-size:var(--icon-sm);color:var(--color-status-warning)}
+    .pending-status>span:nth-child(2){min-width:0;display:flex;flex:1;flex-direction:column;font-family:var(--font-body)}
+    .pending-status small{font-size:var(--body-xs-size);color:var(--color-info-secondary)}
+    .pending-status strong{font-size:var(--body-sm-size);color:var(--color-info-primary)}
+    .pending-receipt-list{padding:0 var(--size-xl) var(--size-xl)}
+    .pending-receipt-list>div{display:flex;align-items:flex-start;justify-content:space-between;gap:var(--size-xl);padding:var(--size-sm) 0;font:var(--body-xs-size)/var(--body-sm-lh) var(--font-body)}
+    .pending-receipt-list span{color:var(--color-info-secondary)}
+    .pending-receipt-list strong{max-width:62%;text-align:right;color:var(--color-info-primary)}
+    .pending-receipt>.review-section-head{padding:var(--size-xl) var(--size-xl) 0}
+    .pending-receipt>.review-photo-grid{padding:0 var(--size-xl) var(--size-xl)}
+    .pending-notification-note{display:flex;align-items:flex-start;gap:var(--size-md);margin-top:var(--size-xl);padding:var(--size-xl);border-radius:var(--radius-xl);background:var(--color-surface-secondary);font:var(--body-xs-size)/var(--body-sm-lh) var(--font-body);color:var(--color-info-primary)}
+    .pending-notification-note>.mi{font-size:var(--icon-xs);color:var(--color-action-primary)}
+    .pending-folio-actions{display:flex;flex-direction:column;gap:var(--size-md);padding:var(--size-xl) var(--size-2xl) calc(var(--size-max) + var(--size-sm));background:linear-gradient(180deg,transparent,var(--color-surface-primary) var(--size-xl))}
+    .pending-folio-actions>.btn{width:100%}
     .wizard-cta-feedback{min-height:18px;text-align:center;font:12px/18px var(--font-body);color:var(--color-input-text-error)}
     .outcome-screen>*{max-width:100%;box-sizing:border-box}
     .outcome-title{width:100%;overflow-wrap:anywhere}
@@ -235,6 +287,7 @@ class Component extends DCLogic {
     locationExpanded: false, locationResolved: false, locationLookupFailed: false,
     errors: {}, ctaFeedback: '',
     primaryMasjidId: 'dargha',
+    sheetPreview: 'standard',
     userName: 'Salim Shaikh',
     stepDir: 'fwd',
   };
@@ -242,7 +295,7 @@ class Component extends DCLogic {
   WIZARD_STEPS = ['pincode','searching','claimList','claimEmpty','register','contact','role','maslak','photo','selfie','review'];
   ENTRY_STEPS = ['home','salaah','profile'];
   STEP_PROGRESS = { pincode:1, searching:1, claimList:2, claimEmpty:2, register:2, contact:3, role:4, maslak:5, photo:6, selfie:7, review:8 };
-  SAMPLE = { pincode:'400016', masjidName:'Masjid-e-Noor', address:'Kabutar Khana', city:'Mumbai', stateVal:'Maharashtra', stateAutoFilled:true, pinDropped:true, contactName:'Salim Shaikh', role:'Chairman', maslak:'Ahle Hadith', photoTaken:true, selfieTaken:true, photoSrc:'../images/masjid-camera-preview.png', selfieSrc:'../images/identity-camera-preview.png', photoLocationAttached:true, captureLocationStatus:'ready', capturePlace:'Kabutar Khana, Mumbai', captureCoordinates:'19.0206, 72.8406', captureAccuracy:'±8 m', locationResolved:true, locationLookupFailed:false, locationExpanded:false, cameraMode:null, cameraStage:'rationale', cameraPermission:'unknown', errors:{}, ctaFeedback:'' };
+  SAMPLE = { pincode:'400016', masjidName:'Masjid-e-Noor', address:'Kabutar Khana', city:'Mumbai', stateVal:'Maharashtra', stateAutoFilled:true, pinDropped:true, contactName:'Salim Shaikh', role:'Chairman', maslak:'Ahle Hadith', photoTaken:true, selfieTaken:true, photoSrc:'../../images/masjid-camera-preview.png', selfieSrc:'../../images/identity-camera-preview.png', photoLocationAttached:true, captureLocationStatus:'ready', capturePlace:'Kabutar Khana, Mumbai', captureCoordinates:'19.0206, 72.8406', captureAccuracy:'±8 m', locationResolved:true, locationLookupFailed:false, locationExpanded:false, cameraMode:null, cameraStage:'rationale', cameraPermission:'unknown', errors:{}, ctaFeedback:'' };
 
   get MANAGE() { return window.MASJID_MANAGE_DATA || []; }
   get FOLLOW() { return window.MASJID_FOLLOW_DATA || []; }
@@ -268,7 +321,7 @@ class Component extends DCLogic {
     const map = {
       'entry':0, 'home':0, 'salaah':1, 'profile':2,
       'my-masjids':3, 'my-masjids-profile':3, 'my-masjids-home':5, 'my-masjids-salaah':6,
-      'register':5, 'wizard':5, 'state-sheet':15, 'photo':24, 'photo-camera':26, 'photo-captured':27, 'photo-location':30, 'selfie':31, 'review':37, 'pending':40, 'rejected':41
+      'register':5, 'wizard':5, 'state-sheet':15, 'photo':24, 'photo-camera':26, 'photo-captured':27, 'photo-location':30, 'selfie':31, 'review':37, 'pending':39, 'rejected':40
     };
     if (map[h] !== undefined) this.selectFrame(map[h]);
   }
@@ -283,7 +336,7 @@ class Component extends DCLogic {
     this.setState({ history: h, step: prev !== undefined ? prev : 'home', stepDir: 'back' });
   };
 
-  restart = () => this.setState({ step:'home', sheetOpen:false, sheetTab:'manage', history:[], primaryMasjidId:'dargha', masjidName:'Dargha Masjid 3', stepDir:'back', ...this.resetWizard() });
+  restart = () => this.setState({ step:'home', sheetOpen:false, sheetTab:'manage', sheetPreview:'standard', history:[], primaryMasjidId:'dargha', masjidName:'Dargha Masjid 3', stepDir:'back', ...this.resetWizard() });
 
   // Jump to any storyboard frame's state (index = global frame index).
   selectFrame = (i) => {
@@ -292,8 +345,8 @@ class Component extends DCLogic {
       0: { step:'home', sheetOpen:false },
       1: { step:'salaah', sheetOpen:false },
       2: { step:'profile', sheetOpen:false },
-      3: { step:'profile', sheetOpen:true, sheetTab:'manage' },
-      4: { step:'profile', sheetOpen:true, sheetTab:'follow' },
+      3: { step:'profile', sheetOpen:true, sheetTab:'manage', sheetPreview:'standard', primaryMasjidId:'dargha' },
+      4: { step:'profile', sheetOpen:true, sheetTab:'follow', sheetPreview:'followingOnly', primaryMasjidId:'subhania' },
       5: { ...R, step:'pincode', sheetOpen:false },
       6: { ...R, step:'pincode', errors:{ pincode:'Enter a valid 6-digit pincode.' }, ctaFeedback:'Check the highlighted field and try again.', sheetOpen:false },
       7: { ...R, step:'searching', pincode:'400001', sheetOpen:false },
@@ -301,7 +354,7 @@ class Component extends DCLogic {
       9: { ...R, step:'claimList', branch:'claim', pincode:'400001', selectedMasjidId:1, sheetOpen:false },
       10: { ...R, step:'claimEmpty', pincode:'560001', sheetOpen:false },
       11: { ...S, step:'register', branch:'register', sheetOpen:false },
-      12: { ...R, step:'register', branch:'register', pincode:'400016', errors:{ masjidName:'Enter the masjid name.', address:'Enter an address or nearby landmark.', city:'Enter the city.', stateVal:'Enter the state.', pinDropped:'Pin the masjid entrance on the map.' }, ctaFeedback:'Check the highlighted fields and try again.', sheetOpen:false },
+      12: { ...R, step:'register', branch:'register', pincode:'400016', errors:{ masjidName:'Enter the masjid name.', address:'Enter an address or nearby landmark.', city:'Enter the town or locality.', stateVal:'Enter the state.', pinDropped:'Pin the masjid entrance on the map.' }, ctaFeedback:'Check the highlighted fields and try again.', sheetOpen:false },
       13: { ...S, step:'register', branch:'register', city:'', stateVal:'', locationResolved:false, locationLookupFailed:true, sheetOpen:false },
       14: { ...S, step:'register', branch:'register', locationExpanded:true, sheetOpen:false },
       15: { ...S, step:'register', branch:'register', stateSheetOpen:true, sheetOpen:false },
@@ -314,23 +367,19 @@ class Component extends DCLogic {
       22: { ...S, step:'maslak', branch:'register', maslak:'', errors:{ maslak:'Select the maslak followed by this masjid.' }, ctaFeedback:'Select a maslak to continue.', sheetOpen:false },
       23: { ...S, step:'maslak', branch:'register', maslak:'Ahle Hadith', maslakSheetOpen:true, sheetOpen:false },
       24: { ...S, step:'photo', branch:'register', photoTaken:false, sheetOpen:false },
-      25: { ...S, step:'photo', branch:'register', photoTaken:false, cameraMode:'masjid', cameraPermission:'unknown', sheetOpen:false },
-      26: { ...S, step:'photo', branch:'register', photoTaken:false, cameraMode:'masjid', cameraPermission:'granted', cameraStage:'ready', sheetOpen:false },
-      27: { ...S, step:'photo', branch:'register', photoTaken:false, cameraMode:'masjid', cameraPermission:'granted', cameraStage:'captured', sheetOpen:false },
-      28: { ...S, step:'photo', branch:'register', photoTaken:false, cameraMode:'masjid', cameraPermission:'denied', cameraStage:'denied', sheetOpen:false },
-      29: { ...S, step:'photo', branch:'register', photoTaken:true, photoLocationAttached:true, sheetOpen:false },
-      30: { ...S, step:'photo', branch:'register', photoTaken:false, cameraMode:'masjid', cameraPermission:'granted', cameraStage:'ready', captureLocationStatus:'unavailable', sheetOpen:false },
-      31: { ...S, step:'selfie', branch:'register', selfieTaken:false, errors:{ selfie:'Add an identity photo to continue.' }, ctaFeedback:'', sheetOpen:false },
-      32: { ...S, step:'selfie', branch:'register', selfieTaken:false, cameraMode:'selfie', cameraPermission:'unknown', sheetOpen:false },
-      33: { ...S, step:'selfie', branch:'register', selfieTaken:false, cameraMode:'selfie', cameraPermission:'granted', cameraStage:'ready', sheetOpen:false },
-      34: { ...S, step:'selfie', branch:'register', selfieTaken:false, cameraMode:'selfie', cameraPermission:'granted', cameraStage:'captured', sheetOpen:false },
-      35: { ...S, step:'selfie', branch:'register', selfieTaken:false, cameraMode:'selfie', cameraPermission:'denied', cameraStage:'denied', sheetOpen:false },
-      36: { ...S, step:'selfie', branch:'register', selfieTaken:true, sheetOpen:false },
-      37: { ...S, step:'review', branch:'register', photoTaken:true, photoLocationAttached:true, selfieTaken:true, sheetOpen:false },
-      38: { ...S, step:'review', branch:'register', photoTaken:false, photoSrc:null, photoLocationAttached:false, selfieTaken:true, sheetOpen:false },
-      39: { ...S, step:'submitting', branch:'register', sheetOpen:false },
-      40: { ...S, step:'pending', branch:'register', sheetOpen:false },
-      41: { ...S, step:'rejected', branch:'register', sheetOpen:false }
+      25: { ...S, step:'photo', branch:'register', photoTaken:false, cameraMode:'masjid', cameraPermission:'granted', cameraStage:'ready', sheetOpen:false },
+      26: { ...S, step:'photo', branch:'register', photoTaken:false, cameraMode:'masjid', cameraPermission:'granted', cameraStage:'captured', sheetOpen:false },
+      27: { ...S, step:'photo', branch:'register', photoTaken:true, photoLocationAttached:true, sheetOpen:false },
+      28: { ...S, step:'photo', branch:'register', photoTaken:false, cameraMode:'masjid', cameraPermission:'granted', cameraStage:'ready', captureLocationStatus:'outside', sheetOpen:false },
+      29: { ...S, step:'photo', branch:'register', photoTaken:false, cameraMode:'masjid', cameraPermission:'granted', cameraStage:'ready', captureLocationStatus:'unavailable', sheetOpen:false },
+      30: { ...S, step:'selfie', branch:'register', selfieTaken:false, errors:{}, ctaFeedback:'', sheetOpen:false },
+      31: { ...S, step:'selfie', branch:'register', selfieTaken:false, cameraMode:'selfie', cameraPermission:'granted', cameraStage:'ready', sheetOpen:false },
+      32: { ...S, step:'selfie', branch:'register', selfieTaken:false, cameraMode:'selfie', cameraPermission:'granted', cameraStage:'captured', sheetOpen:false },
+      33: { ...S, step:'selfie', branch:'register', selfieTaken:true, sheetOpen:false },
+      34: { ...S, step:'review', branch:'register', photoTaken:true, photoLocationAttached:true, selfieTaken:true, sheetOpen:false },
+      35: { ...S, step:'submitting', branch:'register', sheetOpen:false },
+      36: { ...S, step:'pending', branch:'register', sheetOpen:false },
+      37: { ...S, step:'rejected', branch:'register', sheetOpen:false }
     };
     clearTimeout(this._t);
     this.setState({ history: [], stepDir: 'fwd', roleSheetOpen:false, maslakSheetOpen:false, stateSheetOpen:false, ...(map[i] || { step:'home', sheetOpen:false }) });
@@ -338,15 +387,19 @@ class Component extends DCLogic {
 
   // ── entry tabs + sheet ──
   selectNav = (i) => { const t = { 0:'home', 3:'salaah', 4:'profile' }[i]; if (t) this.setState({ step:t, sheetOpen:false, history:[] }); };
-  openSheet = () => this.setState({ sheetOpen:true, sheetTab:'manage' });
+  openSheet = () => this.setState({ sheetOpen:true, sheetTab:'manage', sheetPreview:'standard' });
   closeSheet = () => this.setState({ sheetOpen:false });
-  setSheetTab = (t) => this.setState({ sheetTab:t });
+  setSheetTab = (t) => this.setState({ sheetTab:t, sheetPreview:'standard' });
   openPendingRegistration = () => this.goTo('pending');
   selectPrimary = (id) => {
     const m = this.MANAGE.concat(this.FOLLOW).find(x => x.id === id);
     this.setState({ primaryMasjidId:id, masjidName: m ? m.name : this.state.masjidName });
     clearTimeout(this._t); this._t = setTimeout(() => this.setState({ sheetOpen:false }), 420);
   };
+  goMasjidAdmin = () => {
+    window.location.href = '../masjid-operations/Masjid Operations.dc.html#admin';
+  };
+
   goExplore = () => { window.location.href = '../masjid-explore/Explore Masjids.dc.html#map'; };
 
   startWizard = () => this.setState(s => ({ history: [...s.history, s.step], step:'pincode', stepDir:'fwd', sheetOpen:false, ...this.resetWizard() }));
@@ -358,10 +411,11 @@ class Component extends DCLogic {
   reportErrors(errors, feedback = 'Check the highlighted field and try again.') {
     this.setState({ errors, ctaFeedback:feedback });
   }
-  resolvedPlace(pincode) {
-    if (pincode.startsWith('400')) return { city:'Mumbai', stateVal:'Maharashtra' };
-    if (pincode.startsWith('560')) return { city:'Bengaluru', stateVal:'Karnataka' };
-    return null;
+  localityForPinnedEntrance(pincode) {
+    if (pincode === '577535') return 'Molakalmuru';
+    if (pincode.startsWith('400')) return 'Mahim';
+    if (pincode.startsWith('560')) return 'Bengaluru';
+    return '';
   }
   stateForPincode(pincode) {
     if (!/^\d{6}$/.test(pincode)) return null;
@@ -407,6 +461,9 @@ class Component extends DCLogic {
     const mappedState = this.stateForPincode(pincode);
     this.setState(s => ({
       pincode,
+      address:'',
+      city:'',
+      pinDropped:false,
       stateVal:mappedState || (s.stateAutoFilled ? '' : s.stateVal),
       stateAutoFilled:!!mappedState,
       errors:{ ...s.errors, pincode:undefined, stateVal:mappedState ? undefined : s.errors.stateVal },
@@ -417,20 +474,30 @@ class Component extends DCLogic {
   onAddressChange = (e) => this.setState(s => ({ address:e.target.value, errors:{ ...s.errors, address:undefined }, ctaFeedback:'' }));
   onCityChange = (e) => this.setState(s => ({ city:e.target.value, errors:{ ...s.errors, city:undefined }, ctaFeedback:'' }));
   onContactNameChange = (e) => this.setState(s => ({ contactName:e.target.value, errors:{ ...s.errors, contactName:undefined }, ctaFeedback:'' }));
-  togglePin = () => this.setState(s => ({ pinDropped:true, errors:{ ...s.errors, pinDropped:undefined }, ctaFeedback:'' }));
+  togglePin = () => this.setState(s => ({
+    pinDropped:true,
+    city:s.city || this.localityForPinnedEntrance(s.pincode),
+    errors:{ ...s.errors, pinDropped:undefined, city:undefined },
+    ctaFeedback:''
+  }));
   toggleLocationExpanded = () => this.setState(s => ({ locationExpanded:!s.locationExpanded }));
-  recenterLocation = () => this.setState(s => ({ pinDropped:true, errors:{ ...s.errors, pinDropped:undefined }, ctaFeedback:'' }));
+  recenterLocation = () => this.setState(s => ({
+    pinDropped:true,
+    city:s.city || this.localityForPinnedEntrance(s.pincode),
+    errors:{ ...s.errors, pinDropped:undefined, city:undefined },
+    ctaFeedback:''
+  }));
   selectMasjid = (id) => this.setState(s => ({ selectedMasjidId:id, errors:{ ...s.errors, claim:undefined }, ctaFeedback:'' }));
   goRegisterManually = () => {
-    const place = this.resolvedPlace(this.state.pincode);
+    const mappedState = this.stateForPincode(this.state.pincode);
     this.setState(s => ({
       branch:'register',
       role:s.role || 'Chairman',
-      city:place ? place.city : s.city,
-      stateVal:place ? place.stateVal : s.stateVal,
-      stateAutoFilled:!!place,
-      locationResolved:!!place,
-      locationLookupFailed:!place,
+      city:'',
+      stateVal:mappedState || s.stateVal,
+      stateAutoFilled:!!mappedState,
+      locationResolved:false,
+      locationLookupFailed:false,
       errors:{},
       ctaFeedback:'',
       history:[...s.history, s.step],
@@ -451,7 +518,8 @@ class Component extends DCLogic {
   openCamera(mode) {
     this.setState({
       cameraMode:mode,
-      cameraStage:this.state.cameraPermission === 'granted' ? 'ready' : 'rationale',
+      cameraPermission:'granted',
+      cameraStage:'ready',
       captureLocationStatus:mode === 'masjid' ? 'ready' : this.state.captureLocationStatus
     });
   }
@@ -459,13 +527,10 @@ class Component extends DCLogic {
   removePhoto = () => this.setState({ photoTaken:false, photoSrc:null, photoLocationAttached:false });
   takeSelfie = () => this.openCamera('selfie');
   retakeSelfie = () => this.setState({ selfieTaken:false, selfieSrc:null });
-  allowCamera = () => this.setState({ cameraPermission:'granted', cameraStage:'ready' });
-  denyCamera = () => this.setState({ cameraPermission:'denied', cameraStage:'denied' });
-  openCameraSettings = () => this.setState({ cameraPermission:'granted', cameraStage:'ready' });
   closeCamera = () => this.setState({ cameraMode:null, cameraStage:'rationale' });
   capturePhoto = () => this.setState(s => (
-    s.cameraMode === 'masjid' && s.captureLocationStatus === 'unavailable'
-      ? { ctaFeedback:'Turn on location and retry before taking the masjid photo.' }
+    s.cameraMode === 'masjid' && ['unavailable', 'outside'].includes(s.captureLocationStatus)
+      ? { ctaFeedback:s.captureLocationStatus === 'outside' ? 'Move closer to the entrance pin before taking the photo.' : 'Turn on location and retry before taking the masjid photo.' }
       : { cameraStage:'captured', photoLocationAttached:s.cameraMode === 'masjid' ? true : s.photoLocationAttached, ctaFeedback:'' }
   ));
   retryCaptureLocation = () => this.setState({ captureLocationStatus:'ready', ctaFeedback:'' });
@@ -473,12 +538,14 @@ class Component extends DCLogic {
   useCapture = () => this.setState(s => ({
     photoTaken:s.cameraMode === 'masjid' ? true : s.photoTaken,
     selfieTaken:s.cameraMode === 'selfie' ? true : s.selfieTaken,
-    photoSrc:s.cameraMode === 'masjid' ? '../images/masjid-camera-preview.png' : s.photoSrc,
-    selfieSrc:s.cameraMode === 'selfie' ? '../images/identity-camera-preview.png' : s.selfieSrc,
+    photoSrc:s.cameraMode === 'masjid' ? '../../images/masjid-camera-preview.png' : s.photoSrc,
+    selfieSrc:s.cameraMode === 'selfie' ? '../../images/identity-camera-preview.png' : s.selfieSrc,
     photoLocationAttached:s.cameraMode === 'masjid' ? true : s.photoLocationAttached,
     cameraMode:null,
     cameraStage:'rationale',
-    errors:s.cameraMode === 'selfie' ? { ...s.errors, selfie:undefined } : s.errors,
+    errors:s.cameraMode === 'selfie'
+      ? { ...s.errors, selfie:undefined }
+      : { ...s.errors, photo:undefined },
     ctaFeedback:''
   }));
   flipCamera = () => {};
@@ -526,7 +593,7 @@ class Component extends DCLogic {
         const errors = {};
         if (s.masjidName.trim().length < 3) errors.masjidName = 'Enter the masjid name.';
         if (!s.address.trim()) errors.address = 'Enter an address or nearby landmark.';
-        if (!s.city.trim()) errors.city = 'Enter the city.';
+        if (!s.city.trim()) errors.city = 'Enter the town or locality.';
         if (!s.stateVal.trim()) errors.stateVal = 'Enter the state.';
         if (!/^\d{6}$/.test(s.pincode)) errors.pincode = 'Enter a valid 6-digit pincode.';
         if (!s.pinDropped) errors.pinDropped = 'Pin the masjid entrance on the map.';
@@ -549,9 +616,13 @@ class Component extends DCLogic {
         this.setState({ errors:{}, ctaFeedback:'' });
         this.goTo('photo');
       }};
-      case 'photo': return { label:'Continue', disabled:false, onClick: () => this.goTo('selfie') };
+      case 'photo': return { label:'Continue', disabled:false, onClick: () => {
+        if (!s.photoTaken) { this.takePhoto(); return; }
+        this.setState({ errors:{}, ctaFeedback:'' });
+        this.goTo('selfie');
+      }};
       case 'selfie': return { label:'Continue', disabled:false, onClick: () => {
-        if (!s.selfieTaken) { this.setState({ errors:{ selfie:'Add an identity photo to continue.' }, ctaFeedback:'' }); return; }
+        if (!s.selfieTaken) { this.takeSelfie(); return; }
         this.setState({ errors:{}, ctaFeedback:'' });
         this.goTo('review');
       }};
@@ -579,23 +650,35 @@ class Component extends DCLogic {
       role:s.roleSheetOpen ? 20 : ((s.errors || {}).role ? 19 : 18),
       maslak:s.maslakSheetOpen ? 23 : ((s.errors || {}).maslak ? 22 : 21),
       photo:s.cameraMode === 'masjid'
-        ? (s.captureLocationStatus === 'unavailable' ? 30 : (s.cameraPermission === 'denied' ? 28 : (s.cameraPermission !== 'granted' ? 25 : (s.cameraStage === 'captured' ? 27 : 26))))
-        : (s.photoTaken ? 29 : 24),
+        ? (s.captureLocationStatus === 'outside' ? 28 : (s.captureLocationStatus === 'unavailable' ? 29 : (s.cameraStage === 'captured' ? 26 : 25)))
+        : (s.photoTaken ? 27 : 24),
       selfie:s.cameraMode === 'selfie'
-        ? (s.cameraPermission === 'denied' ? 35 : (s.cameraPermission !== 'granted' ? 32 : (s.cameraStage === 'captured' ? 34 : 33)))
-        : (s.selfieTaken ? 36 : 31),
-      review:s.photoTaken ? 37 : 38
+        ? (s.cameraStage === 'captured' ? 32 : 31)
+        : (s.selfieTaken ? 33 : 30),
+      review:34
     };
-    const outcomeIdxMap = { submitting:39, pending:40, rejected:41 };
+    const outcomeIdxMap = { submitting:35, pending:36, rejected:37 };
     let entryActive = -1, sheetActive = -1, wizardActive = -1, outcomeActive = -1;
     if (isEntry && s.sheetOpen) sheetActive = s.sheetTab === 'follow' ? 4 : 3;
     else if (isEntry) entryActive = { home:0, salaah:1, profile:2 }[s.step];
     else if (isWizard) wizardActive = wizardIdxMap[s.step];
     else if (isOutcome) outcomeActive = outcomeIdxMap[s.step];
 
-    const manageTiles = this.MANAGE.map(m => ({ ...m, isPrimary: m.id === s.primaryMasjidId, onSelect: () => this.selectPrimary(m.id) }));
-    const followRows = this.FOLLOW.map((f) => ({ ...f, checked: f.id === s.primaryMasjidId, onToggle: () => this.selectPrimary(f.id) }));
-    const registration = this.REGISTRATION ? { ...this.REGISTRATION, onOpen: this.openPendingRegistration } : null;
+    const followingOnlyPreview = s.sheetPreview === 'followingOnly';
+    const manageTiles = followingOnlyPreview
+      ? []
+      : this.MANAGE.map(m => ({
+        ...m,
+        isPrimary: m.id === s.primaryMasjidId,
+        onSelect: () => this.selectPrimary(m.id),   // "Use timings" — the primary-masjid choice
+        onManage: this.goMasjidAdmin,               // the tile itself opens that masjid's console
+      }));
+    const followRows = this.FOLLOW
+      .filter((_, index) => !followingOnlyPreview || index === 0)
+      .map((f) => ({ ...f, checked: f.id === s.primaryMasjidId, onToggle: () => this.selectPrimary(f.id) }));
+    const registration = !followingOnlyPreview && this.REGISTRATION
+      ? { ...this.REGISTRATION, onOpen: this.openPendingRegistration }
+      : null;
     const claimResults = this.CLAIM.map(m => ({ ...m, selected: s.selectedMasjidId === m.id, onSelect: () => this.selectMasjid(m.id) }));
     const stateOptions = this.STATES.map(stateVal => ({ name:stateVal, selected: s.stateVal === stateVal, onSelect: () => this.selectState(stateVal) }));
     const roleOptions = this.ROLES.map(r => ({ name:r, selected: s.role === r, onSelect: () => this.selectRole(r) }));
@@ -604,7 +687,9 @@ class Component extends DCLogic {
     const masjidLocked = s.branch === 'claim';
     const sel = this.CLAIM.find(m => m.id === s.selectedMasjidId);
     const masjidSummaryName = masjidLocked ? (sel ? sel.name : '') : (s.masjidName || '—');
-    const masjidSummaryAddr = masjidLocked ? (sel ? sel.addr : '') : ([s.address, s.city, s.stateVal].filter(Boolean).join(', ') || '—');
+    const masjidSummaryAddr = masjidLocked
+      ? (sel ? sel.addr : '')
+      : ([s.address, s.city, s.stateVal, s.pincode].filter(Boolean).join(', ') || '—');
     const cta = this.ctaFor(s.step);
 
     return {
@@ -658,7 +743,7 @@ class Component extends DCLogic {
         cameraMode:s.cameraMode, cameraStage:s.cameraStage, cameraPermission:s.cameraPermission,
         captureLocationStatus:s.captureLocationStatus,
         capturePlace:s.capturePlace, captureCoordinates:s.captureCoordinates, captureAccuracy:s.captureAccuracy,
-        onAllowCamera:this.allowCamera, onOpenCameraSettings:this.openCameraSettings, onCloseCamera:this.closeCamera,
+        onCloseCamera:this.closeCamera,
         onCapture:this.capturePhoto, onRetakeCamera:this.retakeCamera, onUseCapture:this.useCapture,
         onRetryCaptureLocation:this.retryCaptureLocation, onFlipCamera:this.flipCamera, onToggleFlash:this.toggleFlash,
         masjidLocked, masjidSummaryName, masjidSummaryAddr, role: s.role, maslak: s.maslak,
@@ -666,7 +751,8 @@ class Component extends DCLogic {
       },
 
       outcomeData: {
-        variant: s.step, contactName: s.contactName, masjidSummaryName, role: s.role, submittedDate: '5 Jul 2026',
+        variant: s.step, contactName: s.contactName, masjidSummaryName, masjidSummaryAddr, role: s.role, submittedDate: '5 Jul 2026',
+        photoSrc:s.photoSrc, selfieSrc:s.selfieSrc,
         onDone: this.doneHome, onUpdate: this.updateDetails, onReapply: this.reapply, onContactSupport: this.contactSupport, onTogglePreview: this.togglePreview
       }
     };
