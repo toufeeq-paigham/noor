@@ -1070,8 +1070,8 @@
     "semantic_hash": ""
   },
   "src/masjid-operations/storyboards/screens.jsx": {
-    "mtime": 1785429303.0690875,
-    "ast_hash": "c6bc87774c72d0273a8eafea63c0c412",
+    "mtime": 1785482788.2622924,
+    "ast_hash": "33021f220cf35e58cc03959291f9ad6c",
     "semantic_hash": ""
   },
   "docs/ui-ux-upgrade/DECISIONS.md": {
@@ -1080,8 +1080,8 @@
     "semantic_hash": ""
   },
   "src/masjid-operations/Masjid Operations.dc.html": {
-    "mtime": 1785429317.3735905,
-    "ast_hash": "c774223468365a66f1b6631a5af8524d",
+    "mtime": 1785482630.650079,
+    "ast_hash": "1efda248d79f55e977947549d701177b",
     "semantic_hash": ""
   },
   "src/_ds/icons/account_balance.svg": {
@@ -1565,8 +1565,8 @@
     "semantic_hash": ""
   },
   "src/masjid-operations/storyboards/ops-state.js": {
-    "mtime": 1785429536.1569197,
-    "ast_hash": "35df5b167e19633161e03cc2c7e0454e",
+    "mtime": 1785482551.1918092,
+    "ast_hash": "63fcbee61077af6fd42c9553c30155a1",
     "semantic_hash": ""
   },
   "src/_ds/icons/mic.svg": {
@@ -1602,6 +1602,11 @@
   "src/_ds/icons/visibility_off.svg": {
     "mtime": 1785333721.7306669,
     "ast_hash": "4adcf7effc8eac7d80860548c2eaf244",
+    "semantic_hash": ""
+  },
+  "images/salaah-board-sample.jpeg": {
+    "mtime": 1785482523.4410708,
+    "ast_hash": "984b5867041a0fc6205cf317be080ffe",
     "semantic_hash": ""
   }
 }

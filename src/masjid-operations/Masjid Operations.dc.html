@@ -125,6 +125,38 @@
     .timings-published-grid small{font-family:var(--font-body);font-size:9.5px;white-space:nowrap;color:var(--color-info-secondary)}
     .timings-published-grid>span.changed{background:color-mix(in oklab,var(--color-status-warning) 18%,transparent)}
     .timings-published-grid>span.changed small{text-decoration:line-through}
+    /* ── Scan-the-board (page chrome over the shared .camera-stage kit) ── */
+    /* The sweep is the "something is happening" signal while OCR runs on the frozen frame. */
+    .scan-reading{position:absolute;inset:0;display:flex;align-items:flex-end;justify-content:center;
+      padding-bottom:18px;background:color-mix(in oklab,var(--color-neutral-black) 34%,transparent)}
+    .scan-sweep{position:absolute;left:8px;right:8px;top:0;height:2px;border-radius:var(--radius-xs);
+      background:var(--color-action-primary);box-shadow:0 0 14px 2px color-mix(in oklab,var(--color-action-primary) 70%,transparent);
+      animation:scan-sweep var(--motion-scan-sweep) ease-in-out infinite alternate}
+    @keyframes scan-sweep{from{transform:translateY(8px)}to{transform:translateY(calc(100cqh - 16px))}}
+    .camera-viewport{container-type:size}
+    .scan-reading-label{display:flex;align-items:center;gap:var(--size-md);padding:8px 14px;
+      border-radius:var(--radius-xl);background:color-mix(in oklab,var(--color-neutral-black) 72%,transparent);
+      font:700 12px/1 var(--font-body);color:var(--color-neutral-white)}
+    .scan-stage-foot{display:flex;justify-content:center;padding:0 20px 34px}
+    .scan-stage-foot .btn-link{color:var(--color-neutral-white)}
+    .scan-failed{flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;
+      gap:var(--size-xl);padding:24px 28px 40px;text-align:center}
+    .scan-failed>.mi{font-size:44px;color:var(--color-action-primary)}
+    .scan-failed strong{font-family:var(--font-title);font-size:22px;font-weight:400}
+    .scan-failed>span{font-family:var(--font-body);font-size:13.5px;line-height:1.55;
+      color:color-mix(in oklab,var(--color-neutral-white) 76%,transparent)}
+    .scan-failed .btn-filled{width:100%;margin-top:var(--size-md)}
+    .scan-failed .btn-link{color:var(--color-neutral-white)}
+    /* What the scan filled in and, louder, what it missed. Success and partial share the
+       construction; the icon and copy carry the difference. */
+    .scan-result-banner{display:flex;align-items:center;gap:var(--size-lg);padding:var(--size-xl);
+      box-sizing:border-box;border:1px solid color-mix(in oklab,var(--color-action-primary) 40%,transparent);
+      border-radius:var(--radius-card);background:var(--gradient-emerald),var(--color-surface-card);
+      font-family:var(--font-body);font-size:12.5px;line-height:1.5;color:var(--color-info-primary)}
+    .scan-result-banner>.mi{flex-shrink:0;font-size:var(--icon-md);color:var(--color-action-primary)}
+    .scan-result-banner>div{flex:1;min-width:0}
+    @media(prefers-reduced-motion:reduce){.scan-sweep{animation:none;top:50%}}
+
     /* `.next` — the prayer the console is counting down to. Only the hub sets it; the Salaah
        editor marks changes instead. */
     .timings-published-grid>span.next{background:var(--color-action-background)}
@@ -552,6 +584,21 @@ class Component extends DCLogic {
   // Publishing is public and unreviewed, so the confirmation is the only pause between an
   // edit and every follower seeing it. Keep it.
   onSubmitSalaah = () => this.patch({ confirm: { kind: 'publishSalaah' } });
+  // ── Scan the board ──
+  onOpenScan = () => this.patch({ scanStage: 'camera' });
+  onCloseScan = () => this.patch({ scanStage: null });
+  onScanRetry = () => this.patch({ scanStage: 'camera' });
+  onScanCapture = () => {
+    this.patch({ scanStage: 'reading' });
+    // The POC's stand-in for on-device OCR: a partial read, because that is the state the
+    // design has to be honest about — the banner names what still needs typing.
+    this.after(1800, () => this.patch({
+      scanStage: null,
+      scanApplied: 'partial',
+      salaahDirty: true,
+    }));
+  };
+
   onOpenHistory = () => this.patch({ salaahHistoryOpen: true });
   onCloseHistory = () => this.patch({ salaahHistoryOpen: false });
   // "Done" after publishing returns to the Salaah tab of the console.
@@ -563,6 +610,7 @@ class Component extends DCLogic {
       salaahDirty: false,
       expandedPrayer: null,
       salaahNote: '',
+      scanApplied: null,
       stepDir: 'back',
     });
   };
@@ -758,6 +806,8 @@ class Component extends DCLogic {
       onTogglePrayer: this.onTogglePrayer, onOpenMenu: this.onOpenMenu, onConfigChange: this.onConfigChange,
       onNoteChange: this.onNoteChange, onSubmitSalaah: this.onSubmitSalaah,
       onOpenHistory: this.onOpenHistory, onCloseHistory: this.onCloseHistory,
+      onOpenScan: this.onOpenScan, onCloseScan: this.onCloseScan,
+      onScanCapture: this.onScanCapture, onScanRetry: this.onScanRetry,
       onDone: this.onDone,
       onMessage: this.onMessage, onNextStep: this.onNextStep, onGoToStep: this.onGoToStep,
       onOpenRecorder: this.onOpenRecorder, onStartRecording: this.onStartRecording,

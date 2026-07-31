@@ -1596,10 +1596,14 @@ function PrayerCard({ name, label, config, expanded, editable, changed, openMenu
 // publish is attributed and kept in the history, which is the only thing standing between a
 // wrong Fajr time and nobody noticing — so the record is given real estate, not a footnote.
 function SalaahTab({ data }) {
-  const { salaah = {}, onRetry, onTogglePrayer, onOpenMenu, onConfigChange, onNoteChange, onSubmitSalaah, onOpenHistory, onDone } = data;
+  const {
+    salaah = {}, onRetry, onTogglePrayer, onOpenMenu, onConfigChange, onNoteChange,
+    onSubmitSalaah, onOpenHistory, onDone,
+    onOpenScan, onCloseScan, onScanCapture, onScanRetry,
+  } = data;
   const {
     status = 'loaded', config = OPS_SALAAH_CONFIG, expanded, note = '',
-    history = [], saving, dirty,
+    history = [], saving, dirty, scanStage, scanApplied,
   } = salaah;
   const openMenu = data.openMenu;
   const lastChange = history[0] || null;
@@ -1678,6 +1682,38 @@ function SalaahTab({ data }) {
           </Card>
         ) : null}
 
+        {/* The fast path: photograph the LED board instead of typing six times. OCR is an
+            accelerator in front of this editor, never a gate — everything it fills stays
+            editable below, and the camera offers a typed escape at every step. */}
+        {!scanApplied ? (
+          <Card
+            onClick={onOpenScan}
+            ariaLabel="Scan the timing board — the times fill in for you to check"
+            style={{ display: 'flex', alignItems: 'center', gap: 12 }}
+          >
+            <IconTile icon="filter_center_focus" size={40} tone="accent" />
+            <div style={{ flex: 1, minWidth: 0 }}>
+              <div style={{ fontSize: 14, fontWeight: 700 }}>Scan the timing board</div>
+              <div style={{ fontSize: 12, marginTop: 2, lineHeight: 1.45, color: 'var(--color-info-secondary)' }}>
+                Photograph the masjid's board — the times fill in below for you to check.
+              </div>
+            </div>
+            <span className="mi" style={{ fontSize: 20, color: 'var(--color-info-faint)' }} data-i="chevron_right" aria-hidden="true"></span>
+          </Card>
+        ) : (
+          /* What the scan did, said plainly — and what it did NOT read, named. LED boards
+             defeat OCR often enough that the misses are the headline, not a footnote. */
+          <div className="scan-result-banner" role="status">
+            <span className="mi" data-i={scanApplied === 'full' ? 'check_circle' : 'error'} aria-hidden="true"></span>
+            <div>
+              {scanApplied === 'full'
+                ? 'Read all 6 prayers from the board. Check each time below before publishing.'
+                : 'Read 4 of 6 prayers — Zohar and Maghrib could not be read. Set them below.'}
+            </div>
+            <button className="btn btn-link" onClick={onOpenScan}>Rescan</button>
+          </div>
+        )}
+
         <SectionLabel hint="Changes go live for everyone following this masjid as soon as you publish.">
           Configure each salaah
         </SectionLabel>
@@ -1733,6 +1769,82 @@ function SalaahTab({ data }) {
         })()}
         onClick={onSubmitSalaah}
       />
+
+      {scanStage ? (
+        <ScanBoardStage
+          stage={scanStage}
+          onClose={onCloseScan}
+          onCapture={onScanCapture}
+          onRetry={onScanRetry}
+        />
+      ) : null}
+    </div>
+  );
+}
+
+// ── Scan-the-board stage — the camera-stage kit pointed at an LED board ──
+// Three states in one surface: framing the board, reading it (a scan sweep over the frozen
+// capture), and the honest failure that hands over to typing. The typed escape is on every
+// state because seven-segment boards defeat OCR often enough to design for it.
+function ScanBoardStage({ stage, onClose, onCapture, onRetry }) {
+  const reading = stage === 'reading';
+  const failed = stage === 'failed';
+
+  return (
+    <div className="camera-stage">
+      <div className="camera-topbar">
+        <button className="ib ib-tonal camera-control" aria-label="Close scanner" onClick={onClose}>
+          <span className="mi" data-i="close"></span>
+        </button>
+        <div className="camera-title">
+          {failed ? 'Couldn’t read the board' : 'Scan the timing board'}
+          {!failed ? (
+            <small>{reading ? 'Hold still…' : 'Fill the frame with the board, square-on'}</small>
+          ) : null}
+        </div>
+        <span style={{ width: 48, flexShrink: 0 }}></span>
+      </div>
+
+      {failed ? (
+        <div className="scan-failed">
+          <span className="mi" data-i="filter_center_focus" aria-hidden="true"></span>
+          <strong>The board didn’t read</strong>
+          <span>
+            LED boards can defeat the camera — glare, angle or a scrolling display. Get closer
+            and square-on, or just type the timings; the editor is exactly one step away.
+          </span>
+          <button className="btn btn-filled lg" onClick={onRetry}>Try again</button>
+          <button className="btn btn-link" onClick={onClose}>Type the timings instead</button>
+        </div>
+      ) : (
+        <React.Fragment>
+          <div className="camera-viewport">
+            <img src="../../images/salaah-board-sample.jpeg" alt="" />
+            <div className="camera-guide"></div>
+            {reading ? (
+              <div className="scan-reading" role="status" aria-label="Reading the board">
+                <div className="scan-sweep"></div>
+                <div className="scan-reading-label">
+                  <span className="btn-spinner" aria-hidden="true"></span>Reading the board…
+                </div>
+              </div>
+            ) : null}
+          </div>
+
+          <div className="camera-controls">
+            <span></span>
+            {reading
+              ? <span className="camera-control" style={{ width: 72 }}></span>
+              : <button className="camera-shutter" aria-label="Capture the board" onClick={onCapture}></button>}
+            <span></span>
+          </div>
+          <div className="scan-stage-foot">
+            {!reading ? (
+              <button className="btn btn-link" onClick={onClose}>Type the timings instead</button>
+            ) : null}
+          </div>
+        </React.Fragment>
+      )}
     </div>
   );
 }

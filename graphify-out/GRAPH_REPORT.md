@@ -1,16 +1,16 @@
-# Graph Report - noor  (2026-07-30)
+# Graph Report - noor  (2026-07-31)
 
 ## Corpus Check
-- 108 files · ~640,584 words
+- 108 files · ~643,653 words
 - Verdict: corpus is large enough that graph structure adds value.
 
 ## Summary
-- 1247 nodes · 1780 edges · 93 communities (57 shown, 36 thin omitted)
+- 1248 nodes · 1781 edges · 93 communities (57 shown, 36 thin omitted)
 - Extraction: 90% EXTRACTED · 10% INFERRED · 0% AMBIGUOUS · INFERRED: 180 edges (avg confidence: 0.52)
 - Token cost: 0 input · 0 output
 
 ## Graph Freshness
-- Built from commit: `64c98c58`
+- Built from commit: `c8240ba3`
 - Run `git rev-parse HEAD` and compare to check if the graph is stale.
 - Run `graphify update .` after code changes (no API cost).
 
@@ -289,7 +289,7 @@ Cohesion: 0.29
 Nodes (6): hosting, headers, ignore, public, site, trailingSlash
 
 ### Community 69 - "masjid-operations/storyboards/screens.jsx"
-Cohesion: 0.05
+Cohesion: 0.04
 Nodes (14): CONSOLE_DESTINATIONS, IQAMA_OPTIONS, OPS_CAPABILITIES, OPS_FOLLOWERS, OPS_INVITATIONS, OPS_MANAGED, OPS_MASJID, OPS_MEMBERS (+6 more)
 
 ### Community 70 - "Noor UI/UX Upgrade Decisions"
@@ -365,11 +365,11 @@ Nodes (25): AndroidPhone(), AndroidTabletL(), AndroidTabletP(), FrameProps, IPad
 _Questions this graph is uniquely positioned to answer:_
 
 - **Why does `react` connect `react` to `home/storyboards/screens.jsx`, `support.js`, `zakaat/storyboards/screens.jsx`, `useNoorDark`, `dependencies`, `@dnd-kit/core`, `describeConfig`, `inspector.tsx`, `toolbar.tsx`, `types.ts`, `slide-canvas.tsx`?**
-  _High betweenness centrality (0.100) - this node is a cross-community bridge._
+  _High betweenness centrality (0.101) - this node is a cross-community bridge._
 - **Why does `dependencies` connect `dependencies` to `react`, `devDependencies`?**
   _High betweenness centrality (0.039) - this node is a cross-community bridge._
 - **Why does `ConsoleHome()` connect `describeConfig` to `screenshot-editor.tsx`, `react`, `masjid-operations/storyboards/screens.jsx`?**
-  _High betweenness centrality (0.031) - this node is a cross-community bridge._
+  _High betweenness centrality (0.032) - this node is a cross-community bridge._
 - **What connects `$schema`, `style`, `rsc` to the rest of the system?**
   _551 weakly-connected nodes found - possible documentation gaps or missing edges._
 - **Should `tokenKinds` be split into smaller, more focused modules?**

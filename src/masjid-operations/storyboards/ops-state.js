@@ -55,6 +55,11 @@
     salaahDirty: false,
     salaahSaving: false,
     salaahHistoryOpen: false,
+    // Scan-the-board flow (console TRD §6). `scanStage` owns the full-screen stage;
+    // `scanApplied` marks that the working config came from a scan, so the editor shows the
+    // check-before-publishing banner ('full' read every prayer, 'partial' names the misses).
+    scanStage: null, // null | 'camera' | 'reading' | 'failed'
+    scanApplied: null, // null | 'full' | 'partial'
 
     // The compose wizard's own state. `step` is the screen, `recorder` / `picker` / `crop`
     // are its full-screen stages, `audience` is the PostTarget.
@@ -192,6 +197,8 @@
         salaahEdited: !!s.salaahEdited,
         salaahSaving: !!s.salaahSaving,
         salaahHistoryOpen: !!s.salaahHistoryOpen,
+        scanStage: s.scanStage || null,
+        scanApplied: s.scanApplied || null,
       });
     }
     if (scope.post) {
@@ -300,6 +307,24 @@
     });
   };
 
+  // What a successful board scan yields: every prayer read as FIXED with iqama derived from
+  // the azaan/jamaat pair. The partial variant leaves Zohar and Maghrib untouched — the two
+  // the parser most often loses to glare on real LED boards.
+  const scannedConfig = (partial) => {
+    const base = window.OPS_SALAAH_CONFIG;
+    if (!base) return null;
+    const read = {
+      fajr: { variant: 'FIXED', salaahTime: '04:45', iqamaDelay: 20 },
+      zohar: { variant: 'FIXED', salaahTime: '12:30', iqamaDelay: 30 },
+      asr: { variant: 'FIXED', salaahTime: '16:45', iqamaDelay: 15 },
+      maghrib: { variant: 'FIXED', salaahTime: '18:13', iqamaDelay: 5 },
+      isha: { variant: 'FIXED', salaahTime: '19:45', iqamaDelay: 15 },
+      jumah: { variant: 'FIXED', salaahTime: '12:30', iqamaDelay: 60 },
+    };
+    if (partial) { delete read.zohar; delete read.maghrib; }
+    return Object.assign({}, base, read);
+  };
+
   const activeMasjid = (state) => {
     const base = window.OPS_MASJID || {};
     const managed = window.OPS_MANAGED || [];
@@ -400,7 +425,11 @@
 
       salaah: {
         status: s.salaahStatus,
-        config: s.salaahConfig || (s.salaahEdited ? editedConfig() : window.OPS_SALAAH_CONFIG),
+        config: s.salaahConfig
+          || (s.scanApplied ? scannedConfig(s.scanApplied === 'partial') : null)
+          || (s.salaahEdited ? editedConfig() : window.OPS_SALAAH_CONFIG),
+        scanStage: s.scanStage,
+        scanApplied: s.scanApplied,
         expanded: s.expandedPrayer,
         note: s.salaahNote,
         history: timingHistory,
@@ -493,6 +522,11 @@
     { group: 'salaah', name: 'Change history', screen: 'console', state: { route: 'console', dest: 'salaah', salaahHistoryOpen: true } },
     // Anyone can reach this screen, so the non-committee case is a first-class state.
     { group: 'salaah', name: 'Timings · not committee', screen: 'console', state: { route: 'console', dest: 'salaah', role: 'MEMBER', caps: [] } },
+    { group: 'salaah', name: 'Scan · camera', screen: 'console', state: { route: 'console', dest: 'salaah', scanStage: 'camera' } },
+    { group: 'salaah', name: 'Scan · reading the board', screen: 'console', state: { route: 'console', dest: 'salaah', scanStage: 'reading' } },
+    { group: 'salaah', name: 'Scan · every prayer read', screen: 'console', state: { route: 'console', dest: 'salaah', scanApplied: 'full', salaahDirty: true } },
+    { group: 'salaah', name: 'Scan · read 4 of 6', screen: 'console', state: { route: 'console', dest: 'salaah', scanApplied: 'partial', salaahDirty: true } },
+    { group: 'salaah', name: 'Scan · could not read', screen: 'console', state: { route: 'console', dest: 'salaah', scanStage: 'failed' } },
     { group: 'salaah', name: 'Publish confirmation', screen: 'console', state: { route: 'console', dest: 'salaah', salaahDirty: true, salaahEdited: true, confirm: { kind: 'publishSalaah' } } },
     { group: 'salaah', name: 'Publishing', screen: 'console', state: { route: 'console', dest: 'salaah', salaahDirty: true, salaahSaving: true } },
     { group: 'salaah', name: 'Published', screen: 'console', state: { route: 'console', dest: 'salaah', salaahStatus: 'saved' } },
