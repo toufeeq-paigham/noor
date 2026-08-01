@@ -130,7 +130,7 @@
   <div class="cp-card">
     <div class="cp-head">
       <div class="cp-h">Manage entry</div>
-      <div class="cp-sub">The door into the masjid console, for a member of its committee. A card rather than a settings row: the masjid's own mark, an eyebrow naming the relationship, the masjid name (the shared element into the console) and an optional amber count of what is waiting inside. Two forms of one component so the entry points cannot drift — the full card on Profile, and <code>.compact</code> on Home. Add <code>.stacked</code> to carry a second tier: either the console's three numbers with the week's movement (<code>.manage-entry-stat-delta</code>, <code>.down</code> for a fall, in secondary ink so a quiet week never alarms) or a <code>.manage-entry-hint</code> for a masjid with nothing yet. The whole card stays a single tap target, so those numbers are a glimpse, not controls.</div>
+      <div class="cp-sub">The door into the masjid console, for a member of its committee. Profile uses the full identity card. Home uses <code>.compact.stacked</code> as a window into the console: its identity row opens the hub and a separate <code>.manage-entry-need</code> row deep-links to the one item that needs attention. When nothing is waiting, <code>.manage-entry-summary</code> collapses the card to follower and timing context. Send remains the screen FAB.</div>
     </div>
     <div style="max-width:420px;display:flex;flex-direction:column;gap:12px">
       <button class="manage-entry">
@@ -143,40 +143,21 @@
         <span class="badge sm amber" aria-label="3 need your attention">3</span>
         <span class="mi manage-entry-go" data-i="chevron_right"></span>
       </button>
-      <button class="manage-entry compact stacked">
-        <span class="manage-entry-main">
+      <div class="manage-entry compact stacked">
+        <button class="manage-entry-main">
           <span class="masjid-mark" style="--tile:38px"><img src="../../../images/masjid-camera-preview.png" alt="" /></span>
           <span class="manage-entry-copy">
             <span class="manage-entry-eyebrow">Chairman</span>
             <span class="manage-entry-name">Masjid E Bilal</span>
           </span>
-          <span class="badge sm amber">3 waiting</span>
           <span class="mi manage-entry-go" data-i="chevron_right"></span>
-        </span>
-        <span class="manage-entry-stats">
-          <span class="manage-entry-stat">
-            <span class="manage-entry-stat-fig">
-              <span class="manage-entry-stat-value">1.3k</span>
-              <span class="manage-entry-stat-delta">+12</span>
-            </span>
-            <span class="manage-entry-stat-label">Followers</span>
-          </span>
-          <span class="manage-entry-stat">
-            <span class="manage-entry-stat-fig">
-              <span class="manage-entry-stat-value">96</span>
-              <span class="manage-entry-stat-delta">+3</span>
-            </span>
-            <span class="manage-entry-stat-label">Paighams</span>
-          </span>
-          <span class="manage-entry-stat">
-            <span class="manage-entry-stat-fig">
-              <span class="manage-entry-stat-value">3.1k</span>
-              <span class="manage-entry-stat-delta down">-24</span>
-            </span>
-            <span class="manage-entry-stat-label">Reactions</span>
-          </span>
-        </span>
-      </button>
+        </button>
+        <button class="manage-entry-need">
+          <span class="mi" data-i="group"></span>
+          <span>3 invitations waiting</span>
+          <span class="mi manage-entry-go" data-i="chevron_right"></span>
+        </button>
+      </div>
       <button class="manage-entry compact stacked">
         <span class="manage-entry-main">
           <span class="masjid-mark" style="--tile:38px"><img src="../../../images/masjid-camera-preview.png" alt="" /></span>

@@ -105,6 +105,7 @@
                       managed-stats="{{ profileManagedStats }}"
                       managed-stats-loading="{{ managedStatsLoading }}"
                       on-manage-masjid="{{ goMasjidAdmin }}"
+                      on-manage-committee="{{ goMasjidCommittee }}"
                       hero-sel="{{ homeHeroSel }}"
                       on-suhoor-tap="{{ toggleSuhoor }}"
                       on-iftaar-tap="{{ toggleIftaar }}"
@@ -799,6 +800,10 @@ class Component extends DCLogic {
     window.location.href = '../masjid-operations/Masjid Operations.dc.html#admin';
   };
 
+  goMasjidCommittee = () => {
+    window.location.href = '../masjid-operations/Masjid Operations.dc.html#members';
+  };
+
   // Qaum's send shortcut skips the console and lands straight in compose, targeting the
   // primary managed masjid. The target is changeable inside the wizard, so a member who
   // manages several masjids never pays a picker before starting.
@@ -893,6 +898,7 @@ class Component extends DCLogic {
       goMasjids: this.goMasjids,
       goMyMasjids: this.goMyMasjids,
       goMasjidAdmin: this.goMasjidAdmin,
+      goMasjidCommittee: this.goMasjidCommittee,
       goZakaat: this.goZakaat,
       goQibla: this.goQibla,
 
@@ -941,7 +947,7 @@ class Component extends DCLogic {
       // The console entry appears on Home, Qaum and Profile for a committee member.
       profileManagedName: s.profileManagedMasjid ? (s.managedFirstRun ? 'Masjid-e-Mohammadi' : 'Masjid E Bilal') : null,
       profileManagedRole: 'Chairman',
-      // Mirrors the console's own three numbers; a newly approved masjid has none of them yet.
+      // Legacy values feed the collapsed follower context; Home no longer renders a stat strip.
       profileManagedStats: s.managedFirstRun
         ? [
             { value: '0', label: 'Followers' },

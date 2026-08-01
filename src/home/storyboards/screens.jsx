@@ -43,16 +43,16 @@ function HomeScreen({
   managedMasjid = null,      // masjid name when this member manages one → console tile
   managedAttention = 0,
   managedRole = 'Chairman',  // your standing in this masjid — why the tile is here at all
-  // The three numbers the console leads with. Same values, same labels, same order — Home is a
-  // preview of that screen, so a mismatch here would read as two different masjids. `delta` is
-  // the movement since last week; omitted when nothing moved rather than shown as +0.
+  // The summary supplies follower context when no task needs attention. Legacy storyboard
+  // values stay accepted so old frames remain stable; Home intentionally renders no stat strip.
   managedStats = [
     { value: '1.3k', label: 'Followers', delta: '+12' },
     { value: '96', label: 'Paighams', delta: '+3' },
     { value: '3.1k', label: 'Reactions', delta: '+148' }
   ],
   managedStatsLoading = false,
-  onManageMasjid
+  onManageMasjid,
+  onManageCommittee
 }) {
   const { PromptCard } = window;
   // First run is derived from the numbers themselves, so the prompt and the strip can never
@@ -111,7 +111,7 @@ function HomeScreen({
   const prayerList = ['Fajr', 'Zohar', 'Asr', 'Maghrib', 'Isha'].map(name => ({
     name,
     checked: prayers[name],
-    labelColor: prayers[name] ? 'var(--color-info-secondary)' : 'var(--color-info-faint)'
+    labelColor: prayers[name] ? 'var(--color-info-tertiary)' : 'var(--color-action-primary)'
   }));
 
   const suhoorBg = heroSel === 'suhoor' ? 'rgba(255,255,255,0.42)' : 'rgba(255,255,255,0.22)';
@@ -164,8 +164,7 @@ function HomeScreen({
           {/* Time (center) */}
           <div style={{ textAlign: 'center', flex: 1, minWidth: 0 }}>
             <div style={{ fontFamily: 'var(--font-body)', fontSize: 11, fontWeight: 600, color: theme.textColorSecondary, letterSpacing: '.08em', textTransform: 'uppercase', marginBottom: 4 }}>Azan: {activePrayer.azan}</div>
-            <div style={{ fontFamily: 'var(--font-title)', fontSize: 42, color: theme.textColorPrimary, lineHeight: 1, letterSpacing: '-0.5px' }}>{activePrayer.name}</div>
-            <div style={{ fontFamily: 'var(--font-body)', fontSize: 34, fontWeight: 800, color: theme.textColorPrimary, lineHeight: 1.05, letterSpacing: '-1px', marginTop: 2 }}>{activePrayer.iqama}</div>
+            <div style={{ fontFamily: 'var(--font-title)', fontSize: 42, color: theme.textColorPrimary, lineHeight: 1, letterSpacing: '-0.5px', whiteSpace: 'nowrap' }}>{activePrayer.name} {activePrayer.iqama}</div>
             <div style={{ fontFamily: 'var(--font-body)', fontSize: 12, color: theme.textColorTertiary, marginTop: 5 }}>{activePrayer.range}</div>
           </div>
 
@@ -176,7 +175,7 @@ function HomeScreen({
             </div>
             <div style={{ textAlign: 'center' }}>
               <div style={{ fontFamily: 'var(--font-body)', fontSize: 11, fontWeight: 600, color: theme.flankerTextColor }}>Iftaar</div>
-              <div style={{ fontFamily: 'var(--font-body)', fontSize: 12, fontWeight: 700, color: theme.flankerTimeColor }}>6:49 PM</div>
+              <div style={{ fontFamily: 'var(--font-body)', fontSize: 12, fontWeight: 700, color: theme.flankerTimeColor }}>At Azan</div>
             </div>
           </div>
         </div>
@@ -189,19 +188,12 @@ function HomeScreen({
 
         {/* Sheet card — scrolls up over the fixed hero */}
         <div style={{ position: 'relative', pointerEvents: 'auto', background: 'color-mix(in oklab, var(--color-surface-card) 82%, transparent)', backdropFilter: 'blur(28px) saturate(180%)', WebkitBackdropFilter: 'blur(28px) saturate(180%)', borderRadius: '24px 24px 0 0', paddingBottom: 32 }}>
-          {/* Drag handle */}
-          <div style={{ display: 'flex', justifyContent: 'center', padding: '10px 0 6px' }}>
-            <div style={{ width: 'var(--control-h-md)', height: 'var(--size-sm)', background: 'var(--color-info-faint)', borderRadius: 'var(--radius-xs)' }} />
-          </div>
-
-          {/* Console tile — first thing in the sheet for a committee member, so managing the
-              masjid never means going hunting in Profile. Absent for everyone else. The eyebrow
-              carries your standing (the reason the tile exists); the strip previews the console's
-              own three numbers with the week's movement, so the door shows what is behind it. */}
+          {/* Home is a window into the console. The identity row opens the console; the only
+              separate row is work that needs a person, and it deep-links to that destination. */}
           {managedMasjid && onManageMasjid ? (
-            <div style={{ padding: '4px 20px 0' }}>
-              <button className="manage-entry compact stacked" onClick={onManageMasjid}>
-                <span className="manage-entry-main">
+            <div style={{ padding: '18px 20px 0' }}>
+              <div className="manage-entry compact stacked">
+                <button className="manage-entry-main" onClick={onManageMasjid}>
                   <span className="masjid-mark" style={{ '--tile': '38px' }}>
                     <img src="../../images/masjid-camera-preview.png" alt="" />
                   </span>
@@ -209,41 +201,22 @@ function HomeScreen({
                     <span className="manage-entry-eyebrow">{managedRole}</span>
                     <span className="manage-entry-name">{managedMasjid}</span>
                   </span>
-                  {managedAttention ? <span className="badge sm amber">{managedAttention} waiting</span> : null}
                   <span className="mi manage-entry-go" data-i="chevron_right"></span>
-                </span>
+                </button>
                 {managedStatsLoading ? (
-                  /* The placeholders wear the real value/label classes, so their line boxes are
-                     the loaded ones and the tile cannot change height when the numbers arrive. */
-                  <span className="manage-entry-stats" aria-hidden="true">
-                    {managedStats.map((s) => (
-                      <span className="manage-entry-stat" key={s.label}>
-                        <span className="manage-entry-stat-fig">
-                          <span className="manage-entry-stat-value skeleton" style={{ width: 34, color: 'transparent', borderRadius: 6 }}>0</span>
-                        </span>
-                        <span className="manage-entry-stat-label skeleton" style={{ width: 52, color: 'transparent', borderRadius: 6 }}>0</span>
-                      </span>
-                    ))}
-                  </span>
-                ) : managedFirstRun ? (
-                  <span className="manage-entry-hint">
-                    <span className="mi" data-i="campaign" aria-hidden="true"></span>
-                    Send your first paigham — your followers will see it straight away.
-                  </span>
+                  <span className="manage-entry-summary skeleton" aria-hidden="true">Loading console summary</span>
+                ) : managedAttention ? (
+                  <button className="manage-entry-need" onClick={onManageCommittee || onManageMasjid}>
+                    <span className="mi" data-i="group" aria-hidden="true"></span>
+                    <span>{managedAttention} {managedAttention === 1 ? 'invitation' : 'invitations'} waiting</span>
+                    <span className="mi manage-entry-go" data-i="chevron_right"></span>
+                  </button>
                 ) : (
-                  <span className="manage-entry-stats">
-                    {managedStats.map((s) => (
-                      <span className="manage-entry-stat" key={s.label}>
-                        <span className="manage-entry-stat-fig">
-                          <span className="manage-entry-stat-value">{s.value}</span>
-                          {s.delta ? <span className={`manage-entry-stat-delta${String(s.delta).startsWith('-') ? ' down' : ''}`}>{s.delta}</span> : null}
-                        </span>
-                        <span className="manage-entry-stat-label">{s.label}</span>
-                      </span>
-                    ))}
+                  <span className="manage-entry-summary">
+                    {managedStats[0]?.value || '0'} following · {managedFirstRun ? 'timings not published' : 'timings updated today'}
                   </span>
                 )}
-              </button>
+              </div>
             </div>
           ) : null}
 
@@ -372,8 +345,8 @@ function HomeScreen({
               <div style={{ flex: 1 }}>
                 <div onClick={goDua} style={{ position: 'relative', height: '100%', borderRadius: 24, overflow: 'hidden', cursor: 'pointer' }}>
                   <img src={duaImg} style={{ position: 'absolute', inset: 0, width: '100%', height: '100%', objectFit: 'cover' }} />
-                  <div style={{ position: 'absolute', inset: 0, background: 'linear-gradient(180deg, rgba(0,0,0,0.6) 0%, transparent 45%)' }} />
-                  <div style={{ position: 'absolute', left: 16, top: 16, display: 'flex', flexDirection: 'column', gap: 2 }}>
+                  <div style={{ position: 'absolute', inset: 0, background: 'linear-gradient(0deg, rgba(0,0,0,0.68) 0%, transparent 58%)' }} />
+                  <div style={{ position: 'absolute', left: 16, bottom: 16, display: 'flex', flexDirection: 'column', gap: 2 }}>
                     <svg viewBox="0 0 24 24" style={{ width: 18, height: 18, fill: '#FFFFFF' }}>
                       <path d="M15.40,10.00 a1.1,1.1 0 1,0 2.2,0 a1.1,1.1 0 1,0 -2.2,0 M15.01,12.22 a1.1,1.1 0 1,0 2.2,0 a1.1,1.1 0 1,0 -2.2,0 M13.88,14.18 a1.1,1.1 0 1,0 2.2,0 a1.1,1.1 0 1,0 -2.2,0 M7.77,16.40 a1.1,1.1 0 1,0 2.2,0 a1.1,1.1 0 1,0 -2.2,0 M5.65,15.63 a1.1,1.1 0 1,0 2.2,0 a1.1,1.1 0 1,0 -2.2,0 M3.92,14.18 a1.1,1.1 0 1,0 2.2,0 a1.1,1.1 0 1,0 -2.2,0 M2.79,12.22 a1.1,1.1 0 1,0 2.2,0 a1.1,1.1 0 1,0 -2.2,0 M2.40,10.00 a1.1,1.1 0 1,0 2.2,0 a1.1,1.1 0 1,0 -2.2,0 M2.79,7.78 a1.1,1.1 0 1,0 2.2,0 a1.1,1.1 0 1,0 -2.2,0 M3.92,5.82 a1.1,1.1 0 1,0 2.2,0 a1.1,1.1 0 1,0 -2.2,0 M5.65,4.37 a1.1,1.1 0 1,0 2.2,0 a1.1,1.1 0 1,0 -2.2,0 M7.77,3.60 a1.1,1.1 0 1,0 2.2,0 a1.1,1.1 0 1,0 -2.2,0 M10.03,3.60 a1.1,1.1 0 1,0 2.2,0 a1.1,1.1 0 1,0 -2.2,0 M12.15,4.37 a1.1,1.1 0 1,0 2.2,0 a1.1,1.1 0 1,0 -2.2,0 M13.88,5.82 a1.1,1.1 0 1,0 2.2,0 a1.1,1.1 0 1,0 -2.2,0 M15.01,7.78 a1.1,1.1 0 1,0 2.2,0 a1.1,1.1 0 1,0 -2.2,0 M11.85,15.63 a1.4,1.4 0 1,0 2.8,0 a1.4,1.4 0 1,0 -2.8,0 M14.15,17.63 a1.1,1.1 0 1,0 2.2,0 a1.1,1.1 0 1,0 -2.2,0 M16.15,19.63 a1.1,1.1 0 1,0 2.2,0 a1.1,1.1 0 1,0 -2.2,0 M18.15,21.63 a1.1,1.1 0 1,0 2.2,0 a1.1,1.1 0 1,0 -2.2,0" />
                     </svg>

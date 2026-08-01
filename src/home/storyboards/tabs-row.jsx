@@ -117,7 +117,7 @@ const PROFILE_EXTRA_FRAMES = [
   }
 ];
 
-// Committee-member entry points into the masjid console, plus the console tile's own data states.
+// Committee-member entry points into the masjid console, plus the console preview's data states.
 // Appended at global indices 41-44 so every existing frame index and hash deep-link stays stable.
 const MANAGED_ENTRY_FRAMES = [
   {
@@ -155,7 +155,7 @@ const MANAGED_ENTRY_FRAMES = [
   },
   {
     id: 'home-managed-loading',
-    name: 'Home — Console Stats Loading',
+    name: 'Home — Console Summary Loading',
     tab: 0,
     component: 'HomeScreen',
     props: {
