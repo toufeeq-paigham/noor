@@ -1599,11 +1599,11 @@ function SalaahTab({ data }) {
   const {
     salaah = {}, onRetry, onTogglePrayer, onOpenMenu, onConfigChange, onNoteChange,
     onSubmitSalaah, onOpenHistory, onDone,
-    onOpenScan, onCloseScan, onScanCapture, onScanRetry,
+    onOpenScan, onCloseScan, onScanCapture, onScanRetry, onApplyScan,
   } = data;
   const {
     status = 'loaded', config = OPS_SALAAH_CONFIG, expanded, note = '',
-    history = [], saving, dirty, scanStage, scanApplied,
+    history = [], saving, dirty, scanStage, scanPreview, scanConfig, scanApplied,
   } = salaah;
   const openMenu = data.openMenu;
   const lastChange = history[0] || null;
@@ -1706,9 +1706,12 @@ function SalaahTab({ data }) {
           <div className="scan-result-banner" role="status">
             <span className="mi" data-i={scanApplied === 'full' ? 'check_circle' : 'error'} aria-hidden="true"></span>
             <div>
-              {scanApplied === 'full'
-                ? 'Read all 6 prayers from the board. Check each time below before publishing.'
-                : 'Read 4 of 6 prayers — Zohar and Maghrib could not be read. Set them below.'}
+              <strong>Scan applied · {salaahChangeCount(config)} updates ready</strong>
+              <span>
+                {scanApplied === 'full'
+                  ? 'All detected timings are in the draft. Review or edit them before publishing.'
+                  : 'Zohar and Maghrib were not detected, so their current timings were kept.'}
+              </span>
             </div>
             <button className="btn btn-link" onClick={onOpenScan}>Rescan</button>
           </div>
@@ -1773,9 +1776,13 @@ function SalaahTab({ data }) {
       {scanStage ? (
         <ScanBoardStage
           stage={scanStage}
+          current={config}
+          scanned={scanConfig}
+          partial={scanPreview === 'partial'}
           onClose={onCloseScan}
           onCapture={onScanCapture}
           onRetry={onScanRetry}
+          onApply={onApplyScan}
         />
       ) : null}
     </div>
@@ -1783,29 +1790,78 @@ function SalaahTab({ data }) {
 }
 
 // ── Scan-the-board stage — the camera-stage kit pointed at an LED board ──
-// Three states in one surface: framing the board, reading it (a scan sweep over the frozen
-// capture), and the honest failure that hands over to typing. The typed escape is on every
-// state because seven-segment boards defeat OCR often enough to design for it.
-function ScanBoardStage({ stage, onClose, onCapture, onRetry }) {
+// Recognition has its own review destination. OCR never edits the timing form in the
+// background: the user sees every proposed value against the current value and explicitly
+// applies the changes before returning to the editor.
+function ScanBoardStage({ stage, current, scanned, partial, onClose, onCapture, onRetry, onApply }) {
   const reading = stage === 'reading';
   const failed = stage === 'failed';
+  const reviewing = stage === 'review';
+  const changed = reviewing && scanned
+    ? SALAAH_ORDER.filter(({ key }) => scanned[key] && !samePrayer(current[key], scanned[key]))
+    : [];
+  const unread = partial ? ['zohar', 'maghrib'] : [];
 
   return (
-    <div className="camera-stage">
+    <div className={reviewing ? 'scan-review-stage' : 'camera-stage'}>
       <div className="camera-topbar">
         <button className="ib ib-tonal camera-control" aria-label="Close scanner" onClick={onClose}>
           <span className="mi" data-i="close"></span>
         </button>
         <div className="camera-title">
-          {failed ? 'Couldn’t read the board' : 'Scan the timing board'}
-          {!failed ? (
+          {failed ? 'Couldn’t read the board' : reviewing ? 'Review scanned timings' : 'Scan the timing board'}
+          {reviewing ? <small>Nothing changes until you apply</small> : !failed ? (
             <small>{reading ? 'Hold still…' : 'Fill the frame with the board, square-on'}</small>
           ) : null}
         </div>
         <span style={{ width: 48, flexShrink: 0 }}></span>
       </div>
 
-      {failed ? (
+      {reviewing ? (
+        <React.Fragment>
+          <div className="scan-review-body">
+            <div className="scan-review-summary" role="status">
+              <span className="mi" data-i="fact_check" aria-hidden="true"></span>
+              <div>
+                <strong>{changed.length} updates found</strong>
+                <span>Compare the board with the current timings before applying.</span>
+              </div>
+            </div>
+            <div className="scan-review-list">
+              {SALAAH_ORDER.map(({ key, label }) => {
+                const before = current[key] || {};
+                const after = scanned && scanned[key];
+                const missed = unread.indexOf(key) !== -1 || !after;
+                const isChanged = !missed && !samePrayer(before, after);
+                return (
+                  <div className={`scan-review-row${missed ? ' missed' : ''}`} key={key}>
+                    <div className="scan-review-row-head">
+                      <strong>{label}</strong>
+                      <span>{missed ? 'Current kept' : isChanged ? 'Will update' : 'Matches'}</span>
+                    </div>
+                    {missed ? (
+                      <div className="scan-review-kept">Not detected · {scanPrayerSummary(before)}</div>
+                    ) : (
+                      <div className="scan-review-values">
+                        <span><small>Current</small>{scanPrayerSummary(before)}</span>
+                        <span className="mi" data-i="arrow_forward" aria-hidden="true"></span>
+                        <span><small>Scanned</small>{scanPrayerSummary(after)}</span>
+                      </div>
+                    )}
+                  </div>
+                );
+              })}
+            </div>
+          </div>
+          <div className="scan-review-actions">
+            <div>You can edit every applied time before publishing.</div>
+            <button className="btn btn-filled lg" onClick={onApply}>
+              {changed.length ? `Apply ${changed.length} changes` : 'Keep current timings'}
+            </button>
+            <button className="btn btn-link" onClick={onRetry}>Scan again</button>
+          </div>
+        </React.Fragment>
+      ) : failed ? (
         <div className="scan-failed">
           <span className="mi" data-i="filter_center_focus" aria-hidden="true"></span>
           <strong>The board didn’t read</strong>
@@ -1847,6 +1903,19 @@ function ScanBoardStage({ stage, onClose, onCapture, onRetry }) {
       )}
     </div>
   );
+}
+
+function samePrayer(a = {}, b = {}) {
+  return a.variant === b.variant
+    && a.salaahTime === b.salaahTime
+    && a.neverBefore === b.neverBefore
+    && a.iqamaDelay === b.iqamaDelay;
+}
+
+function scanPrayerSummary(config = {}) {
+  const time = config.salaahTime || config.neverBefore;
+  const value = time ? fmt12(time) : 'On time';
+  return `${value} · iqama +${config.iqamaDelay || 0}m`;
 }
 
 // ══════════════════════════════════════════════════════════════════════

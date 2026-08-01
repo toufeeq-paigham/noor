@@ -55,10 +55,10 @@
     salaahDirty: false,
     salaahSaving: false,
     salaahHistoryOpen: false,
-    // Scan-the-board flow (console TRD §6). `scanStage` owns the full-screen stage;
-    // `scanApplied` marks that the working config came from a scan, so the editor shows the
-    // check-before-publishing banner ('full' read every prayer, 'partial' names the misses).
-    scanStage: null, // null | 'camera' | 'reading' | 'failed'
+    // Scan-the-board flow (console TRD §6). Recognition first creates a preview which the
+    // user compares with the current timings. Only Apply mutates the working configuration.
+    scanStage: null, // null | 'camera' | 'reading' | 'review' | 'failed'
+    scanPreview: null, // null | 'full' | 'partial'
     scanApplied: null, // null | 'full' | 'partial'
 
     // The compose wizard's own state. `step` is the screen, `recorder` / `picker` / `crop`
@@ -198,6 +198,7 @@
         salaahSaving: !!s.salaahSaving,
         salaahHistoryOpen: !!s.salaahHistoryOpen,
         scanStage: s.scanStage || null,
+        scanPreview: s.scanPreview || null,
         scanApplied: s.scanApplied || null,
       });
     }
@@ -429,6 +430,8 @@
           || (s.scanApplied ? scannedConfig(s.scanApplied === 'partial') : null)
           || (s.salaahEdited ? editedConfig() : window.OPS_SALAAH_CONFIG),
         scanStage: s.scanStage,
+        scanPreview: s.scanPreview,
+        scanConfig: s.scanPreview ? scannedConfig(s.scanPreview === 'partial') : null,
         scanApplied: s.scanApplied,
         expanded: s.expandedPrayer,
         note: s.salaahNote,
@@ -524,6 +527,7 @@
     { group: 'salaah', name: 'Timings · not committee', screen: 'console', state: { route: 'console', dest: 'salaah', role: 'MEMBER', caps: [] } },
     { group: 'salaah', name: 'Scan · camera', screen: 'console', state: { route: 'console', dest: 'salaah', scanStage: 'camera' } },
     { group: 'salaah', name: 'Scan · reading the board', screen: 'console', state: { route: 'console', dest: 'salaah', scanStage: 'reading' } },
+    { group: 'salaah', name: 'Scan · review 4 changes', screen: 'console', state: { route: 'console', dest: 'salaah', scanStage: 'review', scanPreview: 'partial' } },
     { group: 'salaah', name: 'Scan · every prayer read', screen: 'console', state: { route: 'console', dest: 'salaah', scanApplied: 'full', salaahDirty: true } },
     { group: 'salaah', name: 'Scan · read 4 of 6', screen: 'console', state: { route: 'console', dest: 'salaah', scanApplied: 'partial', salaahDirty: true } },
     { group: 'salaah', name: 'Scan · could not read', screen: 'console', state: { route: 'console', dest: 'salaah', scanStage: 'failed' } },

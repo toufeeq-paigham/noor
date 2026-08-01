@@ -1,16 +1,16 @@
-# Graph Report - noor  (2026-07-31)
+# Graph Report - noor  (2026-08-01)
 
 ## Corpus Check
-- 108 files · ~643,653 words
+- 108 files · ~644,048 words
 - Verdict: corpus is large enough that graph structure adds value.
 
 ## Summary
-- 1248 nodes · 1781 edges · 93 communities (57 shown, 36 thin omitted)
+- 1250 nodes · 1786 edges · 108 communities (58 shown, 50 thin omitted)
 - Extraction: 90% EXTRACTED · 10% INFERRED · 0% AMBIGUOUS · INFERRED: 180 edges (avg confidence: 0.52)
 - Token cost: 0 input · 0 output
 
 ## Graph Freshness
-- Built from commit: `c8240ba3`
+- Built from commit: `1536ea33`
 - Run `git rev-parse HEAD` and compare to check if the graph is stale.
 - Run `graphify update .` after code changes (no API cost).
 
@@ -101,11 +101,26 @@
 - layout.tsx
 - next.config.mjs
 - tailwind.config.ts
+- ScanBoardStage
 - VARIATION_OPTIONS
 - compose-post.jsx
 - check_classes.py
+- @dnd-kit/core
 - @dnd-kit/sortable
+- @dnd-kit/sortable
+- @dnd-kit/utilities
+- jszip
+- next
+- @radix-ui/react-dialog
+- @radix-ui/react-label
+- @radix-ui/react-popover
+- @radix-ui/react-select
+- @radix-ui/react-slot
+- @radix-ui/react-tabs
+- @radix-ui/react-tooltip
+- react-dom
 - ConsolePost
+- tailwind-merge
 
 ## God Nodes (most connected - your core abstractions)
 1. `tokenKinds` - 187 edges
@@ -134,7 +149,7 @@
 ## Import Cycles
 - None detected.
 
-## Communities (93 total, 36 thin omitted)
+## Communities (108 total, 50 thin omitted)
 
 ### Community 0 - "tokenKinds"
 Cohesion: 0.01
@@ -169,8 +184,8 @@ Cohesion: 0.42
 Nodes (8): IOSDevice(), IOSGlassPill(), IOSKeyboard(), IOSList(), IOSListRow(), IOSNavBar(), IOSStatusBar(), useNoorDark()
 
 ### Community 8 - "dependencies"
-Cohesion: 0.04
-Nodes (45): dependencies, class-variance-authority, clsx, @dnd-kit/core, @dnd-kit/sortable, @dnd-kit/utilities, html-to-image, jszip (+37 more)
+Cohesion: 0.12
+Nodes (17): dependencies, class-variance-authority, clsx, html-to-image, lucide-react, @radix-ui/react-dropdown-menu, react-rnd, sonner (+9 more)
 
 ### Community 15 - "Agent Behavior"
 Cohesion: 0.11
@@ -221,8 +236,8 @@ Cohesion: 0.07
 Nodes (26): compilerOptions, allowJs, esModuleInterop, incremental, isolatedModules, jsx, lib, module (+18 more)
 
 ### Community 32 - "screenshot-editor.tsx"
-Cohesion: 0.28
-Nodes (9): CommitteeBody(), ConsoleScreen(), destTransitionName(), DetailsBody(), InvitationCard(), MemberBody(), MemberRow(), OPS_CAPS (+1 more)
+Cohesion: 0.22
+Nodes (11): CommitteeBody(), ConsoleScreen(), countLabel(), destTransitionName(), DetailsBody(), InvitationCard(), MasjidSwitcherSheet(), MemberBody() (+3 more)
 
 ### Community 33 - "home/storyboards/screens.jsx"
 Cohesion: 0.12
@@ -289,7 +304,7 @@ Cohesion: 0.29
 Nodes (6): hosting, headers, ignore, public, site, trailingSlash
 
 ### Community 69 - "masjid-operations/storyboards/screens.jsx"
-Cohesion: 0.04
+Cohesion: 0.05
 Nodes (14): CONSOLE_DESTINATIONS, IQAMA_OPTIONS, OPS_CAPABILITIES, OPS_FOLLOWERS, OPS_INVITATIONS, OPS_MANAGED, OPS_MASJID, OPS_MEMBERS (+6 more)
 
 ### Community 70 - "Noor UI/UX Upgrade Decisions"
@@ -297,24 +312,24 @@ Cohesion: 0.09
 Nodes (39): Approval status, Asma ul Husna design read and state specification — 2026-07-21, Before | After | Why, Before / After / Why, Certification notes, Design read, Design read and dials, Design-system and UX checklist (+31 more)
 
 ### Community 71 - "devDependencies"
-Cohesion: 0.09
-Nodes (22): devDependencies, autoprefixer, postcss, tailwindcss, @types/node, @types/react, @types/react-dom, typescript (+14 more)
+Cohesion: 0.13
+Nodes (15): devDependencies, autoprefixer, postcss, tailwindcss, @types/node, @types/react, @types/react-dom, typescript (+7 more)
 
 ### Community 72 - "@dnd-kit/core"
 Cohesion: 0.21
 Nodes (9): ACCEPTED, Props, ScreenshotPicker(), cache, didFail(), failed, fetchAsDataUrl(), preloadImages() (+1 more)
 
 ### Community 73 - "describeConfig"
-Cohesion: 0.67
-Nodes (3): describeConfig(), PrayerCard(), VARIANT_OPTIONS
+Cohesion: 0.25
+Nodes (7): name, private, scripts, build, dev, start, version
 
 ### Community 74 - "defaults.ts"
 Cohesion: 0.42
 Nodes (9): DEFAULT_PROJECT, en(), fgStarter(), ipadStarter(), makeStarterSlides(), newSlide(), nid(), tabletStarter() (+1 more)
 
 ### Community 76 - "describeConfig"
-Cohesion: 0.25
-Nodes (9): ConsoleHome(), countLabel(), fmt12(), latestTimingChange(), MasjidSwitcherSheet(), nextPrayer(), postDay(), prayerMinutes() (+1 more)
+Cohesion: 0.22
+Nodes (10): ConsoleHome(), describeConfig(), fmt12(), latestTimingChange(), nextPrayer(), postDay(), PrayerCard(), prayerMinutes() (+2 more)
 
 ### Community 77 - "inspector.tsx"
 Cohesion: 0.14
@@ -344,6 +359,10 @@ Nodes (3): filePath(), GET(), POST()
 Cohesion: 0.40
 Nodes (3): bodyFont, displayFont, metadata
 
+### Community 88 - "ScanBoardStage"
+Cohesion: 0.67
+Nodes (3): samePrayer(), ScanBoardStage(), scanPrayerSummary()
+
 ### Community 90 - "compose-post.jsx"
 Cohesion: 0.12
 Nodes (9): CMP_AUDIENCE, CMP_LIBRARY, CMP_STEPS, CMP_WAVE, cmpMessageState(), CmpMessageStep(), CmpPostPreview(), CmpReviewStep() (+1 more)
@@ -359,14 +378,14 @@ Nodes (25): AndroidPhone(), AndroidTabletL(), AndroidTabletP(), FrameProps, IPad
 ## Knowledge Gaps
 - **551 isolated node(s):** `$schema`, `style`, `rsc`, `tsx`, `config` (+546 more)
   These have ≤1 connection - possible missing edges or undocumented components.
-- **36 thin communities (<3 nodes) omitted from report** — run `graphify query` to explore isolated nodes.
+- **50 thin communities (<3 nodes) omitted from report** — run `graphify query` to explore isolated nodes.
 
 ## Suggested Questions
 _Questions this graph is uniquely positioned to answer:_
 
 - **Why does `react` connect `react` to `home/storyboards/screens.jsx`, `support.js`, `zakaat/storyboards/screens.jsx`, `useNoorDark`, `dependencies`, `@dnd-kit/core`, `describeConfig`, `inspector.tsx`, `toolbar.tsx`, `types.ts`, `slide-canvas.tsx`?**
-  _High betweenness centrality (0.101) - this node is a cross-community bridge._
-- **Why does `dependencies` connect `dependencies` to `react`, `devDependencies`?**
+  _High betweenness centrality (0.102) - this node is a cross-community bridge._
+- **Why does `dependencies` connect `dependencies` to `jszip`, `next`, `@radix-ui/react-dialog`, `@radix-ui/react-label`, `@radix-ui/react-popover`, `@radix-ui/react-select`, `@radix-ui/react-slot`, `@radix-ui/react-tabs`, `@radix-ui/react-tooltip`, `describeConfig`, `react`, `react-dom`, `tailwind-merge`, `@dnd-kit/core`, `@dnd-kit/sortable`, `@dnd-kit/utilities`?**
   _High betweenness centrality (0.039) - this node is a cross-community bridge._
 - **Why does `ConsoleHome()` connect `describeConfig` to `screenshot-editor.tsx`, `react`, `masjid-operations/storyboards/screens.jsx`?**
   _High betweenness centrality (0.032) - this node is a cross-community bridge._
