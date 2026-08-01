@@ -208,9 +208,13 @@ function Dialog({
         {description && <div className="dlg-desc">{description}</div>}
         {children ? <div className="dlg-body">{children}</div> : null}
         {(prim || sec) && (
+          // Action order is platform convention, owned here so every alert and sheet in the
+          // system inherits it: the dismissing action sits on the LEFT and the affirmative on
+          // the RIGHT, matching UIAlertController and Material. Do not reorder per screen — a
+          // destructive primary landing where Cancel normally sits is how mis-taps happen.
           <div className="dlg-actions">
-            {prim && <button className={`btn ${destructive ? 'btn-destructive' : 'btn-filled'}`} onClick={prim.onClick}>{prim.text}</button>}
-            {sec && <button className="btn btn-tonal" onClick={sec.onClick}>{sec.text}</button>}
+            {sec && <button className="btn lg btn-tonal" onClick={sec.onClick}>{sec.text}</button>}
+            {prim && <button className={`btn lg ${destructive ? 'btn-destructive' : 'btn-filled'}`} onClick={prim.onClick}>{prim.text}</button>}
           </div>
         )}
       </div>

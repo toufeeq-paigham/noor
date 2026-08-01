@@ -56,10 +56,13 @@
     salaahSaving: false,
     salaahHistoryOpen: false,
     // Scan-the-board flow (console TRD §6). Recognition first creates a preview which the
-    // user compares with the current timings. Only Apply mutates the working configuration.
+    // user compares with the current timings. A one-column board must be identified as
+    // Azaan or Jamaat before anything can be added to the working draft.
     scanStage: null, // null | 'camera' | 'reading' | 'review' | 'failed'
     scanPreview: null, // null | 'full' | 'partial'
     scanApplied: null, // null | 'full' | 'partial'
+    scanColumnMeaning: null, // null | 'azaan' | 'jamaat'
+    scanMeaningByMasjid: {}, // remembered choice, still editable on every review
 
     // The compose wizard's own state. `step` is the screen, `recorder` / `picker` / `crop`
     // are its full-screen stages, `audience` is the PostTarget.
@@ -200,6 +203,9 @@
         scanStage: s.scanStage || null,
         scanPreview: s.scanPreview || null,
         scanApplied: s.scanApplied || null,
+        // The selected Azaan/Jamaat value changes the comparison data, not the screen state.
+        // Both choices therefore light the same "review changes" storyboard frame.
+        scanColumnMeaning: s.scanColumnMeaning ? 'chosen' : null,
       });
     }
     if (scope.post) {
@@ -286,9 +292,13 @@
       };
     }
     if (confirm.kind === 'publishSalaah') {
+      // Name the blast radius as a number, the way the delete dialog already does ("42 reactions
+      // will be lost"). "Every follower of this masjid" is true but abstract; the count is the
+      // thing that makes someone pause and re-read the times before publishing.
+      const reach = ((window.OPS_MASJID || {}).stats || {}).followers;
       return {
         title: 'Publish new timings?',
-        description: 'Every follower of this masjid sees the updated azaan and iqama times right away, and the change is recorded in your name.',
+        description: `${reach ? `All ${reach.toLocaleString('en-IN')} followers of` : 'Every follower of'} this masjid see the updated azaan and iqama times right away, and the change is recorded in your name.`,
         confirmText: 'Publish',
         onConfirm: h.onConfirmAction,
       };
@@ -308,20 +318,37 @@
     });
   };
 
-  // What a successful board scan yields: every prayer read as FIXED with iqama derived from
-  // the azaan/jamaat pair. The partial variant leaves Zohar and Maghrib untouched — the two
-  // the parser most often loses to glare on real LED boards.
-  const scannedConfig = (partial) => {
+  const addMinutes = (time, minutes) => {
+    const parts = (time || '00:00').split(':').map((part) => parseInt(part, 10));
+    const total = ((parts[0] * 60) + parts[1] + minutes + (24 * 60)) % (24 * 60);
+    return `${String(Math.floor(total / 60)).padStart(2, '0')}:${String(total % 60).padStart(2, '0')}`;
+  };
+
+  // What a successful one-column board scan yields. Fixed configurations store Jamaat time,
+  // so a Jamaat column maps directly; an Azaan column adds the current iqama delay. The
+  // partial variant leaves Zohar and Maghrib untouched — the two the parser most often loses
+  // to glare on real LED boards.
+  const scannedConfig = (partial, meaning) => {
     const base = window.OPS_SALAAH_CONFIG;
     if (!base) return null;
-    const read = {
-      fajr: { variant: 'FIXED', salaahTime: '04:45', iqamaDelay: 20 },
-      zohar: { variant: 'FIXED', salaahTime: '12:30', iqamaDelay: 30 },
-      asr: { variant: 'FIXED', salaahTime: '16:45', iqamaDelay: 15 },
-      maghrib: { variant: 'FIXED', salaahTime: '18:13', iqamaDelay: 5 },
-      isha: { variant: 'FIXED', salaahTime: '19:45', iqamaDelay: 15 },
-      jumah: { variant: 'FIXED', salaahTime: '12:30', iqamaDelay: 60 },
+    const detected = {
+      fajr: '04:45',
+      zohar: '12:30',
+      asr: '16:45',
+      maghrib: '18:13',
+      isha: '19:45',
+      jumah: '12:30',
     };
+    const read = {};
+    Object.keys(detected).forEach((key) => {
+      const current = base[key] || {};
+      const iqamaDelay = current.iqamaDelay || 0;
+      read[key] = {
+        variant: 'FIXED',
+        salaahTime: meaning === 'azaan' ? addMinutes(detected[key], iqamaDelay) : detected[key],
+        iqamaDelay,
+      };
+    });
     if (partial) { delete read.zohar; delete read.maghrib; }
     return Object.assign({}, base, read);
   };
@@ -350,12 +377,16 @@
     const live = (list) => list.filter((item) => hidden.indexOf(item.id) === -1);
     const caps = state.caps || [];
     const members = state.membersEmpty ? [] : live((window.OPS_MEMBERS || []).concat(state.extraMembers || []));
-    const invited = members.filter((m) => m.status === 'INVITED').length;
+    const pendingInvites = members.filter((m) => m.status === 'INVITED');
+    const invited = pendingInvites.length;
     const items = [];
     if (invited && caps.indexOf('committee') !== -1) {
       items.push({
         id: 'pending-invites', icon: 'mail', count: invited,
-        title: 'Invitations not accepted', copy: 'Waiting on the member',
+        title: `${invited} ${invited === 1 ? 'invitation' : 'invitations'} waiting`,
+        copy: invited === 1
+          ? `${(pendingInvites[0].name || 'The member').split(' ')[0]} has not accepted yet`
+          : 'Members have not accepted yet',
       });
     }
     return items;
@@ -396,9 +427,13 @@
       attention: attentionItems(s),
       fabCompact: s.fabCompact,
       // Counts shown on the hub rows, so the deck answers "how much is there?" up front.
+      // `members` counts people who actually have access, matching the Committee screen's
+      // "N members running <masjid>" hero. Pending invitations are deliberately excluded —
+      // they carry no access and are already surfaced in the Needs-you queue, so counting
+      // them here would make the hub promise more than the destination delivers.
       counts: {
         posts: posts.length,
-        members: members.length,
+        members: members.filter((m) => m.status !== 'INVITED').length,
         followers: (window.OPS_MASJID || { stats: {} }).stats.followers || followers.length,
         timingChanges: timingHistory.length,
       },
@@ -427,12 +462,15 @@
       salaah: {
         status: s.salaahStatus,
         config: s.salaahConfig
-          || (s.scanApplied ? scannedConfig(s.scanApplied === 'partial') : null)
+          || (s.scanApplied ? scannedConfig(s.scanApplied === 'partial', s.scanColumnMeaning || 'jamaat') : null)
           || (s.salaahEdited ? editedConfig() : window.OPS_SALAAH_CONFIG),
         scanStage: s.scanStage,
         scanPreview: s.scanPreview,
-        scanConfig: s.scanPreview ? scannedConfig(s.scanPreview === 'partial') : null,
+        scanConfig: s.scanPreview
+          ? scannedConfig(s.scanPreview === 'partial', s.scanColumnMeaning || 'jamaat')
+          : null,
         scanApplied: s.scanApplied,
+        scanColumnMeaning: s.scanColumnMeaning,
         expanded: s.expandedPrayer,
         note: s.salaahNote,
         history: timingHistory,
@@ -527,7 +565,8 @@
     { group: 'salaah', name: 'Timings · not committee', screen: 'console', state: { route: 'console', dest: 'salaah', role: 'MEMBER', caps: [] } },
     { group: 'salaah', name: 'Scan · camera', screen: 'console', state: { route: 'console', dest: 'salaah', scanStage: 'camera' } },
     { group: 'salaah', name: 'Scan · reading the board', screen: 'console', state: { route: 'console', dest: 'salaah', scanStage: 'reading' } },
-    { group: 'salaah', name: 'Scan · review 4 changes', screen: 'console', state: { route: 'console', dest: 'salaah', scanStage: 'review', scanPreview: 'partial' } },
+    { group: 'salaah', name: 'Scan · choose column meaning', screen: 'console', state: { route: 'console', dest: 'salaah', scanStage: 'review', scanPreview: 'partial' } },
+    { group: 'salaah', name: 'Scan · review 4 changes', screen: 'console', state: { route: 'console', dest: 'salaah', scanStage: 'review', scanPreview: 'partial', scanColumnMeaning: 'jamaat' } },
     { group: 'salaah', name: 'Scan · every prayer read', screen: 'console', state: { route: 'console', dest: 'salaah', scanApplied: 'full', salaahDirty: true } },
     { group: 'salaah', name: 'Scan · read 4 of 6', screen: 'console', state: { route: 'console', dest: 'salaah', scanApplied: 'partial', salaahDirty: true } },
     { group: 'salaah', name: 'Scan · could not read', screen: 'console', state: { route: 'console', dest: 'salaah', scanStage: 'failed' } },

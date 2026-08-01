@@ -821,7 +821,7 @@ function ConsoleHome({ data, transitionEnabled }) {
             style={{ cursor: managed.length > 1 ? 'pointer' : 'default' }}
           >
             <span
-              className="console-head-title"
+              className="screen-title"
               style={{ viewTransitionName: transitionEnabled ? CONSOLE_TITLE_TRANSITION : 'none' }}
             >{masjid.name}</span>
             <span className="mi console-head-verified" data-i="verified" aria-label="Verified masjid"></span>
@@ -842,8 +842,8 @@ function ConsoleHome({ data, transitionEnabled }) {
             all, so an empty queue costs no space and no reading. */}
         {attention.length ? (
           <React.Fragment>
-            <div className="console-eyebrow">Needs you</div>
-            <div className="console-group attention">
+            <div className="eyebrow console-eyebrow">Needs you</div>
+            <div className="list-group attention">
               {attention.map((item) => (
                 <AttentionRow
                   key={item.id}
@@ -866,7 +866,7 @@ function ConsoleHome({ data, transitionEnabled }) {
           onClick={() => onOpenDest && onOpenDest('salaah')}
           aria-label="Salaah timings — update azaan, jamaat and iqama"
         >
-          <span className="console-salaah-head">
+          <span className="eyebrow console-salaah-head">
             <span>Today's salaah</span>
             <span>{lastChange ? `Updated ${lastChange.when}` : 'Not set yet'}</span>
           </span>
@@ -893,7 +893,7 @@ function ConsoleHome({ data, transitionEnabled }) {
 
         {/* 3 · the rest of the console. Followers is a destination like any other, not a
             number pretending to be a tile. */}
-        <div className="console-group">
+        <div className="list-group">
           <ConsoleRow
             icon="groups"
             title="Committee"
@@ -920,7 +920,7 @@ function ConsoleHome({ data, transitionEnabled }) {
       {/* the masjid's paighams, in the feed the community sees. The lifetime reaction count
           belongs here as context for the feed, not as a tile that looks tappable. */}
       <div className="console-feedhead">
-        <span className="console-feedhead-title">Paighams</span>
+        <span className="section-title console-feedhead-title">Paighams</span>
         <span className="console-feedhead-count">
           {items.length} sent{items.length ? ` · ${countLabel(masjid.stats.reactions)} reactions` : ''}
         </span>
@@ -949,7 +949,7 @@ function ConsoleHome({ data, transitionEnabled }) {
             const newDay = index === 0 || postDay(items[index - 1]) !== day;
             return (
               <React.Fragment key={post.id}>
-                {newDay ? <div className="console-day">{day}</div> : null}
+                {newDay ? <div className="eyebrow faint console-day">{day}</div> : null}
                 <ConsolePost
                   post={post}
                   masjid={masjid}
@@ -1047,7 +1047,7 @@ function DetailsBody({ data }) {
       <div className="detail-hero">
         {masjid.photo ? <img src={masjid.photo} alt={`${masjid.name} entrance`} /> : null}
         <div className="detail-hero-copy">
-          <div className="detail-hero-name">{masjid.name}</div>
+          <div className="screen-title on-media">{masjid.name}</div>
           <div className="detail-hero-meta">
             <span className="badge sm gold"><span className="mi" data-i="verified"></span>Verified</span>
             <span className="detail-hero-code">{masjid.code}</span>
@@ -1056,21 +1056,21 @@ function DetailsBody({ data }) {
       </div>
 
       <div style={{ padding: '16px 16px 0' }}>
-        <div className="detail-group-label">Identity</div>
-        <div className="console-group detail-group">
+        <div className="eyebrow detail-group-label">Identity</div>
+        <div className="list-group detail-group">
           <DetailField label="Masjid name" value={masjid.name} />
           <DetailField label="Masjid code" value={masjid.code} mono />
           <DetailField label="Maslak" value={masjid.maslak} />
         </div>
 
-        <div className="detail-group-label">Contact</div>
-        <div className="console-group detail-group">
+        <div className="eyebrow detail-group-label">Contact</div>
+        <div className="list-group detail-group">
           <DetailField label="Contact person" value={masjid.contactName} />
           <DetailField label="Phone" value={masjid.phone} mono />
         </div>
 
-        <div className="detail-group-label">Location</div>
-        <div className="console-group detail-group">
+        <div className="eyebrow detail-group-label">Location</div>
+        <div className="list-group detail-group">
           <DetailField label="Address" value={masjid.address} />
           {pincode ? <DetailField label="Pincode" value={pincode} mono /> : null}
         </div>
@@ -1173,13 +1173,13 @@ function CommitteeBody({ data }) {
 
       {status === 'loaded' && items.length ? (
         <Body bottomInset={isAdmin ? 8 : 40} style={{ gap: 0, paddingTop: 14 }}>
-          <div className="committee-summary">
+          <div className="summary-hero">
             <span className="icon-tile" style={{ '--tile': '38px' }}><span className="mi" data-i="groups"></span></span>
-            <div style={{ flex: 1, minWidth: 0 }}>
-              <div style={{ fontSize: 14, fontWeight: 700 }}>
+            <div className="summary-hero-copy">
+              <div className="summary-hero-title">
                 {active.length} {active.length === 1 ? 'member' : 'members'} running {masjid.name}
               </div>
-              <div style={{ fontSize: 11.5, marginTop: 2, color: 'var(--color-info-secondary)' }}>
+              <div className="summary-hero-label">
                 {isAdmin
                   ? 'Tap anyone to change their role or permissions.'
                   : 'The icons show what each member is allowed to do.'}
@@ -1187,7 +1187,7 @@ function CommitteeBody({ data }) {
             </div>
           </div>
 
-          <div className="console-group" style={{ marginTop: 14 }}>
+          <div className="list-group" style={{ marginTop: 14 }}>
             {active.map((member) => (
               <MemberRow
                 key={member.id}
@@ -1200,11 +1200,11 @@ function CommitteeBody({ data }) {
 
           {invited.length ? (
             <>
-              <div className="committee-label">
+              <div className="eyebrow committee-label">
                 Waiting to accept
                 <span>{invited.length}</span>
               </div>
-              <div className="console-group">
+              <div className="list-group">
                 {invited.map((member) => (
                   <MemberRow
                     key={member.id}
@@ -1283,6 +1283,7 @@ function MemberBody({ data }) {
   const inviting = data.dest === 'invite';
   const invite = members.invite || {};
   const member = inviting ? null : members.editing;
+  const [plannedOpen, setPlannedOpen] = React.useState(false);
   if (!inviting && !member) return <Loading label="Loading member…" />;
 
   const isAdmin = OPS_CAPS.isAdmin(caps);
@@ -1307,7 +1308,7 @@ function MemberBody({ data }) {
           ? <IconTile icon="person" size={48} tone="accent" />
           : <Avatar text={member.name} size={48} tone="accent" />}
         <div className="console-head-copy">
-          <div className="member-head-name">{inviting ? 'Invite a member' : `${member.name}${member.you ? ' (you)' : ''}`}</div>
+          <div className="screen-title">{inviting ? 'Invite a member' : `${member.name}${member.you ? ' (you)' : ''}`}</div>
           <div className="member-head-meta">
             <span>{inviting ? 'They accept inside Paigham within 7 days' : member.phone}</span>
             {!inviting && member.status === 'INVITED' ? <span className="badge sm amber">Invitation pending</span> : null}
@@ -1389,19 +1390,40 @@ function MemberBody({ data }) {
           </div>
         </div>
 
-        <div>
-          <SectionLabel hint="Planned — the committee will be able to grant these as they ship.">
-            Coming soon
-          </SectionLabel>
-          <Card style={{ padding: '4px 12px', marginTop: 8, opacity: 'var(--opacity-emphasis)' }}>
-            {OPS_CAPS.planned().map((capability) => (
-              <CapabilityRow key={capability.id} capability={capability} on={false} disabled />
-            ))}
-          </Card>
-        </div>
+        <Card style={{ padding: 0, overflow: 'hidden', opacity: 'var(--opacity-emphasis)' }}>
+          <button
+            type="button"
+            aria-expanded={plannedOpen}
+            onClick={() => setPlannedOpen(!plannedOpen)}
+            style={{
+              width: '100%', minHeight: 56, display: 'flex', alignItems: 'center', gap: 10,
+              padding: '10px 14px', border: 0, background: 'transparent', color: 'inherit',
+              font: 'inherit', textAlign: 'left', cursor: 'pointer',
+            }}
+          >
+            <span className="mi" style={{ fontSize: 20, color: 'var(--color-info-secondary)' }} data-i="schedule"></span>
+            <span style={{ flex: 1, minWidth: 0 }}>
+              <strong style={{ display: 'block', fontSize: 13.5 }}>Coming later</strong>
+              <small style={{ display: 'block', marginTop: 2, fontSize: 11.5, color: 'var(--color-info-secondary)' }}>
+                Azaan, live bayan and payments
+              </small>
+            </span>
+            <span className={`mi chev ${plannedOpen ? 'open' : ''}`} style={{ fontSize: 22, color: 'var(--color-info-faint)' }} data-i="keyboard_arrow_down"></span>
+          </button>
+          {plannedOpen ? (
+            <div style={{ padding: '0 12px 4px', borderTop: '1px solid var(--color-neutral-border)' }}>
+              {OPS_CAPS.planned().map((capability) => (
+                <CapabilityRow key={capability.id} capability={capability} on={false} disabled />
+              ))}
+            </div>
+          ) : null}
+        </Card>
 
         {!inviting && isAdmin && !member.you ? (
-          <button className="btn btn-destructive lg" style={{ width: '100%' }} onClick={() => onOpenRemove && onOpenRemove(member)}>
+          // Tonal, not filled. This screen exists to grant and revoke permissions, so the
+          // toggles must stay the visual centre of gravity; a solid red bar outranks them and
+          // makes the rarest action the loudest. The confirmation dialog carries the weight.
+          <button className="btn lg btn-tonal destructive" style={{ width: '100%' }} onClick={() => onOpenRemove && onOpenRemove(member)}>
             <span className="mi" style={{ fontSize: 20 }} data-i="delete"></span>Remove from committee
           </button>
         ) : null}
@@ -1464,17 +1486,17 @@ function FollowersBody({ data }) {
       {followersStatus === 'loaded' && followers.length ? (
         <>
           <div style={{ flexShrink: 0, padding: '14px 16px 0' }}>
-            <div className="followers-hero">
+            <div className="summary-hero">
               <span className="icon-tile accent" style={{ '--tile': '44px' }}><span className="mi" data-i="groups"></span></span>
-              <div style={{ flex: 1, minWidth: 0 }}>
-                <div className="followers-hero-value">{total.toLocaleString('en-IN')}</div>
-                <div className="followers-hero-label">receiving timings and paighams</div>
+              <div className="summary-hero-copy">
+                <div className="summary-hero-value">{total.toLocaleString('en-IN')}</div>
+                <div className="summary-hero-label">receiving timings and paighams</div>
               </div>
             </div>
           </div>
 
           <Body bottomInset={40} style={{ gap: 0, paddingTop: 12 }}>
-            <div className="console-group">
+            <div className="list-group">
               {followers.map((follower) => <FollowerRow key={follower.id} follower={follower} />)}
             </div>
 
@@ -1599,14 +1621,18 @@ function SalaahTab({ data }) {
   const {
     salaah = {}, onRetry, onTogglePrayer, onOpenMenu, onConfigChange, onNoteChange,
     onSubmitSalaah, onOpenHistory, onDone,
-    onOpenScan, onCloseScan, onScanCapture, onScanRetry, onApplyScan,
+    onOpenScan, onCloseScan, onScanCapture, onScanRetry, onScanMeaning, onApplyScan,
   } = data;
   const {
     status = 'loaded', config = OPS_SALAAH_CONFIG, expanded, note = '',
-    history = [], saving, dirty, scanStage, scanPreview, scanConfig, scanApplied,
+    history = [], saving, dirty, scanStage, scanPreview, scanConfig, scanApplied, scanColumnMeaning,
   } = salaah;
   const openMenu = data.openMenu;
   const lastChange = history[0] || null;
+  const changedPrayers = SALAAH_ORDER.filter(({ key }) => salaahChanged(config, key));
+  const unchangedPrayers = SALAAH_ORDER.filter(({ key }) => !salaahChanged(config, key));
+  const displayedPrayers = scanApplied ? changedPrayers.concat(unchangedPrayers) : SALAAH_ORDER;
+  const firstScanChange = scanApplied && changedPrayers.length ? changedPrayers[0] : null;
 
   if (status === 'loading') return <Loading label="Loading salaah settings…" />;
   if (status === 'error') {
@@ -1637,7 +1663,7 @@ function SalaahTab({ data }) {
       <Body bottomInset={16} style={{ paddingTop: 12, gap: 12 }}>
         {/* what followers see right now — the baseline every edit is measured against */}
         <div className="timings-published">
-          <div className="timings-published-head">
+          <div className="eyebrow timings-published-head">
             <span>Published now</span>
             <span>What followers see</span>
           </div>
@@ -1658,8 +1684,8 @@ function SalaahTab({ data }) {
         <div className="surf subtle" style={{ display: 'flex', gap: 10, padding: 12, borderRadius: 14 }}>
           <span className="mi" style={{ fontSize: 20, color: 'var(--color-action-primary)' }} data-i="info" aria-hidden="true"></span>
           <div style={{ fontSize: 12, lineHeight: 1.5, color: 'var(--color-info-secondary)' }}>
-            Anyone using Paigham can keep these timings correct. Every change is published
-            straight away and recorded with the name of the person who made it.
+            Anyone using Paigham can keep these timings correct. When you publish, followers see
+            the update straight away and the change is recorded with your name.
           </div>
         </div>
 
@@ -1706,11 +1732,20 @@ function SalaahTab({ data }) {
           <div className="scan-result-banner" role="status">
             <span className="mi" data-i={scanApplied === 'full' ? 'check_circle' : 'error'} aria-hidden="true"></span>
             <div>
-              <strong>Scan applied · {salaahChangeCount(config)} updates ready</strong>
+              <strong>{salaahChangeCount(config)} scan changes added to draft</strong>
+              <span className="scan-draft-state">Not published yet · {scanColumnMeaning === 'azaan' ? 'Azaan' : 'Jamaat'} column</span>
+              {firstScanChange ? (
+                <span className="scan-delta-proof">
+                  {firstScanChange.label} {fmt12((OPS_SALAAH_CONFIG[firstScanChange.key] || {}).salaahTime)}
+                  {' → '}
+                  {fmt12((config[firstScanChange.key] || {}).salaahTime)}
+                  {changedPrayers.length > 1 ? ` · ${changedPrayers.length - 1} more` : ''}
+                </span>
+              ) : null}
               <span>
                 {scanApplied === 'full'
-                  ? 'All detected timings are in the draft. Review or edit them before publishing.'
-                  : 'Zohar and Maghrib were not detected, so their current timings were kept.'}
+                  ? 'Review or edit the changed prayers below before publishing.'
+                  : 'Zohar and Maghrib were not detected. Their current timings were kept.'}
               </span>
             </div>
             <button className="btn btn-link" onClick={onOpenScan}>Rescan</button>
@@ -1721,7 +1756,7 @@ function SalaahTab({ data }) {
           Configure each salaah
         </SectionLabel>
 
-        {SALAAH_ORDER.map(({ key, label }) => (
+        {displayedPrayers.map(({ key, label }) => (
           <PrayerCard
             key={key}
             name={key}
@@ -1761,14 +1796,14 @@ function SalaahTab({ data }) {
       </Body>
 
       <FooterAction
-        label="Save & publish"
+        label={scanApplied ? 'Review & publish' : 'Save & publish'}
         busy={saving}
         busyLabel="Publishing timings…"
         disabled={!dirty}
         helper={(() => {
           if (!dirty) return 'Edit a prayer to enable publishing.';
           const n = salaahChangeCount(config);
-          return `${n} ${n === 1 ? 'prayer' : 'prayers'} changed — published in your name, straight away.`;
+          return `${n} ${n === 1 ? 'prayer' : 'prayers'} ready · publishing updates followers and records your name.`;
         })()}
         onClick={onSubmitSalaah}
       />
@@ -1779,9 +1814,11 @@ function SalaahTab({ data }) {
           current={config}
           scanned={scanConfig}
           partial={scanPreview === 'partial'}
+          meaning={scanColumnMeaning}
           onClose={onCloseScan}
           onCapture={onScanCapture}
           onRetry={onScanRetry}
+          onMeaning={onScanMeaning}
           onApply={onApplyScan}
         />
       ) : null}
@@ -1793,7 +1830,10 @@ function SalaahTab({ data }) {
 // Recognition has its own review destination. OCR never edits the timing form in the
 // background: the user sees every proposed value against the current value and explicitly
 // applies the changes before returning to the editor.
-function ScanBoardStage({ stage, current, scanned, partial, onClose, onCapture, onRetry, onApply }) {
+function ScanBoardStage({
+  stage, current, scanned, partial, meaning,
+  onClose, onCapture, onRetry, onMeaning, onApply,
+}) {
   const reading = stage === 'reading';
   const failed = stage === 'failed';
   const reviewing = stage === 'review';
@@ -1803,15 +1843,15 @@ function ScanBoardStage({ stage, current, scanned, partial, onClose, onCapture, 
   const unread = partial ? ['zohar', 'maghrib'] : [];
 
   return (
-    <div className={reviewing ? 'scan-review-stage' : 'camera-stage'}>
+    <div className={reviewing ? 'scan-review-stage' : 'camera-stage scan-camera-stage'}>
       <div className="camera-topbar">
         <button className="ib ib-tonal camera-control" aria-label="Close scanner" onClick={onClose}>
           <span className="mi" data-i="close"></span>
         </button>
         <div className="camera-title">
           {failed ? 'Couldn’t read the board' : reviewing ? 'Review scanned timings' : 'Scan the timing board'}
-          {reviewing ? <small>Nothing changes until you apply</small> : !failed ? (
-            <small>{reading ? 'Hold still…' : 'Fill the frame with the board, square-on'}</small>
+          {reviewing ? <small>Nothing changes until you add it to the draft</small> : !failed ? (
+            <small>{reading ? 'Reading the captured photo…' : 'Fill the frame with the board, square-on'}</small>
           ) : null}
         </div>
         <span style={{ width: 48, flexShrink: 0 }}></span>
@@ -1820,11 +1860,44 @@ function ScanBoardStage({ stage, current, scanned, partial, onClose, onCapture, 
       {reviewing ? (
         <React.Fragment>
           <div className="scan-review-body">
-            <div className="scan-review-summary" role="status">
-              <span className="mi" data-i="fact_check" aria-hidden="true"></span>
+            {/* Green + check only once the column meaning is known and the scan is genuinely
+                usable. Until then the user is blocked on a question, so the card reads as a
+                prompt, not a success — same component, honest state. */}
+            <div className={`scan-review-summary ${meaning ? '' : 'pending'}`} role="status">
+              <span className="mi" data-i={meaning ? 'check_circle' : 'info'} aria-hidden="true"></span>
               <div>
-                <strong>{changed.length} updates found</strong>
-                <span>Compare the board with the current timings before applying.</span>
+                <strong>{changed.length} {meaning ? 'updates' : 'times'} found</strong>
+                <span>
+                  {meaning
+                    ? `Using these as ${meaning === 'azaan' ? 'Azaan' : 'Jamaat'} times. Compare them before adding to the draft.`
+                    : 'We could not find a column heading. Tell us what these times mean first.'}
+                </span>
+              </div>
+            </div>
+            <div className="scan-meaning" role="radiogroup" aria-label="Meaning of the detected timing column">
+              <div className="scan-meaning-head">
+                <span className="mi" data-i="info" aria-hidden="true"></span>
+                <div>
+                  <strong>What does this column show?</strong>
+                  <span>No heading was detected. We will remember this for this masjid.</span>
+                </div>
+              </div>
+              <div className="scan-meaning-options">
+                {[
+                  { value: 'jamaat', label: 'Jamaat times' },
+                  { value: 'azaan', label: 'Azaan times' },
+                ].map((option) => (
+                  <button
+                    key={option.value}
+                    className={`scan-meaning-option${meaning === option.value ? ' selected' : ''}`}
+                    type="button"
+                    role="radio"
+                    aria-checked={meaning === option.value}
+                    onClick={() => onMeaning && onMeaning(option.value)}
+                  >
+                    {option.label}
+                  </button>
+                ))}
               </div>
             </div>
             <div className="scan-review-list">
@@ -1837,7 +1910,9 @@ function ScanBoardStage({ stage, current, scanned, partial, onClose, onCapture, 
                   <div className={`scan-review-row${missed ? ' missed' : ''}`} key={key}>
                     <div className="scan-review-row-head">
                       <strong>{label}</strong>
-                      <span>{missed ? 'Current kept' : isChanged ? 'Will update' : 'Matches'}</span>
+                      <span>
+                        {missed ? 'Current kept' : !meaning ? 'Detected' : isChanged ? 'Will update' : 'Matches'}
+                      </span>
                     </div>
                     {missed ? (
                       <div className="scan-review-kept">Not detected · {scanPrayerSummary(before)}</div>
@@ -1845,7 +1920,10 @@ function ScanBoardStage({ stage, current, scanned, partial, onClose, onCapture, 
                       <div className="scan-review-values">
                         <span><small>Current</small>{scanPrayerSummary(before)}</span>
                         <span className="mi" data-i="arrow_forward" aria-hidden="true"></span>
-                        <span><small>Scanned</small>{scanPrayerSummary(after)}</span>
+                        <span>
+                          <small>{meaning ? 'Draft Jamaat' : 'Detected'}</small>
+                          {meaning ? scanPrayerSummary(after) : fmt12(after.salaahTime)}
+                        </span>
                       </div>
                     )}
                   </div>
@@ -1854,15 +1932,21 @@ function ScanBoardStage({ stage, current, scanned, partial, onClose, onCapture, 
             </div>
           </div>
           <div className="scan-review-actions">
-            <div>You can edit every applied time before publishing.</div>
-            <button className="btn btn-filled lg" onClick={onApply}>
-              {changed.length ? `Apply ${changed.length} changes` : 'Keep current timings'}
+            <div>
+              {meaning
+                ? 'Every change stays editable and unpublished until you confirm.'
+                : 'Choose Azaan or Jamaat before adding these times to the draft.'}
+            </div>
+            <button className="btn btn-filled lg" disabled={!meaning} onClick={onApply}>
+              {!meaning
+                ? 'Choose Azaan or Jamaat'
+                : changed.length ? `Add ${changed.length} changes to draft` : 'Keep current timings'}
             </button>
             <button className="btn btn-link" onClick={onRetry}>Scan again</button>
           </div>
         </React.Fragment>
       ) : failed ? (
-        <div className="scan-failed">
+        <div className="fullscreen-notice">
           <span className="mi" data-i="filter_center_focus" aria-hidden="true"></span>
           <strong>The board didn’t read</strong>
           <span>
@@ -1876,12 +1960,18 @@ function ScanBoardStage({ stage, current, scanned, partial, onClose, onCapture, 
         <React.Fragment>
           <div className="camera-viewport">
             <img src="../../images/salaah-board-sample.jpeg" alt="" />
-            <div className="camera-guide"></div>
+            <div className="camera-guide scan-board-guide" aria-hidden="true">
+              <span className="scan-guide-corner tl"></span>
+              <span className="scan-guide-corner tr"></span>
+              <span className="scan-guide-corner bl"></span>
+              <span className="scan-guide-corner br"></span>
+            </div>
+            {!reading ? <div className="scan-capture-tip">Full board in frame · avoid glare</div> : null}
             {reading ? (
-              <div className="scan-reading" role="status" aria-label="Reading the board">
+              <div className="scan-reading" role="status" aria-label="Reading the captured photo">
                 <div className="scan-sweep"></div>
                 <div className="scan-reading-label">
-                  <span className="btn-spinner" aria-hidden="true"></span>Reading the board…
+                  <span className="btn-spinner" aria-hidden="true"></span>Reading captured photo…
                 </div>
               </div>
             ) : null}
@@ -2120,7 +2210,7 @@ function InvitationCard({ invitation, actioning, accepted, onAccept, onDecline, 
             ? <span className="masjid-mark" style={{ '--tile': '44px' }}><img src={invitation.photo} alt="" /></span>
             : <IconTile icon="mosque" size={44} tone="accent" />}
           <div className="invite-card-id">
-            <div className="invite-card-name">{invitation.name}</div>
+            <div className="section-title truncate invite-card-name">{invitation.name}</div>
             <div className="invite-card-city">You are now {roleLabel(invitation.role)} here</div>
           </div>
           <span className="mi invite-card-tick" data-i="check_circle" aria-hidden="true"></span>
@@ -2139,11 +2229,13 @@ function InvitationCard({ invitation, actioning, accepted, onAccept, onDecline, 
           ? <span className="masjid-mark" style={{ '--tile': '44px' }}><img src={invitation.photo} alt="" /></span>
           : <IconTile icon="mosque" size={44} />}
         <div className="invite-card-id">
-          <div className="invite-card-name">{invitation.name}</div>
+          <div className="section-title truncate invite-card-name">{invitation.name}</div>
           <div className="invite-card-city">{invitation.city}</div>
         </div>
+        {/* Expired is muted, not coral: an invitation you can still save and one that is already
+            gone must not read the same. Coral stays reserved for "act now". */}
         {invitation.expired
-          ? <span className="badge sm coral">Expired</span>
+          ? <span className="badge sm muted">Expired</span>
           : <span className={`badge sm ${urgent ? 'coral' : 'amber'}`}>
               <span className="mi" data-i="schedule"></span>
               {invitation.daysLeft <= 0 ? 'Last day' : `${invitation.daysLeft} ${invitation.daysLeft === 1 ? 'day' : 'days'} left`}
@@ -2155,8 +2247,8 @@ function InvitationCard({ invitation, actioning, accepted, onAccept, onDecline, 
         <strong>{roleLabel(invitation.role)}</strong>
       </div>
 
-      <div className="invite-card-caps">
-        <span className="invite-card-caps-label">
+      <div className={`invite-card-caps ${caps.length ? '' : 'empty'}`}>
+        <span className="eyebrow accent invite-card-caps-label">
           {caps.length ? 'You will be able to' : 'This role has no permissions yet'}
         </span>
         {caps.length ? (
@@ -2190,8 +2282,10 @@ function InvitationCard({ invitation, actioning, accepted, onAccept, onDecline, 
         </div>
       ) : (
         <div className="invite-card-actions">
-          <button className="btn btn-tonal" onClick={onDecline}>Decline</button>
-          <button className="btn btn-filled" onClick={onAccept}>Accept</button>
+          {/* .lg, not base .btn: base is 40px, and accepting or declining a committee role is the
+              highest-consequence pair of taps in the console. It must clear 48dp / 44pt. */}
+          <button className="btn lg btn-tonal" onClick={onDecline}>Decline</button>
+          <button className="btn lg btn-filled" onClick={onAccept}>Accept</button>
         </div>
       )}
     </div>
@@ -2226,7 +2320,7 @@ function InvitationsScreen({ data = {} }) {
       ) : null}
       {status === 'loaded' && items.length ? (
         <Body bottomInset={40} style={{ gap: 12 }}>
-          <div className="invite-summary">
+          <div className="eyebrow">
             {live.length
               ? `${live.length} ${live.length === 1 ? 'invitation' : 'invitations'} waiting for you`
               : 'Nothing waiting — these have run out'}

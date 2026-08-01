@@ -32,20 +32,12 @@
     /* ── Console header & feed chrome (page layout for the console screen) ── */
     .console-head{display:flex;align-items:center;gap:var(--size-lg);padding:54px 16px 14px;box-sizing:border-box}
     .console-head-copy{flex:1;min-width:0}
-    .console-head-name{display:flex;align-items:center;gap:var(--size-md);max-width:100%;padding:0;border:0;background:transparent;text-align:left;font:inherit;color:inherit}
-    .console-head-title{min-width:0;font-family:var(--font-title);font-size:23px;line-height:1.15;letter-spacing:-.4px;color:var(--color-info-primary);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+    .console-head-name{display:flex;align-items:center;gap:var(--size-md);max-width:100%;min-height:44px;padding:0;border:0;background:transparent;text-align:left;font:inherit;color:inherit}
     .console-head-verified{flex-shrink:0;font-size:var(--icon-sm);color:var(--color-neutral-brand)}
     .console-head-swap{flex-shrink:0;font-size:20px;color:var(--color-info-secondary)}
     .console-head-name:active .console-head-swap{color:var(--color-action-primary)}
     .console-head-role{margin-top:2px;font-size:12px;color:var(--color-info-secondary);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
-    .console-group{margin-top:var(--size-xl);border:1px solid var(--color-neutral-border);border-radius:var(--radius-card);background:var(--color-surface-card);padding:0 var(--size-lg)}
-    .console-group>.list-item+.list-item{border-top:1px solid var(--color-neutral-border)}
-    /* `.attention` — the pending-work queue. Same list construction, tinted so the block
-       reads as work owed rather than as another navigation card. */
-    .console-group.attention{margin-top:0;border-color:color-mix(in oklab,var(--color-action-primary) 40%,transparent);
-      background:var(--gradient-emerald),var(--color-surface-card)}
-    .console-eyebrow{padding:var(--size-2xl) 4px var(--size-lg);font-family:var(--font-body);font-size:10.5px;
-      font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:var(--color-info-secondary)}
+    .console-eyebrow{padding:var(--size-2xl) 4px var(--size-lg)}
 
     /* Today's salaah — the published strip doubling as the door into the editor. The whole
        card is one target; the grid inside is the Salaah screen's published construction. */
@@ -55,8 +47,7 @@
       transition:transform var(--motion-press) var(--ease-out)}
     .console-salaah:active{transform:scale(.995)}
     .console-salaah-head{display:flex;align-items:baseline;justify-content:space-between;gap:var(--size-lg);
-      margin-bottom:var(--size-lg);font-family:var(--font-body);font-size:10.5px;font-weight:700;
-      letter-spacing:.1em;text-transform:uppercase;color:var(--color-info-secondary)}
+      margin-bottom:var(--size-lg)}
     .console-salaah-head>span:last-child{font-size:11px;font-weight:500;letter-spacing:0;text-transform:none;
       white-space:nowrap;color:var(--color-info-tertiary)}
     .console-salaah-foot{display:flex;align-items:center;gap:var(--size-md);margin-top:var(--size-lg);
@@ -66,18 +57,18 @@
     .console-salaah-foot .mi{flex-shrink:0;font-size:20px;color:var(--color-info-faint)}
     @media(prefers-reduced-motion:reduce){.console-salaah{transition:none}.console-salaah:active{transform:none}}
     .console-feedhead{position:sticky;top:0;z-index:2;display:flex;align-items:baseline;gap:var(--size-md);padding:var(--size-2xl) 20px var(--size-lg);box-sizing:border-box;background:color-mix(in oklab,var(--color-surface-primary) 92%,transparent);backdrop-filter:blur(12px);-webkit-backdrop-filter:blur(12px)}
-    .console-feedhead-title{flex:1;font-family:var(--font-title);font-size:18px;letter-spacing:-.2px;color:var(--color-info-primary)}
+    .console-feedhead-title{flex:1}
     .console-feedhead-count{font-size:12px;color:var(--color-info-secondary)}
-    .console-day{padding:var(--size-lg) 20px var(--size-md);font-family:var(--font-body);font-size:10.5px;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:var(--color-info-tertiary);background:var(--color-surface-secondary)}
+    .console-day{padding:var(--size-lg) 20px var(--size-md);background:var(--color-surface-secondary)}
+    .feed-post-head .ib.md{width:44px;height:44px}
 
 
     /* ── Committee screen ── */
-    .committee-summary{display:flex;align-items:center;gap:var(--size-lg);padding:var(--size-xl);box-sizing:border-box;border:1px solid var(--color-neutral-border);border-radius:var(--radius-card);background:var(--gradient-emerald),var(--color-surface-card)}
     .member-caps{display:flex;align-items:center;gap:var(--size-md);min-width:0}
     .member-role{font-size:12px;color:var(--color-info-secondary);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
     .member-cap{flex-shrink:0;font-size:15px;color:var(--color-info-faint);opacity:var(--opacity-emphasis)}
     .member-cap.on{color:var(--color-action-primary);opacity:1}
-    .committee-label{display:flex;align-items:baseline;gap:var(--size-md);padding:var(--size-max) 4px var(--size-lg);font-family:var(--font-body);font-size:10.5px;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:var(--color-info-secondary)}
+    .committee-label{display:flex;align-items:baseline;gap:var(--size-md);padding:var(--size-max) 4px var(--size-lg)}
     .committee-label>span{padding:1px 7px;border-radius:var(--radius-circle);background:var(--color-action-background);font-size:10px;letter-spacing:0;color:var(--color-info-primary)}
     .committee-note{padding:var(--size-lg) 4px 0;font-family:var(--font-body);font-size:11px;line-height:1.5;color:var(--color-info-tertiary)}
     .committee-legend{display:flex;flex-wrap:wrap;gap:var(--size-md) var(--size-xl);padding:var(--size-max) 4px var(--size-md);font-family:var(--font-body);font-size:10.5px;color:var(--color-info-tertiary)}
@@ -86,9 +77,6 @@
 
 
     /* ── Followers screen ── */
-    .followers-hero{display:flex;align-items:center;gap:var(--size-lg);padding:var(--size-xl);box-sizing:border-box;border:1px solid var(--color-neutral-border);border-radius:var(--radius-card);background:var(--gradient-emerald),var(--color-surface-card)}
-    .followers-hero-value{font-family:var(--font-title);font-size:28px;letter-spacing:-.6px;line-height:1.05;color:var(--color-info-primary)}
-    .followers-hero-label{margin-top:2px;font-family:var(--font-body);font-size:11.5px;color:var(--color-info-secondary)}
     .followers-more{display:flex;align-items:center;justify-content:space-between;gap:var(--size-lg);padding:var(--size-xl) 4px 0;font-family:var(--font-body);font-size:11.5px;color:var(--color-info-secondary)}
     .followers-note{display:flex;align-items:flex-start;gap:var(--size-md);padding:var(--size-max) 4px 0;font-family:var(--font-body);font-size:11px;line-height:1.5;color:var(--color-info-tertiary)}
     .followers-note .mi{flex-shrink:0;font-size:14px}
@@ -96,12 +84,20 @@
     /* ── Masjid details screen ── */
     .detail-hero{position:relative;flex-shrink:0;height:172px;overflow:hidden;background:var(--color-surface-secondary)}
     .detail-hero img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover}
-    .detail-hero::after{content:"";position:absolute;inset:0;background:linear-gradient(180deg,transparent 30%,var(--color-surface-media-scrim) 100%)}
+    /* Two stacked scrims so the ramp is fully saturated ABOVE the copy block rather than at the
+       hero's bottom edge. The single 30%→100% ramp only reached ~30% black where the 24px name
+       actually sits, which composites to ~1.4:1 against white on a pale photo — and committee
+       photos cannot be art-directed, so a white marble facade or bright sky erased the name.
+       Stacked, the band behind the copy lands near 0.76 alpha (~3.6:1 on a worst-case white
+       region), clearing the 3.0:1 large-text floor while staying transparent over the upper
+       two-thirds so dark photos do not turn muddy. */
+    .detail-hero::after{content:"";position:absolute;inset:0;background:
+      linear-gradient(180deg,transparent 20%,var(--color-surface-media-scrim) 60%),
+      linear-gradient(180deg,transparent 45%,var(--color-surface-media-scrim) 70%)}
     .detail-hero-copy{position:absolute;z-index:1;left:var(--size-2xl);right:var(--size-2xl);bottom:var(--size-xl)}
-    .detail-hero-name{font-family:var(--font-title);font-size:24px;letter-spacing:-.4px;color:var(--color-neutral-white)}
     .detail-hero-meta{display:flex;align-items:center;gap:var(--size-md);margin-top:var(--size-md)}
     .detail-hero-code{font-family:var(--font-body);font-size:11px;font-variant-numeric:tabular-nums;letter-spacing:.06em;color:color-mix(in oklab,var(--color-neutral-white) 84%,transparent)}
-    .detail-group-label{padding:var(--size-max) 4px var(--size-lg);font-family:var(--font-body);font-size:10.5px;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:var(--color-info-secondary)}
+    .detail-group-label{padding:var(--size-max) 4px var(--size-lg)}
     .detail-group{margin-top:0;padding:0 var(--size-2xl)}
     .detail-field{display:flex;flex-direction:column;gap:2px;padding:var(--size-xl) 0}
     .detail-group .detail-field+.detail-field{border-top:1px solid var(--color-neutral-border)}
@@ -112,17 +108,16 @@
     .detail-note{padding:var(--size-max) 4px 0;font-family:var(--font-body);font-size:11px;line-height:1.5;color:var(--color-info-tertiary)}
 
     /* ── Member screen header ── */
-    .member-head-name{font-family:var(--font-title);font-size:21px;letter-spacing:-.3px;color:var(--color-info-primary);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
     .member-head-meta{display:flex;align-items:center;gap:var(--size-md);margin-top:2px;font-family:var(--font-body);font-size:12px;color:var(--color-info-secondary)}
 
     /* ── Salaah timings: the published baseline ── */
     .timings-published{padding:var(--size-xl);box-sizing:border-box;border:1px solid var(--color-neutral-border);border-radius:var(--radius-card);background:var(--color-surface-card)}
-    .timings-published-head{display:flex;align-items:baseline;justify-content:space-between;gap:var(--size-lg);margin-bottom:var(--size-lg);font-family:var(--font-body);font-size:10.5px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--color-info-secondary)}
+    .timings-published-head{display:flex;align-items:baseline;justify-content:space-between;gap:var(--size-lg);margin-bottom:var(--size-lg)}
     .timings-published-head>span:last-child{font-weight:500;letter-spacing:0;text-transform:none;font-size:11px;color:var(--color-info-tertiary)}
     .timings-published-grid{display:grid;grid-template-columns:repeat(6,1fr);gap:var(--size-sm)}
     .timings-published-grid>span{display:flex;flex-direction:column;align-items:center;gap:1px;padding:var(--size-md) 2px;border-radius:var(--radius-lg);background:color-mix(in oklab,var(--color-info-primary) 4%,transparent)}
-    .timings-published-grid b{font-family:var(--font-body);font-size:10px;font-weight:700;color:var(--color-info-primary)}
-    .timings-published-grid small{font-family:var(--font-body);font-size:9.5px;white-space:nowrap;color:var(--color-info-secondary)}
+    .timings-published-grid b{font-family:var(--font-body);font-size:11.5px;font-weight:700;line-height:1.25;color:var(--color-info-primary)}
+    .timings-published-grid small{font-family:var(--font-body);font-size:11.5px;line-height:1.25;white-space:nowrap;font-variant-numeric:tabular-nums;color:var(--color-info-secondary)}
     .timings-published-grid>span.changed{background:color-mix(in oklab,var(--color-status-warning) 18%,transparent)}
     .timings-published-grid>span.changed small{text-decoration:line-through}
     /* ── Scan-the-board (page chrome over the shared .camera-stage kit) ── */
@@ -137,16 +132,17 @@
     .scan-reading-label{display:flex;align-items:center;gap:var(--size-md);padding:8px 14px;
       border-radius:var(--radius-xl);background:color-mix(in oklab,var(--color-neutral-black) 72%,transparent);
       font:700 12px/1 var(--font-body);color:var(--color-neutral-white)}
+    .scan-board-guide{inset:18px;border:0}
+    .scan-guide-corner{position:absolute;width:34px;height:34px;border-color:color-mix(in oklab,var(--color-action-primary) 88%,var(--color-neutral-white));border-style:solid}
+    .scan-guide-corner.tl{top:0;left:0;border-width:3px 0 0 3px;border-radius:12px 0 0}
+    .scan-guide-corner.tr{top:0;right:0;border-width:3px 3px 0 0;border-radius:0 12px 0 0}
+    .scan-guide-corner.bl{bottom:0;left:0;border-width:0 0 3px 3px;border-radius:0 0 0 12px}
+    .scan-guide-corner.br{right:0;bottom:0;border-width:0 3px 3px 0;border-radius:0 0 12px}
+    .scan-capture-tip{position:absolute;left:50%;bottom:18px;transform:translateX(-50%);max-width:calc(100% - 52px);
+      padding:7px 11px;border-radius:var(--radius-circle);background:color-mix(in oklab,var(--color-neutral-black) 70%,transparent);
+      font:600 11.5px/1.25 var(--font-body);text-align:center;white-space:nowrap;color:var(--color-neutral-white)}
     .scan-stage-foot{display:flex;justify-content:center;padding:0 20px 34px}
     .scan-stage-foot .btn-link{color:var(--color-neutral-white)}
-    .scan-failed{flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;
-      gap:var(--size-xl);padding:24px 28px 40px;text-align:center}
-    .scan-failed>.mi{font-size:44px;color:var(--color-action-primary)}
-    .scan-failed strong{font-family:var(--font-title);font-size:22px;font-weight:400}
-    .scan-failed>span{font-family:var(--font-body);font-size:13.5px;line-height:1.55;
-      color:color-mix(in oklab,var(--color-neutral-white) 76%,transparent)}
-    .scan-failed .btn-filled{width:100%;margin-top:var(--size-md)}
-    .scan-failed .btn-link{color:var(--color-neutral-white)}
     /* What the scan filled in and, louder, what it missed. Success and partial share the
        construction; the icon and copy carry the difference. */
     .scan-result-banner{display:flex;align-items:center;gap:var(--size-lg);padding:var(--size-xl);
@@ -158,8 +154,11 @@
     .scan-result-banner>div strong,.scan-result-banner>div span{display:block}
     .scan-result-banner>div strong{font-size:13px;color:var(--color-info-primary)}
     .scan-result-banner>div span{margin-top:2px;font-size:12px;line-height:1.45;color:var(--color-info-secondary)}
+    .scan-result-banner .scan-draft-state{font-weight:700;color:var(--color-status-warning)}
+    .scan-result-banner .scan-delta-proof{margin-top:5px;color:var(--color-info-primary)}
     .scan-review-stage{position:absolute;inset:0;z-index:40;display:flex;flex-direction:column;
       background:var(--color-surface-primary);color:var(--color-info-primary)}
+    .scan-camera-stage .camera-topbar,.scan-review-stage .camera-topbar{height:118px}
     .scan-review-stage .camera-topbar{background:var(--color-surface-primary);
       border-bottom:1px solid var(--color-neutral-border)}
     .scan-review-stage .camera-control{color:var(--color-info-primary);background:var(--color-surface-secondary)}
@@ -169,9 +168,28 @@
     .scan-review-summary{display:flex;align-items:center;gap:12px;padding:12px 14px;
       border-radius:var(--radius-lg);background:var(--color-action-primary-tint)}
     .scan-review-summary>.mi{font-size:24px;color:var(--color-action-primary)}
+    /* Blocked on the column question — neutral glyph and a bordered neutral card, matching the
+       question card directly beneath it so the two read as one unanswered prompt. Note
+       --color-surface-secondary is mint-cream (a green-tinted neutral), so it cannot be used to
+       escape green here; the card surface is the honest neutral. */
+    .scan-review-summary.pending{background:var(--color-surface-card);border:1px solid var(--color-neutral-border)}
+    .scan-review-summary.pending>.mi{color:var(--color-info-secondary)}
     .scan-review-summary strong,.scan-review-summary span{display:block}
     .scan-review-summary strong{font-size:14px}
     .scan-review-summary span{margin-top:2px;font-size:12px;line-height:1.4;color:var(--color-info-secondary)}
+    .scan-meaning{margin-top:12px;padding:12px 14px;border:1px solid var(--color-neutral-border);
+      border-radius:var(--radius-lg);background:var(--color-surface-card)}
+    .scan-meaning-head{display:flex;align-items:flex-start;gap:10px}
+    .scan-meaning-head>.mi{flex-shrink:0;margin-top:1px;font-size:20px;color:var(--color-status-warning)}
+    .scan-meaning-head strong,.scan-meaning-head span{display:block}
+    .scan-meaning-head strong{font-size:13.5px}
+    .scan-meaning-head span{margin-top:2px;font-size:11.5px;line-height:1.4;color:var(--color-info-secondary)}
+    .scan-meaning-options{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:10px}
+    .scan-meaning-option{min-height:48px;padding:8px 10px;border:1px solid var(--color-neutral-border);
+      border-radius:var(--radius-lg);background:var(--color-surface-secondary);font:700 12.5px/1.25 var(--font-body);
+      color:var(--color-info-primary);cursor:pointer}
+    .scan-meaning-option.selected{border-color:var(--color-action-primary);background:var(--color-action-primary-tint);
+      color:var(--color-action-primary)}
     .scan-review-list{margin-top:12px;border-radius:var(--radius-lg);overflow:hidden;
       border:1px solid var(--color-neutral-border);background:var(--color-surface-card)}
     .scan-review-row{padding:12px 14px;border-bottom:1px solid var(--color-neutral-border)}
@@ -206,14 +224,12 @@
 
 
     /* ── Invitations inbox ── */
-    .invite-summary{font-family:var(--font-body);font-size:10.5px;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:var(--color-info-secondary)}
     .invite-card{box-sizing:border-box;padding:var(--size-2xl);border:1px solid var(--color-neutral-border);border-radius:var(--radius-card);background:var(--color-surface-card)}
     .invite-card.accepted{border-color:color-mix(in oklab,var(--color-status-success) 40%,transparent);background:color-mix(in oklab,var(--color-status-success) 7%,var(--color-surface-card))}
     .invite-card.expired{background:var(--color-surface-secondary)}
     .invite-card.expired .invite-card-name,.invite-card.expired .invite-card-caps{opacity:var(--opacity-high)}
     .invite-card-head{display:flex;align-items:center;gap:var(--size-lg)}
     .invite-card-id{flex:1;min-width:0}
-    .invite-card-name{font-family:var(--font-title);font-size:18px;letter-spacing:-.2px;color:var(--color-info-primary);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
     .invite-card-city{margin-top:1px;font-family:var(--font-body);font-size:11.5px;color:var(--color-info-secondary);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
     .invite-card-tick{flex-shrink:0;font-size:var(--icon-md);color:var(--color-status-success)}
     .invite-card-open{width:100%;margin-top:var(--size-xl)}
@@ -221,7 +237,11 @@
     .invite-card-role-label{font-size:11px;color:var(--color-info-secondary)}
     .invite-card-role strong{font-size:14px;color:var(--color-info-primary)}
     .invite-card-caps{display:flex;flex-direction:column;gap:var(--size-md);margin-top:var(--size-lg);padding:var(--size-lg) var(--size-xl);border-radius:var(--radius-2xl);background:var(--color-action-background)}
-    .invite-card-caps-label{font-family:var(--font-body);font-size:10.5px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--color-action-primary)}
+    /* "This role has no permissions yet" is not good news. Action green announces what the user
+       gains; an empty grant reverts to the neutral eyebrow colour so the two states cannot be
+       mistaken for each other at a glance. */
+    .invite-card-caps.empty{background:var(--color-surface-secondary)}
+    .invite-card-caps.empty .invite-card-caps-label{color:var(--color-info-secondary)}
     .invite-card-caps-list{display:flex;flex-direction:column;gap:5px}
     .invite-card-cap{display:flex;align-items:center;gap:var(--size-md);font-family:var(--font-body);font-size:12.5px;color:var(--color-info-primary)}
     .invite-card-cap .mi{flex-shrink:0;font-size:15px;color:var(--color-action-primary)}
@@ -237,7 +257,7 @@
     .cmp-screen{width:100%;height:100%;box-sizing:border-box;position:relative;overflow:hidden;display:flex;flex-direction:column;background:var(--color-surface-primary);font-family:var(--font-body);color:var(--color-info-primary)}
     .cmp-appbar{flex-shrink:0;display:flex;flex-direction:column;gap:var(--size-xl);padding:54px 20px 14px;box-sizing:border-box}
     .cmp-appbar-row{display:flex;align-items:center;gap:var(--size-xl)}
-    .cmp-appbar-title{flex:1;min-width:0;font-size:23px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+    .cmp-appbar-title{flex:1}
     .cmp-step-count{flex-shrink:0;font-size:12px;font-weight:700;white-space:nowrap;color:var(--color-info-secondary)}
     .cmp-body{flex:1;min-height:0;overflow-y:auto;overscroll-behavior:contain;padding:12px 20px 18px;box-sizing:border-box}
     .cmp-head{margin-bottom:var(--size-huge)}
@@ -253,7 +273,6 @@
     .cmp-counter.over{font-weight:700;color:var(--color-status-error)}
     .cmp-or{display:flex;align-items:center;gap:var(--size-xl);margin:var(--size-huge) 0}
     .cmp-or::before,.cmp-or::after{content:"";flex:1;height:1px;background:var(--color-neutral-border)}
-    .cmp-or>span{font-size:12px;font-weight:700;text-transform:uppercase;letter-spacing:.08em;color:var(--color-info-tertiary)}
     .cmp-record-cta{width:100%}
     .cmp-record-note{margin-top:var(--size-lg);text-align:center;font-size:12px;line-height:1.5;color:var(--color-info-secondary)}
     .cmp-mic-blocked{display:flex;align-items:flex-start;gap:var(--size-lg);margin-top:var(--size-xl);padding:var(--size-xl);border-radius:var(--radius-2xl);background:color-mix(in oklab,var(--color-status-error) 8%,transparent);font-size:12.5px;line-height:1.5;color:var(--color-status-error)}
@@ -292,10 +311,6 @@
     .cmp-review-copy strong{font-size:14px;font-weight:600}
 
     /* full-screen recorder stage */
-    .rec-stage{position:absolute;inset:0;z-index:260;display:flex;flex-direction:column;background:var(--color-neutral-black);color:var(--color-neutral-white)}
-    .rec-topbar{height:104px;display:flex;align-items:flex-end;justify-content:space-between;gap:var(--size-xl);padding:0 18px 14px;box-sizing:border-box}
-    .rec-title{min-width:0;text-align:center;font-family:var(--font-body);font-size:15px;font-weight:700}
-    .rec-title small{display:block;margin-top:3px;font-size:11px;font-weight:500;color:color-mix(in oklab,var(--color-neutral-white) 72%,transparent)}
     .rec-control-spacer{width:48px;flex-shrink:0}
     .rec-stage .rec-control{background:color-mix(in oklab,var(--color-neutral-white) 16%,transparent);color:var(--color-neutral-white)}
     .rec-stagearea{flex:1;min-height:0;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:var(--size-huge);padding:0 24px}
@@ -315,12 +330,6 @@
     .rec-actions{display:flex;flex-direction:column;align-items:center;gap:var(--size-md);padding:0 20px 34px}
     .rec-actions .btn-filled{width:100%}
     .rec-actions .btn-link{color:var(--color-neutral-white)}
-    .rec-blocked{flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:var(--size-xl);padding:24px 28px 40px;text-align:center}
-    .rec-blocked>.mi{font-size:44px;color:var(--color-action-primary)}
-    .rec-blocked strong{font-family:var(--font-title);font-size:22px;font-weight:400}
-    .rec-blocked>span{font-family:var(--font-body);font-size:13.5px;line-height:1.55;color:color-mix(in oklab,var(--color-neutral-white) 76%,transparent)}
-    .rec-blocked .btn-filled{width:100%;margin-top:var(--size-md)}
-    .rec-blocked .btn-link{color:var(--color-neutral-white)}
 
     /* photo library sheet + crop stage */
     .cmp-picker{max-height:86%}
@@ -623,8 +632,12 @@ class Component extends DCLogic {
   // edit and every follower seeing it. Keep it.
   onSubmitSalaah = () => this.patch({ confirm: { kind: 'publishSalaah' } });
   // ── Scan the board ──
-  onOpenScan = () => this.patch({ scanStage: 'camera', scanPreview: null });
-  onCloseScan = () => this.patch({ scanStage: null, scanPreview: null });
+  onOpenScan = () => this.setState((s) => window.opsApplyPatch(s, {
+    scanStage: 'camera',
+    scanPreview: null,
+    scanColumnMeaning: (s.scanMeaningByMasjid || {})[s.masjidId] || null,
+  }));
+  onCloseScan = () => this.patch({ scanStage: null, scanPreview: null, scanColumnMeaning: null });
   onScanRetry = () => this.patch({ scanStage: 'camera', scanPreview: null });
   onScanCapture = () => {
     this.patch({ scanStage: 'reading' });
@@ -635,12 +648,22 @@ class Component extends DCLogic {
       scanPreview: 'partial',
     }));
   };
-  onApplyScan = () => this.setState((s) => window.opsApplyPatch(s, {
-    scanStage: null,
-    scanApplied: s.scanPreview || 'partial',
-    scanPreview: null,
-    salaahDirty: true,
+  onScanMeaning = (scanColumnMeaning) => this.setState((s) => window.opsApplyPatch(s, {
+    scanColumnMeaning,
+    scanMeaningByMasjid: Object.assign({}, s.scanMeaningByMasjid, {
+      [s.masjidId]: scanColumnMeaning,
+    }),
   }));
+  onApplyScan = () => this.setState((s) => {
+    if (!s.scanColumnMeaning) return s;
+    return window.opsApplyPatch(s, {
+      scanStage: null,
+      scanApplied: s.scanPreview || 'partial',
+      scanPreview: null,
+      salaahDirty: true,
+      expandedPrayer: 'fajr',
+    });
+  });
 
   onOpenHistory = () => this.patch({ salaahHistoryOpen: true });
   onCloseHistory = () => this.patch({ salaahHistoryOpen: false });
@@ -654,6 +677,7 @@ class Component extends DCLogic {
       expandedPrayer: null,
       salaahNote: '',
       scanApplied: null,
+      scanColumnMeaning: null,
       stepDir: 'back',
     });
   };
@@ -851,7 +875,7 @@ class Component extends DCLogic {
       onOpenHistory: this.onOpenHistory, onCloseHistory: this.onCloseHistory,
       onOpenScan: this.onOpenScan, onCloseScan: this.onCloseScan,
       onScanCapture: this.onScanCapture, onScanRetry: this.onScanRetry,
-      onApplyScan: this.onApplyScan,
+      onScanMeaning: this.onScanMeaning, onApplyScan: this.onApplyScan,
       onDone: this.onDone,
       onMessage: this.onMessage, onNextStep: this.onNextStep, onGoToStep: this.onGoToStep,
       onOpenRecorder: this.onOpenRecorder, onStartRecording: this.onStartRecording,

@@ -62,7 +62,7 @@ function CmpStepBar({ index, onBack }) {
         <button className="ib ib-tonal" onClick={onBack} aria-label="Back">
           <span className="mi" data-i="arrow_back"></span>
         </button>
-        <span className="ab-title cmp-appbar-title">Send a paigham</span>
+        <span className="screen-title cmp-appbar-title">Send a paigham</span>
         <span className="cmp-step-count">Step {index + 1} of {CMP_STEPS.length}</span>
       </div>
       <div className="stepbar" role="progressbar" aria-valuemin={1} aria-valuemax={CMP_STEPS.length} aria-valuenow={index + 1}>
@@ -172,7 +172,7 @@ function CmpMessageStep({ data }) {
             <span className={`cmp-counter ${tooLong ? 'over' : ''}`}>{message.length}/{max}</span>
           </div>
 
-          <div className="cmp-or"><span>or</span></div>
+          <div className="cmp-or"><span className="eyebrow faint">or</span></div>
 
           <button className="btn btn-tonal lg cmp-record-cta" onClick={data.onOpenRecorder}>
             <span className="mi" data-i="mic"></span>
@@ -427,12 +427,12 @@ function CmpRecorderStage({ data }) {
   const blocked = rec.stage === 'blocked';
 
   return (
-    <div className="rec-stage">
-      <div className="rec-topbar">
-        <button className="ib ib-tonal rec-control" onClick={data.onCloseRecorder} aria-label="Close recorder">
+    <div className="camera-stage rec-stage">
+      <div className="camera-topbar">
+        <button className="ib ib-tonal camera-control rec-control" onClick={data.onCloseRecorder} aria-label="Close recorder">
           <span className="mi" data-i="close"></span>
         </button>
-        <div className="rec-title">
+        <div className="camera-title">
           {blocked ? 'Microphone needed' : (reviewing ? 'Listen back' : 'Recording')}
           <small>
             {blocked
@@ -444,7 +444,7 @@ function CmpRecorderStage({ data }) {
       </div>
 
       {blocked ? (
-        <div className="rec-blocked">
+        <div className="fullscreen-notice">
           <span className="mi" data-i="mic"></span>
           <strong>Microphone access is off</strong>
           <span>Enable the microphone for Paigham in your phone's settings, then come back — nothing you have written is lost.</span>

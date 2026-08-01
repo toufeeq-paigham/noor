@@ -280,6 +280,30 @@
     </div>
   </div>
 
+  <!-- Full-screen notice -->
+  <div class="cp-card">
+    <div class="cp-head">
+      <div class="cp-h">Full-screen notice</div>
+      <div class="cp-sub">Sits inside a <code>.camera-stage</code> (or any black stage) when the camera, microphone or recognition step cannot proceed: centred glyph, serif headline, an explanation, then a full-width primary and a link-style escape. The escape matters — a dead end that only offers "go back" loses the user's work. Used by the timing-board scan and the voice recorder.</div>
+    </div>
+    <div style="position:relative;height:420px;max-width:340px;border-radius:var(--radius-huge);overflow:hidden">
+      <div class="camera-stage">
+        <div class="camera-topbar">
+          <button class="ib ib-tonal camera-control" aria-label="Close"><span class="mi" data-i="close"></span></button>
+          <div class="camera-title">Couldn't read the board</div>
+          <span style="width:48px;flex-shrink:0"></span>
+        </div>
+        <div class="fullscreen-notice">
+          <span class="mi" data-i="center_focus_weak"></span>
+          <strong>The board didn't read</strong>
+          <span>LED boards can defeat the camera — glare, angle or a scrolling display. Get closer and square-on, or just type the timings; the editor is exactly one step away.</span>
+          <button class="btn lg btn-filled">Try again</button>
+          <button class="btn btn-link">Type the timings instead</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
   <!-- Guided capture panel -->
   <div class="cp-card">
     <div class="cp-head">
