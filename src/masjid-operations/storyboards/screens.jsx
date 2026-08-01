@@ -1044,11 +1044,11 @@ function DetailsBody({ data }) {
   return (
     <Body bottomInset={40} style={{ gap: 0, padding: 0 }}>
       {/* the masjid as it was verified: its photo, name and code */}
-      <div className="detail-hero">
+      <div className="media-identity-hero">
         {masjid.photo ? <img src={masjid.photo} alt={`${masjid.name} entrance`} /> : null}
-        <div className="detail-hero-copy">
+        <div className="media-identity-hero-copy">
           <div className="screen-title on-media">{masjid.name}</div>
-          <div className="detail-hero-meta">
+          <div className="media-identity-hero-caption">
             <span className="badge sm gold"><span className="mi" data-i="verified"></span>Verified</span>
             <span className="detail-hero-code">{masjid.code}</span>
           </div>

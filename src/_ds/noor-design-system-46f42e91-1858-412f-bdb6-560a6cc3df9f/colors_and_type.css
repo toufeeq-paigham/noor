@@ -126,6 +126,7 @@
   --noor-white-a70: rgba(255,255,255,0.70);
   --noor-black-a40: rgba(9,9,11,0.40);
   --noor-black-a55: rgba(9,9,11,0.55);
+  --noor-black-a78: rgba(9,9,11,0.78);
   --noor-black-a60: rgba(9,9,11,0.60);
   --noor-gunmetal-a80: rgba(24,24,27,0.80);
   --noor-scarlet-red-a40: rgba(231,0,11,0.40);
@@ -147,6 +148,7 @@
   --color-surface-overlay: var(--noor-white-a60);
   --color-surface-scrim: var(--noor-black-a40);
   --color-surface-media-scrim: var(--noor-black-a55);
+  --color-surface-media-scrim-strong: var(--noor-black-a78);
 
   /* action */
   --color-action-primary: var(--noor-jade-green);
@@ -208,6 +210,7 @@
   --color-surface-overlay: var(--noor-gunmetal-a80);
   --color-surface-scrim: var(--noor-black-a60);
   --color-surface-media-scrim: var(--noor-black-a55);
+  --color-surface-media-scrim-strong: var(--noor-black-a78);
 
   --color-action-primary: var(--noor-emerald-green);
   --color-action-primary-tint: var(--noor-emerald-green-a12);

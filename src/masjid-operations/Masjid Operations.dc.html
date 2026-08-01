@@ -82,20 +82,8 @@
     .followers-note .mi{flex-shrink:0;font-size:14px}
 
     /* ── Masjid details screen ── */
-    .detail-hero{position:relative;flex-shrink:0;height:172px;overflow:hidden;background:var(--color-surface-secondary)}
-    .detail-hero img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover}
-    /* Two stacked scrims so the ramp is fully saturated ABOVE the copy block rather than at the
-       hero's bottom edge. The single 30%→100% ramp only reached ~30% black where the 24px name
-       actually sits, which composites to ~1.4:1 against white on a pale photo — and committee
-       photos cannot be art-directed, so a white marble facade or bright sky erased the name.
-       Stacked, the band behind the copy lands near 0.76 alpha (~3.6:1 on a worst-case white
-       region), clearing the 3.0:1 large-text floor while staying transparent over the upper
-       two-thirds so dark photos do not turn muddy. */
-    .detail-hero::after{content:"";position:absolute;inset:0;background:
-      linear-gradient(180deg,transparent 20%,var(--color-surface-media-scrim) 60%),
-      linear-gradient(180deg,transparent 45%,var(--color-surface-media-scrim) 70%)}
-    .detail-hero-copy{position:absolute;z-index:1;left:var(--size-2xl);right:var(--size-2xl);bottom:var(--size-xl)}
-    .detail-hero-meta{display:flex;align-items:center;gap:var(--size-md);margin-top:var(--size-md)}
+    /* Hero construction lives in the kit (.media-identity-hero); only the code line's tabular
+       figures are page chrome. */
     .detail-hero-code{font-family:var(--font-body);font-size:11px;font-variant-numeric:tabular-nums;letter-spacing:.06em;color:color-mix(in oklab,var(--color-neutral-white) 84%,transparent)}
     .detail-group-label{padding:var(--size-max) 4px var(--size-lg)}
     .detail-group{margin-top:0;padding:0 var(--size-2xl)}

@@ -12,7 +12,7 @@
      ATOMS       .btn .ib · .badge .chip · .input .phone .otp · .sw .cb · .ind .dot
                  .eyebrow .screen-title .section-title
      MOLECULES   .choice-group .choice-card · .tbar .tab · .nb-bar .nb-* · .dd-menu .dd-item .chev · .rx-* .em
-                 .summary-hero .summary-hero-*
+                 .summary-hero .summary-hero-* · .media-identity-hero .media-identity-hero-*
      ORGANISMS   .app-bar .ab-* · .fullscreen-notice
    ============================================================ */
 
@@ -355,13 +355,36 @@
 .rx-popup .em{width:32px;height:32px;font-size:20px;border:none;background:transparent;margin:0;cursor:pointer;transition:transform 200ms cubic-bezier(.34,1.56,.64,1);transform-origin:bottom}
 .rx-popup .em:hover{transform:scale(1.4)}
 
+/* ── Media identity hero (.media-identity-hero) ──
+   A record's identity laid over its own photograph: the name, an optional caption/badge line,
+   and the scrim that keeps them readable. Use it where the image IS the recognition (a masjid's
+   entrance) and the name has to travel with it.
+
+   The scrim is the component. Photos here are user-supplied and cannot be art-directed, so the
+   same layout must hold over a dark doorway and over white marble. A single ramp saturating at
+   the bottom edge leaves the copy — which sits above that edge — in the thin part: measured, a
+   30%→100% ramp gave only ~30% black behind a 24px title, about 1.4:1 against white on a pale
+   photo, well under the 3.0:1 large-text floor. Saturating by 70% with the strong scrim token
+   puts the deep band behind the text (~3.6:1 worst case) while leaving the upper two-thirds
+   clear so a dark photograph does not turn to mud.
+
+   Never put on-media text over an image without this construction. Compose twin:
+   core/noor MediaIdentityHero + MediaIdentityHeroMetrics. */
+.media-identity-hero{position:relative;flex-shrink:0;height:var(--illustration-lg);overflow:hidden;background:var(--color-surface-secondary)}
+.media-identity-hero>img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover}
+.media-identity-hero::after{content:"";position:absolute;inset:0;pointer-events:none;background:linear-gradient(180deg,transparent 20%,var(--color-surface-media-scrim-strong) 70%,var(--color-surface-media-scrim-strong) 100%)}
+.media-identity-hero-copy{position:absolute;z-index:1;left:var(--size-2xl);right:var(--size-2xl);bottom:var(--size-xl)}
+.media-identity-hero-caption{display:flex;align-items:center;gap:var(--size-md);margin-top:var(--size-md)}
+
 /* ── Media tile ──
    Image-led navigation tile used by devotional/content category grids. The
    image is descriptive only when the title does not already name the target;
    interactive semantics live on the tile itself. */
 .media-tile{position:relative;width:100%;height:var(--illustration-lg);overflow:hidden;box-sizing:border-box;border:0;border-radius:var(--radius-2xl);padding:0;background:var(--color-surface-secondary);cursor:pointer;text-align:left;color:var(--color-neutral-white);transition:transform var(--motion-press) var(--ease-out)}
 .media-tile img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover}
-.media-tile::after{content:"";position:absolute;inset:0;background:linear-gradient(to bottom,transparent 40%,var(--color-surface-media-scrim) 100%);pointer-events:none}
+/* Saturates at 82%, above the label, not at the bottom edge — a ramp that only reaches full
+   strength where the tile ends leaves the label itself under-scrimmed. */
+.media-tile::after{content:"";position:absolute;inset:0;background:linear-gradient(to bottom,transparent 40%,var(--color-surface-media-scrim) 82%,var(--color-surface-media-scrim) 100%);pointer-events:none}
 .media-tile-label{position:absolute;z-index:1;left:var(--size-xl);right:var(--size-xl);bottom:var(--size-xl);font-family:var(--font-body);font-size:var(--body-m-size);line-height:var(--body-m-lh);font-weight:700;color:var(--color-neutral-white)}
 .media-tile:active{transform:scale(.97)}
 
