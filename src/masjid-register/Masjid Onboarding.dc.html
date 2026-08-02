@@ -108,7 +108,16 @@
     .photo-source-panel{position:relative;overflow:hidden;padding:18px;border:1px solid color-mix(in oklab,var(--color-action-primary) 34%,var(--color-neutral-border));border-radius:var(--radius-2xl);background:var(--gradient-emerald),var(--color-surface-card);box-shadow:0 18px 36px -28px color-mix(in oklab,var(--color-action-primary) 60%,transparent)}
     .photo-source-panel::after{content:"";position:absolute;width:140px;height:140px;right:-76px;top:-76px;border-radius:var(--radius-circle);background:color-mix(in oklab,var(--color-action-primary) 10%,transparent);pointer-events:none}
     .photo-source-panel.error{border-color:color-mix(in oklab,var(--color-status-error) 62%,var(--color-neutral-border));background:var(--gradient-emerald),color-mix(in oklab,var(--color-status-error) 3%,var(--color-surface-card))}
-    .identity-guided-preview{position:relative;min-height:calc(var(--illustration-lg) + var(--size-huge));display:flex;align-items:center;justify-content:center;overflow:hidden;margin-bottom:var(--size-xl);border:1px solid color-mix(in oklab,var(--color-action-primary) 34%,var(--color-neutral-border));border-radius:var(--radius-2xl);background:var(--gradient-emerald),var(--color-surface-card)}
+    .guided-illustration-preview{position:relative;min-height:calc(var(--illustration-lg) + var(--size-huge));display:flex;align-items:center;justify-content:center;overflow:hidden;margin-bottom:var(--size-xl);border:1px solid color-mix(in oklab,var(--color-action-primary) 34%,var(--color-neutral-border));border-radius:var(--radius-2xl);background:var(--gradient-emerald),var(--color-surface-card)}
+    .masjid-guided-subject{position:relative;width:calc(var(--illustration-lg) + var(--size-huge));height:var(--illustration-sm);display:flex;align-items:center;justify-content:center;border:1px dashed color-mix(in oklab,var(--color-action-primary) 58%,transparent);border-radius:var(--radius-card);color:var(--color-action-primary)}
+    .masjid-guided-subject>.mi{position:relative;z-index:1;font-size:calc(var(--icon-lg) + var(--size-xl));color:var(--color-action-primary)}
+    .photo-pin-guidance{display:flex;align-items:center;gap:var(--size-xl);margin-bottom:var(--size-xl);padding:var(--size-xl);border:1px solid color-mix(in oklab,var(--color-action-primary) 34%,var(--color-neutral-border));border-radius:var(--radius-xl);background:color-mix(in oklab,var(--color-action-primary) 8%,var(--color-surface-card))}
+    .photo-pin-marker{width:var(--control-h-md);height:var(--control-h-md);display:flex;align-items:center;justify-content:center;flex-shrink:0;border-radius:var(--radius-xl);background:var(--color-action-primary);color:var(--color-neutral-white)}
+    .photo-pin-marker>.mi,.photo-pin-confirmed{font-size:var(--icon-sm)}
+    .photo-pin-copy{min-width:0;display:flex;flex:1;flex-direction:column}
+    .photo-pin-copy strong,.photo-pin-copy small{overflow:hidden;text-overflow:ellipsis;font-family:var(--font-body);font-size:var(--body-xs-size);line-height:var(--body-xs-lh)}
+    .photo-pin-copy small{color:var(--color-info-secondary)}
+    .photo-pin-confirmed{flex-shrink:0;color:var(--color-action-primary)}
     .identity-guided-glow{position:absolute;width:var(--illustration-lg);height:var(--illustration-lg);border-radius:var(--radius-circle);background:color-mix(in oklab,var(--color-action-primary) 13%,transparent);filter:blur(var(--size-max))}
     .identity-guided-face{position:relative;width:var(--illustration-sm);height:var(--illustration-lg);display:flex;align-items:center;justify-content:center;border:1px dashed color-mix(in oklab,var(--color-action-primary) 58%,transparent);border-radius:48%;color:var(--color-action-primary)}
     .identity-guided-face>.mi{font-size:var(--icon-lg)}
@@ -397,7 +406,7 @@ class Component extends DCLogic {
     clearTimeout(this._t); this._t = setTimeout(() => this.setState({ sheetOpen:false }), 420);
   };
   goMasjidAdmin = () => {
-    window.location.href = '../masjid-operations/Masjid Operations.dc.html#admin';
+    window.location.href = '../masjid-operations/Masjid Broadcast Studio.dc.html#admin';
   };
 
   goExplore = () => { window.location.href = '../masjid-explore/Explore Masjids.dc.html#map'; };

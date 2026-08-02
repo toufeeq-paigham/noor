@@ -436,7 +436,7 @@ function CameraStage({ d }) {
   );
 }
 
-function PhotoCaptureCard({ mode, captured, locationAttached, imageSrc, onOpen, onRemove, error }) {
+function PhotoCaptureCard({ mode, captured, locationAttached, locationLabel, imageSrc, onOpen, onRemove, error }) {
   const selfie = mode === 'selfie';
   const resolvedImage = imageSrc || (selfie ? '../../images/identity-camera-preview.png' : '../../images/masjid-camera-preview.png');
   if (captured) {
@@ -458,10 +458,10 @@ function PhotoCaptureCard({ mode, captured, locationAttached, imageSrc, onOpen, 
     );
   }
   return (
-    <div className={`${selfie ? 'photo-source-panel' : 'photo-guided-panel'} ${error ? 'error' : ''}`}>
+    <div className={`photo-source-panel ${selfie ? 'identity-source-panel' : 'masjid-source-panel'} ${error ? 'error' : ''}`}>
       {selfie ? (
         <>
-          <div className="identity-guided-preview" aria-label="Identity photo framing guide">
+          <div className="guided-illustration-preview identity-guided-preview" aria-label="Identity photo framing guide">
             <div className="identity-guided-glow"></div>
             <div className="identity-guided-face">
               <span className="mi" data-i="person"></span>
@@ -492,26 +492,33 @@ function PhotoCaptureCard({ mode, captured, locationAttached, imageSrc, onOpen, 
         </>
       ) : (
         <>
-          <div className="photo-guided-preview">
-            <img src="../../images/masjid-camera-preview.png" alt="Preview showing how to frame the masjid entrance" />
-            <div className="photo-guided-frame" aria-hidden="true">
-              <span className="photo-guide-corner top-left"></span>
-              <span className="photo-guide-corner top-right"></span>
-              <span className="photo-guide-corner bottom-left"></span>
-              <span className="photo-guide-corner bottom-right"></span>
+          <div className="guided-illustration-preview masjid-guided-illustration" aria-label="Masjid entrance framing guide">
+            <div className="masjid-guided-subject">
+              <span className="mi fill" data-i="mosque"></span>
+              <span className="identity-guide-corner top-left"></span>
+              <span className="identity-guide-corner top-right"></span>
+              <span className="identity-guide-corner bottom-left"></span>
+              <span className="identity-guide-corner bottom-right"></span>
             </div>
-            <div className="photo-guided-location">
+          </div>
+          <div className="photo-pin-guidance">
+            <span className="photo-pin-marker">
               <span className="mi fill" data-i="location_on"></span>
-              <span>
-                <strong>At the entrance pin</strong>
-                <small>Kabutar Khana, Mumbai</small>
-              </span>
-            </div>
+            </span>
+            <span className="photo-pin-copy">
+              <strong>At the entrance pin</strong>
+              <small>{locationLabel || 'Pinned masjid location'}</small>
+            </span>
+            <span className="mi photo-pin-confirmed" data-i="check_circle" aria-label="Entrance location confirmed"></span>
           </div>
           <div className="photo-guidance-list">
             <div className="photo-guidance-row">
               <span className="mi" data-i="filter_center_focus"></span>
               <span><strong>Frame the entrance</strong><small>Include the masjid name when visible</small></span>
+            </div>
+            <div className="photo-guidance-row">
+              <span className="mi" data-i="wb_sunny"></span>
+              <span><strong>Use even light</strong><small>Avoid glare and strong backlight</small></span>
             </div>
             <div className="photo-guidance-row">
               <span className="mi" data-i="my_location"></span>
@@ -715,6 +722,7 @@ function WizardBody({ d }) {
           mode="masjid"
           captured={d.photoTaken}
           locationAttached={d.photoLocationAttached}
+          locationLabel={d.capturePlace}
           imageSrc={d.photoSrc}
           onOpen={d.onTakePhoto}
           onRemove={d.onRemovePhoto}
