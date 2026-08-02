@@ -76,13 +76,13 @@
     ]},
     { id: 'core', num: '03', title: 'Core app', items: [
       { name: 'Home Screen', file: 'home/Home Screen.dc.html', icon: 'splitscreen', meta: 'Section board · 5 tabs + prayer/audio variations' },
+      { name: 'Explore Masjids', file: 'masjid-explore/Explore Masjids.dc.html#map', icon: 'travel_explore', meta: 'Section board · map · list · pincode · QR · 10 states' },
       { name: 'Sign-in & Nudge States', file: 'nudge-states/Sign-in & Nudge States.dc.html', icon: 'notifications', meta: 'Board · guest · no-masjid · notifications · 17 states' },
       { name: 'Quran', file: 'Quran.dc.html#home', icon: 'auto_stories', meta: 'Section board · Home → index → reader · 9 states' }
     ]},
     { id: 'masjid', num: '04', title: 'Masjid', items: [
       { name: 'Masjid Onboarding', file: 'masjid-register/Masjid Onboarding.dc.html#entry', icon: 'add_home_work', meta: 'Section board · My Masjids sheet · screen-by-screen storyboard · 41 states' },
-      { name: 'Explore Masjids', file: 'masjid-explore/Explore Masjids.dc.html#map', icon: 'travel_explore', meta: 'Section board · map · list · pincode · QR · 10 states' },
-      { name: 'Masjid Broadcast Studio', file: 'masjid-operations/Masjid Broadcast Studio.dc.html', icon: 'campaign', meta: 'Section board · the masjid console · hub → committee · timings · musalleen · details · invitations · send a paigham · 90 states' }
+      { name: 'Masjid Console', file: 'masjid-operations/Masjid Console.dc.html', icon: 'campaign', meta: 'Section board · the masjid console · hub → committee · timings · musalleen · details · invitations · send a paigham · 90 states' }
     ]},
     { id: 'content', num: '05', title: 'Content & tools', items: [
       { name: 'Find Sehri', file: 'sehri/Sehri.dc.html#map', icon: 'restaurant', meta: 'Section board · Home → permission → map · list · 5 states' },

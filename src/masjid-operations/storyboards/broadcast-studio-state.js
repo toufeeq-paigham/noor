@@ -1,4 +1,4 @@
-// Masjid Broadcast Studio — one state model shared by the storyboard frames and the live device.
+// Masjid Console — one state model shared by the storyboard frames and the live device.
 //
 // Plain JS (loaded synchronously from the page helmet) so `buildOpsData` and `OPS_FRAMES`
 // exist before the page's DCLogic runs. The sample data and formatting helpers live in

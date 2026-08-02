@@ -122,7 +122,7 @@ const PROFILE_EXTRA_FRAMES = [
 const MANAGED_ENTRY_FRAMES = [
   {
     id: 'home-managed',
-    name: 'Home — Broadcast Studio Entry',
+    name: 'Home — Masjid Console Entry',
     tab: 0,
     component: 'HomeScreen',
     props: { heroSel: null, managedMasjid: 'Masjid E Bilal', managedAttention: 3, onManageMasjid: () => {} }

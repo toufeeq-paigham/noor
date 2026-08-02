@@ -1,8 +1,8 @@
-// Shared screen components for the Masjid Broadcast Studio section board — the masjid
+// Shared screen components for the Masjid Console section board — the masjid
 // console plus the journeys that hang off it.
 //
 // Used by BOTH the static storyboards (./broadcast-studio-board.jsx) and the live device
-// (../Masjid Broadcast Studio.dc.html). Every screen takes ONE `data` object so the dc x-import
+// (../Masjid Console.dc.html). Every screen takes ONE `data` object so the dc x-import
 // binds a single value, and every handler is optional (the static frames pass none).
 //
 // Source of truth for behaviour is the Compose implementation:
@@ -350,7 +350,7 @@ function Screen({ children }) {
 // starting after it — the fade only reads when there is something behind it to blur.
 // `transitionName` carries the console's shared-element title (masjid name) from Profile.
 const BCS_APPBAR_H = 114; // 54px status inset + 48px control row + 12px bottom
-function OpsAppBar({ title, subtitle, onBack, trailing, transitionName, backHref = './Masjid Broadcast Studio.dc.html#admin' }) {
+function OpsAppBar({ title, subtitle, onBack, trailing, transitionName, backHref = './Masjid Console.dc.html#admin' }) {
   return (
     <div className="app-bar" style={{
       alignItems: 'center', gap: 12, height: BCS_APPBAR_H,
@@ -768,7 +768,7 @@ function ConsolePost({ post, masjid, canManage, menuOpen, deleting, onToggleMenu
 }
 
 // ══════════════════════════════════════════════════════════════════════
-// Broadcast Studio — approved production direction
+// Masjid Console — approved production direction
 // ══════════════════════════════════════════════════════════════════════
 
 function BroadcastStudioHeader({ masjid, role, caps, managed, onBack, onOpenSwitcher, transitionEnabled }) {
@@ -1366,7 +1366,7 @@ function MemberBody({ data }) {
     <div style={{ flex: 1, minHeight: 0, display: 'flex', flexDirection: 'column' }}>
       {/* the person IS the header — identity once, not twice */}
       <div className="console-head">
-        <a className="ib ib-tonal" aria-label="Back" href="./Masjid Broadcast Studio.dc.html#members">
+        <a className="ib ib-tonal" aria-label="Back" href="./Masjid Console.dc.html#members">
           <span className="mi" data-i="arrow_back"></span>
         </a>
         {inviting

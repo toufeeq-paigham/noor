@@ -1,5 +1,7 @@
-// Isolated Home components for the Broadcast Studio entry board.
+// Isolated Home components for the Masjid Console entry board.
 // Used by broadcast-home-tabs-row.jsx and Home Broadcast Studio.dc.html.
+// The bhs-/broadcast- prefixes are the original module names, kept so the file history
+// stays traceable; the user-facing name is Masjid Console.
 
 // 1. HOME SCREEN
 function HomeScreen({
@@ -198,7 +200,7 @@ function HomeScreen({
                     <img src="../../images/masjid-camera-preview.png" alt="" />
                   </span>
                   <span className="bhs-entry-copy">
-                    <span className="bhs-entry-kicker">BROADCAST STUDIO</span>
+                    <span className="bhs-entry-kicker">MASJID CONSOLE</span>
                     <span className="bhs-entry-name">{managedMasjid}</span>
                     <span className="bhs-entry-role">{managedRole} · Full admin</span>
                   </span>

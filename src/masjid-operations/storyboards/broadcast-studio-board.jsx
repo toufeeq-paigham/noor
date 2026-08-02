@@ -1,4 +1,4 @@
-// Masjid Broadcast Studio — storyboard rows.
+// Masjid Console — storyboard rows.
 //
 // Every frame is rendered by the SAME screen component and the SAME `buildOpsData`
 // assembly the live device uses (see ./broadcast-studio-state.js), so a static frame can never drift

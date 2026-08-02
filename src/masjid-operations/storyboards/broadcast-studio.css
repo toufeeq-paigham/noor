@@ -1,7 +1,8 @@
-/* Broadcast Studio
-   Separate visual instance for the complete Masjid Console. The existing Operations
-   and Concepts boards do not load this stylesheet. Shared controls remain Noor kit
-   components; these rules own only this instance's screen composition and route chrome. */
+/* Masjid Console
+   Screen composition and route chrome for the console. Shared controls remain Noor kit
+   components; these rules own only what the console itself adds. The bcs- prefix and the
+   broadcast-studio-* filenames are the original module names, kept so the file history
+   stays traceable — the user-facing name is Masjid Console. */
 
 .bcs-shell{
   background:
