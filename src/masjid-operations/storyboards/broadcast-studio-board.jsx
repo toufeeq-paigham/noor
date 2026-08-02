@@ -1,12 +1,12 @@
-// Masjid Operations — storyboard rows.
+// Masjid Broadcast Studio — storyboard rows.
 //
 // Every frame is rendered by the SAME screen component and the SAME `buildOpsData`
-// assembly the live device uses (see ./ops-state.js), so a static frame can never drift
+// assembly the live device uses (see ./broadcast-studio-state.js), so a static frame can never drift
 // from the prototype. Tapping a frame hands its state to the device.
 
 const OPS_SCREEN_FOR = {
   console: 'ConsoleScreen',
-  create: 'ComposePostScreen', // ./compose-post.jsx
+  create: 'ComposePostScreen', // ./broadcast-studio-compose.jsx
   sent: 'PostSentScreen',
   invitations: 'InvitationsScreen',
 };

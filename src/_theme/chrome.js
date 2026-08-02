@@ -82,7 +82,7 @@
     { id: 'masjid', num: '04', title: 'Masjid', items: [
       { name: 'Masjid Onboarding', file: 'masjid-register/Masjid Onboarding.dc.html#entry', icon: 'add_home_work', meta: 'Section board · My Masjids sheet · screen-by-screen storyboard · 41 states' },
       { name: 'Explore Masjids', file: 'masjid-explore/Explore Masjids.dc.html#map', icon: 'travel_explore', meta: 'Section board · map · list · pincode · QR · 10 states' },
-      { name: 'Masjid Operations', file: 'masjid-operations/Masjid Operations.dc.html', icon: 'security', meta: 'Section board · console (needs-you · salaah · destinations · paigham feed) → committee · timings · followers · details · invitations · send a paigham · 89 states' }
+      { name: 'Masjid Broadcast Studio', file: 'masjid-operations/Masjid Broadcast Studio.dc.html', icon: 'campaign', meta: 'Section board · the masjid console · hub → committee · timings · musalleen · details · invitations · send a paigham · 90 states' }
     ]},
     { id: 'content', num: '05', title: 'Content & tools', items: [
       { name: 'Find Sehri', file: 'sehri/Sehri.dc.html#map', icon: 'restaurant', meta: 'Section board · Home → permission → map · list · 5 states' },

@@ -1,5 +1,5 @@
-// Shared screen components for the Home Flow Section Board.
-// These are used by both the static storyboard frames (tabs-row.jsx) and the live interactive device (Home Screen.dc.html).
+// Isolated Home components for the Broadcast Studio entry board.
+// Used by broadcast-home-tabs-row.jsx and Home Broadcast Studio.dc.html.
 
 // 1. HOME SCREEN
 function HomeScreen({
@@ -192,28 +192,41 @@ function HomeScreen({
               separate row is work that needs a person, and it deep-links to that destination. */}
           {managedMasjid && onManageMasjid ? (
             <div style={{ padding: '18px 20px 0' }}>
-              <div className="manage-entry compact stacked">
-                <button className="manage-entry-main" onClick={onManageMasjid}>
+              <div className="bhs-entry">
+                <button className="bhs-entry-main" onClick={onManageMasjid}>
                   <span className="masjid-mark" style={{ '--tile': '38px' }}>
                     <img src="../../images/masjid-camera-preview.png" alt="" />
                   </span>
-                  <span className="manage-entry-copy">
-                    <span className="manage-entry-eyebrow">{managedRole}</span>
-                    <span className="manage-entry-name">{managedMasjid}</span>
+                  <span className="bhs-entry-copy">
+                    <span className="bhs-entry-kicker">BROADCAST STUDIO</span>
+                    <span className="bhs-entry-name">{managedMasjid}</span>
+                    <span className="bhs-entry-role">{managedRole} · Full admin</span>
                   </span>
-                  <span className="mi manage-entry-go" data-i="chevron_right"></span>
+                  <span className="mi bhs-entry-go" data-i="arrow_forward"></span>
                 </button>
                 {managedStatsLoading ? (
-                  <span className="manage-entry-summary skeleton" aria-hidden="true">Loading console summary</span>
+                  <span className="bhs-entry-status loading" aria-label="Loading broadcast summary">
+                    <span className="skeleton"></span>
+                    <span className="skeleton short"></span>
+                  </span>
                 ) : managedAttention ? (
-                  <button className="manage-entry-need" onClick={onManageCommittee || onManageMasjid}>
-                    <span className="mi" data-i="group" aria-hidden="true"></span>
-                    <span>{managedAttention} {managedAttention === 1 ? 'invitation' : 'invitations'} waiting</span>
-                    <span className="mi manage-entry-go" data-i="chevron_right"></span>
+                  <button className="bhs-entry-status attention" onClick={onManageCommittee || onManageMasjid}>
+                    <span className="bhs-entry-status-icon"><span className="mi" data-i="groups" aria-hidden="true"></span></span>
+                    <span>
+                      <strong>{managedAttention} {managedAttention === 1 ? 'invitation' : 'invitations'} waiting</strong>
+                      <small>Open Committee to follow up</small>
+                    </span>
+                    <span className="mi bhs-entry-go" data-i="chevron_right"></span>
                   </button>
                 ) : (
-                  <span className="manage-entry-summary">
-                    {managedStats[0]?.value || '0'} following · {managedFirstRun ? 'timings not published' : 'timings updated today'}
+                  <span className={`bhs-entry-status${managedFirstRun ? ' first-run' : ''}`}>
+                    <span className="bhs-entry-status-icon">
+                      <span className="mi" data-i={managedFirstRun ? 'mosque' : 'campaign'} aria-hidden="true"></span>
+                    </span>
+                    <span>
+                      <strong>{managedFirstRun ? 'Ready to set up' : `${managedStats[0]?.value || '0'} musalleen`}</strong>
+                      <small>{managedFirstRun ? 'Publish timings and welcome your first musalleen' : 'Latest paigham reached everyone'}</small>
+                    </span>
                   </span>
                 )}
               </div>

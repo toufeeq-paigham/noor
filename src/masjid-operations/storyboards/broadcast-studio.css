@@ -1,0 +1,501 @@
+/* Broadcast Studio
+   Separate visual instance for the complete Masjid Console. The existing Operations
+   and Concepts boards do not load this stylesheet. Shared controls remain Noor kit
+   components; these rules own only this instance's screen composition and route chrome. */
+
+.bcs-shell{
+  background:
+    linear-gradient(180deg,
+      color-mix(in oklab,var(--color-action-primary) 6%,var(--color-surface-primary)),
+      var(--color-surface-primary) 26%) !important;
+}
+
+.bcs-shell .screen-title,
+.bcs-shell .section-title,
+.bcs-shell .ab-title,
+.bcs-compose-screen .cmp-title{
+  font-family:var(--font-body);
+  font-weight:800;
+  letter-spacing:-.025em;
+}
+
+.bcs-body{
+  scrollbar-gutter:stable;
+}
+
+.bcs-studio-body{
+  background:transparent;
+}
+
+.bcs-home-body{
+  background:transparent;
+}
+
+/* Top app bars are the shared DS `.app-bar` — transparent, floating, with the
+   progressive-blur haze fading out at the bottom edge. Black is reserved for the send
+   composer, which is the one surface that has to shout; a black bar on every destination
+   made the console read as a different app from the rest of Paigham. */
+
+.bcs-shell .list-group,
+.bcs-shell .timings-published,
+.bcs-shell .detail-correction,
+.bcs-shell .invite-card,
+.bcs-shell .permission-section,
+.bcs-shell .prayer-editor{
+  box-shadow:var(--shadow-card);
+}
+
+.bcs-shell .list-item.actionable:active,
+.bcs-shell .console-row:active{
+  background:color-mix(in oklab,var(--color-action-primary) 8%,var(--color-surface-card));
+}
+
+.bcs-shell .eyebrow{
+  letter-spacing:.11em;
+}
+
+.bcs-header{
+  display:flex;
+  align-items:center;
+  gap:var(--size-lg);
+  padding-bottom:var(--size-max);
+}
+
+.bcs-identity{
+  display:flex;
+  flex:1;
+  min-width:0;
+  min-height:46px;
+  flex-direction:column;
+  justify-content:center;
+  border:0;
+  padding:0;
+  background:transparent;
+  color:var(--color-info-primary);
+  font:inherit;
+  text-align:left;
+}
+
+.bcs-name-line{
+  display:flex;
+  width:100%;
+  min-width:0;
+  align-items:flex-start;
+  gap:5px;
+}
+
+.bcs-name-line strong{
+  display:-webkit-box;
+  overflow:hidden;
+  flex:1;
+  min-width:0;
+  font-size:17px;
+  line-height:21px;
+  font-weight:800;
+  letter-spacing:-.025em;
+  -webkit-box-orient:vertical;
+  -webkit-line-clamp:2;
+}
+
+.bcs-verified{
+  flex-shrink:0;
+  font-size:16px;
+  color:var(--color-action-primary);
+}
+
+.bcs-swap{
+  flex-shrink:0;
+  font-size:18px;
+  color:var(--color-info-secondary);
+}
+
+.bcs-identity>small{
+  margin-top:3px;
+  overflow:hidden;
+  font-size:11px;
+  line-height:15px;
+  color:var(--color-info-secondary);
+  text-overflow:ellipsis;
+  white-space:nowrap;
+}
+
+.bcs-kicker{
+  font-size:9px;
+  line-height:13px;
+  font-weight:850;
+  letter-spacing:.11em;
+  color:var(--color-action-primary);
+}
+
+.bcs-kicker.inverse{
+  color:color-mix(in oklab,var(--color-action-primary) 76%,var(--color-neutral-white));
+}
+
+/* The send composer stays the one black surface on the console. It cannot be raw
+   --color-neutral-black: in dark theme that token IS --color-surface-primary, so a pure
+   black card disappears into the page (the elevation shadow does not read on dark either).
+   94% black still reads as black on a light page and lifts clear of a dark one, and the
+   hairline gives it a defined edge in both. */
+.bcs-composer{
+  padding:16px;
+  border:1px solid color-mix(in oklab,var(--color-neutral-white) 14%,transparent);
+  border-radius:22px;
+  background:color-mix(in oklab,var(--color-neutral-black) 94%,var(--color-neutral-white));
+  color:var(--color-neutral-white);
+  box-shadow:var(--shadow-elevated);
+}
+
+.bcs-composer h1{
+  margin:8px 0 3px;
+  font-family:var(--font-body);
+  font-size:23px;
+  line-height:28px;
+  font-weight:850;
+  letter-spacing:-.035em;
+}
+
+.bcs-composer p{
+  margin:0;
+  font-size:11px;
+  line-height:16px;
+  color:color-mix(in oklab,var(--color-neutral-white) 68%,transparent);
+}
+
+.bcs-create{
+  width:100%;
+  margin-top:14px;
+}
+
+.bcs-tools{
+  display:grid;
+  grid-template-columns:1fr 1fr;
+  gap:8px;
+  margin-top:8px;
+}
+
+.bcs-tools .btn{
+  min-width:0;
+  border-color:color-mix(in oklab,var(--color-neutral-white) 18%,transparent);
+  background:color-mix(in oklab,var(--color-neutral-white) 10%,transparent);
+  color:var(--color-neutral-white);
+}
+
+.bcs-readonly{
+  display:flex;
+  align-items:center;
+  gap:12px;
+  padding:14px;
+  border:1px solid var(--color-neutral-border);
+  border-radius:18px;
+  background:var(--color-surface-card);
+  box-shadow:var(--shadow-card);
+}
+
+.bcs-icon-orb{
+  display:inline-flex;
+  width:40px;
+  height:40px;
+  flex-shrink:0;
+  align-items:center;
+  justify-content:center;
+  border-radius:var(--radius-circle);
+  background:var(--color-action-primary-tint);
+  color:var(--color-action-primary);
+}
+
+.bcs-readonly>span:last-child,
+.bcs-feed-state.error>span:nth-child(2){
+  display:flex;
+  min-width:0;
+  flex:1;
+  flex-direction:column;
+}
+
+.bcs-readonly strong,
+.bcs-feed-state.error strong{
+  font-size:12.5px;
+  line-height:17px;
+}
+
+.bcs-readonly small,
+.bcs-feed-state.error small{
+  margin-top:2px;
+  font-size:10.5px;
+  line-height:15px;
+  color:var(--color-info-secondary);
+}
+
+/* Loading, error and empty for the recent-paigham feed. One card surface, three shapes. */
+.bcs-feed-state{
+  width:100%;
+  box-sizing:border-box;
+  padding:14px;
+  border:1px solid var(--color-neutral-border);
+  border-radius:20px;
+  background:var(--color-surface-card);
+  color:var(--color-info-primary);
+  box-shadow:var(--shadow-card);
+  font:inherit;
+  text-align:left;
+}
+
+.bcs-feed-state.empty{
+  display:flex;
+  flex-direction:column;
+  gap:9px;
+}
+
+.bcs-feed-state.empty>strong{
+  font-size:13px;
+  line-height:18px;
+}
+
+.bcs-feed-state.empty>.btn{
+  align-self:flex-start;
+}
+
+.bcs-feed-state.loading{
+  display:flex;
+  min-height:116px;
+  flex-direction:column;
+  justify-content:center;
+  gap:10px;
+}
+
+.bcs-feed-state.loading .skeleton{
+  display:block;
+  width:100%;
+  height:12px;
+  border-radius:var(--radius-circle);
+}
+
+.bcs-feed-state.loading .skeleton.short{
+  width:54%;
+}
+
+.bcs-feed-state.error{
+  display:grid;
+  grid-template-columns:auto minmax(0,1fr);
+  align-items:center;
+  gap:10px;
+}
+
+.bcs-feed-state.error>.btn{
+  grid-column:1/-1;
+}
+
+.bcs-section{
+  display:flex;
+  flex-direction:column;
+  gap:10px;
+  margin-top:18px;
+}
+
+.bcs-section-head,
+.bcs-home-section-head{
+  display:flex;
+  align-items:baseline;
+  justify-content:space-between;
+  gap:var(--size-lg);
+}
+
+.bcs-section-head strong,
+.bcs-home-section-head strong{
+  font-size:17px;
+  line-height:22px;
+  font-weight:800;
+  letter-spacing:-.02em;
+}
+
+.bcs-section-head small,
+.bcs-home-section-head small{
+  font-size:10.5px;
+  color:var(--color-info-secondary);
+}
+
+/* Operations deck — a quilt of solid colour, one field per destination. The tile leads
+   with its own state (jamaat clock, committee size, musalleen count) and the label sits
+   under it, so the deck is scannable by colour and number before any word is read. */
+.bcs-operations{
+  display:grid;
+  grid-template-columns:1fr 1fr;
+  gap:8px;
+}
+
+.bcs-operation{
+  position:relative;
+  display:flex;
+  min-height:122px;
+  overflow:hidden;
+  flex-direction:column;
+  align-items:flex-start;
+  padding:14px;
+  border:0;
+  border-radius:var(--radius-huge);
+  font:inherit;
+  text-align:left;
+  cursor:pointer;
+}
+
+/* Every tone is a semantic token plus its on-colour partner. Black stays reserved for the
+   send composer above, so the deck never competes with the one action it exists to serve. */
+.bcs-operation.jade{
+  background:var(--color-action-primary);
+  color:var(--color-action-primary-inverse);
+}
+
+/* Teal is deepened before it carries white type. Raw --color-action-secondary gives white
+   only 3.7:1, which fails AA for the label and caption; 85% of it clears 4.9:1 and still
+   reads as the same teal against the jade and gold slabs beside it. */
+.bcs-operation.teal{
+  background:color-mix(in oklab,var(--color-action-secondary) 85%,var(--color-neutral-black));
+  color:var(--color-neutral-white);
+}
+
+.bcs-operation.gold{
+  background:var(--color-neutral-brand);
+  color:var(--color-neutral-black);
+}
+
+/* Masjid details is reference data, not a daily operation, so it takes the Bold board's
+   quiet `plain` slab rather than a fourth hue. An inverse-surface tile was tried here and
+   rejected: --color-info-primary flips to near-white in dark theme, which made the least
+   used destination the brightest thing on the console. */
+.bcs-operation.plain{
+  background:var(--color-surface-card);
+  color:var(--color-info-primary);
+  box-shadow:inset 0 0 0 1px var(--color-neutral-border);
+}
+
+.bcs-operation-value{
+  font-family:var(--font-body);
+  font-size:29px;
+  line-height:34px;
+  font-weight:850;
+  letter-spacing:-.035em;
+  font-variant-numeric:tabular-nums;
+  white-space:nowrap;
+}
+
+.bcs-operation-glyph{
+  font-size:26px;
+  line-height:34px;
+}
+
+.bcs-operation-badge,
+.bcs-home-card-badge{
+  display:inline-flex;
+  min-width:21px;
+  height:21px;
+  align-items:center;
+  justify-content:center;
+  border-radius:var(--radius-circle);
+  background:var(--color-status-warning);
+  color:var(--color-neutral-black);
+  font-size:9px;
+  font-weight:900;
+}
+
+.bcs-operation-badge{
+  position:absolute;
+  top:10px;
+  right:10px;
+}
+
+.bcs-operation>strong{
+  margin-top:auto;
+  padding-top:10px;
+  font-size:13px;
+  line-height:17px;
+  font-weight:800;
+  letter-spacing:-.01em;
+}
+
+/* Two lines, clamped — a caption never truncates mid-word inside a half-width slab, and it
+   inherits the tile's on-colour text rather than the page's secondary grey. Full opacity,
+   not --opacity-high: a dimmed 10px caption drops below AA on the teal and jade fields, so
+   size and weight carry the hierarchy instead. */
+.bcs-operation>small{
+  display:-webkit-box;
+  overflow:hidden;
+  max-width:100%;
+  margin-top:2px;
+  font-size:10px;
+  line-height:14px;
+  -webkit-box-orient:vertical;
+  -webkit-line-clamp:2;
+}
+
+.bcs-feed-list{
+  overflow:hidden;
+  border:1px solid var(--color-neutral-border);
+  border-radius:20px;
+  background:var(--color-surface-card);
+  box-shadow:var(--shadow-card);
+}
+
+.bcs-feed-list .feed-post{
+  background:transparent;
+}
+
+.bcs-feed-list .feed-post+.feed-post{
+  border-top:1px solid var(--color-neutral-border);
+}
+
+.bcs-quick-send{
+  position:sticky;
+  z-index:3;
+  right:0;
+  bottom:12px;
+  align-self:flex-end;
+  margin-top:14px;
+  box-shadow:var(--shadow-elevated);
+}
+
+/* The composer, recorder, picker and cropper use the same broadcast chrome. */
+.bcs-compose-screen{
+  background:
+    linear-gradient(180deg,
+      color-mix(in oklab,var(--color-action-primary) 6%,var(--color-surface-primary)),
+      var(--color-surface-primary) 30%);
+}
+
+.bcs-compose-screen .cmp-title{
+  font-size:29px;
+  font-weight:850;
+}
+
+.bcs-compose-screen .input,
+.bcs-compose-screen .cmp-audio-card,
+.bcs-compose-screen .cmp-review-card,
+.bcs-compose-screen .radio-card{
+  box-shadow:var(--shadow-card);
+}
+
+.bcs-compose-screen .cmp-footer{
+  background:color-mix(in oklab,var(--color-surface-primary) 94%,transparent);
+  backdrop-filter:blur(16px);
+  -webkit-backdrop-filter:blur(16px);
+}
+
+.bcs-shell button:focus-visible,
+.bcs-compose-screen button:focus-visible{
+  outline:2px solid var(--color-action-primary);
+  outline-offset:2px;
+}
+
+.bcs-shell button:active,
+.bcs-compose-screen button:active{
+  transform:scale(.99);
+}
+
+@media(prefers-reduced-motion:reduce){
+  .bcs-shell button,
+  .bcs-compose-screen button{
+    transition:none;
+  }
+  .bcs-shell button:active,
+  .bcs-compose-screen button:active{
+    transform:none;
+  }
+}

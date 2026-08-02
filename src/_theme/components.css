@@ -533,7 +533,7 @@
 .docked-action-note{font-family:var(--font-body);font-size:12px;line-height:1.5;text-align:center;color:var(--color-info-secondary)}
 
 /* ── Paigham preview (.post-preview) ──
-   What a follower will receive, shown to the author before sending: masjid identity,
+   What a musalli will receive, shown to the author before sending: masjid identity,
    the message or the audio player, the photo grid, and the reaction footer. This is an
    AUTHORING surface — the Home feed card is its own construction. */
 .post-preview{overflow:hidden;border:1px solid var(--color-neutral-border);border-radius:var(--radius-card);background:var(--color-surface-card)}
@@ -566,7 +566,7 @@
 .manage-entry.compact{padding:0;border-radius:var(--radius-2xl)}
 .manage-entry.compact .manage-entry-name{font-family:var(--font-body);font-size:14px;font-weight:700;letter-spacing:0}
 /* `.stacked` — Home's window into the console. Its identity row and Needs-you row are distinct
-   targets; with no pending work the second tier collapses to follower/timing context. */
+   targets; with no pending work the second tier collapses to musalleen/timing context. */
 .manage-entry.stacked{flex-direction:column;align-items:stretch;gap:var(--size-lg)}
 .manage-entry-main{display:flex;align-items:center;gap:var(--size-lg);width:100%;min-width:0;padding:var(--size-lg) var(--size-xl);text-align:left;color:inherit;font:inherit;cursor:pointer;border:0;background:transparent}
 .manage-entry-need{display:flex;align-items:center;gap:var(--size-md);width:100%;padding:var(--size-lg) var(--size-xl);border:0;border-top:1px solid color-mix(in oklab,var(--color-action-primary) 16%,transparent);background:transparent;color:var(--color-info-primary);font:600 12px/1.35 var(--font-body);text-align:left;cursor:pointer}

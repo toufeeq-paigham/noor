@@ -122,7 +122,7 @@ const PROFILE_EXTRA_FRAMES = [
 const MANAGED_ENTRY_FRAMES = [
   {
     id: 'home-managed',
-    name: 'Home — Committee Member',
+    name: 'Home — Broadcast Studio Entry',
     tab: 0,
     component: 'HomeScreen',
     props: { heroSel: null, managedMasjid: 'Masjid E Bilal', managedAttention: 3, onManageMasjid: () => {} }
@@ -155,7 +155,7 @@ const MANAGED_ENTRY_FRAMES = [
   },
   {
     id: 'home-managed-loading',
-    name: 'Home — Console Summary Loading',
+    name: 'Home — Broadcast Summary Loading',
     tab: 0,
     component: 'HomeScreen',
     props: {
@@ -273,8 +273,8 @@ function HomeRow({ active = 0, onSelectFrame }) {
       <div className="poc-board">
         {renderFrame(STORYBOARD_FRAMES[0], 0, active, onSelectFrame)}
         {renderFrame(MANAGED_ENTRY_FRAMES[0], 41, active, onSelectFrame)}
-        {renderFrame(MANAGED_ENTRY_FRAMES[2], 43, active, onSelectFrame)}
-        {renderFrame(MANAGED_ENTRY_FRAMES[3], 44, active, onSelectFrame)}
+        {renderFrame(MANAGED_ENTRY_FRAMES[4], 43, active, onSelectFrame)}
+        {renderFrame(MANAGED_ENTRY_FRAMES[5], 44, active, onSelectFrame)}
         {HOME_DATA_FRAMES.map((f, i) => renderFrame(f, 37 + i, active, onSelectFrame))}
       </div>
     </div>

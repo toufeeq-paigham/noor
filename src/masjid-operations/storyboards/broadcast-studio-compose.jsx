@@ -7,7 +7,7 @@
 //   · up to 4 images, each picked → cropped → uploaded before it counts
 //   · one target: MASJID | MASJID_MASLAK | MASJID_PINCODE
 //   · the send is confirmed before it happens, and cannot be edited afterwards
-// The review STEP is that confirmation (it shows exactly what followers receive), which
+// The review STEP is that confirmation (it shows exactly what musalleen receive), which
 // replaces the modal "Confirm Post Details" dialog — Compose parity change, flagged.
 
 const CMP_FONT_B = 'var(--font-body)';
@@ -18,17 +18,17 @@ const CMP_STEPS = ['message', 'photos', 'audience', 'review'];
 const CMP_AUDIENCE = [
   {
     value: 'MASJID', icon: 'mosque', label: 'My Masjid',
-    reach: (m) => `${(m.stats.followers).toLocaleString('en-IN')} followers of ${m.name}`,
+    reach: (m) => `${(m.stats.followers).toLocaleString('en-IN')} musalleen of ${m.name}`,
     note: 'Everyone who follows this masjid for timings and updates.',
   },
   {
     value: 'MASJID_MASLAK', icon: 'groups', label: 'My Maslak',
-    reach: (m) => `Followers of masjids sharing ${m.maslak.replace(/\s*\(.*\)$/, '')}`,
+    reach: (m) => `Musalleen of masjids sharing ${m.maslak.replace(/\s*\(.*\)$/, '')}`,
     note: 'A wider circle — use it for programmes open to everyone.',
   },
   {
     value: 'MASJID_PINCODE', icon: 'location_on', label: 'My Pincode Area',
-    reach: (m) => `Followers of masjids in ${(m.address.match(/\d{6}/) || [''])[0]}`,
+    reach: (m) => `Musalleen of masjids in ${(m.address.match(/\d{6}/) || [''])[0]}`,
     note: 'Neighbourhood reach — useful for local announcements.',
   },
 ];
@@ -57,7 +57,7 @@ const cmpMessageState = (post) => {
 // ── Wizard chrome ─────────────────────────────────────────────────────
 function CmpStepBar({ index, onBack }) {
   return (
-    <div className="cmp-appbar">
+    <div className="cmp-appbar app-bar">
       <div className="cmp-appbar-row">
         <button className="ib ib-tonal" onClick={onBack} aria-label="Back">
           <span className="mi" data-i="arrow_back"></span>
@@ -136,12 +136,13 @@ function CmpMessageStep({ data }) {
   const { message, tooLong } = cmpMessageState(post);
   const max = window.MAX_POST_MESSAGE || 1024;
   const hasAudio = !!post.audio;
+  const photos = post.photos || [];
 
   return (
     <div>
       <CmpHead
         title="What's the paigham?"
-        sub="Write it in your own words, or record your voice. Followers receive one or the other — whichever is easier for you."
+        sub="Write it in your own words, or record your voice. Musalleen receive one or the other — whichever is easier for you."
       />
 
       {hasAudio ? (
@@ -188,6 +189,18 @@ function CmpMessageStep({ data }) {
           )}
         </>
       )}
+
+      {/* Entering through "Add photos" attaches them before the message is written, and the
+          thumbnails only appear on step 2 — so step 1 has to say the photos are safely on
+          the draft, or the author has no reason to believe the picker did anything. */}
+      {photos.length ? (
+        <div className="cmp-photos-attached">
+          <span className="mi" data-i="photo_camera" aria-hidden="true"></span>
+          <span>{photos.length === 1
+            ? '1 photo attached — you can review it on the next step.'
+            : `${photos.length} photos attached — you can review them on the next step.`}</span>
+        </div>
+      ) : null}
     </div>
   );
 }
@@ -284,7 +297,7 @@ function CmpAudienceStep({ data }) {
     <div>
       <CmpHead
         title="Who should see this?"
-        sub="Start with your own followers. Widen it only when the paigham is for everyone."
+        sub="Start with your own musalleen. Widen it only when the paigham is for everyone."
       />
       <div className="choice-group cmp-audience-group" role="radiogroup" aria-label="Audience">
         {CMP_AUDIENCE.map((option) => {
@@ -312,7 +325,7 @@ function CmpAudienceStep({ data }) {
   );
 }
 
-// ── Step 4 · review — exactly what a follower receives ───────────────
+// ── Step 4 · review — exactly what a musalli receives ────────────────
 function CmpPostPreview({ data }) {
   const post = data.post || {};
   const masjid = data.masjid || window.OPS_MASJID;
@@ -353,7 +366,7 @@ function CmpPostPreview({ data }) {
 
       <div className="post-preview-foot">
         <span className="rx-empty"><span className="mi" data-i="favorite"></span></span>
-        <span>Followers can react as soon as it arrives.</span>
+        <span>Musalleen can react as soon as it arrives.</span>
       </div>
     </div>
   );
@@ -382,7 +395,7 @@ function CmpReviewStep({ data }) {
     <div>
       <CmpHead
         title="Ready to send?"
-        sub="This is exactly what your followers receive, the moment you send it. A paigham cannot be edited afterwards — only deleted."
+        sub="This is exactly what your musalleen receive, the moment you send it. A paigham cannot be edited afterwards — only deleted."
       />
       <CmpPostPreview data={data} />
       <div className="cmp-review-list">
@@ -581,11 +594,11 @@ function ComposePostScreen({ data = {} }) {
     ctaLabel = 'Review paigham';
   } else {
     ctaLabel = 'Send paigham';
-    helper = 'It reaches every follower straight away. You can delete it later if needed.';
+    helper = 'It reaches every musalli straight away. You can delete it later if needed.';
   }
 
   return (
-    <div className="cmp-screen">
+    <div className="cmp-screen bcs-compose-screen">
       <CmpStepBar index={index} onBack={data.onBack} />
 
       <div className="cmp-body">

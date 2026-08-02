@@ -39,6 +39,7 @@
     ::view-transition-group(qaum-post-post1-media-0){animation-duration:var(--motion-emphasized);animation-timing-function:var(--ease-out)}
     @media (prefers-reduced-motion:reduce){.qaum-media-overlay{animation:none}::view-transition-group(qaum-post-post1-media-0),::view-transition-group(masjid-admin-masjid-e-bilal-title){animation-duration:0ms}}
   </style>
+  <link rel="stylesheet" href="./storyboards/broadcast-home.css">
 </helmet>
 
 <!-- Reusable components layer -->
@@ -46,8 +47,8 @@
 
 <!-- ── Board header (shared board chrome) ── -->
 <x-import component="BoardHeader" from="../_theme/board.jsx"
-          title="Home — Tabs &amp; Variations"
-          subtitle="Explore all primary app tabs (Home, Qaum, Quran, Salaah, Profile) and hero details variations inside the interactive mockup."
+          title="Home — Broadcast Studio Entry"
+          subtitle="A separate full Home board grounded in the production Home composition. The managed-masjid card carries the approved Broadcast Studio language across its ready, loading and newly approved states and routes into the separate console instance."
           hint-size="1440px,92px"></x-import>
 
 <!-- ── Board Scaffold ── -->
@@ -55,32 +56,32 @@
 
   <!-- Static Storyboard rows (separated by tab/row) -->
   <div class="poc-frames">
-    <x-import component="HomePrayerRow" from="./storyboards/tabs-row.jsx"
+    <x-import component="HomePrayerRow" from="./storyboards/broadcast-home-tabs-row.jsx"
               active="{{ activeFrameIndex }}"
               on-select-frame="{{ syncLiveStateToFrame }}"
               hint-size="1200px,580px">
     </x-import>
-    <x-import component="HomeRow" from="./storyboards/tabs-row.jsx"
+    <x-import component="HomeRow" from="./storyboards/broadcast-home-tabs-row.jsx"
               active="{{ activeFrameIndex }}"
               on-select-frame="{{ syncLiveStateToFrame }}"
               hint-size="1000px,580px">
     </x-import>
-    <x-import component="QaumRow" from="./storyboards/tabs-row.jsx"
+    <x-import component="QaumRow" from="./storyboards/broadcast-home-tabs-row.jsx"
               active="{{ activeFrameIndex }}"
               on-select-frame="{{ syncLiveStateToFrame }}"
               hint-size="300px,580px">
     </x-import>
-    <x-import component="QuranRow" from="./storyboards/tabs-row.jsx"
+    <x-import component="QuranRow" from="./storyboards/broadcast-home-tabs-row.jsx"
               active="{{ activeFrameIndex }}"
               on-select-frame="{{ syncLiveStateToFrame }}"
               hint-size="300px,580px">
     </x-import>
-    <x-import component="SalaahRow" from="./storyboards/tabs-row.jsx"
+    <x-import component="SalaahRow" from="./storyboards/broadcast-home-tabs-row.jsx"
               active="{{ activeFrameIndex }}"
               on-select-frame="{{ syncLiveStateToFrame }}"
               hint-size="300px,580px">
     </x-import>
-    <x-import component="ProfileRow" from="./storyboards/tabs-row.jsx"
+    <x-import component="ProfileRow" from="./storyboards/broadcast-home-tabs-row.jsx"
               active="{{ activeFrameIndex }}"
               on-select-frame="{{ syncLiveStateToFrame }}"
               hint-size="300px,580px">
@@ -98,7 +99,7 @@
           
           <!-- TAB 0: HOME SCREEN -->
           <sc-if value="{{ isHomeTab }}">
-            <x-import component="HomeScreen" from="./storyboards/screens.jsx"
+            <x-import component="HomeScreen" from="./storyboards/broadcast-home-screens.jsx"
                       managed-masjid="{{ profileManagedName }}"
                       managed-attention="{{ profileManagedAttention }}"
                       managed-role="{{ profileManagedRole }}"
@@ -149,7 +150,7 @@
 
           <!-- TAB 1: QAUM SCREEN -->
           <sc-if value="{{ isQaumTab }}">
-            <x-import component="QaumScreen" from="./storyboards/screens.jsx"
+            <x-import component="QaumScreen" from="./storyboards/broadcast-home-screens.jsx"
                       on-manage-masjid="{{ qaumManageMasjid }}"
                       likes="{{ qaumLikes }}"
                       on-like="{{ toggleQaumLike }}"
@@ -181,7 +182,7 @@
 
           <!-- TAB 2: QURAN SCREEN -->
           <sc-if value="{{ isQuranTab }}">
-            <x-import component="QuranScreen" from="./storyboards/screens.jsx"
+            <x-import component="QuranScreen" from="./storyboards/broadcast-home-screens.jsx"
                       active-tab="{{ quranTab }}"
                       on-select-tab="{{ setQuranTab }}"
                       on-select-surah="{{ goReaderSurah }}"
@@ -194,7 +195,7 @@
 
           <!-- TAB 3: SALAAH SCREEN -->
           <sc-if value="{{ isSalaahTab }}">
-            <x-import component="SalaahScreen" from="./storyboards/screens.jsx"
+            <x-import component="SalaahScreen" from="./storyboards/broadcast-home-screens.jsx"
                       masjid-letter="{{ salaahMasjidLetter }}"
                       masjid-name="{{ salaahMasjidName }}"
                       masjid-sub="{{ salaahMasjidSub }}"
@@ -226,7 +227,7 @@
 
           <!-- TAB 4: PROFILE SCREEN -->
           <sc-if value="{{ isProfileTab }}">
-            <x-import component="ProfileScreen" from="./storyboards/screens.jsx"
+            <x-import component="ProfileScreen" from="./storyboards/broadcast-home-screens.jsx"
                       user-name="{{ profileUserName }}"
                       phone="{{ profilePhone }}"
                       show-my-masjids="{{ profileHasMasjid }}"
@@ -276,7 +277,7 @@
 
         <!-- Rich follow-masjid sheet (NudgeSheetFactory.kt FirstTimeFollowMasjid) — signed in,
              no primary masjid, once per cold start. Device-level so it covers the nav bar. -->
-        <x-import component="MasjidNudgeSheet" from="./storyboards/screens.jsx"
+        <x-import component="MasjidNudgeSheet" from="./storyboards/broadcast-home-screens.jsx"
                   is-open="{{ masjidSheetOpen }}"
                   on-close="{{ closeMasjidSheet }}"
                   on-find-masjid="{{ goMasjids }}"
@@ -285,7 +286,7 @@
 
         <!-- Rich notification sheet (NotificationPermissionSheetContent.kt) — signed in with
              masjid, notifs off, 2nd qualifying Home/Salaah visit. Device-level. -->
-        <x-import component="NotificationNudgeSheet" from="./storyboards/screens.jsx"
+        <x-import component="NotificationNudgeSheet" from="./storyboards/broadcast-home-screens.jsx"
                   is-open="{{ notifSheetOpen }}"
                   on-close="{{ closeNotifSheet }}"
                   on-allow="{{ allowNotif }}"
@@ -306,13 +307,13 @@
 
         <!-- Privacy / ATT pre-prompt sheet + system ATT dialog — device-level (fixed, don't scroll
              with the Home content). Continue → ATT dialog; a choice dismisses back to Home. -->
-        <x-import component="PrivacyNudgeSheet" from="./storyboards/screens.jsx"
+        <x-import component="PrivacyNudgeSheet" from="./storyboards/broadcast-home-screens.jsx"
                   is-open="{{ homePrivacyConsent }}"
                   on-close="{{ closePrivacyConsent }}"
                   on-continue="{{ triggerAttPrompt }}"
                   hint-size="0,0">
         </x-import>
-        <x-import component="AttDialog" from="./storyboards/screens.jsx"
+        <x-import component="AttDialog" from="./storyboards/broadcast-home-screens.jsx"
                   is-open="{{ homeAttPrompt }}"
                   on-choice="{{ dismissAttPrompt }}"
                   hint-size="0,0">

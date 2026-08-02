@@ -1,8 +1,8 @@
-// Masjid Operations — one state model shared by the storyboard frames and the live device.
+// Masjid Broadcast Studio — one state model shared by the storyboard frames and the live device.
 //
 // Plain JS (loaded synchronously from the page helmet) so `buildOpsData` and `OPS_FRAMES`
 // exist before the page's DCLogic runs. The sample data and formatting helpers live in
-// ./screens.jsx and are read lazily (at call time) from `window`, so this file never
+// ./broadcast-studio-screens.jsx and are read lazily (at call time) from `window`, so this file never
 // depends on the async JSX module having loaded yet.
 //
 // Why one model: every storyboard frame is produced by the SAME `buildOpsData` the live
@@ -31,6 +31,10 @@
 
     postsStatus: 'loaded', // 'loading' | 'loaded' | 'error'
     postsEmpty: false,
+    // A masjid whose console has just been opened for the first time: no musalleen, no
+    // committee but the registrant, no published timings, nothing sent. Every count the
+    // hub would normally shout is zero here, which is exactly why it needs its own state.
+    fresh: false,
     postMenuFor: null,
     deletingId: null,
 
@@ -166,6 +170,7 @@
       Object.assign(slices, {
         postsStatus: s.postsStatus,
         postsEmpty: !!s.postsEmpty,
+        fresh: !!s.fresh,
         postMenuFor: s.postMenuFor || null,
         deletingId: s.deletingId || null,
         masjidId: s.masjidId,
@@ -257,7 +262,7 @@
       const post = posts.find((p) => p.id === confirm.id);
       return {
         title: 'Delete this paigham?',
-        description: `It is removed for every follower of ${(window.OPS_MASJID || {}).name || 'this masjid'} and cannot be restored.${post && post.reactions ? ` ${post.reactions} reactions will be lost.` : ''}`,
+        description: `It is removed for every musalli of ${(window.OPS_MASJID || {}).name || 'this masjid'} and cannot be restored.${post && post.reactions ? ` ${post.reactions} reactions will be lost.` : ''}`,
         confirmText: 'Delete paigham',
         destructive: true,
         onConfirm: h.onConfirmAction,
@@ -293,12 +298,12 @@
     }
     if (confirm.kind === 'publishSalaah') {
       // Name the blast radius as a number, the way the delete dialog already does ("42 reactions
-      // will be lost"). "Every follower of this masjid" is true but abstract; the count is the
+      // will be lost"). "Every musalli of this masjid" is true but abstract; the count is the
       // thing that makes someone pause and re-read the times before publishing.
       const reach = ((window.OPS_MASJID || {}).stats || {}).followers;
       return {
         title: 'Publish new timings?',
-        description: `${reach ? `All ${reach.toLocaleString('en-IN')} followers of` : 'Every follower of'} this masjid see the updated azaan and iqama times right away, and the change is recorded in your name.`,
+        description: `${reach ? `All ${reach.toLocaleString('en-IN')} musalleen of` : 'Every musalli of'} this masjid see the updated azaan and iqama times right away, and the change is recorded in your name.`,
         confirmText: 'Publish',
         onConfirm: h.onConfirmAction,
       };
@@ -368,11 +373,22 @@
     });
   };
 
+  // A fresh masjid keeps its identity but loses every accumulated number.
+  const freshMasjid = (state) => {
+    const masjid = activeMasjid(state);
+    if (!state.fresh) return masjid;
+    return Object.assign({}, masjid, {
+      stats: Object.assign({}, masjid.stats, { followers: 0, posts: 0, reactions: 0 }),
+    });
+  };
+
   // ── Hub attention queue — only real, actionable work ─────────────────
   // Nothing is "in review": paighams go live on send, anyone may follow, and timings are
   // public and unreviewed. All that remains is work the committee owes someone — an
   // invitation nobody has accepted yet.
   const attentionItems = (state) => {
+    // A masjid that opened its console today owes nobody anything yet.
+    if (state.fresh) return [];
     const hidden = state.hidden || [];
     const live = (list) => list.filter((item) => hidden.indexOf(item.id) === -1);
     const caps = state.caps || [];
@@ -411,7 +427,7 @@
     });
     const followers = visible(s.followersEmpty ? [] : (window.OPS_FOLLOWERS || []))
       .slice(0, s.followersPage || 4);
-    const posts = visible(s.postsEmpty ? [] : (window.OPS_POSTS || []));
+    const posts = visible((s.postsEmpty || s.fresh) ? [] : (window.OPS_POSTS || []));
     const invitations = visible(s.invitationsEmpty ? [] : (window.OPS_INVITATIONS || []));
     const timingHistory = window.OPS_TIMING_HISTORY || [];
 
@@ -423,7 +439,10 @@
       switcherOpen: s.switcherOpen,
       dest: s.dest,
       status: s.consoleStatus,
-      masjid: activeMasjid(s),
+      masjid: freshMasjid(s),
+      // A brand-new masjid has published nothing, so the hub must not quote a jamaat time
+      // it does not have. The tile falls back to "Publish your timings" instead.
+      salaahPublished: !s.fresh,
       attention: attentionItems(s),
       fabCompact: s.fabCompact,
       // Counts shown on the hub rows, so the deck answers "how much is there?" up front.
@@ -433,8 +452,8 @@
       // them here would make the hub promise more than the destination delivers.
       counts: {
         posts: posts.length,
-        members: members.filter((m) => m.status !== 'INVITED').length,
-        followers: (window.OPS_MASJID || { stats: {} }).stats.followers || followers.length,
+        members: s.fresh ? 1 : members.filter((m) => m.status !== 'INVITED').length,
+        followers: s.fresh ? 0 : ((window.OPS_MASJID || { stats: {} }).stats.followers || followers.length),
         timingChanges: timingHistory.length,
       },
       openMenu: s.openMenu,
@@ -494,7 +513,7 @@
   }
 
   const AUDIO_READY = { uploading: false, failed: false, playing: false, progress: 0.32, duration: '0:24' };
-  // Library sources for the photo frames; CMP_LIBRARY (compose-post.jsx) owns the real list.
+  // Library sources for the photo frames; CMP_LIBRARY (broadcast-studio-compose.jsx) owns the real list.
   const LIB = [
     '../../images/masjid-camera-preview.png',
     '../../images/isha_masjid.webp',
@@ -516,6 +535,7 @@
     { group: 'console', name: 'Switch masjid', screen: 'console', state: { route: 'console', dest: 'home', switcherOpen: true } },
     { group: 'console', name: 'Second masjid', screen: 'console', state: { route: 'console', dest: 'home', masjidId: 'noor', role: 'SECRETARY' } },
     { group: 'console', name: 'No paighams yet', screen: 'console', state: { route: 'console', dest: 'home', postsEmpty: true } },
+    { group: 'console', name: 'Brand-new masjid · every count zero', screen: 'console', state: { route: 'console', dest: 'home', fresh: true } },
     { group: 'console', name: 'Scrolled · FAB compact', screen: 'console', state: { route: 'console', dest: 'home', fabCompact: true } },
     { group: 'console', name: 'Paigham options', screen: 'console', state: { route: 'console', dest: 'home', postMenuFor: 'p1' } },
     { group: 'console', name: 'Delete confirmation', screen: 'console', state: { route: 'console', dest: 'home', confirm: { kind: 'deletePost', id: 'p1' } } },
@@ -541,16 +561,16 @@
     { group: 'members', name: 'Removed · confirmation', screen: 'console', state: { route: 'console', dest: 'members', snack: { kind: 'member-removed', message: 'Yusuf Ali removed from the committee' } } },
     { group: 'members', name: 'Load failed · retry', screen: 'console', state: { route: 'console', dest: 'members', membersStatus: 'error' } },
 
-    // 04 · Invitations & followers
+    // 04 · Invitations & musalleen
     { group: 'invite', name: 'Invite member', screen: 'console', state: { route: 'console', dest: 'invite' } },
     { group: 'invite', name: 'Role picker', screen: 'console', state: { route: 'console', dest: 'invite', invite: { phone: '98861 40219' }, openMenu: 'member-role' } },
     { group: 'invite', name: 'Permissions chosen', screen: 'console', state: { route: 'console', dest: 'invite', invite: { phone: '98861 40219', role: 'ASSISTANT_SECRETARY', caps: ['post'] } } },
     { group: 'invite', name: 'Sending', screen: 'console', state: { route: 'console', dest: 'invite', invite: { phone: '98861 40219', role: 'ASSISTANT_SECRETARY', caps: ['post'], sending: true } } },
     { group: 'invite', name: 'Invite failed', screen: 'console', state: { route: 'console', dest: 'invite', invite: { phone: '9886', role: 'MEMBER', error: 'Enter a valid 10-digit mobile number.' } } },
-    { group: 'invite', name: 'Followers', screen: 'console', state: { route: 'console', dest: 'followers' } },
-    { group: 'invite', name: 'Followers · loading more', screen: 'console', state: { route: 'console', dest: 'followers', followersLoadingMore: true } },
-    { group: 'invite', name: 'Followers · loading', screen: 'console', state: { route: 'console', dest: 'followers', followersStatus: 'loading' } },
-    { group: 'invite', name: 'Followers · none', screen: 'console', state: { route: 'console', dest: 'followers', followersEmpty: true } },
+    { group: 'invite', name: 'Musalleen', screen: 'console', state: { route: 'console', dest: 'followers' } },
+    { group: 'invite', name: 'Musalleen · loading more', screen: 'console', state: { route: 'console', dest: 'followers', followersLoadingMore: true } },
+    { group: 'invite', name: 'Musalleen · loading', screen: 'console', state: { route: 'console', dest: 'followers', followersStatus: 'loading' } },
+    { group: 'invite', name: 'Musalleen · none', screen: 'console', state: { route: 'console', dest: 'followers', followersEmpty: true } },
 
     // 05 · Salaah timings — public: any signed-in user, no review, every change recorded
     { group: 'salaah', name: 'Loading', screen: 'console', state: { route: 'console', dest: 'salaah', salaahStatus: 'loading' } },
@@ -611,11 +631,11 @@
   ];
 
   const OPS_GROUPS = [
-    { id: 'console', num: '01', title: 'The console', icon: 'dashboard' },
+    { id: 'console', num: '01', title: 'Broadcast hub', icon: 'campaign' },
     { id: 'members', num: '02', title: 'Committee & permissions', icon: 'groups' },
-    { id: 'invite', num: '03', title: 'Invitations & followers', icon: 'person' },
+    { id: 'invite', num: '03', title: 'Invitations & musalleen', icon: 'person' },
     { id: 'salaah', num: '04', title: 'Salaah timings · public', icon: 'mosque_clock2' },
-    { id: 'create', num: '05', title: 'Create a paigham', icon: 'edit' },
+    { id: 'create', num: '05', title: 'Broadcast composer', icon: 'edit' },
     { id: 'invitations', num: '06', title: 'My invitations', icon: 'mail' },
   ];
 

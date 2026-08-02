@@ -7,7 +7,7 @@
 <script src="../_theme/chrome.js"></script>
 <!-- Shared state model + storyboard frame table. Plain JS in <head> so it is ready
      before the page logic below constructs its initial state. -->
-<script src="./storyboards/ops-state.js"></script>
+<script src="./storyboards/broadcast-studio-state.js"></script>
 </head>
 <body>
 <x-dc>
@@ -76,7 +76,7 @@
     .committee-legend .mi{font-size:14px;color:var(--color-action-primary)}
 
 
-    /* ── Followers screen ── */
+    /* ── Musalleen screen ── */
     .followers-more{display:flex;align-items:center;justify-content:space-between;gap:var(--size-lg);padding:var(--size-xl) 4px 0;font-family:var(--font-body);font-size:11.5px;color:var(--color-info-secondary)}
     .followers-note{display:flex;align-items:flex-start;gap:var(--size-md);padding:var(--size-max) 4px 0;font-family:var(--font-body);font-size:11px;line-height:1.5;color:var(--color-info-tertiary)}
     .followers-note .mi{flex-shrink:0;font-size:14px}
@@ -243,11 +243,14 @@
     /* ── Compose-a-paigham wizard (feature construction, same idiom as the
        registration wizard's page CSS). Tokens only. ── */
     .cmp-screen{width:100%;height:100%;box-sizing:border-box;position:relative;overflow:hidden;display:flex;flex-direction:column;background:var(--color-surface-primary);font-family:var(--font-body);color:var(--color-info-primary)}
-    .cmp-appbar{flex-shrink:0;display:flex;flex-direction:column;gap:var(--size-xl);padding:54px 20px 14px;box-sizing:border-box}
+    /* The wizard bar is the DS .app-bar (transparent + fading blur haze): it floats over
+       .cmp-body, which carries --cmp-appbar-h of top inset so the steps scroll under it. */
+    :root{--cmp-appbar-h:132px} /* 54 status inset + 48 control row + 12 gap + 4 stepbar + 14 */
+    .cmp-appbar{flex-direction:column;align-items:stretch;gap:var(--size-xl);height:var(--cmp-appbar-h);padding:54px 20px 14px;box-sizing:border-box}
     .cmp-appbar-row{display:flex;align-items:center;gap:var(--size-xl)}
     .cmp-appbar-title{flex:1}
     .cmp-step-count{flex-shrink:0;font-size:12px;font-weight:700;white-space:nowrap;color:var(--color-info-secondary)}
-    .cmp-body{flex:1;min-height:0;overflow-y:auto;overscroll-behavior:contain;padding:12px 20px 18px;box-sizing:border-box}
+    .cmp-body{flex:1;min-height:0;overflow-y:auto;overscroll-behavior:contain;padding:calc(var(--cmp-appbar-h) + 12px) 20px 18px;box-sizing:border-box}
     .cmp-head{margin-bottom:var(--size-huge)}
     .cmp-title{font-family:var(--font-title);font-size:27px;line-height:1.18;letter-spacing:-.5px}
     .cmp-sub{margin-top:var(--size-lg);font-size:14.5px;line-height:1.55;color:var(--color-info-secondary)}
@@ -263,6 +266,8 @@
     .cmp-or::before,.cmp-or::after{content:"";flex:1;height:1px;background:var(--color-neutral-border)}
     .cmp-record-cta{width:100%}
     .cmp-record-note{margin-top:var(--size-lg);text-align:center;font-size:12px;line-height:1.5;color:var(--color-info-secondary)}
+    .cmp-photos-attached{display:flex;align-items:center;gap:var(--size-md);margin-top:var(--size-huge);padding:var(--size-xl);border:1px solid var(--color-neutral-border);border-radius:var(--radius-xl);background:var(--color-surface-card);font-family:var(--font-body);font-size:12px;line-height:1.45;color:var(--color-info-secondary)}
+    .cmp-photos-attached .mi{flex-shrink:0;font-size:var(--icon-sm);color:var(--color-action-primary)}
     .cmp-mic-blocked{display:flex;align-items:flex-start;gap:var(--size-lg);margin-top:var(--size-xl);padding:var(--size-xl);border-radius:var(--radius-2xl);background:color-mix(in oklab,var(--color-status-error) 8%,transparent);font-size:12.5px;line-height:1.5;color:var(--color-status-error)}
     .cmp-mic-blocked .mi{flex-shrink:0;font-size:var(--icon-sm)}
     .cmp-audio-card{display:flex;flex-direction:column;gap:var(--size-xl)}
@@ -291,7 +296,7 @@
     /* step 3 · audience */
     .cmp-audience-group{display:flex;flex-direction:column;gap:var(--size-lg)}
 
-    /* step 4 · review — the follower-facing preview */
+    /* step 4 · review — the musalleen-facing preview */
     .cmp-review-list{margin-top:var(--size-2xl);border:1px solid var(--color-neutral-border);border-radius:var(--radius-2xl);background:var(--color-surface-card)}
     .cmp-review-row{display:flex;align-items:center;gap:var(--size-lg);padding:12px var(--size-2xl);border-bottom:1px solid var(--color-neutral-border)}
     .cmp-review-copy{flex:1;min-width:0;display:flex;flex-direction:column}
@@ -342,58 +347,59 @@
       ::view-transition-group(masjid-admin-masjid-e-bilal-title){animation-duration:0ms}
     }
   </style>
+  <link rel="stylesheet" href="./storyboards/broadcast-studio.css">
 </helmet>
 
 <!-- Component layer: loads Dialog/EmptyState/ListItem onto window for the screens -->
 <x-import component="Dialog" from="../_theme/components.jsx" hint-size="0,0"></x-import>
 <!-- Screen kit loader (the screens are used by both the board and the device below) -->
 <div style="display:none">
-  <x-import component="ConsoleScreen" from="./storyboards/screens.jsx" hint-size="0,0"></x-import>
-  <x-import component="ComposePostScreen" from="./storyboards/compose-post.jsx" hint-size="0,0"></x-import>
+  <x-import component="ConsoleScreen" from="./storyboards/broadcast-studio-screens.jsx" hint-size="0,0"></x-import>
+  <x-import component="ComposePostScreen" from="./storyboards/broadcast-studio-compose.jsx" hint-size="0,0"></x-import>
 </div>
 
 <x-import component="BoardHeader" from="../_theme/board.jsx"
-          title="Masjid Operations — the committee admin console"
-          subtitle="Every screen a masjid committee touches. A hub with one full screen per destination — paighams, committee and per-member permissions, followers, salaah timings, masjid details — plus the guided send flow and the invitation inbox. Permissions are capabilities granted per member, and the registry is built to take azaan, live bayan and payments without new layout."
+          title="Masjid Console — Broadcast Studio"
+          subtitle="The finalised masjid console, built from the approved broadcast-first direction. Home entry, role-aware hub, every operational destination, guided media composer, confirmations, invitations and all loading, empty, error, locked and success states live here."
           hint-size="1440px,92px"></x-import>
 
 <div class="poc-stage">
   <div class="poc-frames">
-    <x-import component="OpsBoard" from="./storyboards/board-rows.jsx"
+    <x-import component="OpsBoard" from="./storyboards/broadcast-studio-board.jsx"
               active="{{ activeFrame }}" on-select-frame="{{ selectFrame }}"
               hint-size="1600px,5200px"></x-import>
   </div>
 
   <x-import component="BoardLive" from="../_theme/board.jsx" restart="{{ restart }}"
-            hint="Fully interactive: open a destination, grant or revoke a member's permissions, invite someone with a starting set, edit and publish timings, or send a paigham end to end."
+            hint="Fully interactive Broadcast Studio instance: enter from the Home card, compose text, voice or photos, inspect engagement, manage the committee, edit Salaah, switch masjids and resolve every confirmation state."
             hint-size="400px,900px">
     <x-import component="IOSDevice" from="../ios-frame.jsx" hint-size="402px,874px">
       <div style="width:100%;height:100%;position:relative;overflow:hidden;background:var(--color-surface-primary)">
 
         <sc-if value="{{ isConsole }}">
           <div class="{{ stepAnim }}" style="position:absolute;inset:0">
-            <x-import component="ConsoleScreen" from="./storyboards/screens.jsx"
+            <x-import component="ConsoleScreen" from="./storyboards/broadcast-studio-screens.jsx"
                       data="{{ data }}" transition-enabled="true" hint-size="100%,100%"></x-import>
           </div>
         </sc-if>
 
         <sc-if value="{{ isCreate }}">
           <div class="{{ stepAnim }}" style="position:absolute;inset:0">
-            <x-import component="ComposePostScreen" from="./storyboards/compose-post.jsx"
+            <x-import component="ComposePostScreen" from="./storyboards/broadcast-studio-compose.jsx"
                       data="{{ data }}" hint-size="100%,100%"></x-import>
           </div>
         </sc-if>
 
         <sc-if value="{{ isSent }}">
           <div class="{{ stepAnim }}" style="position:absolute;inset:0">
-            <x-import component="PostSentScreen" from="./storyboards/screens.jsx"
+            <x-import component="PostSentScreen" from="./storyboards/broadcast-studio-screens.jsx"
                       data="{{ data }}" hint-size="100%,100%"></x-import>
           </div>
         </sc-if>
 
         <sc-if value="{{ isInvitations }}">
           <div class="{{ stepAnim }}" style="position:absolute;inset:0">
-            <x-import component="InvitationsScreen" from="./storyboards/screens.jsx"
+            <x-import component="InvitationsScreen" from="./storyboards/broadcast-studio-screens.jsx"
                       data="{{ data }}" hint-size="100%,100%"></x-import>
           </div>
         </sc-if>
@@ -451,11 +457,14 @@ class Component extends DCLogic {
     if (s.route === 'create') { this.onComposeBack(); return; }
     if (s.route === 'sent') { this.patch({ route: 'console', dest: 'home', stepDir: 'back' }); return; }
     if (s.route === 'invitations') { this.patch({ route: 'console', stepDir: 'back' }); return; }
-    if (s.dest === 'member' || s.dest === 'invite') { this.transitionTo({ dest: 'members', memberId: null, openMenu: null }); return; }
-    if (s.dest !== 'home') { this.onCloseDest(); return; }
-    window.location.href = '../home/Home Screen.dc.html';
+    if (s.dest === 'member' || s.dest === 'invite') { this.patch({ dest: 'members', memberId: null, openMenu: null, stepDir: 'back' }); return; }
+    if (s.dest !== 'home') {
+      this.patch({ dest: 'home', openMenu: null, memberId: null, expandedPrayer: null, stepDir: 'back' });
+      return;
+    }
+    this.transitionTo({ route: 'entry', stepDir: 'back' });
   };
-  onHome = () => { window.location.href = '../home/Home Screen.dc.html'; };
+  onHome = () => this.transitionTo({ route: 'entry', stepDir: 'back' });
   onExplore = () => { window.location.href = '../masjid-explore/Explore Masjids.dc.html#map'; };
 
   // Hub → destination. The row label and the destination title share a view-transition
@@ -500,7 +509,7 @@ class Component extends DCLogic {
       this.after(900, () => this.patch({ salaahStatus: 'loaded' }));
     }
   };
-  // ── Followers ──
+  // ── Musalleen ──
   onLoadFollowers = () => {
     this.patch({ followersLoadingMore: true });
     this.after(900, () => this.setState((st) => window.opsApplyPatch(st, {
@@ -518,7 +527,21 @@ class Component extends DCLogic {
   };
 
   // ── Posts ──
-  onCreatePost = () => this.patch({ route: 'create', stepDir: 'fwd', postMenuFor: null, post: window.OPS_DEFAULT_STATE.post });
+  // `intent` comes from the composer card's secondary actions ('audio' | 'photos'). It only
+  // pre-opens the stage that action promised; the draft still starts at step 1, so the
+  // message-or-recording rule cannot be skipped by entering through a shortcut. Callers that
+  // pass a click event (the FAB, the empty feed) fall through to the plain start.
+  onCreatePost = (intent) => this.patch({
+    route: 'create',
+    stepDir: 'fwd',
+    postMenuFor: null,
+    post: Object.assign(
+      {},
+      window.OPS_DEFAULT_STATE.post,
+      intent === 'audio' ? { recorder: { stage: 'recording', elapsed: '0:00' } } : null,
+      intent === 'photos' ? { picker: true } : null,
+    ),
+  });
 
   // ── Masjid switcher ──
   onOpenSwitcher = () => this.patch({ switcherOpen: true, postMenuFor: null });
@@ -617,7 +640,7 @@ class Component extends DCLogic {
   };
   onNoteChange = (salaahNote) => this.patch({ salaahNote });
   // Publishing is public and unreviewed, so the confirmation is the only pause between an
-  // edit and every follower seeing it. Keep it.
+  // edit and every musalli seeing it. Keep it.
   onSubmitSalaah = () => this.patch({ confirm: { kind: 'publishSalaah' } });
   // ── Scan the board ──
   onOpenScan = () => this.setState((s) => window.opsApplyPatch(s, {

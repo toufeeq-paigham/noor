@@ -1,8 +1,8 @@
-// Shared screen components for the Masjid Operations section board — the committee-only
-// admin console plus the journeys that hang off it.
+// Shared screen components for the Masjid Broadcast Studio section board — the masjid
+// console plus the journeys that hang off it.
 //
-// Used by BOTH the static storyboards (./board-rows.jsx) and the live interactive device
-// (../Masjid Operations.dc.html). Every screen takes ONE `data` object so the dc x-import
+// Used by BOTH the static storyboards (./broadcast-studio-board.jsx) and the live device
+// (../Masjid Broadcast Studio.dc.html). Every screen takes ONE `data` object so the dc x-import
 // binds a single value, and every handler is optional (the static frames pass none).
 //
 // Source of truth for behaviour is the Compose implementation:
@@ -10,7 +10,7 @@
 //   modules/masjid/post/MasjidPostsAdminScreen.kt     → ConsoleScreen (Posts tab)
 //   modules/masjid/members/MasjidMembersScreen.kt     → ConsoleScreen (Members tab)
 //   modules/masjid/salaah/SalaahConfigScreen.kt       → ConsoleScreen (Salaah tab)
-//   modules/masjid/post/CreatePostScreen.kt           → ComposePostScreen (./compose-post.jsx)
+//   modules/masjid/post/CreatePostScreen.kt           → ComposePostScreen (./broadcast-studio-compose.jsx)
 //   modules/masjid/post/PostVerificationPendingScreen → PostSentScreen
 //   modules/masjid/invitations/InvitationsScreen.kt   → InvitationsScreen
 // Role gating mirrors models/OrganisationMember.kt (MasjidPermissions) — UI gating only;
@@ -56,11 +56,11 @@ const OPS_CAPABILITIES = [
   },
   {
     id: 'azaan', icon: 'volume_up', label: 'Give the azaan', short: 'Azaan', available: false,
-    copy: 'Call the azaan from the app so followers hear it live',
+    copy: 'Call the azaan from the app so musalleen hear it live',
   },
   {
     id: 'live', icon: 'sensors', label: 'Go live with a bayan', short: 'Live bayan', available: false,
-    copy: 'Stream a bayan or a programme to followers',
+    copy: 'Stream a bayan or a programme to musalleen',
   },
   {
     id: 'payments', icon: 'money_bag', label: 'Manage payments', short: 'Payments', available: false,
@@ -220,7 +220,7 @@ const OPS_TIMING_HISTORY = [
     changes: ['Isha 8:00 PM → 8:15 PM'],
   },
   {
-    id: 'h2', by: 'Abdul Rahman', role: 'Follower', committee: false, when: '26 Jun 2026',
+    id: 'h2', by: 'Abdul Rahman', role: 'Musalli', committee: false, when: '26 Jun 2026',
     note: null,
     changes: ['Asr fixed 4:15 PM → varies, not before 4:30 PM', 'Asr iqama +10m → +15m'],
   },
@@ -334,7 +334,7 @@ const postBody = (message) => {
 
 function Screen({ children }) {
   return (
-    <div style={{
+    <div className="bcs-shell" style={{
       width: '100%', height: '100%', boxSizing: 'border-box', position: 'relative', overflow: 'hidden',
       display: 'flex', flexDirection: 'column',
       background: 'var(--color-surface-primary)', fontFamily: FONT_B, color: 'var(--color-info-primary)',
@@ -344,18 +344,25 @@ function Screen({ children }) {
   );
 }
 
-// Solid app bar: back · title (+ optional subtitle) · optional trailing action.
+// Top app bar — the DS `.app-bar` every other section uses: transparent, floating over the
+// body, with the progressive-blur haze that fades out toward its bottom edge. Bodies below
+// pass `BCS_APPBAR_H` as their top inset so content scrolls UNDER the bar rather than
+// starting after it — the fade only reads when there is something behind it to blur.
 // `transitionName` carries the console's shared-element title (masjid name) from Profile.
-function OpsAppBar({ title, subtitle, onBack, trailing, transitionName }) {
+const BCS_APPBAR_H = 114; // 54px status inset + 48px control row + 12px bottom
+function OpsAppBar({ title, subtitle, onBack, trailing, transitionName, backHref = './Masjid Broadcast Studio.dc.html#admin' }) {
   return (
-    <div style={{
-      flexShrink: 0, display: 'flex', alignItems: 'center', gap: 12,
+    <div className="app-bar" style={{
+      alignItems: 'center', gap: 12, height: BCS_APPBAR_H,
       padding: '54px 16px 12px', boxSizing: 'border-box',
-      borderBottom: '1px solid var(--color-neutral-border)', background: 'var(--color-surface-primary)',
     }}>
-      <button className="ib ib-tonal" onClick={onBack} aria-label="Back">
+      <a
+        className="ib ib-tonal"
+        href={backHref}
+        aria-label="Back"
+      >
         <span className="mi" data-i="arrow_back"></span>
-      </button>
+      </a>
       <div style={{ flex: 1, minWidth: 0 }}>
         <div className="ab-title" style={{
           fontSize: 22, whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis',
@@ -372,9 +379,9 @@ function OpsAppBar({ title, subtitle, onBack, trailing, transitionName }) {
 
 // Scrollable screen body. `bottomInset` keeps content clear of the home indicator
 // (and of a docked footer action when one is present).
-function Body({ children, bottomInset = 44, gutter = 16, style = {}, scrollRef, onScroll }) {
+function Body({ children, bottomInset = 44, gutter = 16, style = {}, scrollRef, onScroll, className = '' }) {
   return (
-    <div ref={scrollRef} onScroll={onScroll} style={{
+    <div className={`bcs-body ${className}`} ref={scrollRef} onScroll={onScroll} style={{
       flex: 1, minHeight: 0, overflowY: 'auto', overscrollBehavior: 'contain',
       padding: `14px ${gutter}px ${bottomInset}px`, boxSizing: 'border-box',
       display: 'flex', flexDirection: 'column', gap: 12, ...style,
@@ -754,229 +761,285 @@ function ConsolePost({ post, masjid, canManage, menuOpen, deleting, onToggleMenu
       </div>
       <div className="feed-post-admin">
         <span className="mi" data-i="groups" aria-hidden="true"></span>
-        {POST_TARGET_LABEL[post.target] || 'My Masjid'} · seen by {(masjid.stats.followers || 0).toLocaleString('en-IN')} followers
+        {POST_TARGET_LABEL[post.target] || 'My Masjid'} · seen by {(masjid.stats.followers || 0).toLocaleString('en-IN')} musalleen
       </div>
     </article>
   );
 }
 
-// ── The console — an eagle view of the masjid you manage ─────────────
-// Ordered by what a committee member came to do: who they are, what is waiting on them,
-// today's published timings, the places to go, then Send a paigham sitting directly on top
-// of the feed it produces — in the same feed the community sees.
+// ══════════════════════════════════════════════════════════════════════
+// Broadcast Studio — approved production direction
+// ══════════════════════════════════════════════════════════════════════
+
+function BroadcastStudioHeader({ masjid, role, caps, managed, onBack, onOpenSwitcher, transitionEnabled }) {
+  const isAdmin = OPS_CAPS.isAdmin(caps);
+  const access = isAdmin
+    ? 'Full admin'
+    : OPS_CAPS.can(caps, 'post')
+      ? 'Can send paighams'
+      : 'View only';
+  return (
+    <header className="bcs-header">
+      <a className="ib ib-tonal" aria-label="Back" href="../home/Home Broadcast Studio.dc.html#home-managed">
+        <span className="mi" data-i="arrow_back"></span>
+      </a>
+      <MasjidMark masjid={masjid} size={46} />
+      <button
+        className="bcs-identity"
+        onClick={managed.length > 1 ? onOpenSwitcher : undefined}
+        aria-haspopup={managed.length > 1 ? 'dialog' : undefined}
+        aria-label={managed.length > 1 ? `${masjid.name} — switch masjid` : undefined}
+      >
+        <span className="bcs-name-line">
+          <strong style={{ viewTransitionName: transitionEnabled ? CONSOLE_TITLE_TRANSITION : 'none' }}>{masjid.name}</strong>
+          <span className="mi bcs-verified" data-i="verified"></span>
+          {managed.length > 1 ? <span className="mi bcs-swap" data-i="unfold_more"></span> : null}
+        </span>
+        <small>{roleLabel(role)} · {access}</small>
+      </button>
+    </header>
+  );
+}
+
+function BroadcastComposer({ followerCount, masjidName, onCreatePost }) {
+  return (
+    <section className="bcs-composer">
+      <span className="bcs-kicker inverse">NEW PAIGHAM</span>
+      <h1>What should musalleen know?</h1>
+      {/* "Message all 0 musalleen" is a discouraging first line on a masjid that opened the
+          console today, and it is not what the author needs to hear. Name the gap instead. */}
+      <p>{followerCount
+        ? `Message all ${countLabel(followerCount)} musalleen of ${masjidName}.`
+        : `No musalleen yet — share the masjid QR and your paighams reach them from the next one.`}</p>
+      <button className="btn btn-filled lg bcs-create" onClick={() => onCreatePost()}>
+        <span className="mi" data-i="campaign"></span>Create paigham
+      </button>
+      {/* Three buttons, three intents — so each opens the composer where its intent lives:
+          the recorder already running, or the photo library already open. Neither skips
+          step 1, because a paigham still needs a message or a recording either way. */}
+      <div className="bcs-tools">
+        <button className="btn btn-tonal sm" onClick={() => onCreatePost('audio')}>
+          <span className="mi" data-i="mic"></span>Record audio
+        </button>
+        <button className="btn btn-tonal sm" onClick={() => onCreatePost('photos')}>
+          <span className="mi" data-i="photo_camera"></span>Add photos
+        </button>
+      </div>
+    </section>
+  );
+}
+
+function BroadcastReadOnlyStrip() {
+  return (
+    <section className="bcs-readonly">
+      <span className="bcs-icon-orb"><span className="mi" data-i="visibility"></span></span>
+      <span><strong>Published paighams</strong><small>You can view what the committee has sent.</small></span>
+    </section>
+  );
+}
+
+// The recent-paigham feed owns its own loading, error and empty states. They used to live
+// in a latest-paigham summary card above the deck; with that card gone the feed is the only
+// place the console talks about paighams, so it has to answer for all three.
+function BroadcastFeedState({ status, hasItems, canPost, followerCount, onCreate, onRetry }) {
+  if (status === 'loading') {
+    return (
+      <div className="bcs-feed-state loading">
+        <span className="skeleton"></span><span className="skeleton"></span><span className="skeleton short"></span>
+      </div>
+    );
+  }
+  if (status === 'error') {
+    return (
+      <div className="bcs-feed-state error">
+        <span className="bcs-icon-orb"><span className="mi" data-i="cloud_off"></span></span>
+        <span><strong>Couldn’t load paighams</strong><small>Your console data is safe.</small></span>
+        <button className="btn btn-tonal sm" onClick={onRetry}>Try again</button>
+      </div>
+    );
+  }
+  if (!hasItems) {
+    return (
+      <div className="bcs-feed-state empty">
+        <span className="bcs-kicker">NO PAIGHAMS YET</span>
+        <strong>{(() => {
+          if (!canPost) return 'Paighams sent by the committee will appear here.';
+          // Same reason as the composer: on a new masjid the count is zero, and "send the
+          // first update to 0 musalleen" reads as pointless rather than encouraging.
+          return followerCount
+            ? `Send the first update to ${countLabel(followerCount)} musalleen.`
+            : 'Send your first paigham — everyone who follows the masjid from now on will see it.';
+        })()}</strong>
+        {canPost ? (
+          <button className="btn btn-tonal" onClick={onCreate}>
+            <span className="mi" data-i="campaign"></span>Create first paigham
+          </button>
+        ) : null}
+      </div>
+    );
+  }
+  return null;
+}
+
+// Operations deck — the Bold board's "Bento Blocks" direction: every destination is a solid
+// slab of its own colour and leads with its own state (the next jamaat clock, the committee
+// size, the musalleen count) instead of four identical grey cards behind four small icons.
+// Each tone is a semantic token paired with its on-colour partner; no literal hex.
+//
+// A tile leads with a number ONLY when there is a number worth leading with. On a masjid
+// that opened its console this morning every count is zero, and a 29px "0" filling a gold
+// slab is both the loudest thing on the screen and the most discouraging — so at zero the
+// tile falls back to its icon and the caption becomes the thing to go and do.
+function BroadcastOperationTile({ tone, value, icon, title, caption, badge, onClick, transitionName }) {
+  return (
+    <button className={`bcs-operation ${tone}`} onClick={onClick}>
+      {badge ? <span className="bcs-operation-badge">{badge}</span> : null}
+      {value
+        ? <span className="bcs-operation-value">{value}</span>
+        : <span className="mi bcs-operation-glyph" data-i={icon}></span>}
+      <strong style={{ viewTransitionName: transitionName || 'none' }}>{title}</strong>
+      {caption ? <small>{caption}</small> : null}
+    </button>
+  );
+}
+
+// The Salaah slab shouts the clock value; the caption names the prayer it belongs to and,
+// for a varies-with-on-time prayer, that the value is the earliest jamaat rather than a
+// fixed one. `nextPrayer` only ever returns a prayer that has a time, so there is always a
+// value to show unless no prayer is configured at all.
+const salaahTile = (config, next) => {
+  if (!next) return { value: null, caption: 'Publish your timings' };
+  const cfg = config[next.key] || {};
+  const varies = cfg.variant === VARIANT_VARIES;
+  return {
+    value: fmt12(varies ? cfg.neverBefore : cfg.salaahTime),
+    caption: `${next.tomorrow ? 'Tomorrow' : 'Next'} ${next.label}${varies ? ' · earliest' : ''} · iqama +${cfg.iqamaDelay}m`,
+  };
+};
+
 function ConsoleHome({ data, transitionEnabled }) {
   const {
     masjid = OPS_MASJID, role, caps = [], status, counts = {}, managed = [], me,
-    attention = [], posts = {}, onRetry, onCreatePost, onOpenDest, onOpenSwitcher,
-    onOpenAttention, onTogglePostMenu, onDeletePost,
+    attention = [], posts = {}, salaahPublished = true, onRetry, onCreatePost, onOpenDest,
+    onOpenSwitcher, onTogglePostMenu, onDeletePost,
   } = data;
 
-  if (status === 'loading') return <Loading label="Loading console…" />;
+  if (status === 'loading') return <Loading label="Loading broadcast studio…" />;
   if (status === 'locked') return <LockedConsole />;
   if (status === 'error') {
-    return (
-      <ErrorState
-        title="Couldn't load this masjid"
-        copy="Your console data is safe. Check your connection and try again."
-        onRetry={onRetry}
-      />
-    );
+    return <ErrorState title="Couldn’t load this masjid" copy="Your console data is safe. Check your connection and try again." onRetry={onRetry} />;
   }
 
   const items = posts.items || [];
   const canPost = OPS_CAPS.can(caps, 'post');
   const isAdmin = OPS_CAPS.isAdmin(caps);
   const canManagePost = (post) => isAdmin || (canPost && me && post.authorId === me.id);
-  // The strip shows what followers see right now, never the working draft.
-  const next = nextPrayer(OPS_SALAAH_CONFIG);
-  const lastChange = latestTimingChange();
-
-  // The send action floats over the feed, so it survives the scroll. Storyboard frames pass
-  // `fabCompact` explicitly; the live device lets scroll position decide.
-  const bodyRef = React.useRef(null);
-  const [scrolled, setScrolled] = React.useState(false);
-  const onBodyScroll = () => {
-    const el = bodyRef.current;
-    if (el) setScrolled(el.scrollTop > FAB_COLLAPSE_AT);
-  };
-  const fabCompact = data.fabCompact || scrolled;
+  const salaah = salaahTile(OPS_SALAAH_CONFIG, salaahPublished ? nextPrayer(OPS_SALAAH_CONFIG) : null);
+  const inviteCount = attention.reduce((sum, item) => sum + (item.count || 0), 0);
+  const feedLoaded = posts.status === 'loaded' && items.length > 0;
+  const memberCount = counts.members || 0;
+  const musalleenCount = masjid.stats.followers || 0;
 
   return (
-    <React.Fragment>
-    {/* The feed ends above the FAB's landing zone, so the last paigham is never half-covered. */}
-    <Body scrollRef={bodyRef} onScroll={onBodyScroll} style={{ gap: 0, padding: 0, paddingBottom: canPost ? 96 : 24 }}>
-      {/* identity — the header of the screen: back, the masjid's own mark, its name with the
-          switch icon inline, then who you are here. No app-bar title above it. */}
-      <div className="console-head">
-        <button className="ib ib-tonal" aria-label="Back" onClick={data.onBack}>
-          <span className="mi" data-i="arrow_back"></span>
-        </button>
-        <MasjidMark masjid={masjid} size={48} />
-        <div className="console-head-copy">
-          <button
-            className="console-head-name"
-            onClick={managed.length > 1 ? onOpenSwitcher : undefined}
-            aria-haspopup={managed.length > 1 ? 'dialog' : undefined}
-            aria-label={managed.length > 1 ? `${masjid.name} — switch masjid` : undefined}
-            style={{ cursor: managed.length > 1 ? 'pointer' : 'default' }}
-          >
-            <span
-              className="screen-title"
-              style={{ viewTransitionName: transitionEnabled ? CONSOLE_TITLE_TRANSITION : 'none' }}
-            >{masjid.name}</span>
-            <span className="mi console-head-verified" data-i="verified" aria-label="Verified masjid"></span>
-            {managed.length > 1 ? (
-              <span className="mi console-head-swap" data-i="unfold_more" aria-hidden="true"></span>
-            ) : null}
-          </button>
-          {/* Who you are here. The masjid code is reference data, not identity — it lives on
-              Masjid details rather than truncating this line. */}
-          <div className="console-head-role">
-            {roleLabel(role)}{isAdmin ? ' · full admin' : ''}
-          </div>
-        </div>
-      </div>
+    <Body className="bcs-studio-body" bottomInset={36} style={{ gap: 0, padding: '54px 16px 36px' }}>
+      <BroadcastStudioHeader
+        masjid={masjid}
+        role={role}
+        caps={caps}
+        managed={managed}
+        onBack={data.onBack}
+        onOpenSwitcher={onOpenSwitcher}
+        transitionEnabled={transitionEnabled}
+      />
 
-      <div style={{ padding: '0 16px' }}>
-        {/* 1 · what the committee owes someone. Nothing waiting → the block is not there at
-            all, so an empty queue costs no space and no reading. */}
-        {attention.length ? (
-          <React.Fragment>
-            <div className="eyebrow console-eyebrow">Needs you</div>
-            <div className="list-group attention">
-              {attention.map((item) => (
-                <AttentionRow
-                  key={item.id}
-                  icon={item.icon}
-                  title={item.title}
-                  copy={item.copy}
-                  count={item.count}
-                  onClick={() => onOpenAttention && onOpenAttention(item.id)}
-                />
-              ))}
-            </div>
-          </React.Fragment>
-        ) : null}
+      {canPost
+        ? <BroadcastComposer followerCount={masjid.stats.followers} masjidName={masjid.name} onCreatePost={onCreatePost} />
+        : <BroadcastReadOnlyStrip />}
 
-        {/* 2 · today's published timings. Live data, not a chevron: the whole card is the
-            door into the editor, and the strip is the same construction the Salaah screen
-            uses for its published baseline so the two cannot drift apart. */}
-        <button
-          className="console-salaah"
-          onClick={() => onOpenDest && onOpenDest('salaah')}
-          aria-label="Salaah timings — update azaan, jamaat and iqama"
-        >
-          <span className="eyebrow console-salaah-head">
-            <span>Today's salaah</span>
-            <span>{lastChange ? `Updated ${lastChange.when}` : 'Not set yet'}</span>
-          </span>
-          <span className="timings-published-grid">
-            {SALAAH_ORDER.map(({ key, label }) => {
-              const published = OPS_SALAAH_CONFIG[key] || {};
-              return (
-                <span key={key} className={next && next.key === key && !next.tomorrow ? 'next' : ''}>
-                  <b>{label}</b>
-                  <small>{published.salaahTime ? fmt12(published.salaahTime) : 'On time'}</small>
-                </span>
-              );
-            })}
-          </span>
-          <span className="console-salaah-foot">
-            <span>
-              {next
-                ? `${next.tomorrow ? 'Tomorrow' : 'Next'} — ${next.label} ${timeSummary(OPS_SALAAH_CONFIG[next.key])}`
-                : 'Azaan, jamaat and iqama'}
-            </span>
-            <span className="mi" data-i="chevron_right" aria-hidden="true"></span>
-          </span>
-        </button>
-
-        {/* 3 · the rest of the console. Followers is a destination like any other, not a
-            number pretending to be a tile. */}
-        <div className="list-group">
-          <ConsoleRow
+      <section className="bcs-section">
+        <div className="bcs-section-head"><strong>Operations</strong><small>Run the masjid</small></div>
+        <div className="bcs-operations">
+          <BroadcastOperationTile
+            tone="jade"
+            value={salaah.value}
+            icon="schedule"
+            title="Salaah"
+            caption={salaah.caption}
+            onClick={() => onOpenDest && onOpenDest('salaah')}
+            transitionName={transitionEnabled ? destTransitionName('salaah') : undefined}
+          />
+          <BroadcastOperationTile
+            tone="teal"
+            value={memberCount ? String(memberCount) : null}
             icon="groups"
             title="Committee"
-            copy={isAdmin ? 'Members, roles and permissions' : 'Members and what each can do'}
-            value={String(counts.members || 0)}
+            caption={(() => {
+              if (isAdmin && inviteCount) return `${inviteCount} waiting to accept`;
+              if (!memberCount) return 'Invite your imam and secretary';
+              if (memberCount === 1) return 'Just you — invite the rest';
+              return 'Roles and permissions';
+            })()}
+            badge={isAdmin ? inviteCount : 0}
             onClick={() => onOpenDest && onOpenDest('members')}
+            transitionName={transitionEnabled ? destTransitionName('members') : undefined}
           />
-          <ConsoleRow
+          <BroadcastOperationTile
+            tone="gold"
+            value={musalleenCount ? countLabel(musalleenCount) : null}
             icon="favorite"
-            title="Followers"
-            copy="People following this masjid"
-            value={countLabel(masjid.stats.followers)}
+            title="Musalleen"
+            caption={musalleenCount ? 'Receiving every paigham' : 'Share the masjid QR so they can follow'}
             onClick={() => onOpenDest && onOpenDest('followers')}
+            transitionName={transitionEnabled ? destTransitionName('followers') : undefined}
           />
-          <ConsoleRow
-            icon="settings"
+          <BroadcastOperationTile
+            tone="plain"
+            icon="mosque"
             title="Masjid details"
-            copy="Address, contact and masjid code"
+            caption={masjid.code}
             onClick={() => onOpenDest && onOpenDest('details')}
+            transitionName={transitionEnabled ? destTransitionName('details') : undefined}
           />
         </div>
-      </div>
+      </section>
 
-      {/* the masjid's paighams, in the feed the community sees. The lifetime reaction count
-          belongs here as context for the feed, not as a tile that looks tappable. */}
-      <div className="console-feedhead">
-        <span className="section-title console-feedhead-title">Paighams</span>
-        <span className="console-feedhead-count">
-          {items.length} sent{items.length ? ` · ${countLabel(masjid.stats.reactions)} reactions` : ''}
-        </span>
-      </div>
-
-      {posts.status === 'loading' ? <Loading label="Loading paighams…" /> : null}
-      {posts.status === 'error' ? (
-        <ErrorState title="Couldn't load paighams" copy="Check your connection and try again." onRetry={onRetry} />
-      ) : null}
-      {posts.status === 'loaded' && !items.length ? (
-        <Empty
-          icon="campaign"
-          title="No paighams yet"
-          copy={canPost
-            ? 'Send the first one — a message, a photo notice or an audio announcement. Followers receive it straight away.'
-            : 'Paighams sent by the committee appear here.'}
-          actionText={canPost ? 'Send the first paigham' : undefined}
-          actionIcon={canPost ? 'campaign' : undefined}
-          onAction={onCreatePost}
-        />
-      ) : null}
-      {posts.status === 'loaded' && items.length ? (
-        <div style={{ borderTop: '1px solid var(--color-neutral-border)' }}>
-          {items.map((post, index) => {
-            const day = postDay(post);
-            const newDay = index === 0 || postDay(items[index - 1]) !== day;
-            return (
-              <React.Fragment key={post.id}>
-                {newDay ? <div className="eyebrow faint console-day">{day}</div> : null}
-                <ConsolePost
-                  post={post}
-                  masjid={masjid}
-                  canManage={canManagePost(post)}
-                  menuOpen={posts.menuFor === post.id}
-                  deleting={posts.deleting === post.id}
-                  onToggleMenu={() => onTogglePostMenu && onTogglePostMenu(posts.menuFor === post.id ? null : post.id)}
-                  onDelete={() => onDeletePost && onDeletePost(post)}
-                />
-              </React.Fragment>
-            );
-          })}
-          <div style={{ fontSize: 11, lineHeight: 1.5, textAlign: 'center', padding: '14px 20px 8px', color: 'var(--color-info-tertiary)' }}>
-            {isAdmin
-              ? 'As a full admin you can delete any paigham. Deleting removes it for every follower.'
-              : canPost
-                ? 'You can delete the paighams you sent.'
-                : 'Only members with the Send paighams permission can add or delete.'}
-          </div>
+      <section className="bcs-section">
+        <div className="bcs-section-head">
+          <strong>Recent paighams</strong>
+          {feedLoaded ? <small>{items.length} sent · {countLabel(masjid.stats.reactions)} reactions</small> : null}
         </div>
+        <BroadcastFeedState
+          status={posts.status}
+          hasItems={items.length > 0}
+          canPost={canPost}
+          followerCount={masjid.stats.followers}
+          onCreate={onCreatePost}
+          onRetry={onRetry}
+        />
+        {feedLoaded ? (
+          <div className="bcs-feed-list">
+            {items.map((post) => (
+              <ConsolePost
+                key={post.id}
+                post={post}
+                masjid={masjid}
+                canManage={canManagePost(post)}
+                menuOpen={posts.menuFor === post.id}
+                deleting={posts.deleting === post.id}
+                onToggleMenu={() => onTogglePostMenu && onTogglePostMenu(posts.menuFor === post.id ? null : post.id)}
+                onDelete={() => onDeletePost && onDeletePost(post)}
+              />
+            ))}
+          </div>
+        ) : null}
+      </section>
+
+      {data.fabCompact && canPost ? (
+        <button className="btn btn-filled bcs-quick-send" onClick={onCreatePost}>
+          <span className="mi" data-i="campaign"></span>New paigham
+        </button>
       ) : null}
     </Body>
-
-    {canPost ? (
-      <Fab icon="campaign" label="Send a paigham" compact={fabCompact} onClick={onCreatePost} />
-    ) : null}
-    </React.Fragment>
   );
 }
 
@@ -1010,7 +1073,7 @@ function MasjidSwitcherSheet({ open, managed = [], currentId, onPick, onClose })
               <span className="list-item-copy" style={{ gap: 2 }}>
                 <span className="list-item-title">{m.name}</span>
                 <span className="list-item-subtitle" style={{ WebkitLineClamp: 1 }}>
-                  {roleLabel(m.role)} · {m.city} · {countLabel(m.followers)} followers
+                  {roleLabel(m.role)} · {m.city} · {countLabel(m.followers)} musalleen
                 </span>
               </span>
               {current
@@ -1042,8 +1105,10 @@ function DetailsBody({ data }) {
   const pincode = (masjid.address.match(/\d{6}/) || [''])[0];
 
   return (
-    <Body bottomInset={40} style={{ gap: 0, padding: 0 }}>
-      {/* the masjid as it was verified: its photo, name and code */}
+    <Body bottomInset={40} style={{ gap: 0, padding: `${BCS_APPBAR_H}px 0 40px` }}>
+      {/* the masjid as it was verified: its photo, name and code. The hero starts BELOW the
+          app bar rather than under it: the bar's title is unscrimmed, and a committee photo
+          cannot be art-directed, so a dark upload would swallow it. */}
       <div className="media-identity-hero">
         {masjid.photo ? <img src={masjid.photo} alt={`${masjid.name} entrance`} /> : null}
         <div className="media-identity-hero-copy">
@@ -1100,7 +1165,7 @@ function DetailsBody({ data }) {
 // ══════════════════════════════════════════════════════════════════════
 
 // ══════════════════════════════════════════════════════════════════════
-// 3 · Console — Members tab (Committee + Followers)
+// 3 · Console — Members tab (Committee + Musalleen)
 // ══════════════════════════════════════════════════════════════════════
 
 // A committee row: who they are, the title they hold, and — at a glance — what they may do.
@@ -1172,7 +1237,7 @@ function CommitteeBody({ data }) {
       ) : null}
 
       {status === 'loaded' && items.length ? (
-        <Body bottomInset={isAdmin ? 8 : 40} style={{ gap: 0, paddingTop: 14 }}>
+        <Body bottomInset={isAdmin ? 8 : 40} style={{ gap: 0, paddingTop: BCS_APPBAR_H + 14 }}>
           <div className="summary-hero">
             <span className="icon-tile" style={{ '--tile': '38px' }}><span className="mi" data-i="groups"></span></span>
             <div className="summary-hero-copy">
@@ -1301,9 +1366,9 @@ function MemberBody({ data }) {
     <div style={{ flex: 1, minHeight: 0, display: 'flex', flexDirection: 'column' }}>
       {/* the person IS the header — identity once, not twice */}
       <div className="console-head">
-        <button className="ib ib-tonal" aria-label="Back" onClick={onBack}>
+        <a className="ib ib-tonal" aria-label="Back" href="./Masjid Broadcast Studio.dc.html#members">
           <span className="mi" data-i="arrow_back"></span>
-        </button>
+        </a>
         {inviting
           ? <IconTile icon="person" size={48} tone="accent" />
           : <Avatar text={member.name} size={48} tone="accent" />}
@@ -1443,7 +1508,7 @@ function MemberBody({ data }) {
   );
 }
 
-// ── Followers — a read-only record of who receives this masjid's updates ──
+// ── Musalleen — a read-only record of who receives this masjid's updates ──
 // Nobody approves a follow, so this screen exists to answer "who are they?" and nothing
 // else. The committee sees contact details, which is exactly why the screen says so.
 function FollowerRow({ follower }) {
@@ -1471,21 +1536,21 @@ function FollowersBody({ data }) {
 
   return (
     <div style={{ flex: 1, minHeight: 0, display: 'flex', flexDirection: 'column' }}>
-      {followersStatus === 'loading' ? <Loading label="Loading followers…" /> : null}
+      {followersStatus === 'loading' ? <Loading label="Loading musalleen…" /> : null}
       {followersStatus === 'error' ? (
-        <ErrorState title="Couldn't load followers" copy="Check your connection and try again." onRetry={onRetry} />
+        <ErrorState title="Couldn't load musalleen" copy="Check your connection and try again." onRetry={onRetry} />
       ) : null}
       {followersStatus === 'loaded' && !followers.length ? (
         <Empty
           icon="person"
-          title="No followers yet"
-          copy="People who follow this masjid receive its salaah timings and every paigham you send. Share the masjid QR or ask the jamaat to search for it in Paigham."
+          title="No musalleen yet"
+          copy="Musalleen who follow this masjid receive its salaah timings and every paigham you send. Share the masjid QR or ask the jamaat to search for it in Paigham."
         />
       ) : null}
 
       {followersStatus === 'loaded' && followers.length ? (
         <>
-          <div style={{ flexShrink: 0, padding: '14px 16px 0' }}>
+          <div style={{ flexShrink: 0, padding: `${BCS_APPBAR_H + 14}px 16px 0` }}>
             <div className="summary-hero">
               <span className="icon-tile accent" style={{ '--tile': '44px' }}><span className="mi" data-i="groups"></span></span>
               <div className="summary-hero-copy">
@@ -1512,7 +1577,7 @@ function FollowersBody({ data }) {
             <div className="followers-note">
               <span className="mi" data-i="security" aria-hidden="true"></span>
               <span>
-                Names and numbers here are visible to the committee only. Followers never appear
+                Names and numbers here are visible to the committee only. Musalleen never appear
                 publicly, and Paigham never shares them.
               </span>
             </div>
@@ -1639,7 +1704,7 @@ function SalaahTab({ data }) {
     return (
       <ErrorState
         title="Couldn't load salaah settings"
-        copy="Your current timings are safe and still live for followers. Check your connection and try again."
+        copy="Your current timings are safe and still live for musalleen. Check your connection and try again."
         onRetry={onRetry}
       />
     );
@@ -1652,7 +1717,7 @@ function SalaahTab({ data }) {
         icon="check_circle"
         titleStyle={{ fontFamily: FONT_T, fontSize: 22 }}
         title="Salaah timings published"
-        description="Every follower of this masjid now sees the updated azaan and iqama timings. Your name is on the change."
+        description="Every musalli of this masjid now sees the updated azaan and iqama timings. Your name is on the change."
         action={{ text: 'Done', onClick: onDone, filled: true }}
       />
     ) : null;
@@ -1660,12 +1725,12 @@ function SalaahTab({ data }) {
 
   return (
     <div style={{ flex: 1, minHeight: 0, display: 'flex', flexDirection: 'column' }}>
-      <Body bottomInset={16} style={{ paddingTop: 12, gap: 12 }}>
-        {/* what followers see right now — the baseline every edit is measured against */}
+      <Body bottomInset={16} style={{ paddingTop: BCS_APPBAR_H + 12, gap: 12 }}>
+        {/* what musalleen see right now — the baseline every edit is measured against */}
         <div className="timings-published">
           <div className="eyebrow timings-published-head">
             <span>Published now</span>
-            <span>What followers see</span>
+            <span>What musalleen see</span>
           </div>
           <div className="timings-published-grid">
             {SALAAH_ORDER.map(({ key, label }) => {
@@ -1684,7 +1749,7 @@ function SalaahTab({ data }) {
         <div className="surf subtle" style={{ display: 'flex', gap: 10, padding: 12, borderRadius: 14 }}>
           <span className="mi" style={{ fontSize: 20, color: 'var(--color-action-primary)' }} data-i="info" aria-hidden="true"></span>
           <div style={{ fontSize: 12, lineHeight: 1.5, color: 'var(--color-info-secondary)' }}>
-            Anyone using Paigham can keep these timings correct. When you publish, followers see
+            Anyone using Paigham can keep these timings correct. When you publish, musalleen see
             the update straight away and the change is recorded with your name.
           </div>
         </div>
@@ -1803,7 +1868,7 @@ function SalaahTab({ data }) {
         helper={(() => {
           if (!dirty) return 'Edit a prayer to enable publishing.';
           const n = salaahChangeCount(config);
-          return `${n} ${n === 1 ? 'prayer' : 'prayers'} ready · publishing updates followers and records your name.`;
+          return `${n} ${n === 1 ? 'prayer' : 'prayers'} ready · publishing updates musalleen and records your name.`;
         })()}
         onClick={onSubmitSalaah}
       />
@@ -2095,7 +2160,7 @@ const destTransitionName = (dest) => `masjid-console-dest-${dest}`;
 // One entry per destination: what the app bar says, and which body it hosts.
 const CONSOLE_DESTINATIONS = {
   members: { title: 'Committee', body: CommitteeBody },
-  followers: { title: 'Followers', body: FollowersBody },
+  followers: { title: 'Musalleen', body: FollowersBody },
   salaah: { title: 'Salaah timings', body: SalaahTab },
   details: { title: 'Masjid details', body: DetailsBody },
   // Opened from a committee row; its title is the member's name.
@@ -2170,13 +2235,13 @@ function PostSentScreen({ data = {} }) {
   return (
     <Screen>
       <OpsAppBar title="Paigham sent" onBack={onBack || onHome} />
-      <div style={{ flex: 1, minHeight: 0, display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', textAlign: 'center', padding: '24px 24px 40px', gap: 12 }}>
+      <div style={{ flex: 1, minHeight: 0, display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', textAlign: 'center', padding: `${BCS_APPBAR_H}px 24px 40px`, gap: 12 }}>
         <div className="empty-state-icon" style={{ background: 'color-mix(in oklab,var(--color-status-success) 14%,transparent)', color: 'var(--color-status-success)' }} aria-hidden="true">
           <span className="mi" data-i="check_circle"></span>
         </div>
         <div style={{ fontFamily: FONT_T, fontSize: 24, lineHeight: 1.2, marginTop: 6 }}>Your paigham is live</div>
         <div style={{ fontSize: 14, lineHeight: 1.55, color: 'var(--color-info-secondary)' }}>
-          Every follower of this masjid has it now. You can see it — and delete it if something is
+          Every musalli of this masjid has it now. You can see it — and delete it if something is
           wrong — from Paighams in the console.
         </div>
         <div style={{ width: '100%', display: 'flex', flexDirection: 'column', gap: 10, marginTop: 12 }}>
@@ -2319,7 +2384,7 @@ function InvitationsScreen({ data = {} }) {
         />
       ) : null}
       {status === 'loaded' && items.length ? (
-        <Body bottomInset={40} style={{ gap: 12 }}>
+        <Body bottomInset={40} style={{ gap: 12, paddingTop: BCS_APPBAR_H + 14 }}>
           <div className="eyebrow">
             {live.length
               ? `${live.length} ${live.length === 1 ? 'invitation' : 'invitations'} waiting for you`
@@ -2352,7 +2417,7 @@ function InvitationsScreen({ data = {} }) {
 Object.assign(window, {
   // screens
   ConsoleScreen,
-  // shared by the compose wizard (./compose-post.jsx)
+  // shared by the compose wizard (./broadcast-studio-compose.jsx)
   OpsConfirmDialog: ConfirmDialog,
   // Shared with the compose wizard: switching masjid mid-compose uses the console's sheet.
   MasjidSwitcherSheet,
