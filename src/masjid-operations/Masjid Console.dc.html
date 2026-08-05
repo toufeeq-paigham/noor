@@ -131,74 +131,13 @@
       font:600 11.5px/1.25 var(--font-body);text-align:center;white-space:nowrap;color:var(--color-neutral-white)}
     .scan-stage-foot{display:flex;justify-content:center;padding:0 20px 34px}
     .scan-stage-foot .btn-link{color:var(--color-neutral-white)}
-    /* What the scan filled in and, louder, what it missed. Success and partial share the
-       construction; the icon and copy carry the difference. */
-    .scan-result-banner{display:flex;align-items:center;gap:var(--size-lg);padding:var(--size-xl);
-      box-sizing:border-box;border:1px solid color-mix(in oklab,var(--color-action-primary) 40%,transparent);
-      border-radius:var(--radius-card);background:var(--gradient-emerald),var(--color-surface-card);
-      font-family:var(--font-body);font-size:12.5px;line-height:1.5;color:var(--color-info-primary)}
-    .scan-result-banner>.mi{flex-shrink:0;font-size:var(--icon-md);color:var(--color-action-primary)}
-    .scan-result-banner>div{flex:1;min-width:0}
-    .scan-result-banner>div strong,.scan-result-banner>div span{display:block}
-    .scan-result-banner>div strong{font-size:13px;color:var(--color-info-primary)}
-    .scan-result-banner>div span{margin-top:2px;font-size:12px;line-height:1.45;color:var(--color-info-secondary)}
-    .scan-result-banner .scan-draft-state{font-weight:700;color:var(--color-status-warning)}
-    .scan-result-banner .scan-delta-proof{margin-top:5px;color:var(--color-info-primary)}
-    .scan-review-stage{position:absolute;inset:0;z-index:40;display:flex;flex-direction:column;
-      background:var(--color-surface-primary);color:var(--color-info-primary)}
-    .scan-camera-stage .camera-topbar,.scan-review-stage .camera-topbar{height:118px}
-    .scan-review-stage .camera-topbar{background:var(--color-surface-primary);
-      border-bottom:1px solid var(--color-neutral-border)}
-    .scan-review-stage .camera-control{color:var(--color-info-primary);background:var(--color-surface-secondary)}
-    .scan-review-stage .camera-title{color:var(--color-info-primary)}
-    .scan-review-stage .camera-title small{color:var(--color-info-secondary)}
-    .scan-review-body{flex:1;min-height:0;overflow:auto;padding:12px 16px 20px}
-    .scan-review-summary{display:flex;align-items:center;gap:12px;padding:12px 14px;
-      border-radius:var(--radius-lg);background:var(--color-action-primary-tint)}
-    .scan-review-summary>.mi{font-size:24px;color:var(--color-action-primary)}
-    /* Blocked on the column question — neutral glyph and a bordered neutral card, matching the
-       question card directly beneath it so the two read as one unanswered prompt. Note
-       --color-surface-secondary is mint-cream (a green-tinted neutral), so it cannot be used to
-       escape green here; the card surface is the honest neutral. */
-    .scan-review-summary.pending{background:var(--color-surface-card);border:1px solid var(--color-neutral-border)}
-    .scan-review-summary.pending>.mi{color:var(--color-info-secondary)}
-    .scan-review-summary strong,.scan-review-summary span{display:block}
-    .scan-review-summary strong{font-size:14px}
-    .scan-review-summary span{margin-top:2px;font-size:12px;line-height:1.4;color:var(--color-info-secondary)}
-    .scan-meaning{margin-top:12px;padding:12px 14px;border:1px solid var(--color-neutral-border);
-      border-radius:var(--radius-lg);background:var(--color-surface-card)}
-    .scan-meaning-head{display:flex;align-items:flex-start;gap:10px}
-    .scan-meaning-head>.mi{flex-shrink:0;margin-top:1px;font-size:20px;color:var(--color-status-warning)}
-    .scan-meaning-head strong,.scan-meaning-head span{display:block}
-    .scan-meaning-head strong{font-size:13.5px}
-    .scan-meaning-head span{margin-top:2px;font-size:11.5px;line-height:1.4;color:var(--color-info-secondary)}
-    .scan-meaning-options{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:10px}
-    .scan-meaning-option{min-height:48px;padding:8px 10px;border:1px solid var(--color-neutral-border);
-      border-radius:var(--radius-lg);background:var(--color-surface-secondary);font:700 12.5px/1.25 var(--font-body);
-      color:var(--color-info-primary);cursor:pointer}
-    .scan-meaning-option.selected{border-color:var(--color-action-primary);background:var(--color-action-primary-tint);
-      color:var(--color-action-primary)}
-    .scan-review-list{margin-top:12px;border-radius:var(--radius-lg);overflow:hidden;
-      border:1px solid var(--color-neutral-border);background:var(--color-surface-card)}
-    .scan-review-row{padding:12px 14px;border-bottom:1px solid var(--color-neutral-border)}
-    .scan-review-row:last-child{border-bottom:0}
-    .scan-review-row-head{display:flex;align-items:center;justify-content:space-between;gap:12px}
-    .scan-review-row-head strong{font-size:13.5px}
-    .scan-review-row-head>span{font-size:11.5px;font-weight:700;color:var(--color-action-primary)}
-    .scan-review-row.missed .scan-review-row-head>span{color:var(--color-info-secondary)}
-    .scan-review-values{display:grid;grid-template-columns:1fr 20px 1fr;align-items:center;gap:8px;
-      margin-top:8px;font-size:12px;line-height:1.35}
-    .scan-review-values>span:not(.mi){display:flex;flex-direction:column;gap:2px}
-    .scan-review-values>span:last-child{font-weight:700;color:var(--color-action-primary)}
-    .scan-review-values small{font-size:10.5px;font-weight:500;color:var(--color-info-secondary)}
-    .scan-review-values>.mi{text-align:center;font-size:18px;color:var(--color-info-faint)}
-    .scan-review-kept{margin-top:6px;font-size:12px;color:var(--color-info-secondary)}
-    .scan-review-actions{flex-shrink:0;padding:12px 16px calc(18px + env(safe-area-inset-bottom));
-      border-top:1px solid var(--color-neutral-border);background:var(--color-surface-primary)}
-    .scan-review-actions>div{margin-bottom:8px;text-align:center;font-size:11.5px;
-      color:var(--color-info-secondary)}
-    .scan-review-actions .btn-filled{width:100%}
-    .scan-review-actions .btn-link{display:flex;margin:6px auto 0}
+    /* The camera stage's taller top bar. It shared a selector with the deleted review stage, which is
+       how removing that stage took this rule with it — the class guard caught it. */
+    .scan-camera-stage .camera-topbar{height:118px}
+    /* The scan's result is no longer a banner or a comparison destination: recognition returns to the
+       timeline and draws its reading onto it, so `.salaah-scan-strip` in broadcast-studio.css is the
+       whole surface. The banner, the review stage, the meaning card and the current-vs-scanned list
+       that used to live here are deleted rather than left as a second way to do the same job. */
     @media(prefers-reduced-motion:reduce){.scan-sweep{animation:none;top:50%}}
 
     /* `.next` — the prayer the console is counting down to. Only the hub sets it; the Salaah
@@ -348,12 +287,17 @@
     }
   </style>
   <link rel="stylesheet" href="./storyboards/broadcast-studio.css">
+  <!-- The Salaah destination IS the timeline, so the console loads its stylesheet rather than
+       reimplementing the spine here. -->
+  <link rel="stylesheet" href="./storyboards/salaah-timeline.css">
 </helmet>
 
 <!-- Component layer: loads Dialog/EmptyState/ListItem onto window for the screens -->
 <x-import component="Dialog" from="../_theme/components.jsx" hint-size="0,0"></x-import>
 <!-- Screen kit loader (the screens are used by both the board and the device below) -->
 <div style="display:none">
+  <!-- Loaded BEFORE the console screens: SalaahConfigBody reads StlTimeline / useStlDrag off window. -->
+  <x-import component="SalaahTimelineLive" from="./storyboards/salaah-timeline.jsx" hint-size="0,0"></x-import>
   <x-import component="ConsoleScreen" from="./storyboards/broadcast-studio-screens.jsx" hint-size="0,0"></x-import>
   <x-import component="ComposePostScreen" from="./storyboards/broadcast-studio-compose.jsx" hint-size="0,0"></x-import>
 </div>
@@ -648,15 +592,16 @@ class Component extends DCLogic {
     scanPreview: null,
     scanColumnMeaning: (s.scanMeaningByMasjid || {})[s.masjidId] || null,
   }));
-  onCloseScan = () => this.patch({ scanStage: null, scanPreview: null, scanColumnMeaning: null });
-  onScanRetry = () => this.patch({ scanStage: 'camera', scanPreview: null });
+  onCloseScan = () => this.patch({ scanStage: null, scanProposal: null });
+  onScanRetry = () => this.patch({ scanStage: 'camera', scanProposal: null });
   onScanCapture = () => {
     this.patch({ scanStage: 'reading' });
-    // Recognition never edits the draft. The POC first shows the partial read as a comparison
-    // screen, because this is where the user can understand exactly what the camera found.
+    // Recognition returns to the TIMELINE, not to a comparison destination: every current time is
+    // already drawn in its place there, so the board's reading lands on it as amber proposals and the
+    // comparison happens where the values live. Nothing is written to the draft here.
     this.after(1800, () => this.patch({
-      scanStage: 'review',
-      scanPreview: 'partial',
+      scanStage: null,
+      scanProposal: 'partial',
     }));
   };
   onScanMeaning = (scanColumnMeaning) => this.setState((s) => window.opsApplyPatch(s, {
@@ -665,16 +610,18 @@ class Component extends DCLogic {
       [s.masjidId]: scanColumnMeaning,
     }),
   }));
+  // Accepting a proposal moves it into the draft. It still is not published — the footer goes back to
+  // Publish, and the values stay draggable, so a misread time can be corrected before it reaches anyone.
   onApplyScan = () => this.setState((s) => {
-    if (!s.scanColumnMeaning) return s;
+    if (!s.scanColumnMeaning || !s.scanProposal) return s;
     return window.opsApplyPatch(s, {
       scanStage: null,
-      scanApplied: s.scanPreview || 'partial',
-      scanPreview: null,
+      scanApplied: s.scanProposal,
+      scanProposal: null,
       salaahDirty: true,
-      expandedPrayer: 'fajr',
     });
   });
+  onDiscardScan = () => this.patch({ scanProposal: null, scanStage: null });
 
   onOpenHistory = () => this.patch({ salaahHistoryOpen: true });
   onCloseHistory = () => this.patch({ salaahHistoryOpen: false });
@@ -887,6 +834,7 @@ class Component extends DCLogic {
       onOpenScan: this.onOpenScan, onCloseScan: this.onCloseScan,
       onScanCapture: this.onScanCapture, onScanRetry: this.onScanRetry,
       onScanMeaning: this.onScanMeaning, onApplyScan: this.onApplyScan,
+      onDiscardScan: this.onDiscardScan,
       onDone: this.onDone,
       onMessage: this.onMessage, onNextStep: this.onNextStep, onGoToStep: this.onGoToStep,
       onOpenRecorder: this.onOpenRecorder, onStartRecording: this.onStartRecording,

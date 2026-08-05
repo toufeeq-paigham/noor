@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="../support.js"></script>
+<script src="../_theme/chrome.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+  <link rel="stylesheet" href="../_ds/noor-design-system-46f42e91-1858-412f-bdb6-560a6cc3df9f/colors_and_type.css">
+  <link rel="stylesheet" href="../_theme/poc.css">
+  <link rel="stylesheet" href="../_theme/components.css">
+  <link rel="stylesheet" href="../_theme/icons.css">
+  <script src="../_ds/noor-design-system-46f42e91-1858-412f-bdb6-560a6cc3df9f/_ds_bundle.js"></script>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Rounded:opsz,wght,FILL,GRAD@24,400,0..1,0&amp;display=block">
+  <style>
+    body{background:var(--canvas-bg);padding:36px 32px 90px;min-height:100vh;box-sizing:border-box}
+    ::-webkit-scrollbar{display:none}*{-ms-overflow-style:none;scrollbar-width:none}
+  </style>
+  <link rel="stylesheet" href="./storyboards/salaah-timeline.css">
+</helmet>
+
+<x-import component="BoardHeader" from="../_theme/board.jsx"
+          title="Salaah timings — Timeline of the Day"
+          subtitle="The accepted direction, developed. Prayers sit at their true position on the day's spine, each row carrying all four of its times: START and ENDS are calculated and cannot be touched, while AZAAN and IQAMA are the two the masjid sets — drag the azaan and the whole prayer moves with its delay intact; drag the iqama and only the delay changes. Nothing can leave its window: the value clamps, the row shakes, and a strip above the action says which bound was hit. A moved value's label becomes WAS 5:30 and a ghost dot marks where it was published. The FIXED / ON_TIME / VARIES_WITH_ON_TIME taxonomy never appears — it is a storage concern the service derives from edit deltas, and it proposes rather than rewrites."
+          hint-size="1440px,132px"></x-import>
+
+<div class="poc-stage">
+  <div class="poc-frames">
+    <x-import component="SalaahTimelineBoard" from="./storyboards/salaah-timeline.jsx"
+              active="{{ active }}" on-select="{{ select }}"
+              hint-size="1600px,2400px"></x-import>
+  </div>
+
+  <x-import component="BoardLive" from="../_theme/board.jsx" restart="{{ restart }}"
+            hint="The selected state at full size. Switch the canvas theme to check light and dark — the window bands and the refusal both have to hold in each."
+            hint-size="400px,900px">
+    <x-import component="IOSDevice" from="../ios-frame.jsx" hint-size="402px,874px">
+      <div style="width:100%;height:100%;position:relative;overflow:hidden;background:var(--color-surface-primary)">
+        <x-import component="SalaahTimelineLive" from="./storyboards/salaah-timeline.jsx"
+                  index="{{ active }}" hint-size="402px,874px"></x-import>
+      </div>
+    </x-import>
+  </x-import>
+</div>
+
+<script type="text/x-dc" data-dc-script>
+class Component extends DCLogic {
+  state = { active: 2 };
+
+  // DCLogic exposes setState, not patch — the console page defines its own `patch` wrapper on top
+  // of it. Calling this.patch here threw inside React's click handler, which is why selecting a
+  // frame silently did nothing.
+  select = (index) => this.setState({ active: index });
+  restart = () => this.setState({ active: 0 });
+
+  renderVals() {
+    return {
+      active: this.state.active,
+      select: this.select,
+      restart: this.restart,
+    };
+  }
+}
+</script>
+</x-dc>
+</body>
+</html>

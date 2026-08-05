@@ -500,3 +500,47 @@
     transform:none;
   }
 }
+
+
+/* ── Salaah destination: a pending board reading ─────────────────────────────
+   The strip states what the scan found and asks the one question OCR cannot answer. It does NOT list
+   the values: they are drawn onto the timeline below, in place, against the times they would replace.
+   A separate list here would be the full-screen comparison destination again, one scroll higher.
+   Amber tints the container and marks the rows; it never carries the text, because #FE9A00 measures
+   2.05:1 on this surface. */
+.salaah-scan-strip{
+  display:flex;
+  flex-direction:column;
+  gap:var(--size-lg);
+  padding:var(--size-xl);
+  border:1px solid color-mix(in oklab,var(--color-status-warning) 45%,transparent);
+  border-radius:var(--radius-card);
+  background:color-mix(in oklab,var(--color-status-warning) 10%,var(--color-surface-card));
+}
+.salaah-scan-head{display:flex;align-items:flex-start;gap:var(--size-lg)}
+.salaah-scan-head>.mi{flex-shrink:0;font-size:20px;color:var(--color-status-warning)}
+.salaah-scan-head>div{flex:1;min-width:0;display:flex;flex-direction:column;gap:2px}
+.salaah-scan-head strong{font-size:13.5px}
+.salaah-scan-head span{font-size:12px;line-height:1.45;color:var(--color-info-secondary)}
+.salaah-scan-head>.btn-link{flex-shrink:0;font-size:12px}
+.salaah-scan-meaning{display:flex;flex-direction:column;gap:var(--size-md)}
+.salaah-scan-meaning>div{display:flex;gap:var(--size-md);flex-wrap:wrap}
+
+/* The clamp refusal, pinned above the docked action so it never displaces content mid-drag. */
+.salaah-refuse{
+  display:flex;
+  align-items:center;
+  gap:var(--size-md);
+  margin:0 16px calc(var(--size-md) * -1);
+  padding:var(--size-lg) var(--size-xl);
+  border:1px solid var(--color-status-error);
+  border-radius:var(--radius-xl);
+  background:var(--color-surface-card);
+  box-shadow:var(--shadow-elevated);
+  font-size:11.5px;
+  font-weight:700;
+  color:var(--color-status-error);
+  position:relative;
+  z-index:2;
+}
+.salaah-refuse .mi{flex-shrink:0;font-size:16px}

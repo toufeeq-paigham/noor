@@ -62,11 +62,13 @@
     // Scan-the-board flow (console TRD §6). Recognition first creates a preview which the
     // user compares with the current timings. A one-column board must be identified as
     // Azaan or Jamaat before anything can be added to the working draft.
-    scanStage: null, // null | 'camera' | 'reading' | 'review' | 'failed'
-    scanPreview: null, // null | 'full' | 'partial'
-    scanApplied: null, // null | 'full' | 'partial'
+    // 'review' is gone: the timeline is the comparison surface, so recognition returns straight to it
+    // with the board's reading drawn on as amber proposals.
+    scanStage: null, // null | 'camera' | 'reading' | 'failed'
+    scanProposal: null, // null | 'full' | 'partial' — a pending reading, NOT yet in the draft
+    scanApplied: null, // null | 'full' | 'partial' — a reading the user added to the draft
     scanColumnMeaning: null, // null | 'azaan' | 'jamaat'
-    scanMeaningByMasjid: {}, // remembered choice, still editable on every review
+    scanMeaningByMasjid: {}, // remembered choice, still editable on every scan
 
     // The compose wizard's own state. `step` is the screen, `recorder` / `picker` / `crop`
     // are its full-screen stages, `audience` is the PostTarget.
@@ -206,7 +208,7 @@
         salaahSaving: !!s.salaahSaving,
         salaahHistoryOpen: !!s.salaahHistoryOpen,
         scanStage: s.scanStage || null,
-        scanPreview: s.scanPreview || null,
+        scanProposal: s.scanProposal || null,
         scanApplied: s.scanApplied || null,
         // The selected Azaan/Jamaat value changes the comparison data, not the screen state.
         // Both choices therefore light the same "review changes" storyboard frame.
@@ -323,6 +325,11 @@
     });
   };
 
+  const toMinutes = (hhmm) => {
+    const parts = String(hhmm || '00:00').split(':').map((n) => parseInt(n, 10));
+    return (parts[0] * 60) + (parts[1] || 0);
+  };
+
   const addMinutes = (time, minutes) => {
     const parts = (time || '00:00').split(':').map((part) => parseInt(part, 10));
     const total = ((parts[0] * 60) + parts[1] + minutes + (24 * 60)) % (24 * 60);
@@ -333,7 +340,7 @@
   // so a Jamaat column maps directly; an Azaan column adds the current iqama delay. The
   // partial variant leaves Zohar and Maghrib untouched — the two the parser most often loses
   // to glare on real LED boards.
-  const scannedConfig = (partial, meaning) => {
+  const scannedConfig = (partial, meaning, keepImpossible) => {
     const base = window.OPS_SALAAH_CONFIG;
     if (!base) return null;
     const detected = {
@@ -355,7 +362,42 @@
       };
     });
     if (partial) { delete read.zohar; delete read.maghrib; }
+    // A reading outside its prayer window is never applied. The proposal view marks it in red and the
+    // action excludes it, so this is the same rule enforced at the point the draft is actually written —
+    // the screen and the store cannot disagree about what got in.
+    const windows = keepImpossible ? [] : (window.StlPrayerWindows || []);
+    const all = windows.concat(!keepImpossible && window.StlJumahWindow ? [window.StlJumahWindow] : []);
+    all.forEach((w) => {
+      const r = read[w.key];
+      if (!r) return;
+      const azaan = toMinutes(r.salaahTime || r.neverBefore);
+      const delay = r.iqamaDelay || 0;
+      if (azaan < w.opens || azaan + delay > w.closes) delete read[w.key];
+    });
     return Object.assign({}, base, read);
+  };
+
+  // The same reading as scannedConfig, expressed the way the timeline draws: minutes from midnight for
+  // the azaan, and the delay in minutes. One source, two shapes, so the amber dot on the rail and the
+  // value that lands in the draft can never disagree.
+  const scanProposalMinutes = (partial, meaning) => {
+    // Deliberately NOT scannedConfig: that one drops out-of-window readings because it feeds the draft.
+    // The proposal has to show them, marked as impossible, or the camera's mistake is invisible.
+    const cfg = scannedConfig(partial, meaning, true);
+    if (!cfg) return null;
+    const base = window.OPS_SALAAH_CONFIG || {};
+    const toMin = toMinutes;
+    const read = {};
+    Object.keys(cfg).forEach((key) => {
+      // Only the prayers the scan actually read carry a proposal; the rest are untouched, and the strip
+      // names them rather than leaving the reader to notice the absence.
+      if (partial && (key === 'zohar' || key === 'maghrib')) return;
+      const before = base[key] || {};
+      const after = cfg[key] || {};
+      if (after.salaahTime === before.salaahTime && (after.iqamaDelay || 0) === (before.iqamaDelay || 0)) return;
+      read[key] = { azaan: toMin(after.salaahTime || after.neverBefore), iqama: after.iqamaDelay || 0 };
+    });
+    return Object.keys(read).length ? read : null;
   };
 
   const activeMasjid = (state) => {
@@ -484,9 +526,15 @@
           || (s.scanApplied ? scannedConfig(s.scanApplied === 'partial', s.scanColumnMeaning || 'jamaat') : null)
           || (s.salaahEdited ? editedConfig() : window.OPS_SALAAH_CONFIG),
         scanStage: s.scanStage,
-        scanPreview: s.scanPreview,
-        scanConfig: s.scanPreview
-          ? scannedConfig(s.scanPreview === 'partial', s.scanColumnMeaning || 'jamaat')
+        // A pending reading, in the minutes the timeline draws with. It is deliberately NOT merged into
+        // `config`: a proposal the user has not accepted must not be able to reach Publish.
+        scanProposal: s.scanProposal
+          ? scanProposalMinutes(s.scanProposal === 'partial', s.scanColumnMeaning || 'jamaat')
+          : null,
+        scanMissed: s.scanProposal === 'partial' ? ['Zohar', 'Maghrib'] : [],
+        scanPreview: s.scanProposal,
+        scanConfig: s.scanProposal
+          ? scannedConfig(s.scanProposal === 'partial', s.scanColumnMeaning || 'jamaat')
           : null,
         scanApplied: s.scanApplied,
         scanColumnMeaning: s.scanColumnMeaning,
@@ -574,21 +622,18 @@
 
     // 05 · Salaah timings — public: any signed-in user, no review, every change recorded
     { group: 'salaah', name: 'Loading', screen: 'console', state: { route: 'console', dest: 'salaah', salaahStatus: 'loading' } },
-    { group: 'salaah', name: 'Timings', screen: 'console', state: { route: 'console', dest: 'salaah' } },
-    { group: 'salaah', name: 'Fixed-time editor', screen: 'console', state: { route: 'console', dest: 'salaah', expandedPrayer: 'fajr' } },
-    { group: 'salaah', name: 'Varies-with-on-time', screen: 'console', state: { route: 'console', dest: 'salaah', expandedPrayer: 'asr' } },
-    { group: 'salaah', name: 'Iqama delay picker', screen: 'console', state: { route: 'console', dest: 'salaah', expandedPrayer: 'fajr', openMenu: 'fajr-iqama' } },
-    { group: 'salaah', name: 'Edited · publish enabled', screen: 'console', state: { route: 'console', dest: 'salaah', expandedPrayer: 'fajr', salaahDirty: true, salaahEdited: true } },
-    { group: 'salaah', name: 'Reason for the change', screen: 'console', state: { route: 'console', dest: 'salaah', salaahDirty: true, salaahEdited: true, salaahNote: 'Isha was running late for the working brothers.' } },
+    { group: 'salaah', name: 'The day, as published', screen: 'console', state: { route: 'console', dest: 'salaah' } },
+    { group: 'salaah', name: 'Two dragged · publish enabled', screen: 'console', state: { route: 'console', dest: 'salaah', salaahDirty: true, salaahEdited: true } },
     { group: 'salaah', name: 'Change history', screen: 'console', state: { route: 'console', dest: 'salaah', salaahHistoryOpen: true } },
     // Anyone can reach this screen, so the non-committee case is a first-class state.
     { group: 'salaah', name: 'Timings · not committee', screen: 'console', state: { route: 'console', dest: 'salaah', role: 'MEMBER', caps: [] } },
     { group: 'salaah', name: 'Scan · camera', screen: 'console', state: { route: 'console', dest: 'salaah', scanStage: 'camera' } },
     { group: 'salaah', name: 'Scan · reading the board', screen: 'console', state: { route: 'console', dest: 'salaah', scanStage: 'reading' } },
-    { group: 'salaah', name: 'Scan · choose column meaning', screen: 'console', state: { route: 'console', dest: 'salaah', scanStage: 'review', scanPreview: 'partial' } },
-    { group: 'salaah', name: 'Scan · review 4 changes', screen: 'console', state: { route: 'console', dest: 'salaah', scanStage: 'review', scanPreview: 'partial', scanColumnMeaning: 'jamaat' } },
-    { group: 'salaah', name: 'Scan · every prayer read', screen: 'console', state: { route: 'console', dest: 'salaah', scanApplied: 'full', salaahDirty: true } },
-    { group: 'salaah', name: 'Scan · read 4 of 6', screen: 'console', state: { route: 'console', dest: 'salaah', scanApplied: 'partial', salaahDirty: true } },
+    { group: 'salaah', name: 'Scan · didn’t read', screen: 'console', state: { route: 'console', dest: 'salaah', scanStage: 'failed' } },
+    { group: 'salaah', name: 'Scan · proposals, column unknown', screen: 'console', state: { route: 'console', dest: 'salaah', scanProposal: 'partial' } },
+    { group: 'salaah', name: 'Scan · proposals on the timeline', screen: 'console', state: { route: 'console', dest: 'salaah', scanProposal: 'partial', scanColumnMeaning: 'jamaat' } },
+    { group: 'salaah', name: 'Scan · read as Azaan column', screen: 'console', state: { route: 'console', dest: 'salaah', scanProposal: 'partial', scanColumnMeaning: 'azaan' } },
+    { group: 'salaah', name: 'Scan · added to draft', screen: 'console', state: { route: 'console', dest: 'salaah', scanApplied: 'partial', scanColumnMeaning: 'jamaat', salaahDirty: true } },
     { group: 'salaah', name: 'Scan · could not read', screen: 'console', state: { route: 'console', dest: 'salaah', scanStage: 'failed' } },
     { group: 'salaah', name: 'Publish confirmation', screen: 'console', state: { route: 'console', dest: 'salaah', salaahDirty: true, salaahEdited: true, confirm: { kind: 'publishSalaah' } } },
     { group: 'salaah', name: 'Publishing', screen: 'console', state: { route: 'console', dest: 'salaah', salaahDirty: true, salaahSaving: true } },
