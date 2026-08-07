@@ -1,0 +1,241 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="../support.js"></script>
+<script src="../_theme/chrome.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+  <link rel="stylesheet" href="../_ds/noor-design-system-46f42e91-1858-412f-bdb6-560a6cc3df9f/colors_and_type.css">
+  <link rel="stylesheet" href="../_theme/poc.css">
+  <link rel="stylesheet" href="../_theme/components.css">
+  <link rel="stylesheet" href="../_theme/icons.css">
+  <script src="../_ds/noor-design-system-46f42e91-1858-412f-bdb6-560a6cc3df9f/_ds_bundle.js"></script>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Rounded:opsz,wght,FILL,GRAD@24,400,0..1,0&amp;display=block">
+  <link rel="stylesheet" href="./storyboards/salaah-timeline.css">
+  <style>
+    body{background:var(--canvas-bg);padding:36px 32px 90px;min-height:100vh;box-sizing:border-box}
+    ::-webkit-scrollbar{display:none}*{-ms-overflow-style:none;scrollbar-width:none}
+
+    /* ── Board chrome ─────────────────────────────────────────────────────── */
+    .sdv-board{
+      display:grid;
+      grid-template-columns:repeat(auto-fit,minmax(402px,1fr));
+      gap:var(--size-max);
+      align-items:start;
+    }
+    .sdv-cell{display:flex;flex-direction:column;gap:var(--size-lg);min-width:0}
+    .sdv-cell-head{display:flex;align-items:baseline;gap:var(--size-md)}
+    .sdv-cell-key{font-family:var(--font-display);font-size:19px;color:var(--color-info-primary)}
+    .sdv-cell-mech{
+      font-family:var(--font-body);font-size:10.5px;font-weight:800;letter-spacing:.1em;
+      text-transform:uppercase;color:var(--color-info-tertiary);
+    }
+    .sdv-stage{width:402px;max-width:100%}
+    .sdv-notes{display:flex;flex-direction:column;gap:var(--size-md);max-width:402px}
+    .sdv-notes p{margin:0;font-family:var(--font-body);font-size:12px;line-height:1.55}
+    .sdv-blurb{color:var(--color-info-primary)}
+    .sdv-why,.sdv-risk{color:var(--color-info-secondary)}
+    .sdv-why strong{color:var(--color-action-primary)}
+    .sdv-risk strong{color:var(--color-status-error)}
+
+    /* ══════════════════════════════════════════════════════════════════════
+       Four affordances, each PURE CSS over the shipped row DOM. salaah-timeline.jsx
+       is untouched, so every frame renders the same component with the same values
+       and the same drag — the comparison judges the affordance and nothing else.
+       Whichever wins ports to Compose as a metrics/decoration change, not a rebuild.
+
+       Constraints all four respect, and the reason each one exists:
+       - Nothing overhangs the 62px card. Rows sit at proportional positions on the
+         spine with ~6px gaps, so an overhang lands on the neighbouring prayer. That
+         is exactly how the earlier labelled pills failed.
+       - Green (#00C950, 2.12:1) and amber (#FE9A00, 2.05:1) never carry type on this
+         card. They may FILL a shape that carries near-black or white type.
+       - Always-on. Touch has no hover, so nothing may need a pointer to be found.
+       ══════════════════════════════════════════════════════════════════════ */
+
+    /* ══ A · GROOVE — depth ═════════════════════════════════════════════════
+       The settable value sits in a recessed channel with a knurled thumb at its
+       trailing edge. Depth is the whole message, so this variant spends no colour
+       and cannot fail the contrast rule. The channel is an inset shadow, never a
+       border: a border shrinks the content box and knocks the five columns out of
+       alignment down the card stack, which is the bug the shipped `is-changed`
+       marker already documents. */
+    /* Rejected. Opts out of the shipped chip to show the channel instead. */
+    .sdv-v-groove .stl-slot{
+      border:0;
+      position:relative;
+      padding:3px 12px 3px var(--size-sm);
+      border-radius:999px;
+      background:color-mix(in oklab,var(--color-info-primary) 4%,transparent);
+      box-shadow:
+        inset 0 1px 2px color-mix(in oklab,var(--color-info-primary) 14%,transparent),
+        inset 0 -1px 0 color-mix(in oklab,var(--color-neutral-white) 40%,transparent);
+    }
+    .sdv-v-groove .stl-slot::after{
+      content:"";position:absolute;top:50%;right:4px;transform:translateY(-50%);
+      width:2px;height:13px;border-radius:2px;
+      background:var(--color-info-tertiary);
+      opacity:var(--opacity-strong);
+    }
+    /* Two affordances per value is the clutter this variant avoids: once the channel
+       reads as a channel, the chevron pair is redundant. */
+    .sdv-v-groove .stl-slot em .mi{display:none}
+
+    /* ══ B · GRIP DOTS — icon convention ════════════════════════════════════
+       The material drag-handle glyph, drawn as a real dot grid rather than an icon so
+       it costs no request and scales with the row. Monochrome by construction, so the
+       contrast rule never applies. It sits at the LEADING edge of the column because
+       the times are right-aligned on a shared vertical edge, and that alignment is
+       load-bearing for scanning the stack — the only free space is in front. */
+    /* Rejected. Opts out of the shipped chip so the dot grid is the only mark. */
+    .sdv-v-grip .stl-slot{
+      border:0;
+      background:none;
+      position:relative;
+      padding-left:13px;
+    }
+    .sdv-v-grip .stl-slot::before{
+      content:"";position:absolute;left:1px;top:50%;transform:translateY(-50%);
+      width:7px;height:15px;
+      background-image:radial-gradient(circle,var(--color-info-tertiary) 1px,transparent 1.3px);
+      background-size:3.5px 5px;
+      opacity:var(--opacity-strong);
+    }
+    .sdv-v-grip .stl-slot em .mi{display:none}
+
+    /* ══ C · FIELD CHIP — form convention · CHOSEN 2026-08-07 ═══════════════
+       No rules here on purpose. C won, so it was promoted into
+       storyboards/salaah-timeline.css as the timeline's default and now renders in
+       every frame on this page and on the console. A page-local copy would be a fork
+       of the kit, which the layer rules forbid. Frame C below is therefore the shipped
+       component with nothing added — the other three are the rejected record, and they
+       override the chip to show what was compared. */
+
+    /* ══ D · SPLIT ZONES — spatial ══════════════════════════════════════════
+       The only variant that teaches the RULE instead of marking the values: a hairline
+       where the azaan zone ends and the iqama zone begins says "two halves", and a 2px
+       rail under each settable value says "this is the one that moves in this half".
+       The divider rides the iqama zone's leading edge — the zones are subgrid children,
+       so their boundary is already the exact split, and no calc is needed to find it. */
+    .sdv-v-zones .stl-zone.is-iqama{
+      box-shadow:inset 1px 0 0 var(--color-neutral-border);
+      padding-left:var(--size-sm);
+    }
+    /* Rejected. Opts out of the shipped chip, leaving only the rail and divider. */
+    .sdv-v-zones .stl-slot{
+      border:0;
+      background:none;
+      padding-bottom:2px;
+      box-shadow:inset 0 -2px 0 color-mix(in oklab,var(--color-action-primary) 55%,transparent);
+    }
+    .sdv-v-zones .stl-zone.is-moved .stl-slot{
+      box-shadow:inset 0 -2px 0 var(--color-action-primary);
+    }
+    .sdv-v-zones .stl-slot em .mi{font-size:10px;line-height:9px}
+  </style>
+</helmet>
+
+<x-import component="BoardHeader" from="../_theme/board.jsx"
+          title="Salaah timings — how a row says it is draggable"
+          subtitle="Four mechanisms answering one complaint: the rows read as a printed table, so nobody tries to drag them. Every frame is the SAME live timeline with the same values and the same drag — only the affordance CSS differs, so the comparison judges the affordance and nothing else. Each respects the three constraints that killed the earlier labelled pills: nothing may overhang the 62px card, because rows sit at proportional positions on the spine with 6px gaps and an overhang lands on the neighbouring prayer; green and amber may fill a shape but never carry type, measuring 2.12:1 and 2.05:1 here; and the mark must be always-on, because touch has no hover to discover it with. Drag any row in any frame: the left half moves the azaan and keeps its delay, the right half changes only the delay."
+          hint-size="1440px,132px"></x-import>
+
+<div class="poc-stage">
+  <div class="sdv-board">
+
+    <div class="sdv-cell">
+      <div class="sdv-cell-head">
+        <span class="sdv-cell-key">A · Groove</span>
+        <span class="sdv-cell-mech">Depth</span>
+      </div>
+      <div class="sdv-stage sdv-v-groove">
+        <x-import component="IOSDevice" from="../ios-frame.jsx" hint-size="402px,874px">
+          <div style="width:100%;height:100%;position:relative;overflow:hidden;background:var(--color-surface-primary)">
+            <x-import component="SalaahTimelineLive" from="./storyboards/salaah-timeline.jsx"
+                      index="0" hint-size="402px,874px"></x-import>
+          </div>
+        </x-import>
+      </div>
+      <div class="sdv-notes">
+        <p class="sdv-blurb">Each settable time sits in a recessed channel with a thumb at its edge. A value in a groove reads as a value that slides.</p>
+        <p class="sdv-why"><strong>Why it could win.</strong> Spends no colour at all, so it is immune to the contrast rule that killed the coloured pills. Reads as physical.</p>
+        <p class="sdv-risk"><strong>Where it fails.</strong> Quiet on a dense card, and a recessed field can read as disabled rather than draggable.</p>
+      </div>
+    </div>
+
+    <div class="sdv-cell">
+      <div class="sdv-cell-head">
+        <span class="sdv-cell-key">B · Grip dots</span>
+        <span class="sdv-cell-mech">Icon convention</span>
+      </div>
+      <div class="sdv-stage sdv-v-grip">
+        <x-import component="IOSDevice" from="../ios-frame.jsx" hint-size="402px,874px">
+          <div style="width:100%;height:100%;position:relative;overflow:hidden;background:var(--color-surface-primary)">
+            <x-import component="SalaahTimelineLive" from="./storyboards/salaah-timeline.jsx"
+                      index="0" hint-size="402px,874px"></x-import>
+          </div>
+        </x-import>
+      </div>
+      <div class="sdv-notes">
+        <p class="sdv-blurb">The material drag-handle dot grid sits immediately in front of each settable value, inside its own column.</p>
+        <p class="sdv-why"><strong>Why it could win.</strong> The most widely understood grab-me mark there is, and monochrome, so contrast is a non-issue.</p>
+        <p class="sdv-risk"><strong>Where it fails.</strong> Two dot grids per row is a lot of texture beside four times; it can read as clutter.</p>
+      </div>
+    </div>
+
+    <div class="sdv-cell">
+      <div class="sdv-cell-head">
+        <span class="sdv-cell-key">C · Field chip</span>
+        <span class="sdv-cell-mech">Form convention</span>
+      </div>
+      <div class="sdv-stage">
+        <x-import component="IOSDevice" from="../ios-frame.jsx" hint-size="402px,874px">
+          <div style="width:100%;height:100%;position:relative;overflow:hidden;background:var(--color-surface-primary)">
+            <x-import component="SalaahTimelineLive" from="./storyboards/salaah-timeline.jsx"
+                      index="0" hint-size="402px,874px"></x-import>
+          </div>
+        </x-import>
+      </div>
+      <div class="sdv-notes">
+        <p class="sdv-blurb">Each settable time wrapped in a bordered chip with the chevrons inside, so it reads as a control rather than printed text.</p>
+        <p class="sdv-why"><strong>Why it could win.</strong> People touch things that look like inputs unprompted, and it makes settable-versus-calculated obvious at a glance.</p>
+        <p class="sdv-risk"><strong>Where it fails.</strong> Says editable clearly but not draggable specifically; a first-timer may tap and wait for a keyboard.</p>
+      </div>
+    </div>
+
+    <div class="sdv-cell">
+      <div class="sdv-cell-head">
+        <span class="sdv-cell-key">D · Split zones</span>
+        <span class="sdv-cell-mech">Spatial</span>
+      </div>
+      <div class="sdv-stage sdv-v-zones">
+        <x-import component="IOSDevice" from="../ios-frame.jsx" hint-size="402px,874px">
+          <div style="width:100%;height:100%;position:relative;overflow:hidden;background:var(--color-surface-primary)">
+            <x-import component="SalaahTimelineLive" from="./storyboards/salaah-timeline.jsx"
+                      index="0" hint-size="402px,874px"></x-import>
+          </div>
+        </x-import>
+      </div>
+      <div class="sdv-notes">
+        <p class="sdv-blurb">A hairline splits the card into its two halves, and a 2px rail underlines only the settable value in each half.</p>
+        <p class="sdv-why"><strong>Why it could win.</strong> Teaches the actual rule — left half moves the azaan, right half changes the delay — instead of decorating two values.</p>
+        <p class="sdv-risk"><strong>Where it fails.</strong> The smallest affordance of the four; it may not survive the would-a-committee-member-notice test.</p>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<script type="text/x-dc" data-dc-script>
+class Component extends DCLogic {
+  state = {};
+  renderVals() { return {}; }
+}
+</script>
+</x-dc>
+</body>
+</html>
