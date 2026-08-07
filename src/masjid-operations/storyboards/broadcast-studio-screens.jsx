@@ -1596,7 +1596,7 @@ function FollowersBody({ data }) {
 // picker with +/- steppers per prayer: the taxonomy is a storage concern the service derives from edit
 // deltas, and a secretary standing in front of a board should set the azaan and the delay, not classify
 // the masjid. The screen, the rows, the clamping rules and the drag all come from
-// `storyboards/salaah-timeline.jsx`, so the console and the standalone board cannot drift apart.
+// `storyboards/salaah-scroll-timeline.jsx`, so the console and the standalone board cannot drift apart.
 //
 // The console owns the DRAFT (salaahConfig, through onConfigChange) and the timeline owns the in-flight
 // GESTURE. That split is the project's own Qibla rule: a frame-rate stream does not travel through MVI
@@ -1628,8 +1628,8 @@ const salaahAzaanMinutes = (cfg = {}, fallbackMinutes = 0) => (
 // the draft rather than silently clamped into a value nobody chose.
 const salaahProposalFault = (p, proposal) => {
   if (!p || !proposal) return null;
-  if (proposal.azaan < p.opens) return `before ${p.label} begins at ${window.stlFormat(p.opens)}`;
-  if (proposal.azaan + proposal.iqama > p.closes) return `past ${p.ends}, after ${window.stlFormat(p.closes)}`;
+  if (proposal.azaan < p.opens) return `before ${p.label} begins at ${window.SstFormat(p.opens)}`;
+  if (proposal.azaan + proposal.iqama > p.closes) return `past ${p.ends}, after ${window.SstFormat(p.closes)}`;
   return null;
 };
 
@@ -1651,8 +1651,8 @@ function SalaahConfigBody({ data }) {
   // Windows (start, close, and what closes it) come from the timeline module's day fixture; the times
   // come from the console's config. Nothing new is asked of the backend — SalaahPeriodResolution
   // already models windowStart/windowEnd.
-  const windows = window.StlPrayerWindows || [];
-  const jumahWindow = window.StlJumahWindow;
+  const windows = window.SstPrayerWindows || [];
+  const jumahWindow = window.SstJumahWindow;
   const withPublished = (w) => {
     const pub = OPS_SALAAH_CONFIG[w.key] || {};
     return Object.assign({}, w, { azaan: salaahAzaanMinutes(pub, w.opens), iqama: pub.iqamaDelay || 0 });
@@ -1679,8 +1679,11 @@ function SalaahConfigBody({ data }) {
     salaahTime: salaahToHHMM(value.azaan),
     iqamaDelay: value.iqama,
   });
-  const { drag, bad, onGrab, onMove, onRelease } = (window.useStlDrag || (() => ({})))({
-    cfgOf, prayerOf: (key) => byKey[key], onCommit: commit, live: true, spineRef,
+  // The scrolling day (storyboards/salaah-scroll-timeline.jsx) replaced the compressed spine here:
+  // the card is dragged directly at 1:1 and each prayer sits at its true position. The console still
+  // owns the DRAFT and the timeline still owns the in-flight GESTURE — the Qibla rule is unchanged.
+  const { drag, bad, onGrab, onMove, onRelease } = (window.useSstDrag || (() => ({})))({
+    cfgOf, prayerOf: (key) => byKey[key], onCommit: commit, live: true,
   });
 
   const changedCount = SALAAH_ORDER.filter(({ key }) => salaahChanged(config, key)).length;
@@ -1720,7 +1723,9 @@ function SalaahConfigBody({ data }) {
       onPointerUp={onRelease}
       onPointerCancel={onRelease}
     >
-      <Body bottomInset={16} style={{ paddingTop: BCS_APPBAR_H + 12, gap: 12 }}>
+      {/* pan-y so the day scrolls from the gutter and the empty band, while the cards' own
+          touch-action:none keeps the drag. */}
+      <Body bottomInset={16} style={{ paddingTop: BCS_APPBAR_H + 12, gap: 12, touchAction: 'pan-y' }}>
         {/* Attribution, not an explainer paragraph: this destination is open to any signed-in user, and
             the name on the last change demonstrates that better than a sentence claiming it. */}
         {lastChange ? (
@@ -1782,12 +1787,29 @@ function SalaahConfigBody({ data }) {
           </div>
         ) : null}
 
-        {window.StlTimeline ? (
-          <window.StlTimeline
-            prayers={prayers} jumah={jumah}
+        {window.SstDay ? (
+          <window.SstDay
+            prayers={prayers}
             cfgOf={cfgOf} pubOf={pubOf} scanOf={scanOf}
-            drag={drag} bad={bad} live onGrab={onGrab} spineRef={spineRef}
+            drag={drag} bad={bad} live onGrab={onGrab}
           />
+        ) : null}
+
+        {/* Jumah is weekly and takes Zohar's place, so it gets its own axis rather than a position on
+            today's — the same scale, gutter, delay bar and drag, scoped to the one window. */}
+        {jumah && window.SstDay ? (
+          <div className="sst-friday">
+            <div className="sst-friday-head">
+              <span className="sst-eyebrow">EVERY FRIDAY</span>
+              <small>Replaces Zohar</small>
+            </div>
+            <window.SstDay
+              prayers={[jumah]}
+              cfgOf={cfgOf} pubOf={pubOf} scanOf={scanOf}
+              spanFrom={jumah.opens} spanTo={jumah.closes} breaks={[]} showNow={false}
+              drag={drag} bad={bad} live onGrab={onGrab}
+            />
+          </div>
         ) : null}
       </Body>
 

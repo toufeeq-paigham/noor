@@ -365,8 +365,8 @@
     // A reading outside its prayer window is never applied. The proposal view marks it in red and the
     // action excludes it, so this is the same rule enforced at the point the draft is actually written —
     // the screen and the store cannot disagree about what got in.
-    const windows = keepImpossible ? [] : (window.StlPrayerWindows || []);
-    const all = windows.concat(!keepImpossible && window.StlJumahWindow ? [window.StlJumahWindow] : []);
+    const windows = keepImpossible ? [] : (window.SstPrayerWindows || []);
+    const all = windows.concat(!keepImpossible && window.SstJumahWindow ? [window.SstJumahWindow] : []);
     all.forEach((w) => {
       const r = read[w.key];
       if (!r) return;

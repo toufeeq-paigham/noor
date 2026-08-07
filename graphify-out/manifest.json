@@ -1624,24 +1624,9 @@
     "ast_hash": "66123b6e113e7ed9c61aef63a1f20b1e",
     "semantic_hash": ""
   },
-  "src/masjid-operations/storyboards/salaah-timeline.jsx": {
-    "mtime": 1786105828.1792607,
-    "ast_hash": "f7ca35e8dd91ca0355087bd907c7cf73",
-    "semantic_hash": ""
-  },
-  "src/masjid-operations/Salaah Timeline.dc.html": {
-    "mtime": 1785907394.3960288,
-    "ast_hash": "2cc50fa0c21779ef30397605dd0c30bc",
-    "semantic_hash": ""
-  },
   "src/masjid-operations/storyboards/salaah-scroll-timeline.jsx": {
     "mtime": 1786117825.94816,
     "ast_hash": "7433cf4cd15534bafda811cf5899aae9",
-    "semantic_hash": ""
-  },
-  "src/masjid-operations/Salaah Drag Affordance.dc.html": {
-    "mtime": 1786099114.7134602,
-    "ast_hash": "507dff8e27de8ad626c0f8bba9f0bb5c",
     "semantic_hash": ""
   },
   "src/masjid-operations/Salaah Scroll Timeline.dc.html": {

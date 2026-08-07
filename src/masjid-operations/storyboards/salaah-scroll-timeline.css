@@ -1,0 +1,386 @@
+/* Salaah timings — the SCROLLING axis exploration (flutter_calendar_view / schedule_selection model).
+   Semantic tokens only, so contrast is measurable and both themes are answered.
+
+   WHAT THIS EXPLORES, AND WHY
+   The shipped timeline compresses the whole day into one screen: ~0.53px per minute. That fits every
+   prayer on a phone without scrolling, which is why it was chosen — but it also means a value cannot
+   be dragged 1:1, because one minute is half a pixel. The drag therefore runs at its own gain (3.5px
+   per minute) and the row crawls at ~15% of the finger's speed. You pull the card 35px and it slides 5.
+
+   This variant inverts that trade: a real time axis at 4px per minute, tall enough that dragging IS
+   the value, and scrolled like a calendar day. Rows then sit at their TRUE positions — no
+   displacement, no leader lines, no collision pass at all, because there is room for everyone.
+
+   THE QUESTION IT EXISTS TO ANSWER
+   A vertical drag on a row is now ambiguous: move the azaan, or scroll the day? The shipped screen
+   removed that ambiguity by removing the scroll. Here it is resolved by narrowing the drag target to
+   the two CHIPS — which are already the approved affordance for "this value is settable" — and
+   letting every other pixel of the card scroll. Touch the number, you change it; touch anywhere else,
+   you move the day. */
+
+.sst-screen{
+  position:relative;
+  width:100%;
+  height:100%;
+  display:flex;
+  flex-direction:column;
+  overflow:hidden;
+  box-sizing:border-box;
+  font-family:var(--font-body);
+  color:var(--color-info-primary);
+  background:var(--color-surface-primary);
+}
+
+/* Opaque, unlike the shipped screen's hazed bar. The day scrolls under it, and with a transparent bar
+   the first prayer's chips read straight through the title. */
+.sst-bar{
+  align-items:center;gap:var(--size-xl);height:114px;padding:54px 16px 12px;box-sizing:border-box;
+  flex-shrink:0;
+  position:relative;z-index:2;
+  background:var(--color-surface-primary);
+  border-bottom:1px solid var(--color-neutral-border);
+}
+.sst-bar-copy{display:flex;flex-direction:column;min-width:0;flex:1}
+.sst-bar-copy strong{font-size:22px;line-height:26px;font-weight:800;letter-spacing:-.02em}
+.sst-bar-copy small{margin-top:2px;font-size:11px;color:var(--color-info-secondary)}
+
+/* The scroller. `overscroll-behavior:contain` so flinging the day never rubber-bands the page behind
+   it, and `touch-action:pan-y` so the axis owns the vertical gesture everywhere the chips do not. */
+.sst-scroll{
+  flex:1;
+  min-height:0;
+  overflow-y:auto;
+  overscroll-behavior:contain;
+  touch-action:pan-y;
+  padding:0 16px;
+  box-sizing:border-box;
+}
+
+/* The day, at true scale. Height is set inline from the axis span × px-per-minute: this is the one
+   number the whole screen derives from, so it lives with the component rather than here.
+
+   `flex-shrink:0` is load-bearing, not tidiness. The rows are absolutely positioned, so the day's
+   min-content height is 0 — dropped into the console's column-flex Body it was squashed and every
+   row escaped the box and landed on the Friday block. The shipped spine hit this exact bug and its
+   CSS carries the same warning; the standalone page never showed it because its scroller is a
+   plain block. */
+.sst-day{position:relative;flex-shrink:0;margin:var(--size-lg) 0}
+
+/* Hour gridlines, the calendar idiom. They are what make a tall axis readable — without them a
+   4700px column of white has no scale and the rows float in nothing. */
+.sst-hour{position:absolute;left:0;right:0;display:flex;align-items:center;gap:var(--size-md);pointer-events:none}
+.sst-hour::after{content:"";flex:1;height:1px;background:var(--color-neutral-border)}
+.sst-hour span{
+  width:56px;
+  flex-shrink:0;
+  text-align:right;
+  font-size:9px;
+  font-weight:800;
+  letter-spacing:.06em;
+  color:var(--color-info-tertiary);
+  font-variant-numeric:tabular-nums;
+}
+
+/* The legal window for each prayer, as a band behind its row rather than a stripe on a rail. At this
+   scale the window is tall enough to BE the runway — you can see how much room Maghrib has before
+   Isha, which the compressed axis could only imply. */
+.sst-window{
+  position:absolute;
+  left:56px;right:0;
+  border-radius:var(--radius-lg);
+  /* NEUTRAL, not accent. The window is not an action and not a state — it is the ground the prayer
+     stands on — and tinting five of them jade spent the one colour this screen needs for meaning.
+     With the bands neutral, green appears only where something CHANGED, amber only where a scan
+     proposed, red only where a value cannot exist. That is also the answer to per-prayer hues: the
+     palette here is a vocabulary, not decoration.
+     The OPEN and CLOSE edges stay heavier than the sides — they are the calculated boundaries, which
+     is the whole point of putting the prayer on an axis. */
+  background:color-mix(in oklab,var(--color-info-primary) 3%,transparent);
+  border:1px solid color-mix(in oklab,var(--color-info-primary) 8%,transparent);
+  border-top:2px solid color-mix(in oklab,var(--color-info-primary) 28%,transparent);
+  border-bottom:2px solid color-mix(in oklab,var(--color-info-primary) 28%,transparent);
+  pointer-events:none;
+}
+
+/* The prayer's name IS the boundary's label. It replaces the STARTS/ENDS eyebrow rather than sitting
+   somewhere else: the words were saying what the position already says, and the name says the one
+   thing the position cannot. It also puts the name on the line it belongs to — at the band's centre
+   Isha's label sat near 10 PM, hours from its own row.
+   Near-black and bold, not tinted accent: green measures 2.12:1 as text on this surface, which is
+   exactly why it read as washed out. Sentence case rather than tracked caps so "Maghrib" fits the
+   gutter at a size that can actually be read. */
+.sst-bound em.sst-bound-name{
+  font-style:normal;
+  font-size:11px;
+  line-height:14px;
+  font-weight:800;
+  letter-spacing:0;
+  color:var(--color-info-primary);
+}
+
+/* The calculated bounds, labelled where they physically are: the band's top edge IS the start and its
+   bottom edge IS the close. They used to be two columns inside the row, repeating numbers the band
+   was already drawing — on the compressed axis there was no room for them anywhere else. Moving them
+   out here hands their width to the chips, which are the only things on this row you can change, and
+   makes the settable/calculated split spatial instead of typographic. */
+.sst-bound{
+  position:absolute;
+  left:0;
+  width:56px;
+  display:flex;
+  flex-direction:column;
+  align-items:flex-end;
+  transform:translateY(-50%);
+  pointer-events:none;
+  font-variant-numeric:tabular-nums;
+}
+.sst-bound em{
+  font-style:normal;font-size:7px;line-height:8px;font-weight:850;letter-spacing:.1em;
+  color:color-mix(in oklab,var(--color-action-primary) 65%,var(--color-info-tertiary));
+}
+.sst-bound span{font-size:10px;line-height:13px;font-weight:800;color:var(--color-info-secondary);white-space:nowrap}
+
+/* Now, across the whole day. At this scale it is a real position rather than a marker squeezed into
+   a gutter, so it can carry its label. */
+.sst-now{position:absolute;left:0;right:0;display:flex;align-items:center;gap:var(--size-sm);z-index:6;pointer-events:none;transform:translateY(-50%)}
+/* A filled pill, not bare type. Bare red text in a 56px gutter sat on top of whichever hour label
+   happened to be nearest and the two became unreadable — the hour label now yields within 16px, and
+   the fill means NOW still wins if anything else ever lands there. White on the error fill is the
+   whitelisted on-colour case, not a literal dark. */
+.sst-now span{
+  margin-left:auto;flex-shrink:0;
+  padding:1px 4px;
+  border-radius:var(--radius-sm);
+  background:var(--color-status-error);
+  color:var(--color-neutral-white);
+  font-size:8px;font-weight:900;letter-spacing:.06em;
+}
+.sst-now::after{content:"";width:calc(100% - 56px);flex-shrink:0;height:1px;background:var(--color-status-error)}
+
+/* A collapsed stretch of day, drawn and named. The axis is honest about skipping it. */
+.sst-break{
+  position:absolute;
+  left:56px;right:0;
+  display:flex;align-items:center;justify-content:center;
+  border-radius:var(--radius-lg);
+  background:repeating-linear-gradient(135deg,
+    color-mix(in oklab,var(--color-info-primary) 4%,transparent) 0 6px,
+    transparent 6px 12px);
+  pointer-events:none;
+}
+.sst-break span{
+  font-size:9px;font-weight:800;letter-spacing:.08em;
+  color:var(--color-info-tertiary);
+}
+
+/* One prayer, at its true position. `transform:translateY(-50%)` on the azaan line: the card is
+   centred on the value it carries, so the chip sits ON the minute it names. */
+.sst-row{
+  position:absolute;
+  left:64px;right:8px;
+  display:flex;
+  align-items:center;
+  gap:var(--size-sm);
+  box-sizing:border-box;
+  padding:var(--size-sm) var(--size-md);
+  border:1px solid var(--color-neutral-border);
+  border-radius:var(--radius-lg);
+  background:var(--color-surface-card);
+  box-shadow:var(--shadow-card);
+  z-index:2;
+  /* The card owns the vertical gesture now, so the scroller must not also claim it. The day is
+     scrolled from the gutter or the empty band around the cards. */
+  touch-action:none;
+  cursor:grab;
+  user-select:none;
+  -webkit-user-select:none;
+}
+.sst-row.is-dragging{cursor:grabbing}
+/* A spanning card: its top edge is the azaan and it is tall enough to hold the iqama chip at the
+   jamaat. Height is content-driven rather than set, so it cannot disagree with where the chip sits.
+   The bottom edge deliberately carries NO boundary treatment — the jamaat is marked by the chip and
+   the delay's cap, and a drawn edge below the chip would claim a bound that is not there. */
+.sst-row.is-spanning{align-items:flex-start}
+/* The two chips share the card's width rather than bunching at its left edge. Equal halves, because
+   neither value outranks the other — one is when it is called, the other is when it is prayed. */
+.sst-row.is-spanning .sst-slot{flex:1 1 0;min-width:0}
+.sst-row.is-changed{box-shadow:inset 3px 0 0 var(--color-action-primary),var(--shadow-card)}
+/* Engaged is the whole card: accent border and an accent wash, so the row under the finger is
+   unmistakable before anything has moved. */
+.sst-row.is-dragging{
+  border-color:var(--color-action-primary);
+  background:color-mix(in oklab,var(--color-action-primary) 10%,var(--color-surface-card));
+  box-shadow:var(--shadow-elevated);
+  z-index:5;
+}
+.sst-row.is-bad{border-color:var(--color-status-error);animation:sst-shake var(--motion-standard) ease-in-out}
+
+.sst-name{min-width:54px;font-size:12.5px;line-height:14px;font-weight:800;white-space:nowrap}
+
+.sst-edge{
+  display:flex;flex-direction:column;align-items:center;justify-content:center;gap:2px;
+  min-width:50px;font-variant-numeric:tabular-nums;
+}
+.sst-edge em{
+  font-style:normal;font-size:7.5px;line-height:9px;font-weight:850;letter-spacing:.12em;
+  color:var(--color-info-tertiary);
+}
+.sst-edge>span{font-size:10.5px;line-height:13px;font-weight:700;color:var(--color-info-secondary);white-space:nowrap}
+
+/* The IQAMA chip is the resize handle: it stops propagation so it changes the delay rather than
+   moving the prayer the card's own drag would move. The AZAAN chip is no longer a separate target —
+   moving the azaan IS moving the prayer, which is what the card does. */
+.sst-slot{
+  display:flex;flex:1;min-width:0;
+  flex-direction:column;align-items:center;justify-content:center;gap:2px;
+  padding:2px var(--size-sm) 3px;
+  border:1px solid var(--color-neutral-border);
+  border-radius:var(--radius-md);
+  background:var(--color-surface-primary);
+  font-variant-numeric:tabular-nums;
+  cursor:ns-resize;
+  touch-action:none;
+  user-select:none;
+  -webkit-user-select:none;
+}
+/* The hit area extends over the card's padding without the paint growing, so the target clears the
+   48px floor while the chip stays the size the row can afford. */
+.sst-slot::after{content:"";position:absolute;top:-8px;bottom:-8px;left:-4px;right:-4px}
+.sst-slot{position:relative}
+.sst-slot em{
+  display:inline-flex;align-items:center;gap:1px;height:12px;
+  font-style:normal;font-size:7.5px;line-height:9px;font-weight:850;letter-spacing:.12em;
+  white-space:nowrap;max-width:100%;overflow:hidden;
+  color:var(--color-info-secondary);
+}
+.sst-slot em .mi{font-size:12px;line-height:9px;letter-spacing:0;color:var(--color-info-primary)}
+.sst-val{display:flex;align-items:center;height:16px;white-space:nowrap}
+.sst-slot b{font-size:13.5px;line-height:16px;font-weight:800}
+.sst-slot.is-moved{
+  border-color:var(--color-action-primary);
+  background:color-mix(in oklab,var(--color-action-primary) 6%,var(--color-surface-primary));
+}
+.sst-slot.is-grab{border-color:var(--color-action-primary);background:var(--color-surface-secondary)}
+.sst-slot.is-bad b{color:var(--color-status-error)}
+
+/* The jamaat end of the prayer, drawn as the span the delay occupies. At 4px/min the delay is a real
+   length you can see and pull, which is the thing the compressed axis could never show. */
+/* The delay, as a tail hanging off the card rather than a stub floating in its own column. It starts
+   at the azaan — the card's own top edge — and ends at the jamaat, and it is capped so the end reads
+   as a destination rather than a fade. Four separate columns (hour, name, stub, card) was the thing
+   that looked broken; this welds one of them to the card. */
+.sst-delay{
+  position:absolute;
+  /* Centred on the band's own left border (x=56), so the delay rides the timeline block's edge
+     instead of floating in a channel beside it. The bar and the boundary are then one line, and the
+     card can sit closer in. */
+  left:53px;
+  width:6px;
+  border-radius:var(--radius-circle);
+  background:var(--color-action-primary);
+  z-index:3;
+  pointer-events:none;
+}
+/* The jamaat end. A cap, so a 5-minute delay is still a mark you can find. */
+.sst-delay::after{
+  content:"";
+  position:absolute;left:50%;bottom:0;
+  width:12px;height:3px;
+  transform:translateX(-50%);
+  border-radius:var(--radius-circle);
+  background:var(--color-action-primary);
+}
+/* While the delay is being dragged it IS the thing you are looking at, so it thickens and the card
+   below grows to meet it. */
+.sst-delay.is-live{width:8px;left:52px}
+.sst-ghost{
+  position:absolute;left:52px;
+  width:8px;height:8px;margin-top:-4px;
+  border-radius:var(--radius-circle);
+  background:var(--color-surface-primary);
+  box-shadow:0 0 0 2px color-mix(in oklab,var(--color-info-primary) 34%,transparent);
+  z-index:3;pointer-events:none;
+}
+
+/* A scanned reading, drawn where the board puts it. Amber locates and never letters; red says the
+   reading cannot exist, which an LED board produces far more often than anyone expects. */
+.sst-scandot{
+  position:absolute;left:50px;
+  width:11px;height:11px;margin-top:-5px;
+  border-radius:var(--radius-circle);
+  background:var(--color-status-warning);
+  box-shadow:0 0 0 2px var(--color-surface-primary);
+  z-index:4;pointer-events:none;
+}
+.sst-scandot.is-fault{background:var(--color-status-error)}
+.sst-scanmark{
+  display:inline-block;
+  width:5px;height:5px;margin-right:3px;
+  border-radius:var(--radius-circle);
+  background:var(--color-status-warning);
+}
+.sst-scanmark.is-fault{background:var(--color-status-error)}
+.sst-row.is-scanned{box-shadow:inset 3px 0 0 var(--color-status-warning),var(--shadow-card)}
+.sst-row.is-scanfault{box-shadow:inset 3px 0 0 var(--color-status-error),var(--shadow-card)}
+
+@keyframes sst-shake{
+  0%,100%{transform:translate(0,-50%)}
+  20%{transform:translate(-5px,-50%)}
+  40%{transform:translate(4px,-50%)}
+  60%{transform:translate(-3px,-50%)}
+  80%{transform:translate(2px,-50%)}
+}
+@media(prefers-reduced-motion:reduce){.sst-row.is-bad{animation:none}}
+
+/* Jumah is weekly and takes Zohar's place, so it still cannot sit on a spine showing today. */
+.sst-friday{
+  flex-shrink:0;
+  margin:var(--size-xl) 0 var(--size-max);
+  padding:var(--size-xl);
+  border:1px solid var(--color-neutral-border);
+  border-radius:var(--radius-card);
+  background:var(--color-surface-secondary);
+}
+.sst-friday-head{display:flex;align-items:baseline;justify-content:space-between;gap:var(--size-lg);margin-bottom:var(--size-lg)}
+.sst-friday-head small{font-size:10px;color:var(--color-info-tertiary)}
+.sst-friday .sst-row{position:static;left:auto;right:auto;transform:none}
+
+.sst-eyebrow{font-size:9px;line-height:13px;font-weight:850;letter-spacing:.14em;color:var(--color-action-primary)}
+
+/* The refusal, pinned above the action and overlaying content rather than displacing it. */
+.sst-refuse{
+  position:absolute;
+  left:16px;right:16px;bottom:calc(100% - 1px);
+  display:flex;align-items:center;gap:var(--size-md);
+  margin-bottom:var(--size-md);
+  padding:var(--size-lg) var(--size-xl);
+  border:1px solid var(--color-status-error);
+  border-radius:var(--radius-xl);
+  background:var(--color-surface-card);
+  box-shadow:var(--shadow-elevated);
+  font-size:11px;line-height:15px;font-weight:700;
+  color:var(--color-status-error);
+}
+.sst-refuse .mi{flex-shrink:0;font-size:16px}
+
+.sst-publish{
+  position:relative;flex-shrink:0;
+  display:flex;flex-direction:column;gap:var(--size-lg);
+  padding:var(--size-xl) 16px var(--size-max);
+  box-sizing:border-box;
+  border-top:1px solid var(--color-neutral-border);
+  background:color-mix(in oklab,var(--color-surface-primary) 92%,transparent);
+  backdrop-filter:blur(12px);
+  -webkit-backdrop-filter:blur(12px);
+}
+.sst-publish .btn{width:100%}
+.sst-publish-note{display:flex;flex-direction:column;gap:2px}
+.sst-publish-note strong{font-size:12.5px;line-height:17px}
+.sst-publish-note span{font-size:11px;line-height:15px;color:var(--color-info-secondary)}
+
+/* Board chrome for the comparison page. */
+.sst-board{display:grid;width:max-content;grid-template-columns:repeat(2,300px);gap:var(--size-max);align-items:start}
+.sst-board-item{display:flex;flex-direction:column;align-items:center;gap:var(--size-xl)}
+.sst-board-cap{display:flex;flex-direction:column;gap:4px;text-align:center;max-width:290px}
+.sst-board-cap strong{font-family:var(--font-body);font-size:13.5px;font-weight:800;letter-spacing:-.01em}
+.sst-board-cap small{font-size:11px;line-height:16px;color:var(--color-info-secondary)}
