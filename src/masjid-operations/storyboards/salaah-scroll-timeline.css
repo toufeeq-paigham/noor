@@ -1,60 +1,19 @@
-/* Salaah timings — the SCROLLING axis exploration (flutter_calendar_view / schedule_selection model).
-   Semantic tokens only, so contrast is measurable and both themes are answered.
+/* Salaah timings — the scrolling day. The axis behind the Masjid Console's Salaah destination
+   (flutter_calendar_view / schedule_selection model). Semantic tokens only, so contrast is
+   measurable and both themes are answered.
 
-   WHAT THIS EXPLORES, AND WHY
-   The shipped timeline compresses the whole day into one screen: ~0.53px per minute. That fits every
-   prayer on a phone without scrolling, which is why it was chosen — but it also means a value cannot
-   be dragged 1:1, because one minute is half a pixel. The drag therefore runs at its own gain (3.5px
-   per minute) and the row crawls at ~15% of the finger's speed. You pull the card 35px and it slides 5.
+   WHY THE AXIS IS TALL
+   The compressed spine this replaced fitted the whole day into one screen at ~0.53px per minute.
+   That fits, but a value cannot be dragged 1:1 when a minute is half a pixel: the drag ran at its
+   own gain and the row crawled at ~15% of the finger's speed. A real time axis, scrolled like a
+   calendar day, makes dragging BE the value — and rows then sit at their TRUE positions, so the
+   displacement pass, the leader lines and the collision machinery all disappear with it.
 
-   This variant inverts that trade: a real time axis at 4px per minute, tall enough that dragging IS
-   the value, and scrolled like a calendar day. Rows then sit at their TRUE positions — no
-   displacement, no leader lines, no collision pass at all, because there is room for everyone.
-
-   THE QUESTION IT EXISTS TO ANSWER
-   A vertical drag on a row is now ambiguous: move the azaan, or scroll the day? The shipped screen
-   removed that ambiguity by removing the scroll. Here it is resolved by narrowing the drag target to
-   the two CHIPS — which are already the approved affordance for "this value is settable" — and
-   letting every other pixel of the card scroll. Touch the number, you change it; touch anywhere else,
-   you move the day. */
-
-.sst-screen{
-  position:relative;
-  width:100%;
-  height:100%;
-  display:flex;
-  flex-direction:column;
-  overflow:hidden;
-  box-sizing:border-box;
-  font-family:var(--font-body);
-  color:var(--color-info-primary);
-  background:var(--color-surface-primary);
-}
-
-/* Opaque, unlike the shipped screen's hazed bar. The day scrolls under it, and with a transparent bar
-   the first prayer's chips read straight through the title. */
-.sst-bar{
-  align-items:center;gap:var(--size-xl);height:114px;padding:54px 16px 12px;box-sizing:border-box;
-  flex-shrink:0;
-  position:relative;z-index:2;
-  background:var(--color-surface-primary);
-  border-bottom:1px solid var(--color-neutral-border);
-}
-.sst-bar-copy{display:flex;flex-direction:column;min-width:0;flex:1}
-.sst-bar-copy strong{font-size:22px;line-height:26px;font-weight:800;letter-spacing:-.02em}
-.sst-bar-copy small{margin-top:2px;font-size:11px;color:var(--color-info-secondary)}
-
-/* The scroller. `overscroll-behavior:contain` so flinging the day never rubber-bands the page behind
-   it, and `touch-action:pan-y` so the axis owns the vertical gesture everywhere the chips do not. */
-.sst-scroll{
-  flex:1;
-  min-height:0;
-  overflow-y:auto;
-  overscroll-behavior:contain;
-  touch-action:pan-y;
-  padding:0 16px;
-  box-sizing:border-box;
-}
+   THE AMBIGUITY IT CREATES, AND WHERE IT IS RESOLVED
+   A vertical drag now means both "move this prayer" and "scroll the day". The card and the iqama
+   chip take the drag (`touch-action:none`); every other pixel scrolls (`touch-action:pan-y` on the
+   host scroller). Touch the prayer, you move it; touch the gutter or an empty band, you move the
+   day. The console owns the scroller, so that `pan-y` lives with it rather than here. */
 
 /* The day, at true scale. Height is set inline from the axis span × px-per-minute: this is the one
    number the whole screen derives from, so it lives with the component rather than here.
@@ -343,44 +302,9 @@
 }
 .sst-friday-head{display:flex;align-items:baseline;justify-content:space-between;gap:var(--size-lg);margin-bottom:var(--size-lg)}
 .sst-friday-head small{font-size:10px;color:var(--color-info-tertiary)}
-.sst-friday .sst-row{position:static;left:auto;right:auto;transform:none}
+/* No positioning override here. Jumah used to be an inline row in this block, and forcing it static
+   dragged it out of the axis and back into flow at the top of the card — sitting on its own gutter
+   label instead of at its azaan. The Friday block is a real axis now; the row belongs to it. */
+.sst-friday .sst-day{margin:0}
 
 .sst-eyebrow{font-size:9px;line-height:13px;font-weight:850;letter-spacing:.14em;color:var(--color-action-primary)}
-
-/* The refusal, pinned above the action and overlaying content rather than displacing it. */
-.sst-refuse{
-  position:absolute;
-  left:16px;right:16px;bottom:calc(100% - 1px);
-  display:flex;align-items:center;gap:var(--size-md);
-  margin-bottom:var(--size-md);
-  padding:var(--size-lg) var(--size-xl);
-  border:1px solid var(--color-status-error);
-  border-radius:var(--radius-xl);
-  background:var(--color-surface-card);
-  box-shadow:var(--shadow-elevated);
-  font-size:11px;line-height:15px;font-weight:700;
-  color:var(--color-status-error);
-}
-.sst-refuse .mi{flex-shrink:0;font-size:16px}
-
-.sst-publish{
-  position:relative;flex-shrink:0;
-  display:flex;flex-direction:column;gap:var(--size-lg);
-  padding:var(--size-xl) 16px var(--size-max);
-  box-sizing:border-box;
-  border-top:1px solid var(--color-neutral-border);
-  background:color-mix(in oklab,var(--color-surface-primary) 92%,transparent);
-  backdrop-filter:blur(12px);
-  -webkit-backdrop-filter:blur(12px);
-}
-.sst-publish .btn{width:100%}
-.sst-publish-note{display:flex;flex-direction:column;gap:2px}
-.sst-publish-note strong{font-size:12.5px;line-height:17px}
-.sst-publish-note span{font-size:11px;line-height:15px;color:var(--color-info-secondary)}
-
-/* Board chrome for the comparison page. */
-.sst-board{display:grid;width:max-content;grid-template-columns:repeat(2,300px);gap:var(--size-max);align-items:start}
-.sst-board-item{display:flex;flex-direction:column;align-items:center;gap:var(--size-xl)}
-.sst-board-cap{display:flex;flex-direction:column;gap:4px;text-align:center;max-width:290px}
-.sst-board-cap strong{font-family:var(--font-body);font-size:13.5px;font-weight:800;letter-spacing:-.01em}
-.sst-board-cap small{font-size:11px;line-height:16px;color:var(--color-info-secondary)}

@@ -1,16 +1,16 @@
 # Graph Report - noor  (2026-08-07)
 
 ## Corpus Check
-- 111 files · ~666,732 words
+- 111 files · ~665,672 words
 - Verdict: corpus is large enough that graph structure adds value.
 
 ## Summary
-- 1317 nodes · 1875 edges · 95 communities (59 shown, 36 thin omitted)
-- Extraction: 89% EXTRACTED · 11% INFERRED · 0% AMBIGUOUS · INFERRED: 202 edges (avg confidence: 0.51)
+- 1313 nodes · 1866 edges · 95 communities (59 shown, 36 thin omitted)
+- Extraction: 89% EXTRACTED · 11% INFERRED · 0% AMBIGUOUS · INFERRED: 201 edges (avg confidence: 0.51)
 - Token cost: 0 input · 0 output
 
 ## Graph Freshness
-- Built from commit: `a2a14a5e`
+- Built from commit: `67008bf7`
 - Run `git rev-parse HEAD` and compare to check if the graph is stale.
 - Run `graphify update .` after code changes (no API cost).
 
@@ -111,7 +111,7 @@
 
 ## God Nodes (most connected - your core abstractions)
 1. `tokenKinds` - 187 edges
-2. `react` - 60 edges
+2. `react` - 59 edges
 3. `Noor UI/UX Upgrade Decisions` - 17 edges
 4. `compilerOptions` - 16 edges
 5. `ScreenshotEditor()` - 15 edges
@@ -180,7 +180,7 @@ Nodes (19): Agent Behavior, Commit Messages, Design System Rules, graphify, Laye
 
 ### Community 16 - "toolbar.tsx"
 Cohesion: 0.08
-Nodes (29): SlideThumb(), Props, SaveStatus(), Card, CardContent, CardHeader, CardTitle, DialogContent (+21 more)
+Nodes (31): Props, SaveStatus(), Toolbar(), Card, CardContent, CardHeader, CardTitle, DialogContent (+23 more)
 
 ### Community 17 - "Section board — annotated skeletons"
 Cohesion: 0.29
@@ -188,7 +188,7 @@ Nodes (6): 1. The board page — `<section>/<Section>.dc.html`, 2. A storyboard 
 
 ### Community 20 - "types.ts"
 Cohesion: 0.13
-Nodes (24): PreviewStage(), Props, Props, Sidebar(), DeckCanvas(), getCanvas(), SlideCanvas(), Props (+16 more)
+Nodes (22): PreviewStage(), Props, ScreenshotEditor(), Props, Sidebar(), DeckCanvas(), getCanvas(), SlideCanvas() (+14 more)
 
 ### Community 22 - "Agent Behavior"
 Cohesion: 0.10
@@ -207,8 +207,8 @@ Cohesion: 0.29
 Nodes (6): 1. The board page — `<section>/<Section>.dc.html`, 2. A storyboard row — `<section>/storyboards/<flow>-row.jsx`, 3. Shared screen components — `<section>/storyboards/screens.jsx`, Index registration, Pre-loading cross-section components, Section board — annotated skeletons
 
 ### Community 26 - "slide-canvas.tsx"
-Cohesion: 0.09
-Nodes (33): AndroidPhone(), AndroidTabletL(), AndroidTabletP(), FrameProps, IPad(), Phone(), backgroundFor(), clampRect() (+25 more)
+Cohesion: 0.10
+Nodes (23): backgroundFor(), clampRect(), DeckCanvasProps, DeckEditHandlers, defaultElementZ(), EditableText(), EditHandlers, FeatureGraphicCanvas() (+15 more)
 
 ### Community 27 - "eval-0-dua-dikhr-section/eval_metadata.json"
 Cohesion: 0.40
@@ -303,16 +303,16 @@ Cohesion: 0.09
 Nodes (22): devDependencies, autoprefixer, postcss, tailwindcss, @types/node, @types/react, @types/react-dom, typescript (+14 more)
 
 ### Community 72 - "@dnd-kit/core"
-Cohesion: 0.17
-Nodes (12): ACCEPTED, Props, ScreenshotPicker(), rectFor(), SlideElements(), cache, didFail(), failed (+4 more)
+Cohesion: 0.21
+Nodes (9): ACCEPTED, Props, ScreenshotPicker(), cache, didFail(), failed, fetchAsDataUrl(), preloadImages() (+1 more)
 
 ### Community 73 - "describeConfig"
 Cohesion: 0.12
 Nodes (6): QAUM_AMP, QaumAudioPlayer(), qaumBars(), QaumScreen(), qaumTime(), SalaahScreen()
 
 ### Community 74 - "defaults.ts"
-Cohesion: 0.61
-Nodes (7): en(), fgStarter(), ipadStarter(), makeStarterSlides(), newSlide(), nid(), tabletStarter()
+Cohesion: 0.50
+Nodes (8): en(), fgStarter(), ipadStarter(), makeStarterSlides(), newSlide(), nid(), tabletStarter(), ProjectState
 
 ### Community 75 - "board-rows.jsx"
 Cohesion: 0.18
@@ -323,8 +323,8 @@ Cohesion: 0.27
 Nodes (10): BroadcastStudioHeader(), CommitteeBody(), ConsoleScreen(), destTransitionName(), DetailsBody(), InvitationCard(), MemberBody(), MemberRow() (+2 more)
 
 ### Community 77 - "inspector.tsx"
-Cohesion: 0.13
-Nodes (23): ActiveElementPanel(), defaultZ(), ELEMENT_LABEL, elementLabel(), ElementTransformControls(), Inspector(), Props, TextElementPanel() (+15 more)
+Cohesion: 0.14
+Nodes (22): ActiveElementPanel(), defaultZ(), ELEMENT_LABEL, elementLabel(), ElementTransformControls(), Inspector(), Props, TextElementPanel() (+14 more)
 
 ### Community 78 - "components.json"
 Cohesion: 0.11
@@ -359,12 +359,12 @@ Cohesion: 0.57
 Nodes (6): classes_used(), globals_defined(), main(), modules_for(), The .jsx modules a page pulls in, one hop deep., read()
 
 ### Community 93 - "@dnd-kit/sortable"
-Cohesion: 0.17
-Nodes (11): CANVAS, EXPORT_SIZES, EXPORT_SIZES_LANDSCAPE, ExportSize, getExportSizes(), hasTheme(), LAYOUT_HINT, themeById() (+3 more)
+Cohesion: 0.12
+Nodes (24): AndroidPhone(), AndroidTabletL(), AndroidTabletP(), FrameProps, IPad(), Phone(), getFrameForDevice(), CANVAS (+16 more)
 
 ### Community 95 - "salaah-scroll-timeline.jsx"
-Cohesion: 0.14
-Nodes (19): SST_ALL, SST_BREAKS, SST_JUMAH, SST_NOW, SST_PRAYERS, SST_SPAN_FROM, SST_SPAN_TO, SST_STATES (+11 more)
+Cohesion: 0.16
+Nodes (16): SST_ALL, SST_BREAKS, SST_JUMAH, SST_NOW, SST_PRAYERS, SST_SPAN_FROM, SST_SPAN_TO, sstAxis() (+8 more)
 
 ## Knowledge Gaps
 - **569 isolated node(s):** `$schema`, `style`, `rsc`, `tsx`, `config` (+564 more)
@@ -378,8 +378,8 @@ _Questions this graph is uniquely positioned to answer:_
   _High betweenness centrality (0.111) - this node is a cross-community bridge._
 - **Why does `dependencies` connect `dependencies` to `react`, `devDependencies`?**
   _High betweenness centrality (0.039) - this node is a cross-community bridge._
-- **Why does `createComponentFactory()` connect `support.js` to `react`?**
-  _High betweenness centrality (0.022) - this node is a cross-community bridge._
+- **Why does `MemberBody()` connect `describeConfig` to `screenshot-editor.tsx`, `react`?**
+  _High betweenness centrality (0.020) - this node is a cross-community bridge._
 - **What connects `$schema`, `style`, `rsc` to the rest of the system?**
   _569 weakly-connected nodes found - possible documentation gaps or missing edges._
 - **Should `tokenKinds` be split into smaller, more focused modules?**

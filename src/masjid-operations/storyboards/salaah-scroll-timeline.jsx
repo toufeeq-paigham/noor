@@ -1,28 +1,30 @@
-// Salaah timings — the SCROLLING axis exploration.
+// Salaah timings — the scrolling day. The axis the Masjid Console's Salaah destination is built on.
 //
-// The shipped timeline (salaah-timeline.jsx) compresses the whole day onto one screen so nothing
-// scrolls. That was chosen deliberately and it works, but it costs direct manipulation: at ~0.53px
-// per minute a value cannot track the finger, so the drag runs at its own gain and the row moves at
-// roughly 15% of the finger's speed.
+// This module owns the axis, the row and the clamping rules; the console builds the screen around
+// them from its own store (`broadcast-studio-screens.jsx`, `SalaahConfigBody`). One implementation,
+// so the day cannot drift between whoever renders it.
 //
-// This variant takes the calendar-day model instead (flutter_calendar_view's `heightPerMinute`, and
-// the booking block from schedule_selection): a real axis at 4px per minute, scrolled, with the value
-// following the finger exactly. Three things fall out of that:
+// It replaced a compressed spine that fitted the whole day on one phone at ~0.53px per minute. That
+// fitted, but it cost direct manipulation: at half a pixel a minute a value cannot track the finger,
+// so the drag ran at its own gain and the row crawled at ~15% of the finger's speed. The calendar-day
+// model (flutter_calendar_view's `heightPerMinute`, and the booking block from schedule_selection)
+// buys three things back:
 //
-//   1. Rows sit at their TRUE positions. The whole displacement/leader-line machinery disappears —
-//      it only existed because Maghrib and Isha collide on a compressed axis. Here they do not.
-//   2. The iqama delay becomes a real length you can see and pull, not a 3px stub on a rail.
-//   3. A vertical drag becomes ambiguous, and that is the cost this prototype exists to price.
+//   1. Rows sit at their TRUE positions. The whole displacement/leader-line machinery is gone — it
+//      only existed because Maghrib and Isha collide on a compressed axis. Here they do not.
+//   2. The iqama delay is a real length you can see and pull, not a 3px stub on a rail.
+//   3. The value follows the finger exactly, 1:1.
 //
-// THE CONFLICT, AND HOW THIS RESOLVES IT
-// The CARD takes the drag and moves the whole prayer with its delay intact; the IQAMA chip stops
-// propagation and changes only the delay. Both are `touch-action:none`, and the scroller owns
-// everything else (`touch-action:pan-y`) — so the day is scrolled from the gutter or the empty parts
-// of a band, which is how a calendar has always been scrolled. No long-press gate: the ambiguity is
-// resolved by WHERE the finger lands, not by how long it waits.
+// THE CONFLICT, AND HOW IT IS RESOLVED
+// A vertical drag now means two things. The CARD takes the drag and moves the whole prayer with its
+// delay intact; the IQAMA chip stops propagation and changes only the delay. Both are
+// `touch-action:none`, and the scroller owns everything else (`touch-action:pan-y`) — so the day is
+// scrolled from the gutter or the empty parts of a band, which is how a calendar has always been
+// scrolled. No long-press gate: the ambiguity is resolved by WHERE the finger lands, not by how long
+// it waits.
 //
-// What the shipped screen still does better: every prayer is visible at once. Here you scroll to see
-// Isha from Fajr. That is the trade being judged.
+// What it gives up, stated rather than hidden: every prayer is no longer visible at once. You scroll
+// to see Isha from Fajr.
 
 const SstMin = (h, m) => h * 60 + m;
 const SstHM = (mins) => {
@@ -78,7 +80,6 @@ const SST_STEP = 1;
 // refused timings that were never wrong.
 const SST_IQAMA_MIN = 5;
 const SST_NOW = SstMin(11, 2);
-const SST_REACH = '1,284';
 
 const SST_PRAYERS = [
   { key: 'fajr', label: 'Fajr', opens: SstMin(4, 52), closes: SstMin(6, 14), ends: 'sunrise', azaan: SstMin(5, 30), iqama: 20 },
@@ -130,8 +131,6 @@ const sstAxis = (from, to, breaks = []) => (mins) => {
 };
 
 const sstY = sstAxis(SST_SPAN_FROM, SST_SPAN_TO, SST_BREAKS);
-
-const sstInBreak = (mins) => SST_BREAKS.some((b) => mins > b.from && mins < b.to);
 
 /* ═══ One prayer's row, positioned on the real axis ════════════════════════ */
 
@@ -398,147 +397,16 @@ function SstDay({
   );
 }
 
-/* ═══ The screen ═══════════════════════════════════════════════════════════ */
+/* ═══ Module loader ════════════════════════════════════════════════════════ */
 
-function SstScreen({ preset = {}, live = false }) {
-  const [draft, setDraft] = React.useState(preset.draft || {});
-  const scrollRef = React.useRef(null);
-
-  const pubOf = (p) => ({ azaan: p.azaan, iqama: p.iqama });
-  const cfgOf = (p) => Object.assign(pubOf(p), draft[p.key] || {});
-  const changed = Object.keys(draft).filter((k) => {
-    const p = sstPrayer(k);
-    const c = Object.assign(pubOf(p), draft[k]);
-    return c.azaan !== p.azaan || c.iqama !== p.iqama;
-  });
-  const dirty = changed.length > 0;
-
-  const commit = (key, value) => setDraft((d) => Object.assign({}, d, { [key]: value }));
-  const { drag, bad, onGrab, onMove, onRelease } = useSstDrag({ cfgOf, onCommit: commit, live });
-  const dragState = preset.drag && !drag ? preset.drag : drag;
-
-  // Open on the current prayer rather than at 4 AM: a tall axis that starts at dawn asks every user
-  // to scroll before they can do anything, and the thing they came to change is almost always near
-  // now. The shipped screen never needed this because the whole day was already on screen.
-  React.useEffect(() => {
-    const el = scrollRef.current;
-    if (!el) return;
-    el.scrollTop = Math.max(0, sstY(preset.focus == null ? SST_NOW : preset.focus) - 180);
-  }, []);
-
-  return (
-    <main className="sst-screen"
-      onPointerMove={live ? onMove : undefined}
-      onPointerUp={live ? onRelease : undefined}
-      onPointerCancel={live ? onRelease : undefined}
-    >
-      <div className="app-bar sst-bar">
-        <button className="ib ib-tonal" aria-label="Back"><span className="mi" data-i="arrow_back"></span></button>
-        <div className="sst-bar-copy">
-          <strong>Salaah timings</strong>
-          <small>Masjid E Bilal</small>
-        </div>
-        <button className="btn sm btn-tonal" aria-label="Scan the timing board">
-          <span className="mi" data-i="photo_camera"></span>
-          Scan board
-        </button>
-      </div>
-
-      <div className="sst-scroll" ref={scrollRef}>
-        <SstDay cfgOf={cfgOf} pubOf={pubOf} drag={dragState} bad={bad || preset.bad || null}
-          live={live} onGrab={onGrab} />
-
-        {/* Jumah gets the SAME treatment, not a leftover inline row: its own axis over the window it
-            shares with Zohar, at the same scale, with the same gutter, delay bar and drag. It is a
-            second axis rather than a place on today's, because the prayer is weekly. */}
-        <div className="sst-friday">
-          <div className="sst-friday-head">
-            <span className="sst-eyebrow">EVERY FRIDAY</span>
-            <small>Replaces Zohar</small>
-          </div>
-          <SstDay
-            prayers={[SST_JUMAH]}
-            cfgOf={cfgOf} pubOf={pubOf}
-            spanFrom={SST_JUMAH.opens} spanTo={SST_JUMAH.closes} breaks={[]} showNow={false}
-            drag={dragState} bad={bad || preset.bad || null} live={live} onGrab={onGrab}
-          />
-        </div>
-      </div>
-
-      <div className="sst-publish">
-        {(bad || preset.bad) ? (
-          <div className="sst-refuse" role="alert">
-            <span className="mi" data-i="error" aria-hidden="true"></span>
-            <span>{(bad || preset.bad).why}</span>
-          </div>
-        ) : null}
-        <div className="sst-publish-note">
-          {dirty ? (
-            <React.Fragment>
-              <strong>{changed.length} {changed.length === 1 ? 'prayer' : 'prayers'} changed</strong>
-              <span>{SST_REACH} musalleen see this the moment you publish</span>
-            </React.Fragment>
-          ) : (
-            <span>Drag a prayer to move it. Drag its iqama to change the delay.</span>
-          )}
-        </div>
-        <button className="btn btn-filled lg">{`Publish to ${SST_REACH} musalleen`}</button>
-      </div>
-    </main>
-  );
-}
-
-/* ═══ States ═══════════════════════════════════════════════════════════════ */
-
-const SST_STATES = [
-  { name: 'The day, at true scale',
-    note: 'Opens on now. Every prayer sits exactly where its azaan falls, inside the window band it must stay in — no displacement, no leader lines, because at 4px a minute there is room for everyone.',
-    preset: {} },
-  { name: 'Dragging an azaan 1:1',
-    note: 'True 1:1 — a minute is 1.5 pixels on the axis and 1.5 pixels of finger, so the row keeps pace exactly. A 4px threshold engages the drag so a resting finger cannot edit by itself.',
-    preset: { drag: { key: 'asr', handle: 'azaan' }, draft: { asr: { azaan: SstMin(16, 47), iqama: 15 } }, focus: SstMin(16, 30) } },
-  { name: 'The delay as a real length',
-    note: 'Maghrib has 68 minutes before Isha opens. Dragging the iqama chip lengthens a bar you can actually see against that window, rather than a 3px stub on a rail.',
-    preset: { drag: { key: 'maghrib', handle: 'iqama' }, draft: { maghrib: { azaan: SstMin(18, 50), iqama: 43 } }, focus: SstMin(18, 48) } },
-  { name: 'Clamped at the window',
-    note: 'Same two bounds as the shipped screen. The value clamps, the row shakes, the refused chip turns red and the strip above the action names the bound.',
-    preset: { drag: { key: 'maghrib', handle: 'iqama' }, draft: { maghrib: { azaan: SstMin(18, 50), iqama: 68 } },
-      bad: { key: 'maghrib', why: 'Iqama would fall past Isha, at 7:58 PM' }, focus: SstMin(18, 48) } },
-];
-
-function SalaahScrollBoard({ active = -1, onSelect }) {
-  return (
-    <div className="sst-board">
-      {SST_STATES.map((s, i) => (
-        <div className="sst-board-item" key={s.name} onClick={() => onSelect && onSelect(i)}>
-          <div className={`noor-frame ${active === i ? 'is-active' : ''}`} style={{ '--s': '0.58', cursor: 'pointer' }}>
-            <div className="noor-frame-inner">
-              <div className="noor-screen">
-                <div className="noor-island"></div>
-                <SstScreen preset={s.preset} />
-                <div className="noor-home"></div>
-              </div>
-            </div>
-          </div>
-          <div className="sst-board-cap">
-            <strong>{i + 1} · {s.name}</strong>
-            <small>{s.note}</small>
-          </div>
-        </div>
-      ))}
-    </div>
-  );
-}
-
-function SalaahScrollLive({ index = 0 }) {
-  const i = Math.max(0, Math.min(index, SST_STATES.length - 1));
-  return <SstScreen key={i} preset={SST_STATES[i].preset} live />;
-}
+// The console x-imports this so the module's window exports exist before its own screens read them.
+// It renders nothing: the day is drawn by SalaahConfigBody, from the console's store.
+function SalaahScrollKit() { return null; }
 
 // The console hosts the same day from its own store, so the parts it needs are shared rather than
 // reimplemented — one axis, one row, one set of clamping rules.
 Object.assign(window, {
-  SalaahScrollBoard, SalaahScrollLive, SST_STATES,
+  SalaahScrollKit,
   SstDay, SstRow, useSstDrag,
   SstMinutes: SstMin,
   SstFormat: SstFmt,
