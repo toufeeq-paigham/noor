@@ -1,16 +1,16 @@
-# Graph Report - noor  (2026-08-07)
+# Graph Report - noor  (2026-08-16)
 
 ## Corpus Check
-- 111 files · ~665,672 words
+- 111 files · ~667,548 words
 - Verdict: corpus is large enough that graph structure adds value.
 
 ## Summary
-- 1313 nodes · 1866 edges · 95 communities (59 shown, 36 thin omitted)
-- Extraction: 89% EXTRACTED · 11% INFERRED · 0% AMBIGUOUS · INFERRED: 201 edges (avg confidence: 0.51)
+- 1320 nodes · 1877 edges · 96 communities (59 shown, 37 thin omitted)
+- Extraction: 89% EXTRACTED · 11% INFERRED · 0% AMBIGUOUS · INFERRED: 205 edges (avg confidence: 0.51)
 - Token cost: 0 input · 0 output
 
 ## Graph Freshness
-- Built from commit: `67008bf7`
+- Built from commit: `2a830b3d`
 - Run `git rev-parse HEAD` and compare to check if the graph is stale.
 - Run `graphify update .` after code changes (no API cost).
 
@@ -108,6 +108,7 @@
 - @dnd-kit/core
 - @dnd-kit/sortable
 - salaah-scroll-timeline.jsx
+- canonicalCommitteePhone
 
 ## God Nodes (most connected - your core abstractions)
 1. `tokenKinds` - 187 edges
@@ -136,7 +137,7 @@
 ## Import Cycles
 - None detected.
 
-## Communities (95 total, 36 thin omitted)
+## Communities (96 total, 37 thin omitted)
 
 ### Community 0 - "tokenKinds"
 Cohesion: 0.01
@@ -267,7 +268,7 @@ Cohesion: 0.52
 Nodes (6): buildFollowRows(), buildManageTiles(), frame(), noop(), sheetFrames(), SheetRow()
 
 ### Community 59 - "SalaahTab"
-Cohesion: 0.12
+Cohesion: 0.11
 Nodes (9): CMP_AUDIENCE, CMP_LIBRARY, CMP_STEPS, CMP_WAVE, cmpMessageState(), CmpMessageStep(), CmpPostPreview(), CmpReviewStep() (+1 more)
 
 ### Community 60 - "wizard-row.jsx"
@@ -315,12 +316,12 @@ Cohesion: 0.50
 Nodes (8): en(), fgStarter(), ipadStarter(), makeStarterSlides(), newSlide(), nid(), tabletStarter(), ProjectState
 
 ### Community 75 - "board-rows.jsx"
-Cohesion: 0.18
-Nodes (11): BroadcastComposer(), BroadcastFeedState(), ConsoleHome(), countLabel(), describeConfig(), fmt12(), MasjidSwitcherSheet(), nextPrayer() (+3 more)
+Cohesion: 0.20
+Nodes (10): BroadcastComposer(), BroadcastFeedState(), ConsoleHome(), ConsoleScreen(), countLabel(), destTransitionName(), MasjidSwitcherSheet(), nextPrayer() (+2 more)
 
 ### Community 76 - "describeConfig"
 Cohesion: 0.27
-Nodes (10): BroadcastStudioHeader(), CommitteeBody(), ConsoleScreen(), destTransitionName(), DetailsBody(), InvitationCard(), MemberBody(), MemberRow() (+2 more)
+Nodes (10): availableCommitteeRoles(), BroadcastStudioHeader(), CommitteeBody(), DetailsBody(), InvitationCard(), isRepeatableCommitteeRole(), MemberBody(), MemberRow() (+2 more)
 
 ### Community 77 - "inspector.tsx"
 Cohesion: 0.14
@@ -351,8 +352,8 @@ Cohesion: 0.40
 Nodes (3): bodyFont, displayFont, metadata
 
 ### Community 89 - "VARIATION_OPTIONS"
-Cohesion: 0.29
-Nodes (7): salaahAzaanMinutes(), salaahChangeCount(), salaahChanged(), SalaahConfigBody(), salaahProposalFault(), salaahToHHMM(), salaahToMinutes()
+Cohesion: 0.17
+Nodes (12): describeConfig(), fmt12(), salaahAzaanMinutes(), salaahChangeCount(), salaahChanged(), SalaahConfigBody(), salaahProposalFault(), salaahShort12() (+4 more)
 
 ### Community 91 - "check_classes.py"
 Cohesion: 0.57
@@ -369,17 +370,17 @@ Nodes (16): SST_ALL, SST_BREAKS, SST_JUMAH, SST_NOW, SST_PRAYERS, SST_SPAN_FROM,
 ## Knowledge Gaps
 - **569 isolated node(s):** `$schema`, `style`, `rsc`, `tsx`, `config` (+564 more)
   These have ≤1 connection - possible missing edges or undocumented components.
-- **36 thin communities (<3 nodes) omitted from report** — run `graphify query` to explore isolated nodes.
+- **37 thin communities (<3 nodes) omitted from report** — run `graphify query` to explore isolated nodes.
 
 ## Suggested Questions
 _Questions this graph is uniquely positioned to answer:_
 
 - **Why does `react` connect `react` to `home/storyboards/screens.jsx`, `support.js`, `zakaat/storyboards/screens.jsx`, `useNoorDark`, `dependencies`, `@dnd-kit/core`, `describeConfig`, `describeConfig`, `inspector.tsx`, `toolbar.tsx`, `types.ts`, `VARIATION_OPTIONS`, `slide-canvas.tsx`, `salaah-scroll-timeline.jsx`?**
-  _High betweenness centrality (0.111) - this node is a cross-community bridge._
+  _High betweenness centrality (0.115) - this node is a cross-community bridge._
 - **Why does `dependencies` connect `dependencies` to `react`, `devDependencies`?**
   _High betweenness centrality (0.039) - this node is a cross-community bridge._
-- **Why does `MemberBody()` connect `describeConfig` to `screenshot-editor.tsx`, `react`?**
-  _High betweenness centrality (0.020) - this node is a cross-community bridge._
+- **Why does `createComponentFactory()` connect `support.js` to `react`?**
+  _High betweenness centrality (0.022) - this node is a cross-community bridge._
 - **What connects `$schema`, `style`, `rsc` to the rest of the system?**
   _569 weakly-connected nodes found - possible documentation gaps or missing edges._
 - **Should `tokenKinds` be split into smaller, more focused modules?**

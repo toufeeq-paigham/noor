@@ -29,6 +29,28 @@ const OPS_ROLES = [
   'TREASURER', 'ASSISTANT_TREASURER', 'MEMBER', 'IMAM', 'MUEZZIN',
 ];
 
+const isRepeatableCommitteeRole = (role) => role === 'MEMBER' || role === 'MUEZZIN';
+
+const availableCommitteeRoles = (members, editingMemberId) => {
+  const currentRole = (members || []).find((member) => member.id === editingMemberId)?.role;
+  const occupied = (members || [])
+    .filter((member) => member.id !== editingMemberId && member.status !== 'IN_ACTIVE')
+    .map((member) => member.role)
+    .filter((role) => !isRepeatableCommitteeRole(role));
+  return OPS_ROLES.filter((role) => (
+    role === currentRole || isRepeatableCommitteeRole(role) || occupied.indexOf(role) === -1
+  ));
+};
+
+const canonicalCommitteePhone = (phone) => (phone || '').replace(/\D/g, '').slice(-10);
+
+const isCommitteePhoneTaken = (members, phone) => {
+  const canonical = canonicalCommitteePhone(phone);
+  return canonical.length === 10 && (members || []).some((member) => (
+    member.status !== 'IN_ACTIVE' && canonicalCommitteePhone(member.phone) === canonical
+  ));
+};
+
 // Title Case reads better than the raw enum on a dense console screen.
 const roleLabel = (role) => (role || '')
   .toLowerCase()
@@ -247,6 +269,11 @@ const fmt12 = (time) => {
 };
 
 const variationLabel = (value) => (VARIATION_OPTIONS.find((o) => o.value === value) || {}).label || 'Not set';
+
+// Minutes → `1:15`. The scan sheet's pills are references, not statements — the same reasoning that
+// drops the meridiem from the timeline's WAS/BOARD overlines — and six pills carrying ` PM` each
+// stop fitting on one line exactly when the board read well.
+const salaahShort12 = (mins) => fmt12(salaahToHHMM(mins)).replace(/\s[AP]M$/, '');
 
 // What is published right now, against the working copy being edited.
 const salaahChanged = (working, prayerKey) => {
@@ -811,12 +838,18 @@ function BroadcastComposer({ followerCount, masjidName, onCreatePost }) {
       <p>{followerCount
         ? `Message all ${countLabel(followerCount)} musalleen of ${masjidName}.`
         : `No musalleen yet — share the masjid QR and your paighams reach them from the next one.`}</p>
-      <button className="btn btn-filled lg bcs-create" onClick={() => onCreatePost()}>
-        <span className="mi" data-i="campaign"></span>Create paigham
-      </button>
-      {/* Three buttons, three intents — so each opens the composer where its intent lives:
-          the recorder already running, or the photo library already open. Neither skips
-          step 1, because a paigham still needs a message or a recording either way. */}
+      {/* This is the first surface of the real message field, not a third action competing
+          with Record and Photos. Focusing it opens Step 1 and hands focus to the full field. */}
+      <textarea
+        className="bcs-inline-message"
+        rows={3}
+        readOnly
+        aria-label="Start a paigham"
+        placeholder="Jumah bayan begins at 1:00 PM this week…"
+        onFocus={() => onCreatePost()}
+      />
+      {/* The two existing intent shortcuts stay exactly that: recorder or photo picker.
+          Neither skips step 1, because the paigham still needs text or a recording. */}
       <div className="bcs-tools">
         <button className="btn btn-tonal sm" onClick={() => onCreatePost('audio')}>
           <span className="mi" data-i="mic"></span>Record audio
@@ -1034,11 +1067,9 @@ function ConsoleHome({ data, transitionEnabled }) {
         ) : null}
       </section>
 
-      {data.fabCompact && canPost ? (
-        <button className="btn btn-filled bcs-quick-send" onClick={onCreatePost}>
-          <span className="mi" data-i="campaign"></span>New paigham
-        </button>
-      ) : null}
+      {/* No floating `New paigham` action (removed 2026-08-10). The composer IS the top of this
+          screen and the hub is short enough to return to; a second permanent send action restated
+          the screen's own purpose over the feed it was covering. */}
     </Body>
   );
 }
@@ -1055,7 +1086,7 @@ function MasjidSwitcherSheet({ open, managed = [], currentId, onPick, onClose })
       title="Switch masjid"
       description="You manage more than one. Everything on the console follows the masjid you pick."
       primary={null}
-      secondary={{ text: 'Close', onClick: onClose }}
+      secondary={null}
     >
       <div style={{ display: 'flex', flexDirection: 'column', gap: 4 }} role="radiogroup" aria-label="Masjids you manage">
         {managed.map((m) => {
@@ -1361,6 +1392,7 @@ function MemberBody({ data }) {
   const canEdit = inviting || isAdmin;
   const phone = invite.phone || '';
   const inviteValid = phone.replace(/\D/g, '').length >= 10 && !!invite.role;
+  const availableRoles = availableCommitteeRoles(members.items, member && member.id);
 
   return (
     <div style={{ flex: 1, minHeight: 0, display: 'flex', flexDirection: 'column' }}>
@@ -1411,7 +1443,7 @@ function MemberBody({ data }) {
           label="Role in the committee"
           value={inviting ? invite.role : member.role}
           placeholder={inviting ? 'Select a role' : undefined}
-          options={OPS_ROLES.map((r) => ({ value: r, label: roleLabel(r) }))}
+          options={availableRoles.map((r) => ({ value: r, label: roleLabel(r) }))}
           disabled={!canEdit}
           open={openMenu === 'member-role'}
           onOpen={(next) => onOpenMenu && onOpenMenu(next ? 'member-role' : null)}
@@ -1635,8 +1667,8 @@ const salaahProposalFault = (p, proposal) => {
 
 function SalaahConfigBody({ data }) {
   const {
-    salaah = {}, onRetry, onConfigChange, onSubmitSalaah, onOpenHistory, onDone,
-    onOpenScan, onScanMeaning, onApplyScan, onDiscardScan,
+    salaah = {}, onRetry, onConfigChange, onSubmitSalaah, onDone,
+    onOpenScan, onScanMeaning, onScanConsumed, onDiscardScan,
   } = data;
   const {
     status = 'loaded', config = OPS_SALAAH_CONFIG, history = [], saving, dirty,
@@ -1644,7 +1676,6 @@ function SalaahConfigBody({ data }) {
   } = salaah;
 
   const spineRef = React.useRef(null);
-  const lastChange = history[0] || null;
   const reach = ((window.OPS_MASJID || {}).stats || {}).followers;
   const reachText = reach ? reach.toLocaleString('en-IN') : null;
 
@@ -1692,6 +1723,61 @@ function SalaahConfigBody({ data }) {
   const faulted = proposalKeys.filter((key) => salaahProposalFault(byKey[key], scanProposal[key]));
   const usable = proposalKeys.length - faulted.length;
 
+  // ── The companion walk (approved 2026-08-12) ──
+  // The reading lands as a SHEET, and Add never snaps: the sheet hands over to a narrating capsule
+  // that rides the scroll while each usable reading lands on its own row — amber flash, then the
+  // ordinary green `is-changed`. The values become real draft edits through the same `commit` a
+  // drag uses, so everything stays draggable and Publish stays the only way anything reaches
+  // musalleen. Faulted readings never land; the sheet named them and they die with it.
+  const bodyScrollRef = React.useRef(null);
+  const walkTimer = React.useRef(null);
+  const [walk, setWalk] = React.useState(null); // { queue, i, landingKey, done }
+  const [needMeaning, setNeedMeaning] = React.useState(false);
+  React.useEffect(() => () => clearTimeout(walkTimer.current), []);
+
+  const beginAdd = () => {
+    // The one thing the sheet cannot decide itself. The question is right above the button, so the
+    // press points at it instead of refusing silently — no dead affirmatives.
+    if (!scanColumnMeaning) { setNeedMeaning(true); return; }
+    const queue = SALAAH_ORDER
+      .filter(({ key }) => scanProposal && scanProposal[key] && !faulted.includes(key))
+      .map(({ key, label }) => ({
+        key, label, azaan: scanProposal[key].azaan, iqama: scanProposal[key].iqama,
+      }));
+    onScanConsumed && onScanConsumed();
+    if (!queue.length) return;
+    // Reduced motion is immediate replacement, not a slower walk: every value lands at once and the
+    // footer's changed-count is the announcement.
+    const reduced = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    if (reduced) {
+      queue.forEach((it) => commit(it.key, { azaan: it.azaan, iqama: it.iqama }));
+      return;
+    }
+    const step = (i) => {
+      if (i >= queue.length) {
+        setWalk({ queue, i: queue.length - 1, done: true });
+        walkTimer.current = setTimeout(() => setWalk(null), 1800);
+        return;
+      }
+      const it = queue[i];
+      setWalk({ queue, i, landingKey: it.key, done: false });
+      // Bring the row the capsule is naming into view — narration about something off screen is
+      // exactly the "it snapped and I missed it" this flow replaces.
+      const bodyEl = bodyScrollRef.current;
+      const rowEl = bodyEl ? bodyEl.querySelector(`.sst-row[data-key="${it.key}"]`) : null;
+      if (bodyEl && rowEl) {
+        const b = bodyEl.getBoundingClientRect();
+        const r = rowEl.getBoundingClientRect();
+        bodyEl.scrollTo({ top: bodyEl.scrollTop + (r.top - b.top) - 150, behavior: 'smooth' });
+      }
+      walkTimer.current = setTimeout(() => {
+        commit(it.key, { azaan: it.azaan, iqama: it.iqama });
+        walkTimer.current = setTimeout(() => step(i + 1), 650);
+      }, 720);
+    };
+    step(0);
+  };
+
   if (status === 'loading') return <Loading label="Loading salaah settings…" />;
   if (status === 'error') {
     return (
@@ -1718,80 +1804,47 @@ function SalaahConfigBody({ data }) {
 
   return (
     <div
-      style={{ flex: 1, minHeight: 0, display: 'flex', flexDirection: 'column' }}
+      style={{ flex: 1, minHeight: 0, display: 'flex', flexDirection: 'column', position: 'relative' }}
       onPointerMove={onMove}
       onPointerUp={onRelease}
       onPointerCancel={onRelease}
     >
       {/* pan-y so the day scrolls from the gutter and the empty band, while the cards' own
           touch-action:none keeps the drag. */}
-      <Body bottomInset={16} style={{ paddingTop: BCS_APPBAR_H + 12, gap: 12, touchAction: 'pan-y' }}>
-        {/* Attribution, not an explainer paragraph: this destination is open to any signed-in user, and
-            the name on the last change demonstrates that better than a sentence claiming it. */}
-        {lastChange ? (
-          <Card
-            onClick={onOpenHistory}
-            ariaLabel={`Last updated by ${lastChange.by}, ${lastChange.when}. View all changes.`}
-            style={{ display: 'flex', alignItems: 'center', gap: 12 }}
-          >
-            <Avatar text={lastChange.by} size={36} />
-            <div style={{ flex: 1, minWidth: 0 }}>
-              <div style={{ fontSize: 13.5, fontWeight: 700 }}>Last updated by {lastChange.by}</div>
-              <div style={{ fontSize: 12, marginTop: 2, color: 'var(--color-info-secondary)' }}>
-                {lastChange.role} · {lastChange.when}
-              </div>
-            </div>
-            <span className="timings-history-count">{history.length}</span>
-            <span className="mi" style={{ fontSize: 20, color: 'var(--color-info-faint)' }} data-i="chevron_right" aria-hidden="true"></span>
-          </Card>
-        ) : null}
-
-        {/* A scan proposes; it does not edit. There is no separate full-screen comparison any more,
-            because the timeline already shows every current time in its place — the board's reading is
-            drawn onto it as amber locators, and this strip only says how many, what was missed, and
-            what the column means. Recognition that silently rewrote a published time would be the one
-            unrecoverable thing on this screen. */}
-        {pending ? (
-          <div className="salaah-scan-strip" role="status">
-            <div className="salaah-scan-head">
+      <Body scrollRef={bodyScrollRef} bottomInset={16} style={{ paddingTop: BCS_APPBAR_H + 12, gap: 12, touchAction: 'pan-y' }}>
+        {/* The scan leads the screen. Dragging fifteen values by hand is the fallback, not the
+            intended path, and OCR was previously reachable only from a small action beside the
+            title — an accelerator nobody finds is an accelerator that does not exist. It is an
+            action rather than a description, so the band is pressable and its tile animates.
+            Withdrawn while a reading is pending (the review sheet owns the scan then) and while
+            the companion walk is landing values — a "scan the board" invitation over readings
+            that are still arriving would compete with its own result. */}
+        {!pending && !walk ? (
+          <button type="button" className="summary-hero action" onClick={onOpenScan}>
+            <span className="icon-tile scanning" style={{ '--tile': '38px' }}>
               <span className="mi" data-i="filter_center_focus" aria-hidden="true"></span>
-              <div>
-                <strong>{proposalKeys.length} {proposalKeys.length === 1 ? 'time' : 'times'} read from the board</strong>
-                <span>
-                  Marked in amber on the timeline. Nothing has changed yet.
-                  {scanMissed.length ? ` ${scanMissed.join(' and ')} ${scanMissed.length === 1 ? 'was' : 'were'} not read — ${scanMissed.length === 1 ? 'its' : 'their'} current timing is kept.` : ''}
-                  {faulted.length ? ` ${faulted.map((k) => (byKey[k] || {}).label).join(' and ')} ${faulted.length === 1 ? 'reads' : 'read'} outside ${faulted.length === 1 ? 'its' : 'their'} prayer window, so ${faulted.length === 1 ? 'it is' : 'they are'} marked in red and will be left out.` : ''}
-                </span>
-              </div>
-              <button className="btn btn-link" onClick={onDiscardScan}>Discard</button>
-            </div>
-            {/* The board had no readable heading, so the one question OCR cannot answer is asked here,
-                remembered per masjid, and still editable on the next scan. */}
-            <div className="salaah-scan-meaning" role="radiogroup" aria-label="What the scanned column shows">
-              <span className="eyebrow">What does that column show?</span>
-              <div>
-                {[{ value: 'jamaat', label: 'Jamaat times' }, { value: 'azaan', label: 'Azaan times' }].map((o) => (
-                  <button
-                    key={o.value}
-                    type="button"
-                    role="radio"
-                    aria-checked={scanColumnMeaning === o.value}
-                    className={`chip ${scanColumnMeaning === o.value ? 'solid' : 'outline'}`}
-                    onClick={() => onScanMeaning && onScanMeaning(o.value)}
-                  >
-                    {o.label}
-                  </button>
-                ))}
-              </div>
-            </div>
-          </div>
+            </span>
+            <span className="summary-hero-copy">
+              <span className="summary-hero-title" style={{ display: 'block' }}>Scan your timing board</span>
+              <span className="summary-hero-label" style={{ display: 'block' }}>
+                Point the camera at the board — the times come back as suggestions you check before publishing.
+              </span>
+            </span>
+            <span className="mi" style={{ fontSize: 20, color: 'var(--color-info-faint)' }} data-i="chevron_right" aria-hidden="true"></span>
+          </button>
         ) : null}
 
+        {/* The attribution is no longer a card here. It is a reference the committee consults rather
+            than the work, so it moved into the app bar as an icon-only action (SalaahHistoryAction)
+            and the body's first row belongs to the action instead. Accountability survives in the
+            record itself and in that action's label — this destination is open to any signed-in
+            user, and the sheet is where the names are. */}
         {window.SstDay ? (
           <window.SstDay
             prayers={prayers}
             cfgOf={cfgOf} pubOf={pubOf} scanOf={scanOf}
             drag={drag} bad={bad} live onGrab={onGrab}
+            landingKey={walk ? walk.landingKey : null}
           />
         ) : null}
 
@@ -1808,10 +1861,44 @@ function SalaahConfigBody({ data }) {
               cfgOf={cfgOf} pubOf={pubOf} scanOf={scanOf}
               spanFrom={jumah.opens} spanTo={jumah.closes} breaks={[]} showNow={false}
               drag={drag} bad={bad} live onGrab={onGrab}
+              landingKey={walk ? walk.landingKey : null}
             />
           </div>
         ) : null}
       </Body>
+
+      {/* The reading LANDS as a sheet (approved 2026-08-12, replacing the in-body strip): a wall of
+          sentences above the timeline said a lot and asked nothing. The sheet is scannable — one
+          pill per prayer — and carries exactly one affirmative. Nothing is written until Add. */}
+      <ScanReviewSheet
+        open={pending && !walk}
+        proposal={scanProposal}
+        faulted={faulted}
+        missed={scanMissed}
+        usable={usable}
+        meaning={scanColumnMeaning}
+        needMeaning={needMeaning}
+        onMeaning={(v) => { setNeedMeaning(false); onScanMeaning && onScanMeaning(v); }}
+        onAdd={beginAdd}
+        onDiscard={onDiscardScan}
+        onRescan={onOpenScan}
+      />
+
+      {/* The narrating capsule: what is happening, while it happens. It names the prayer the scroll
+          is carrying the reader to, and ends by handing over to Publish — the one action that can
+          make any of this reach musalleen. */}
+      {walk ? (
+        <div className={`scan-capsule${walk.done ? ' is-done' : ''}`} role="status" aria-live="polite">
+          {walk.done
+            ? <span className="mi fill" data-i="check_circle" aria-hidden="true"></span>
+            : <span className="scan-capsule-ring" aria-hidden="true"></span>}
+          <b>
+            {walk.done
+              ? `${walk.queue.length} added · publish when ready`
+              : `Adding ${walk.i + 1} of ${walk.queue.length} · ${walk.queue[walk.i].label}…`}
+          </b>
+        </div>
+      ) : null}
 
       {salaah.scanStage ? (
         <ScanBoardStage
@@ -1822,42 +1909,97 @@ function SalaahConfigBody({ data }) {
         />
       ) : null}
 
-      {/* One primary at a time. While a scan is pending the action is to accept or reject it, and only
-          after that does Publish become the action — so a scan can never reach musalleen without a
-          human pressing Publish on values they have seen in place. */}
+      {/* One primary at a time, and it is always Publish now: the review SHEET owns the scan's
+          decision (approved 2026-08-12), so the footer never trades its one job away. A scan still
+          cannot reach musalleen without a human pressing Publish on values they have seen land. */}
       {bad ? (
         <div className="salaah-refuse" role="alert">
           <span className="mi" data-i="error" aria-hidden="true"></span>
           <span>{bad.why}</span>
         </div>
       ) : null}
-      {pending ? (
-        <FooterAction
-          label={!scanColumnMeaning
-            ? 'Choose Azaan or Jamaat'
-            : usable ? `Add ${usable} to draft` : 'Nothing usable to add'}
-          disabled={!scanColumnMeaning || !usable}
-          helper={!scanColumnMeaning
-            ? 'The board had no heading, so tell us what those times are first.'
-            : usable
-              ? `Still unpublished and still editable by dragging.${faulted.length ? ` ${faulted.length} impossible ${faulted.length === 1 ? 'reading is' : 'readings are'} left out.` : ''}`
-              : 'Every reading falls outside its prayer window. Rescan, or set the times by hand.'}
-          onClick={onApplyScan}
-          secondary={{ text: 'Scan again', onClick: onOpenScan }}
-        />
-      ) : (
-        <FooterAction
-          label={reachText ? `Publish to ${reachText} musalleen` : 'Publish timings'}
-          busy={saving}
-          busyLabel="Publishing timings…"
-          disabled={!dirty}
-          helper={dirty
-            ? `${changedCount} ${changedCount === 1 ? 'prayer' : 'prayers'} changed · publishing updates musalleen and records your name.`
-            : 'Drag a prayer’s azaan, or its iqama, to correct it.'}
-          onClick={onSubmitSalaah}
-        />
-      )}
+      <FooterAction
+        label={reachText ? `Publish to ${reachText} musalleen` : 'Publish timings'}
+        busy={saving}
+        busyLabel="Publishing timings…"
+        disabled={!dirty}
+        helper={dirty
+          ? `${changedCount} ${changedCount === 1 ? 'prayer' : 'prayers'} changed · publishing updates musalleen and records your name.`
+          : 'Drag a prayer’s azaan, or its iqama, to correct it.'}
+        onClick={onSubmitSalaah}
+      />
     </div>
+  );
+}
+
+// ── The scan review sheet — the reading lands as a decision, not as prose ──
+// Replaces the in-body strip (approved 2026-08-12). The strip was one paragraph that grew a clause
+// per condition; committees read it as noise and could not find the next action. The sheet is a
+// receipt — one pill per prayer, in day order — under exactly one affirmative. The ok pills keep
+// the ordinary ink (amber still never letters), red says refused and may letter, muted says the
+// board did not show it. The column question keeps its place-of-answer directly above the button
+// that needs it, remembered per masjid and editable on every scan; pressing Add without answering
+// points at the question instead of refusing silently — no dead affirmatives.
+function ScanReviewSheet({ open, proposal, faulted, missed, usable, meaning, needMeaning, onMeaning, onAdd, onDiscard, onRescan }) {
+  const { Dialog } = window;
+  if (!open || !Dialog) return null;
+  const counts = [
+    usable ? `${usable} usable` : null,
+    faulted.length ? `${faulted.length} outside ${faulted.length === 1 ? 'its' : 'their'} window` : null,
+    missed.length ? `${missed.length} not read` : null,
+  ].filter(Boolean).join(' · ');
+  const pills = SALAAH_ORDER.map(({ key, label }) => {
+    const p = proposal ? proposal[key] : null;
+    if (!p) return { key, label, kind: 'mut' };
+    // The pill shows the time as the board PRINTED it: a jamaat column prints the jamaat. The
+    // azaan the reading will set is derived on landing, exactly as the strip flow derived it.
+    const printed = meaning === 'azaan' ? p.azaan : p.azaan + p.iqama;
+    return { key, label, kind: faulted.includes(key) ? 'bad' : 'ok', time: salaahShort12(printed) };
+  });
+  return (
+    <Dialog
+      mode="sheet"
+      isOpen
+      onClose={onDiscard}
+      title="Board read"
+      description={counts}
+      primary={usable
+        ? { text: `Add ${usable} to draft`, onClick: onAdd }
+        // Nothing usable is not a dead end and never a dead button: the honest affirmative is the
+        // hand-over to the editor, with the rescan one step below it.
+        : { text: 'Set them by hand instead', onClick: onDiscard }}
+      secondary={usable
+        ? { text: 'Discard reading', onClick: onDiscard }
+        : { text: 'Scan again', onClick: onRescan }}
+    >
+      <div className="scan-sheet-pills" role="list">
+        {pills.map((p) => (
+          <span key={p.key} role="listitem" className={`scan-sheet-pill is-${p.kind}`}>
+            {p.label}
+            <em>{p.kind === 'mut' ? '—' : p.time}</em>
+            {p.kind === 'ok' ? <span className="mi" data-i="check" aria-hidden="true"></span> : null}
+            {p.kind === 'bad' ? <small>outside window</small> : null}
+          </span>
+        ))}
+      </div>
+      <div className={`scan-sheet-meaning${needMeaning ? ' is-asking' : ''}`} role="radiogroup" aria-label="What the scanned column shows">
+        <span className="eyebrow">What does that column show?</span>
+        <div>
+          {[{ value: 'jamaat', label: 'Jamaat times' }, { value: 'azaan', label: 'Azaan times' }].map((o) => (
+            <button
+              key={o.value}
+              type="button"
+              role="radio"
+              aria-checked={meaning === o.value}
+              className={`chip ${meaning === o.value ? 'solid' : 'outline'}`}
+              onClick={() => onMeaning(o.value)}
+            >
+              {o.label}
+            </button>
+          ))}
+        </div>
+      </div>
+    </Dialog>
   );
 }
 
@@ -1948,6 +2090,9 @@ function TimingHistorySheet({ salaah = {}, open, onClose }) {
   const { Dialog } = window;
   if (!open || !Dialog) return null;
   const { history = [] } = salaah;
+  // No dismissal control: this sheet asks for nothing, and the scrim and the drag handle already
+  // close it. A `Close` button — full-width or a corner × — spends the sheet's most prominent
+  // position on the one thing the user can already do by tapping away.
   return (
     <Dialog
       mode="sheet"
@@ -1956,7 +2101,7 @@ function TimingHistorySheet({ salaah = {}, open, onClose }) {
       title="Change history"
       description="Every published change to this masjid's timings, newest first."
       primary={null}
-      secondary={{ text: 'Close', onClick: onClose }}
+      secondary={null}
     >
       <div style={{ display: 'flex', flexDirection: 'column', gap: 10, maxHeight: 340, overflowY: 'auto' }}>
         {!history.length ? (
@@ -2020,11 +2165,34 @@ const CONSOLE_TITLE_TRANSITION = 'masjid-admin-masjid-e-bilal-title';
 // storyboard frames would invalidate the transition).
 const destTransitionName = (dest) => `masjid-console-dest-${dest}`;
 
-// One entry per destination: what the app bar says, and which body it hosts.
+/**
+ * The timings' change record, icon-only beside the title.
+ *
+ * It used to lead the body as a "Last updated by …" card, which put a reference above the action.
+ * Offered only once there is a record: an icon that opens an empty sheet is a dead end, and
+ * "nobody has published yet" is already said on the publish bar.
+ */
+function SalaahHistoryAction(data) {
+  const history = ((data.salaah || {}).history) || [];
+  if (!history.length) return null;
+  const last = history[0];
+  return (
+    <button
+      type="button"
+      className="ib ib-tonal"
+      onClick={data.onOpenHistory}
+      aria-label={`Timing changes — last updated by ${last.by}`}
+    >
+      <span className="mi" data-i="receipt_long" aria-hidden="true"></span>
+    </button>
+  );
+}
+
+// One entry per destination: what the app bar says, which body it hosts, and any trailing action.
 const CONSOLE_DESTINATIONS = {
   members: { title: 'Committee', body: CommitteeBody },
   followers: { title: 'Musalleen', body: FollowersBody },
-  salaah: { title: 'Salaah timings', body: SalaahConfigBody },
+  salaah: { title: 'Salaah timings', body: SalaahConfigBody, trailing: SalaahHistoryAction },
   details: { title: 'Masjid details', body: DetailsBody },
   // Opened from a committee row; its title is the member's name.
   // The member screen carries its own header (avatar + name + number), so no app bar.
@@ -2057,6 +2225,7 @@ function ConsoleScreen({ data = {}, transitionEnabled = false }) {
           title={destination.title}
           subtitle={masjid.name}
           onBack={onBack}
+          trailing={destination.trailing ? destination.trailing(data) : undefined}
           transitionName={transitionEnabled ? destTransitionName(dest) : undefined}
         />
       ) : null}
@@ -2288,6 +2457,9 @@ Object.assign(window, {
   InvitationsScreen,
   // reference data + helpers shared with the board rows and the live device
   OPS_ROLES,
+  opsAvailableCommitteeRoles: availableCommitteeRoles,
+  opsCanonicalCommitteePhone: canonicalCommitteePhone,
+  opsIsCommitteePhoneTaken: isCommitteePhoneTaken,
   OPS_CAPABILITIES,
   OPS_CAPS,
   OPS_MASJID,

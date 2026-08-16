@@ -66,6 +66,11 @@ const SST_LABEL_H = 22;
 // The shortest the card can be and still hold its two chips.
 const SST_ROW_MIN_H = 46;
 
+// The chip's own painted height, and the card's inset around it. The card grows to contain the iqama
+// chip using these, and stops at its window close.
+const SST_SLOT_H = 37;
+const SST_ROW_PAD = 4;
+
 // The day has exactly ONE dead stretch: Fajr closes at 6:14 and Zohar does not open until 12:28, so
 // 374 minutes — nearly a third of the axis — carry nothing at all. Everything from Zohar onwards is
 // contiguous, each window opening where the last one closed. Collapsing that single gap to a labelled
@@ -79,6 +84,9 @@ const SST_STEP = 1;
 // The only ceiling on a delay is the window it has to finish inside; an arbitrary 90-minute cap
 // refused timings that were never wrong.
 const SST_IQAMA_MIN = 5;
+// How long the jamaat itself takes, and so how far before the close it must START. A window is when
+// the prayer may be prayed: a Fajr jamaat called on sunrise finishes after sunrise.
+const SST_JAMAAT_MIN = 10;
 const SST_NOW = SstMin(11, 2);
 
 const SST_PRAYERS = [
@@ -134,7 +142,7 @@ const sstY = sstAxis(SST_SPAN_FROM, SST_SPAN_TO, SST_BREAKS);
 
 /* ═══ One prayer's row, positioned on the real axis ════════════════════════ */
 
-function SstRow({ p, cfg, published, scan, drag, bad, live, onGrab, floating = true, yOf = sstY }) {
+function SstRow({ p, cfg, published, scan, drag, bad, live, onGrab, floating = true, yOf = sstY, landing = false }) {
   // Only while the iqama is being dragged: the card stretches from the azaan to the jamaat so the
   // delay is read as the length it is. `SST_ROW_MIN_H` keeps it holding its chips when the delay is
   // shorter than the card can be.
@@ -143,29 +151,44 @@ function SstRow({ p, cfg, published, scan, drag, bad, live, onGrab, floating = t
   const movedIqama = cfg.iqama !== published.iqama;
   const grabbing = drag && drag.key === p.key ? drag.handle : null;
   const isBad = bad && bad.key === p.key;
-  // A board reading is not the value: it is named beside it and becomes the value only when added to
-  // the draft. Amber locates, red says the reading cannot exist; neither ever carries the text.
+  // A board reading is not the value: it is worded beside it (`BOARD 5:12`, the same shape as
+  // `WAS 5:30`) and becomes the value only when added to the draft. Its amber is mixed toward the
+  // ink so it may letter — the raw token never does — and red says the reading cannot exist.
   const proposedAzaan = scan && scan.azaan !== cfg.azaan ? scan.azaan : null;
   const proposedIqama = scan && scan.iqama !== cfg.iqama ? scan.iqama : null;
-  const scanMark = scan && scan.fault ? 'sst-scanmark is-fault' : 'sst-scanmark';
+  const propEm = scan && scan.fault ? 'is-prop is-fault' : 'is-prop';
 
-  // The card is ALWAYS its own span now, not only while dragging. Growing on grab and collapsing on
-  // release made the growth read as a glitch: nothing tracked the finger, so the collapse looked like
-  // the edit being undone. Top edge is the azaan, and the iqama chip rides the jamaat.
+  // The card CONTAINS its iqama chip, always. Nothing overhangs.
+  //
+  // Letting the chip break the bottom edge was tried and rejected on 2026-08-07: capping the card at
+  // the window close and spilling the chip past it looked like a rendering fault rather than a
+  // deliberate handle, whichever way the overhang was tuned. A card that runs a little into the next
+  // prayer's band is the better trade, and the jamaat bound already keeps a jamaat ten minutes clear
+  // of its close, so the reach is bounded. An engaged card takes `z-index` above its neighbours, which
+  // is what keeps the row under the finger readable when two do overlap.
+  //
+  // `SST_ROW_MIN_H` is the floor — a five-minute delay is 7.5px of span, which cannot hold a chip.
   const spanPx = cfg.iqama * SST_PX_PER_MIN;
-  const style = floating ? { top: `${yOf(cfg.azaan)}px` } : undefined;
+  const wantPx = spanPx + SST_SLOT_H + (SST_ROW_PAD * 2);
+  const style = floating
+    ? { top: `${yOf(cfg.azaan)}px`, height: `${Math.max(wantPx, SST_ROW_MIN_H)}px` }
+    : undefined;
 
   return (
     <div
       // The whole card moves the prayer, delay intact — the booking-block model, where the body drags
       // and a handle resizes. The iqama chip stops propagation, so it still changes only the delay.
       onPointerDown={live && floating ? onGrab(p, 'azaan') : undefined}
+      data-key={p.key}
       className={[
         'sst-row',
         isBad ? 'is-bad' : '',
         grabbing ? 'is-dragging' : '',
         movedAzaan || movedIqama ? 'is-changed' : '',
         scan ? (scan.fault ? 'is-scanfault' : 'is-scanned') : '',
+        // The companion walk's amber flash: this reading is landing NOW. Transient — the row
+        // settles into the ordinary green `is-changed` the moment the value commits.
+        landing ? 'is-landing' : '',
         floating ? 'is-spanning' : '',
       ].filter(Boolean).join(' ')}
       style={style}
@@ -185,31 +208,39 @@ function SstRow({ p, cfg, published, scan, drag, bad, live, onGrab, floating = t
       {/* The chip IS the control and the chip IS the drag target. Everything outside it belongs to
           the scroller, which is the entire resolution of the scroll-versus-drag conflict. */}
       <span
-        className={['sst-slot', grabbing === 'azaan' ? 'is-grab' : '', movedAzaan ? 'is-moved' : '',
+        className={['sst-slot', floating ? 'is-azaan' : '', grabbing === 'azaan' ? 'is-grab' : '',
+          movedAzaan ? 'is-moved' : '',
           isBad && (movedAzaan || grabbing === 'azaan') ? 'is-bad' : ''].filter(Boolean).join(' ')}
         onPointerDown={live && !floating ? onGrab(p, 'azaan') : undefined}
         role="slider"
         aria-label={`${p.label} azaan, ${SstFmt(cfg.azaan)}. Drag the card to move the prayer.`}
       >
-        <em>{proposedAzaan != null
-          ? <React.Fragment><i className={scanMark}></i>{SstShort(proposedAzaan)}</React.Fragment>
+        <em className={proposedAzaan != null ? propEm : undefined}>{proposedAzaan != null
+          ? `BOARD ${SstShort(proposedAzaan)}`
           : movedAzaan ? `WAS ${SstShort(published.azaan)}` : 'AZAAN'}
           {live ? <i className="mi" data-i="unfold_more"></i> : null}</em>
         <span className="sst-val"><b>{SstFmt(cfg.azaan)}</b></span>
       </span>
 
-      {/* Offset by the delay itself, so the chip sits ON the jamaat and travels down as the delay is
-          dragged — the value and its position are the same thing. The card grows to contain it. */}
+      {/* Centred ON the jamaat, so it travels down as the delay is dragged and the value and its
+          position are the same thing. Positioned rather than laid out: the chip has to be free to
+          overhang the card's bottom edge, which is the jamaat it marks. */}
       <span
-        style={floating ? { marginTop: `${Math.max(spanPx, 0)}px` } : undefined}
-        className={['sst-slot', grabbing === 'iqama' ? 'is-grab' : '', movedIqama ? 'is-moved' : '',
+        // The chip's TOP is the jamaat, so the gap between the two chips IS the delay — five minutes
+        // apart reads as five minutes apart. Centring the chip on the jamaat instead was tried and
+        // reverted: half a chip is 18.5px against a five-minute span of 7.5px, so a short delay put
+        // the two values on the same line, and a clamp to stop the chip floating off the top of the
+        // card only made that worse.
+        style={floating ? { top: `${SST_ROW_PAD + spanPx}px` } : undefined}
+        className={['sst-slot', floating ? 'is-iqama' : '', grabbing === 'iqama' ? 'is-grab' : '',
+          movedIqama ? 'is-moved' : '',
           isBad && (movedIqama || grabbing === 'iqama') ? 'is-bad' : ''].filter(Boolean).join(' ')}
         onPointerDown={live ? onGrab(p, 'iqama') : undefined}
         role="slider"
         aria-label={`${p.label} iqama, ${SstFmt(jamaat)}, ${cfg.iqama} minutes after azaan. Drag to change.`}
       >
-        <em>{proposedIqama != null
-          ? <React.Fragment><i className={scanMark}></i>{SstShort(scan.azaan + scan.iqama)}</React.Fragment>
+        <em className={proposedIqama != null ? propEm : undefined}>{proposedIqama != null
+          ? `BOARD ${SstShort(scan.azaan + scan.iqama)}`
           : movedIqama ? `WAS ${SstShort(published.azaan + published.iqama)}` : 'IQAMA'}
           {live ? <i className="mi" data-i="unfold_more"></i> : null}</em>
         <span className="sst-val"><b>{SstFmt(jamaat)}</b></span>
@@ -262,26 +293,30 @@ function useSstDrag({ cfgOf, onCommit, live, prayerOf = sstPrayer }) {
     g.moved = true;
     const step = Math.round(dy / SST_DRAG_PX_PER_MIN / SST_STEP) * SST_STEP;
 
+    // A window is when the prayer may be PRAYED, so the jamaat has to FINISH inside it: the last
+    // minute it may be called is the close less the time a jamaat takes.
+    const latest = p.closes - SST_JAMAAT_MIN;
+    const tooLate = `Jamaat must finish before ${p.ends}, so it cannot start after ${SstFmt(latest)}`;
+
     if (g.handle === 'azaan') {
+      // The JAMAAT stays where the masjid put it. Moving the azaan changes the gap, not the prayer:
+      // the delay absorbs the difference until it reaches its floor, and only then does the whole
+      // card travel. Carrying the delay along instead moved the iqama on every azaan nudge, which
+      // made a one-minute correction to the call silently rewrite the jamaat too.
+      const jamaat = g.from.azaan + g.from.iqama;
       const raw = g.from.azaan + step;
       let azaan = raw;
       let why = null;
       if (raw < p.opens) { azaan = p.opens; why = `${p.label} does not begin until ${SstFmt(p.opens)}`; }
-      else if (raw + g.from.iqama > p.closes) {
-        azaan = p.closes - g.from.iqama;
-        why = `Iqama would fall past ${p.ends}, at ${SstFmt(p.closes)}`;
-      }
-      onCommit(g.key, { azaan, iqama: g.from.iqama });
+      else if (raw + SST_IQAMA_MIN > latest) { azaan = latest - SST_IQAMA_MIN; why = tooLate; }
+      onCommit(g.key, { azaan, iqama: Math.max(jamaat - azaan, SST_IQAMA_MIN) });
       if (why) flashBad(g.key, why); else setBad(null);
     } else {
       const raw = g.from.iqama + step;
       let iqama = raw;
       let why = null;
       if (raw < SST_IQAMA_MIN) { iqama = SST_IQAMA_MIN; why = `Iqama is at least ${SST_IQAMA_MIN} minutes after azaan`; }
-      else if (g.from.azaan + raw > p.closes) {
-        iqama = p.closes - g.from.azaan;
-        why = `Iqama would fall past ${p.ends}, at ${SstFmt(p.closes)}`;
-      }
+      else if (g.from.azaan + raw > latest) { iqama = latest - g.from.azaan; why = tooLate; }
       onCommit(g.key, { azaan: g.from.azaan, iqama });
       if (why) flashBad(g.key, why); else setBad(null);
     }
@@ -295,7 +330,7 @@ function useSstDrag({ cfgOf, onCommit, live, prayerOf = sstPrayer }) {
 /* ═══ The day ══════════════════════════════════════════════════════════════ */
 
 function SstDay({
-  prayers = SST_PRAYERS, cfgOf, pubOf, scanOf, drag, bad, live, onGrab,
+  prayers = SST_PRAYERS, cfgOf, pubOf, scanOf, drag, bad, live, onGrab, landingKey = null,
   spanFrom = SST_SPAN_FROM, spanTo = SST_SPAN_TO, breaks = SST_BREAKS, showNow = true,
 }) {
   const scan = scanOf || (() => null);
@@ -391,7 +426,8 @@ function SstDay({
       {/* True positions. No displacement pass, no leaders — there is room for everyone. */}
       {prayers.map((p) => (
         <SstRow key={p.key} p={p} cfg={cfgOf(p)} published={pubOf(p)} scan={scan(p)}
-          drag={drag} bad={bad} live={live} onGrab={onGrab} yOf={sstY} />
+          drag={drag} bad={bad} live={live} onGrab={onGrab} yOf={sstY}
+          landing={landingKey === p.key} />
       ))}
     </div>
   );

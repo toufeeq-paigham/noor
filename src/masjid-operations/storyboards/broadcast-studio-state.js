@@ -77,12 +77,15 @@
       message: '',
       audio: null, // { uploading, failed, playing, progress, duration }
       recorder: null, // { stage: 'recording' | 'review' | 'blocked', elapsed }
-      photos: [], // [{ id, src, uploading, failed }]
+      photos: [], // [{ id, src }] — local draft attachments until final Send paigham
       picker: false,
       crop: null, // { src, rotation }
       audience: 'MASJID',
       submitting: false,
       micBlocked: false,
+      messageError: false,
+      focusMessage: false,
+      focusMessageKey: 0,
     },
 
     invitationsStatus: 'loaded', // 'loading' | 'loaded' | 'error'
@@ -223,13 +226,12 @@
         audio: post.audio ? { uploading: !!post.audio.uploading, failed: !!post.audio.failed } : null,
         recorder: post.recorder ? (post.recorder.stage || 'recording') : null,
         photos: photos.length,
-        photoUploading: photos.some((ph) => ph.uploading),
-        photoFailed: photos.some((ph) => ph.failed),
         picker: !!post.picker,
         crop: !!post.crop,
         audience: post.audience || 'MASJID',
         submitting: !!post.submitting,
         micBlocked: !!post.micBlocked,
+        messageError: !!post.messageError,
         // Compose can retarget the masjid mid-draft, so the switcher is part of this
         // screen's state, not only the hub's.
         switcherOpen: !!s.switcherOpen,
@@ -630,10 +632,10 @@
     { group: 'salaah', name: 'Scan · camera', screen: 'console', state: { route: 'console', dest: 'salaah', scanStage: 'camera' } },
     { group: 'salaah', name: 'Scan · reading the board', screen: 'console', state: { route: 'console', dest: 'salaah', scanStage: 'reading' } },
     { group: 'salaah', name: 'Scan · didn’t read', screen: 'console', state: { route: 'console', dest: 'salaah', scanStage: 'failed' } },
-    { group: 'salaah', name: 'Scan · proposals, column unknown', screen: 'console', state: { route: 'console', dest: 'salaah', scanProposal: 'partial' } },
-    { group: 'salaah', name: 'Scan · proposals on the timeline', screen: 'console', state: { route: 'console', dest: 'salaah', scanProposal: 'partial', scanColumnMeaning: 'jamaat' } },
-    { group: 'salaah', name: 'Scan · read as Azaan column', screen: 'console', state: { route: 'console', dest: 'salaah', scanProposal: 'partial', scanColumnMeaning: 'azaan' } },
-    { group: 'salaah', name: 'Scan · added to draft', screen: 'console', state: { route: 'console', dest: 'salaah', scanApplied: 'partial', scanColumnMeaning: 'jamaat', salaahDirty: true } },
+    { group: 'salaah', name: 'Scan · review sheet, column unanswered', screen: 'console', state: { route: 'console', dest: 'salaah', scanProposal: 'partial' } },
+    { group: 'salaah', name: 'Scan · review sheet, Jamaat column', screen: 'console', state: { route: 'console', dest: 'salaah', scanProposal: 'partial', scanColumnMeaning: 'jamaat' } },
+    { group: 'salaah', name: 'Scan · review sheet, Azaan column', screen: 'console', state: { route: 'console', dest: 'salaah', scanProposal: 'partial', scanColumnMeaning: 'azaan' } },
+    { group: 'salaah', name: 'Scan · landed, publish is back', screen: 'console', state: { route: 'console', dest: 'salaah', scanApplied: 'partial', scanColumnMeaning: 'jamaat', salaahDirty: true } },
     { group: 'salaah', name: 'Scan · could not read', screen: 'console', state: { route: 'console', dest: 'salaah', scanStage: 'failed' } },
     { group: 'salaah', name: 'Publish confirmation', screen: 'console', state: { route: 'console', dest: 'salaah', salaahDirty: true, salaahEdited: true, confirm: { kind: 'publishSalaah' } } },
     { group: 'salaah', name: 'Publishing', screen: 'console', state: { route: 'console', dest: 'salaah', salaahDirty: true, salaahSaving: true } },
@@ -642,6 +644,7 @@
 
     // 06 · Send a paigham — the guided wizard
     { group: 'create', name: 'Step 1 · empty', screen: 'create', state: { route: 'create' } },
+    { group: 'create', name: 'Step 1 · empty feedback', screen: 'create', state: { route: 'create', post: { messageError: true } } },
     { group: 'create', name: 'Step 1 · written', screen: 'create', state: { route: 'create', post: { message: SAMPLE_MESSAGE } } },
     { group: 'create', name: 'Step 1 · too long', screen: 'create', state: { route: 'create', post: { message: SAMPLE_MESSAGE.repeat(10) } } },
     { group: 'create', name: 'Recorder · live', screen: 'create', state: { route: 'create', post: { recorder: { stage: 'recording', elapsed: '0:12' } } } },
@@ -652,8 +655,8 @@
     { group: 'create', name: 'Step 2 · no photos', screen: 'create', state: { route: 'create', post: { step: 'photos', message: SAMPLE_MESSAGE } } },
     { group: 'create', name: 'Step 2 · library', screen: 'create', state: { route: 'create', post: { step: 'photos', message: SAMPLE_MESSAGE, picker: true } } },
     { group: 'create', name: 'Step 2 · crop', screen: 'create', state: { route: 'create', post: { step: 'photos', message: SAMPLE_MESSAGE, crop: { src: LIB[0], rotation: 0 } } } },
-    { group: 'create', name: 'Step 2 · uploading', screen: 'create', state: { route: 'create', post: { step: 'photos', message: SAMPLE_MESSAGE, photos: [PHOTO(0), { id: 'ph2', src: LIB[1], uploading: true }] } } },
-    { group: 'create', name: 'Step 2 · upload failed', screen: 'create', state: { route: 'create', post: { step: 'photos', message: SAMPLE_MESSAGE, photos: [PHOTO(0), { id: 'ph2', src: LIB[1], failed: true }] } } },
+    { group: 'create', name: 'Step 2 · one added', screen: 'create', state: { route: 'create', post: { step: 'photos', message: SAMPLE_MESSAGE, photos: [PHOTO(0)] } } },
+    { group: 'create', name: 'Step 2 · two added', screen: 'create', state: { route: 'create', post: { step: 'photos', message: SAMPLE_MESSAGE, photos: [PHOTO(0), PHOTO(1)] } } },
     { group: 'create', name: 'Step 2 · four added', screen: 'create', state: { route: 'create', post: { step: 'photos', message: SAMPLE_MESSAGE, photos: [PHOTO(0), PHOTO(1), PHOTO(2), PHOTO(3)] } } },
     { group: 'create', name: 'Step 3 · audience', screen: 'create', state: { route: 'create', post: { step: 'audience', message: SAMPLE_MESSAGE, photos: [PHOTO(0), PHOTO(1)] } } },
     { group: 'create', name: 'Step 3 · wider circle', screen: 'create', state: { route: 'create', post: { step: 'audience', message: SAMPLE_MESSAGE, audience: 'MASJID_MASLAK' } } },

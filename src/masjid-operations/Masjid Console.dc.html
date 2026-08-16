@@ -475,17 +475,21 @@ class Component extends DCLogic {
   // pre-opens the stage that action promised; the draft still starts at step 1, so the
   // message-or-recording rule cannot be skipped by entering through a shortcut. Callers that
   // pass a click event (the FAB, the empty feed) fall through to the plain start.
-  onCreatePost = (intent) => this.patch({
-    route: 'create',
-    stepDir: 'fwd',
-    postMenuFor: null,
-    post: Object.assign(
-      {},
-      window.OPS_DEFAULT_STATE.post,
-      intent === 'audio' ? { recorder: { stage: 'recording', elapsed: '0:00' } } : null,
-      intent === 'photos' ? { picker: true } : null,
-    ),
-  });
+  onCreatePost = (intent) => {
+    const mode = intent === 'audio' || intent === 'photos' ? intent : 'message';
+    this.patch({
+      route: 'create',
+      stepDir: 'fwd',
+      postMenuFor: null,
+      post: Object.assign(
+        {},
+        window.OPS_DEFAULT_STATE.post,
+        mode === 'message' ? { focusMessage: true, focusMessageKey: 1 } : null,
+        mode === 'audio' ? { recorder: { stage: 'recording', elapsed: '0:00' } } : null,
+        mode === 'photos' ? { picker: true } : null,
+      ),
+    });
+  };
 
   // ── Masjid switcher ──
   onOpenSwitcher = () => this.patch({ switcherOpen: true, postMenuFor: null });
@@ -510,7 +514,13 @@ class Component extends DCLogic {
   onOpenMember = (member) => this.transitionTo({ dest: 'member', memberId: member.id, openMenu: null });
   onPickRole = (role) => {
     const id = this.state.memberId;
-    const member = (window.OPS_MEMBERS || []).find((m) => m.id === id);
+    const data = window.buildOpsData(this.state, {});
+    const member = (data.members.items || []).find((m) => m.id === id);
+    const available = window.opsAvailableCommitteeRoles(data.members.items, id);
+    if (available.indexOf(role) === -1) {
+      this.toast('role-taken', 'That committee role is already assigned', 'error');
+      return;
+    }
     this.setState((st) => window.opsApplyPatch(st, {
       openMenu: null,
       roleOverrides: Object.assign({}, st.roleOverrides, { [id]: role }),
@@ -543,7 +553,15 @@ class Component extends DCLogic {
     invite: { phone: '', role: null, caps: [], sending: false, error: null },
   });
   onInvitePhone = (phone) => this.patch({ invite: { phone, error: null } });
-  onInviteRole = (role) => this.patch({ invite: { role }, openMenu: null });
+  onInviteRole = (role) => {
+    const data = window.buildOpsData(this.state, {});
+    const available = window.opsAvailableCommitteeRoles(data.members.items, null);
+    if (available.indexOf(role) === -1) {
+      this.toast('role-taken', 'That committee role is already assigned', 'error');
+      return;
+    }
+    this.patch({ invite: { role }, openMenu: null });
+  };
   onInviteCapability = (capId) => this.setState((st) => {
     const caps = st.invite.caps || [];
     return window.opsApplyPatch(st, {
@@ -554,6 +572,19 @@ class Component extends DCLogic {
     const invite = this.state.invite;
     if ((invite.phone || '').replace(/\D/g, '').length < 10) {
       this.patch({ invite: { error: 'Enter a valid 10-digit mobile number.' }, openMenu: null });
+      return;
+    }
+    const data = window.buildOpsData(this.state, {});
+    if (window.opsIsCommitteePhoneTaken(data.members.items, invite.phone)) {
+      this.patch({
+        invite: { error: 'This number is already a member or has a pending invitation.' },
+        openMenu: null,
+      });
+      return;
+    }
+    const available = window.opsAvailableCommitteeRoles(data.members.items, null);
+    if (available.indexOf(invite.role) === -1) {
+      this.patch({ invite: { error: 'That committee role is already assigned.' }, openMenu: null });
       return;
     }
     this.patch({ invite: { sending: true, error: null }, openMenu: null });
@@ -610,17 +641,10 @@ class Component extends DCLogic {
       [s.masjidId]: scanColumnMeaning,
     }),
   }));
-  // Accepting a proposal moves it into the draft. It still is not published — the footer goes back to
-  // Publish, and the values stay draggable, so a misread time can be corrected before it reaches anyone.
-  onApplyScan = () => this.setState((s) => {
-    if (!s.scanColumnMeaning || !s.scanProposal) return s;
-    return window.opsApplyPatch(s, {
-      scanStage: null,
-      scanApplied: s.scanProposal,
-      scanProposal: null,
-      salaahDirty: true,
-    });
-  });
+  // The companion walk owns Add now (approved 2026-08-12): the screen takes the proposal from here
+  // and lands each usable reading through the SAME onConfigChange a drag uses, so the values become
+  // ordinary draft edits — still draggable, still unpublished. This only releases the proposal.
+  onScanConsumed = () => this.patch({ scanProposal: null });
   onDiscardScan = () => this.patch({ scanProposal: null, scanStage: null });
 
   onOpenHistory = () => this.patch({ salaahHistoryOpen: true });
@@ -643,14 +667,30 @@ class Component extends DCLogic {
   // ── Send a paigham (the compose wizard) ──
   STEPS = ['message', 'photos', 'audience', 'review'];
 
-  onMessage = (message) => this.patch({ post: { message } });
+  onMessage = (message) => this.patch({ post: { message, messageError: false } });
 
   onGoToStep = (step) => this.patch({ post: { step }, stepDir: 'back' });
 
   onNextStep = () => {
     const post = this.state.post;
     const i = this.STEPS.indexOf(post.step || 'message');
-    if (i < this.STEPS.length - 1) { this.patch({ post: { step: this.STEPS[i + 1] }, stepDir: 'fwd' }); return; }
+    if (i === 0) {
+      const message = (post.message || '').trim();
+      const audioReady = !!post.audio && !post.audio.uploading && !post.audio.failed;
+      const invalidMessage = !message || (post.message || '').length > (window.MAX_POST_MESSAGE || 1024);
+      if (!audioReady && invalidMessage) {
+        this.patch({ post: {
+          messageError: true,
+          focusMessage: true,
+          focusMessageKey: (post.focusMessageKey || 0) + 1,
+        } });
+        return;
+      }
+    }
+    if (i < this.STEPS.length - 1) {
+      this.patch({ post: { step: this.STEPS[i + 1], messageError: false, focusMessage: false }, stepDir: 'fwd' });
+      return;
+    }
     // Step 4 IS the confirmation — sending happens straight from the review.
     this.patch({ post: { submitting: true } });
     this.after(1400, () => this.patch({ route: 'sent', stepDir: 'fwd', post: { submitting: false } }));
@@ -702,7 +742,7 @@ class Component extends DCLogic {
     post: { audio: Object.assign({}, st.post.audio, { playing: !(st.post.audio || {}).playing }) },
   }));
 
-  // photo library → crop → upload
+  // photo library → crop → local draft. Upload begins only from the final Send paigham action.
   onOpenPicker = () => this.patch({ post: { picker: true } });
   onClosePicker = () => this.patch({ post: { picker: false } });
   onPickPhoto = (src) => this.patch({ post: { picker: false, crop: { src, rotation: 0 } } });
@@ -714,24 +754,12 @@ class Component extends DCLogic {
     const src = (this.state.post.crop || {}).src;
     const id = `ph-${Date.now()}`;
     this.setState((st) => window.opsApplyPatch(st, {
-      post: { crop: null, photos: st.post.photos.concat([{ id, src, uploading: true }]) },
+      post: { crop: null, photos: st.post.photos.concat([{ id, src }]) },
     }));
-    this.after(1100, () => this.setState((st) => window.opsApplyPatch(st, {
-      post: { photos: st.post.photos.map((ph) => (ph.id === id ? { id, src } : ph)) },
-    })));
   };
   onRemovePhoto = (index) => this.setState((st) => window.opsApplyPatch(st, {
     post: { photos: st.post.photos.filter((_, i) => i !== index) },
   }));
-  onRetryPhoto = (index) => {
-    this.setState((st) => window.opsApplyPatch(st, {
-      post: { photos: st.post.photos.map((ph, i) => (i === index ? Object.assign({}, ph, { failed: false, uploading: true }) : ph)) },
-    }));
-    this.after(1000, () => this.setState((st) => window.opsApplyPatch(st, {
-      post: { photos: st.post.photos.map((ph, i) => (i === index ? { id: ph.id, src: ph.src } : ph)) },
-    })));
-  };
-
   onAudience = (audience) => this.patch({ post: { audience } });
 
   onAnother = () => this.patch({ route: 'create', stepDir: 'fwd', post: window.OPS_DEFAULT_STATE.post });
@@ -833,7 +861,7 @@ class Component extends DCLogic {
       onOpenHistory: this.onOpenHistory, onCloseHistory: this.onCloseHistory,
       onOpenScan: this.onOpenScan, onCloseScan: this.onCloseScan,
       onScanCapture: this.onScanCapture, onScanRetry: this.onScanRetry,
-      onScanMeaning: this.onScanMeaning, onApplyScan: this.onApplyScan,
+      onScanMeaning: this.onScanMeaning, onScanConsumed: this.onScanConsumed,
       onDiscardScan: this.onDiscardScan,
       onDone: this.onDone,
       onMessage: this.onMessage, onNextStep: this.onNextStep, onGoToStep: this.onGoToStep,
@@ -843,7 +871,7 @@ class Component extends DCLogic {
       onRemoveAudio: this.onRemoveAudio, onRetryAudio: this.onRetryAudio, onToggleAudio: this.onToggleAudio,
       onOpenPicker: this.onOpenPicker, onClosePicker: this.onClosePicker, onPickPhoto: this.onPickPhoto,
       onRotateCrop: this.onRotateCrop, onCancelCrop: this.onCancelCrop, onUseCrop: this.onUseCrop,
-      onRemovePhoto: this.onRemovePhoto, onRetryPhoto: this.onRetryPhoto,
+      onRemovePhoto: this.onRemovePhoto,
       onAudience: this.onAudience, onAnother: this.onAnother,
       onAccept: this.onAccept, onDecline: this.onDecline,
       onOpenAcceptedConsole: this.onOpenAcceptedConsole,

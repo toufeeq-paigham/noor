@@ -155,14 +155,21 @@
   -webkit-user-select:none;
 }
 .sst-row.is-dragging{cursor:grabbing}
-/* A spanning card: its top edge is the azaan and it is tall enough to hold the iqama chip at the
-   jamaat. Height is content-driven rather than set, so it cannot disagree with where the chip sits.
-   The bottom edge deliberately carries NO boundary treatment — the jamaat is marked by the chip and
-   the delay's cap, and a drawn edge below the chip would claim a bound that is not there. */
-.sst-row.is-spanning{align-items:flex-start}
-/* The two chips share the card's width rather than bunching at its left edge. Equal halves, because
-   neither value outranks the other — one is when it is called, the other is when it is prayed. */
-.sst-row.is-spanning .sst-slot{flex:1 1 0;min-width:0}
+/* A spanning card is EXACTLY the prayer: top edge the azaan, bottom edge the jamaat. Its height is set
+   inline from the delay, so the card's own length is the thing the delay changes.
+
+   Both chips are positioned rather than laid out, because the iqama chip has to be free to straddle
+   the bottom edge — a flow child would push that edge down and the card would stop being the prayer.
+   The two still split the width in equal halves; neither value outranks the other. */
+.sst-row.is-spanning{display:block;position:absolute}
+.sst-row.is-spanning .sst-slot{position:absolute;width:calc(50% - 10px)}
+/* Top-aligned inside the card's padding: the azaan is the card's own top edge, so the chip hangs from
+   it rather than straddling it. Only the jamaat needs a chip that marks a line. */
+.sst-row.is-spanning .sst-slot.is-azaan{left:8px;top:4px}
+/* Its TOP is the jamaat, set inline, so the distance between the two chips is exactly the delay. No
+   centring transform: half a chip is 18.5px against a five-minute span of 7.5px, so centring put a
+   4:53 azaan and a 4:58 iqama on the same line. */
+.sst-row.is-spanning .sst-slot.is-iqama{right:8px}
 .sst-row.is-changed{box-shadow:inset 3px 0 0 var(--color-action-primary),var(--shadow-card)}
 /* Engaged is the whole card: accent border and an accent wash, so the row under the finger is
    unmistakable before anything has moved. */
@@ -261,8 +268,9 @@
   z-index:3;pointer-events:none;
 }
 
-/* A scanned reading, drawn where the board puts it. Amber locates and never letters; red says the
-   reading cannot exist, which an LED board produces far more often than anyone expects. */
+/* A scanned reading, drawn where the board puts it. The dot's raw amber locates and never letters;
+   red says the reading cannot exist, which an LED board produces far more often than anyone
+   expects. */
 .sst-scandot{
   position:absolute;left:50px;
   width:11px;height:11px;margin-top:-5px;
@@ -272,15 +280,22 @@
   z-index:4;pointer-events:none;
 }
 .sst-scandot.is-fault{background:var(--color-status-error)}
-.sst-scanmark{
-  display:inline-block;
-  width:5px;height:5px;margin-right:3px;
-  border-radius:var(--radius-circle);
-  background:var(--color-status-warning);
-}
-.sst-scanmark.is-fault{background:var(--color-status-error)}
+/* The proposal overline is worded — `BOARD 5:12` over the current value, the same shape as
+   `WAS 5:30` — so its amber has to letter: mixed toward the ink it clears 4.5:1 in both themes,
+   which the raw token (2.05:1 on the card) never does. */
+.sst-slot em.is-prop{color:color-mix(in oklab,var(--color-status-warning) 55%,var(--color-info-primary))}
+.sst-slot em.is-prop.is-fault{color:var(--color-status-error)}
 .sst-row.is-scanned{box-shadow:inset 3px 0 0 var(--color-status-warning),var(--shadow-card)}
 .sst-row.is-scanfault{box-shadow:inset 3px 0 0 var(--color-status-error),var(--shadow-card)}
+/* The companion walk: the row a board reading is landing on RIGHT NOW. Amber because it is the
+   scan's colour, transient because the row settles into the ordinary green `is-changed` the moment
+   the value commits — the flash says "this one", the green says "done". */
+.sst-row.is-landing{
+  border-color:var(--color-status-warning);
+  box-shadow:0 0 0 4px color-mix(in oklab,var(--color-status-warning) 24%,transparent),var(--shadow-card);
+  z-index:5;
+  transition:box-shadow .28s,border-color .28s;
+}
 
 @keyframes sst-shake{
   0%,100%{transform:translate(0,-50%)}

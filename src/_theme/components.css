@@ -445,6 +445,23 @@
 .masjid-mark img{width:100%;height:100%;display:block;object-fit:cover}
 .masjid-mark.round{border-radius:var(--radius-circle)}
 .icon-tile .mi{font-size:calc(var(--tile,40px) * .5)}
+/* `.scanning` — the tile reads. A hairline of the action colour travels down behind the glyph,
+   which is the one idle animation the console allows itself: board OCR is invisible until
+   someone taps it, and a still framing glyph cannot say that the camera does the typing. Slow
+   and low-contrast on purpose — it should catch the eye once, not compete with the timeline. */
+.icon-tile.scanning{position:relative;overflow:hidden}
+.icon-tile.scanning::after{
+  content:'';position:absolute;left:0;right:0;height:2px;
+  background:linear-gradient(90deg,transparent,var(--color-action-primary),transparent);
+  animation:icon-tile-scan 2.6s var(--ease-in-out) infinite;
+}
+@keyframes icon-tile-scan{
+  0%{top:-2px;opacity:0}
+  12%{opacity:1}
+  88%{opacity:1}
+  100%{top:100%;opacity:0}
+}
+@media (prefers-reduced-motion:reduce){.icon-tile.scanning::after{display:none}}
 
 /* ── Summary hero (.summary-hero) — the band that answers "what am I looking at?" ──
    Leading icon tile or headline number, then a title and one line of context, on the emerald
@@ -452,11 +469,16 @@
      .attention  work owed rather than a description — accent border, no own margin, so it
                  stacks directly under its .eyebrow (the pending-invitation queue).
      .stacked    headline number over its label instead of an icon beside a title.
+     .action     the band is the way INTO something rather than a description of what is already
+                 here: pressable, chevron-terminated, with press feedback (the Salaah
+                 destination's board scan).
    This existed three times over as byte-identical private copies (.committee-summary,
    .followers-hero, and .console-group.attention's background) plus a fourth near-copy
    (.scan-result-banner). One construction now. */
 .summary-hero{display:flex;align-items:center;gap:var(--size-lg);padding:var(--size-xl);box-sizing:border-box;border:1px solid var(--color-neutral-border);border-radius:var(--radius-card);background:var(--gradient-emerald),var(--color-surface-card)}
 .summary-hero.attention{border-color:color-mix(in oklab,var(--color-action-primary) 40%,transparent)}
+.summary-hero.action{width:100%;text-align:left;cursor:pointer;font:inherit;border-color:color-mix(in oklab,var(--color-action-primary) 30%,transparent);transition:transform var(--motion-press) var(--ease-out),border-color var(--motion-quick) var(--ease-out)}
+.summary-hero.action:active{transform:scale(.99)}
 .summary-hero-copy{flex:1;min-width:0}
 .summary-hero-title{font-family:var(--font-body);font-size:14px;font-weight:700;color:var(--color-info-primary)}
 .summary-hero-value{font-family:var(--font-title);font-size:28px;letter-spacing:-.6px;line-height:1.05;color:var(--color-info-primary)}

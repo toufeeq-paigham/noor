@@ -4,7 +4,7 @@
 //
 // Product logic is unchanged from CreatePostScreen.kt / CreatePostStore:
 //   · a paigham needs a message (≤1024) OR an uploaded audio recording — never both
-//   · up to 4 images, each picked → cropped → uploaded before it counts
+//   · up to 4 images, each picked → cropped → kept in the draft until Send paigham
 //   · one target: MASJID | MASJID_MASLAK | MASJID_PINCODE
 //   · the send is confirmed before it happens, and cannot be edited afterwards
 // The review STEP is that confirmation (it shows exactly what musalleen receive), which
@@ -154,20 +154,25 @@ function CmpMessageStep({ data }) {
         />
       ) : (
         <>
-          <div className={`input cmp-textarea ${tooLong ? 'error' : ''}`}>
+          <div className={`input cmp-textarea ${tooLong || post.messageError ? 'error' : ''}`}>
             <div className="inner">
               <textarea
+                key={`message-${post.focusMessageKey || 0}`}
                 className="val"
                 value={message}
                 rows={6}
                 placeholder="Jumah bayan begins at 1:00 PM this week…"
                 aria-label="Paigham message"
+                aria-invalid={tooLong || post.messageError ? 'true' : undefined}
+                autoFocus={!!post.focusMessage}
                 onInput={(e) => data.onMessage && data.onMessage(e.target.value)}
               />
             </div>
           </div>
           <div className="cmp-counter-row">
-            {tooLong
+            {post.messageError && !message.trim()
+              ? <span className="helper err" role="alert">Write a message or record your voice to continue.</span>
+              : tooLong
               ? <span className="helper err" role="alert">Too long by {message.length - max} characters.</span>
               : <span className="helper">Short and specific reads best on a phone.</span>}
             <span className={`cmp-counter ${tooLong ? 'over' : ''}`}>{message.length}/{max}</span>
@@ -206,24 +211,13 @@ function CmpMessageStep({ data }) {
 }
 
 // ── Step 2 · photos ──────────────────────────────────────────────────
-function CmpPhotoTile({ photo, index, onRemove, onRetry }) {
+function CmpPhotoTile({ photo, index, onRemove }) {
   return (
     <div className="cmp-photo">
       <img src={photo.src} alt={`Attached photo ${index + 1}`} />
-      {photo.uploading ? (
-        <span className="cmp-photo-veil"><span className="loader sm"></span></span>
-      ) : null}
-      {photo.failed ? (
-        <button className="cmp-photo-veil failed" onClick={onRetry} aria-label={`Retry upload of photo ${index + 1}`}>
-          <span className="mi" data-i="replay"></span>
-          <small>Retry</small>
-        </button>
-      ) : null}
-      {!photo.uploading && !photo.failed ? (
-        <button className="cmp-photo-remove" onClick={onRemove} aria-label={`Remove photo ${index + 1}`}>
-          <span className="mi" data-i="close"></span>
-        </button>
-      ) : null}
+      <button className="cmp-photo-remove" onClick={onRemove} aria-label={`Remove photo ${index + 1}`}>
+        <span className="mi" data-i="close"></span>
+      </button>
     </div>
   );
 }
@@ -268,7 +262,6 @@ function CmpPhotosStep({ data }) {
                 photo={photo}
                 index={i}
                 onRemove={() => data.onRemovePhoto && data.onRemovePhoto(i)}
-                onRetry={() => data.onRetryPhoto && data.onRetryPhoto(i)}
               />
             ))}
             {photos.length < max ? (
@@ -329,44 +322,53 @@ function CmpAudienceStep({ data }) {
 function CmpPostPreview({ data }) {
   const post = data.post || {};
   const masjid = data.masjid || window.OPS_MASJID;
-  const photos = (post.photos || []).filter((p) => !p.uploading && !p.failed);
+  const photos = post.photos || [];
   const { trimmed, audioReady } = cmpMessageState(post);
   return (
-    <div className="post-preview" aria-label="Preview of your paigham">
-      <div className="post-preview-head">
-        <span className="icon-tile accent" style={{ '--tile': '38px', borderRadius: 'var(--radius-circle)' }}>
-          <span className="mi fill" data-i="mosque"></span>
-        </span>
-        <span className="post-preview-id">
-          <strong>{masjid.name}</strong>
-          <small>Just now · {(CMP_AUDIENCE.find((a) => a.value === (post.audience || 'MASJID')) || {}).label}</small>
-        </span>
-        <span className="badge sm jade">Live</span>
-      </div>
+    <div className="cmp-qaum-frame" aria-label="Exact preview of this paigham in the Qaum timeline">
+      <div className="cmp-qaum-post">
+        <div className="cmp-qaum-head">
+          <span className="cmp-qaum-avatar" aria-hidden="true">{(masjid.name || 'M').charAt(0)}</span>
+          <span className="cmp-qaum-id">
+            <strong>{masjid.name}</strong>
+            <small aria-hidden="true">&nbsp;</small>
+          </span>
+        </div>
 
-      {audioReady ? (
-        <div className="aplayer">
-          <button className="ap-toggle" onClick={data.onToggleAudio} aria-label="Play recording">
-            <span className="mi fill" data-i={post.audio.playing ? 'pause' : 'play_arrow'}></span>
-          </button>
-          <span className="ap-time">{post.audio.duration}</span>
-          <div className="ap-wave" aria-hidden="true">
-            {CMP_WAVE.map((h, i) => <i key={i} className={i / CMP_WAVE.length <= (post.audio.progress || 0) ? 'on' : ''} style={{ '--h': `${h}%` }}></i>)}
+        {audioReady ? (
+          <div className="aplayer">
+            <button className="ap-toggle" onClick={data.onToggleAudio} aria-label="Play recording">
+              <span className="mi fill" data-i={post.audio.playing ? 'pause' : 'play_arrow'}></span>
+            </button>
+            <span className="ap-time">{post.audio.duration}</span>
+            <div className="ap-wave" aria-hidden="true">
+              {CMP_WAVE.map((h, i) => <i key={i} className={i / CMP_WAVE.length <= (post.audio.progress || 0) ? 'on' : ''} style={{ '--h': `${h}%` }}></i>)}
+            </div>
           </div>
-        </div>
-      ) : (
-        <div className="post-preview-body">{trimmed}</div>
-      )}
+        ) : (
+          <div className="cmp-qaum-body">{trimmed}</div>
+        )}
 
-      {photos.length ? (
-        <div className={`post-preview-photos count-${Math.min(photos.length, 4)}`}>
-          {photos.map((p, i) => <img key={p.id} src={p.src} alt={`Photo ${i + 1}`} />)}
-        </div>
-      ) : null}
+        {photos.length ? (
+          <div>
+            <div className="cmp-qaum-media">
+              <img src={photos[0].src} alt={`Attached photo 1 of ${photos.length}`} />
+            </div>
+            {photos.length > 1 ? (
+              <div className="cmp-qaum-pager" aria-label={`Photo 1 of ${photos.length}`}>
+                {photos.map((photo, i) => <i key={photo.id} className={i === 0 ? 'on' : ''}></i>)}
+              </div>
+            ) : null}
+          </div>
+        ) : null}
 
-      <div className="post-preview-foot">
-        <span className="rx-empty"><span className="mi" data-i="favorite"></span></span>
-        <span>Musalleen can react as soon as it arrives.</span>
+        <div className="cmp-qaum-foot" aria-label="Timeline actions shown for preview only">
+          <span className="cmp-qaum-actions" aria-hidden="true">
+            <span className="rx-empty"><span className="mi" data-i="favorite"></span></span>
+            <span className="cmp-qaum-share"><span className="mi" data-i="share"></span></span>
+          </span>
+          <small>Just now</small>
+        </div>
       </div>
     </div>
   );
@@ -389,15 +391,17 @@ function CmpReviewRow({ label, value, onEdit, editLabel = 'Edit', last }) {
 function CmpReviewStep({ data }) {
   const post = data.post || {};
   const { trimmed, audioReady } = cmpMessageState(post);
-  const photos = (post.photos || []).filter((p) => !p.uploading && !p.failed);
+  const photos = post.photos || [];
   const audience = CMP_AUDIENCE.find((a) => a.value === (post.audience || 'MASJID')) || CMP_AUDIENCE[0];
   return (
     <div>
-      <CmpHead
-        title="Ready to send?"
-        sub="This is exactly what your musalleen receive, the moment you send it. A paigham cannot be edited afterwards — only deleted."
-      />
+      <div className="cmp-review-kicker">QAUM TIMELINE PREVIEW</div>
+      <CmpHead title="Ready to send?" sub="This is how the paigham will appear in Qaum. It cannot be edited after sending — only deleted." />
       <CmpPostPreview data={data} />
+      <div className="cmp-review-summary-head">
+        <strong>Paigham summary</strong>
+        <span className="badge sm teal">Ready</span>
+      </div>
       <div className="cmp-review-list">
         {/* Which masjid is speaking. Always stated — compose can be reached from the Qaum
             tab, where there is no console header naming the masjid — and changeable here
@@ -570,26 +574,21 @@ function ComposePostScreen({ data = {} }) {
   const post = data.post || {};
   const step = post.step || 'message';
   const index = Math.max(0, CMP_STEPS.indexOf(step));
-  const { hasContent, tooLong, trimmed, audioReady } = cmpMessageState(post);
   const photos = post.photos || [];
-  const uploading = photos.some((p) => p.uploading) || (post.audio && post.audio.uploading);
-  const failedAttachment = photos.some((p) => p.failed) || (post.audio && post.audio.failed);
+  const uploading = !!(post.audio && post.audio.uploading);
 
   let ctaLabel = 'Continue';
   let ctaDisabled = false;
   let helper = null;
 
   if (step === 'message') {
-    ctaDisabled = !hasContent || uploading;
-    if (!hasContent && !tooLong) helper = 'Write a message or record your voice to continue.';
-    if (tooLong) helper = 'Shorten the message to continue.';
+    // Incomplete text is ordinary form state, not a disabled action. Continue validates
+    // on tap and returns focus to the field with inline recovery copy.
+    ctaDisabled = uploading;
     if (post.audio && post.audio.uploading) helper = 'Waiting for the recording to finish uploading…';
     if (post.audio && post.audio.failed) { ctaDisabled = true; helper = 'Retry the upload to continue.'; }
   } else if (step === 'photos') {
     ctaLabel = photos.length ? 'Continue' : 'Continue without photos';
-    ctaDisabled = uploading || failedAttachment;
-    if (uploading) helper = 'Waiting for the upload to finish…';
-    if (failedAttachment) helper = 'Retry or remove the failed photo to continue.';
   } else if (step === 'audience') {
     ctaLabel = 'Review paigham';
   } else {
