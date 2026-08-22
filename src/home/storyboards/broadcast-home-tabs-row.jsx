@@ -186,6 +186,119 @@ const MANAGED_ENTRY_FRAMES = [
   }
 ];
 
+// Cold start. Cached organisation access already carries the membership id, the role and the
+// grants, so the card and the send action are decided before any request. Only the masjid's
+// name, photo and summary wait on the network — and the card is already its final size while
+// they do, so nothing below it moves when they land.
+// Appended at global indices 45-50 so every existing frame index and hash deep-link stays stable.
+const COLD_START_FRAMES = [
+  {
+    id: 'home-console-loading',
+    name: 'Home — Console Card Loading',
+    tab: 0,
+    component: 'HomeScreen',
+    props: {
+      heroSel: null,
+      managedPhase: 'identity',
+      managedRole: 'Chairman',
+      managedAccess: 'Full admin',
+      managedAttention: 0,
+      onManageMasjid: () => {},
+      // No sendTarget: the name has not resolved, so the action has no display metadata to
+      // announce. Availability and destination come from the cached organisation instead.
+      onSendPaigham: () => {}
+    }
+  },
+  {
+    id: 'home-console-ready',
+    name: 'Home — Console Card Ready',
+    tab: 0,
+    component: 'HomeScreen',
+    props: {
+      heroSel: null,
+      managedMasjid: 'Masjid E Bilal',
+      managedRole: 'Chairman',
+      managedAccess: 'Full admin',
+      managedAttention: 0,
+      onManageMasjid: () => {},
+      onSendPaigham: () => {},
+      sendTarget: 'Masjid E Bilal'
+    }
+  },
+  {
+    // Identity resolved, summary did not. Never a zero and never `Ready to set up`: both are
+    // claims about this masjid that nothing has verified.
+    id: 'home-console-summary-error',
+    name: 'Home — Summary Unavailable',
+    tab: 0,
+    component: 'HomeScreen',
+    props: {
+      heroSel: null,
+      managedMasjid: 'Masjid E Bilal',
+      managedRole: 'Chairman',
+      managedAccess: 'Full admin',
+      managedPhase: 'summary-error',
+      managedAttention: 0,
+      onManageMasjid: () => {},
+      onRetryManagedSummary: () => {},
+      onSendPaigham: () => {},
+      sendTarget: 'Masjid E Bilal'
+    }
+  },
+  {
+    // One snapshot carries identity and summary together, so a failed request leaves no name
+    // either. A neutral `Your masjid` is true; a fabricated name is not, and dropping the card
+    // would put back the jump this whole change removes.
+    id: 'home-console-unresolved',
+    name: 'Home — Masjid Unresolved',
+    tab: 0,
+    component: 'HomeScreen',
+    props: {
+      heroSel: null,
+      managedPhase: 'unresolved',
+      managedRole: 'Chairman',
+      managedAccess: 'Full admin',
+      managedAttention: 0,
+      onManageMasjid: () => {},
+      onRetryManagedSummary: () => {},
+      onSendPaigham: () => {}
+    }
+  },
+  {
+    // Frozen at the midpoint of the exit so a still can show the surface leaving. The live
+    // device runs it unpaused; reduced motion removes it outright.
+    id: 'home-console-revoked',
+    name: 'Home — Membership Revoked (mid-exit)',
+    tab: 0,
+    component: 'HomeScreen',
+    props: {
+      heroSel: null,
+      managedMasjid: 'Masjid E Bilal',
+      managedRole: 'Chairman',
+      managedAccess: 'Full admin',
+      managedPhase: 'revoked',
+      managedAttention: 0,
+      onManageMasjid: () => {}
+    }
+  },
+  {
+    // Active membership without SEND_PAIGHAM: the card is present, the send action is not, and
+    // the content clearance under it is decided by the same cached grant.
+    id: 'home-console-view-only',
+    name: 'Home — View-only Member',
+    tab: 0,
+    component: 'HomeScreen',
+    props: {
+      heroSel: null,
+      managedMasjid: 'Masjid E Bilal',
+      managedRole: 'Trustee',
+      managedAccess: 'View only',
+      managedAttention: 0,
+      onManageMasjid: () => {}
+    }
+  }
+];
+
 // NOTE: the guest / no-masjid / notification nudge STATES used to live here as extra frames.
 // They moved to their own board — src/nudge-states/ — to declutter this storyboard and cut the
 // canvas' pan/zoom cost. STORYBOARD_FRAMES indices 1-3 (login-nudge/privacy/ATT) are retained in
@@ -281,6 +394,19 @@ function HomeRow({ active = 0, onSelectFrame }) {
   );
 }
 
+function HomeColdStartRow({ active = 0, onSelectFrame }) {
+  return (
+    <div>
+      <div className="poc-row-label">
+        <span className="mi" data-i="hourglass_top"></span> 07 · Home — Managed Masjid Cold Start · 6 states
+      </div>
+      <div className="poc-board">
+        {COLD_START_FRAMES.map((f, i) => renderFrame(f, 45 + i, active, onSelectFrame))}
+      </div>
+    </div>
+  );
+}
+
 function QaumRow({ active = 0, onSelectFrame }) {
   return (
     <div>
@@ -355,4 +481,4 @@ function HomePrayerRow({ active = 0, onSelectFrame }) {
   );
 }
 
-Object.assign(window, { HomeRow, QaumRow, QuranRow, SalaahRow, ProfileRow, HomePrayerRow });
+Object.assign(window, { HomeRow, HomeColdStartRow, QaumRow, QuranRow, SalaahRow, ProfileRow, HomePrayerRow });

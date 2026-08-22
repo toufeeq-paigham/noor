@@ -66,6 +66,11 @@
               on-select-frame="{{ syncLiveStateToFrame }}"
               hint-size="1000px,580px">
     </x-import>
+    <x-import component="HomeColdStartRow" from="./storyboards/broadcast-home-tabs-row.jsx"
+              active="{{ activeFrameIndex }}"
+              on-select-frame="{{ syncLiveStateToFrame }}"
+              hint-size="1200px,580px">
+    </x-import>
     <x-import component="QaumRow" from="./storyboards/broadcast-home-tabs-row.jsx"
               active="{{ activeFrameIndex }}"
               on-select-frame="{{ syncLiveStateToFrame }}"
@@ -105,6 +110,12 @@
                       managed-role="{{ profileManagedRole }}"
                       managed-stats="{{ profileManagedStats }}"
                       managed-stats-loading="{{ managedStatsLoading }}"
+                      managed-phase="{{ managedPhase }}"
+                      managed-access="{{ profileManagedAccess }}"
+                      managed-exit-frozen="{{ managedExitFrozen }}"
+                      on-retry-managed-summary="{{ retryManagedSummary }}"
+                      on-send-paigham="{{ homeSendPaigham }}"
+                      send-target="{{ homeSendTarget }}"
                       on-manage-masjid="{{ goMasjidAdmin }}"
                       on-manage-committee="{{ goMasjidCommittee }}"
                       hero-sel="{{ homeHeroSel }}"
@@ -385,7 +396,18 @@ class Component extends DCLogic {
     profileHasMasjid: true,
     profileManagedMasjid: false,
     managedStatsLoading: false,
-    managedFirstRun: false
+    managedFirstRun: false,
+    // Cold-start phase of the Home console card: 'ready' | 'identity' | 'summary-error'
+    // | 'unresolved' | 'revoked'. See broadcast-home-screens.jsx.
+    managedPhase: 'ready',
+    // SEND_PAIGHAM in the cached access snapshot. Decides the Home send FAB and its clearance.
+    managedCanSend: false,
+    // Role and access are both written from the cached membership, never from the network.
+    managedAccess: 'Full admin',
+    managedRoleTitle: 'Chairman',
+    // Pending committee invitations. Explicit per frame, never inherited: an invitation claim
+    // left over from the previously selected frame is a claim about a masjid nobody made.
+    managedAttention: 0
   };
 
   componentDidMount() {
@@ -427,6 +449,12 @@ class Component extends DCLogic {
       else if (hash === '#qaum-managed') this.syncLiveStateToFrame(42);
       else if (hash === '#home-managed-loading') this.syncLiveStateToFrame(43);
       else if (hash === '#home-managed-new') this.syncLiveStateToFrame(44);
+      else if (hash === '#home-console-loading') this.syncLiveStateToFrame(45);
+      else if (hash === '#home-console-ready') this.syncLiveStateToFrame(46);
+      else if (hash === '#home-console-summary-error') this.syncLiveStateToFrame(47);
+      else if (hash === '#home-console-unresolved') this.syncLiveStateToFrame(48);
+      else if (hash === '#home-console-revoked') this.syncLiveStateToFrame(49);
+      else if (hash === '#home-console-view-only') this.syncLiveStateToFrame(50);
     }
   }
 
@@ -486,13 +514,22 @@ class Component extends DCLogic {
       // 39 · Qaum media detail retains the feed behind a semantic overlay
       { activeTab: 1, qaumMediaOpen: true, qaumAudioPlaying: false, qaumAudioProgress: 0, qaumDock: 'none' },
       // 40 · Active committee membership opens the matching admin console
-      { activeTab: 4, profileHasMasjid: true, profileManagedMasjid: true },
+      { activeTab: 4, profileHasMasjid: true, profileManagedMasjid: true, managedAttention: 3 },
       // 41-42 · The same membership surfaces a console entry on Home and Qaum
-      { activeTab: 0, profileHasMasjid: true, profileManagedMasjid: true, homeHeroSel: null, homeActivePrayer: 'Maghrib' },
+      { activeTab: 0, profileHasMasjid: true, profileManagedMasjid: true, homeHeroSel: null, homeActivePrayer: 'Maghrib', managedAttention: 3 },
       { activeTab: 1, profileHasMasjid: true, profileManagedMasjid: true, qaumAudioPlaying: false, qaumAudioProgress: 0, qaumDock: 'none' },
       // 43-44 · The console tile's own data states: stats still loading, and a masjid with none yet
       { activeTab: 0, profileHasMasjid: true, profileManagedMasjid: true, homeHeroSel: null, homeActivePrayer: 'Maghrib', managedStatsLoading: true },
-      { activeTab: 0, profileHasMasjid: true, profileManagedMasjid: true, homeHeroSel: null, homeActivePrayer: 'Maghrib', managedFirstRun: true }
+      { activeTab: 0, profileHasMasjid: true, profileManagedMasjid: true, homeHeroSel: null, homeActivePrayer: 'Maghrib', managedFirstRun: true },
+      // 45-50 · Managed-masjid cold start. The membership, its role, its grants and therefore the
+      // card's geometry and the send action all come from cached access; only the name, photo and
+      // summary wait on the network.
+      { activeTab: 0, profileHasMasjid: true, profileManagedMasjid: true, homeHeroSel: null, homeActivePrayer: 'Maghrib', managedPhase: 'identity', managedCanSend: true },
+      { activeTab: 0, profileHasMasjid: true, profileManagedMasjid: true, homeHeroSel: null, homeActivePrayer: 'Maghrib', managedCanSend: true },
+      { activeTab: 0, profileHasMasjid: true, profileManagedMasjid: true, homeHeroSel: null, homeActivePrayer: 'Maghrib', managedPhase: 'summary-error', managedCanSend: true },
+      { activeTab: 0, profileHasMasjid: true, profileManagedMasjid: true, homeHeroSel: null, homeActivePrayer: 'Maghrib', managedPhase: 'unresolved', managedCanSend: true },
+      { activeTab: 0, profileHasMasjid: true, profileManagedMasjid: true, homeHeroSel: null, homeActivePrayer: 'Maghrib', managedPhase: 'revoked' },
+      { activeTab: 0, profileHasMasjid: true, profileManagedMasjid: true, homeHeroSel: null, homeActivePrayer: 'Maghrib', managedAccess: 'View only', managedRoleTitle: 'Trustee' }
     ];
     clearInterval(this._audioTimer);
     this.setState({
@@ -518,6 +555,11 @@ class Component extends DCLogic {
       profileManagedMasjid: false,
       managedStatsLoading: false,
       managedFirstRun: false,
+      managedPhase: 'ready',
+      managedCanSend: false,
+      managedAccess: 'Full admin',
+      managedRoleTitle: 'Chairman',
+      managedAttention: 0,
       salaahNudgeClosed: false,
       salaahLoginSheet: false,
       ...states[idx],
@@ -801,6 +843,14 @@ class Component extends DCLogic {
     window.location.href = '../masjid-operations/Masjid Console.dc.html#admin';
   };
 
+  // Retry re-enters the loading phase rather than jumping straight to content, so the live
+  // device shows the same reserved geometry and the same crossfade the cold start uses.
+  retryManagedSummary = () => {
+    this.setState({ managedPhase: 'identity' });
+    clearTimeout(this._managedRetryTimer);
+    this._managedRetryTimer = setTimeout(() => this.setState({ managedPhase: 'ready' }), 900);
+  };
+
   goMasjidCommittee = () => {
     window.location.href = '../masjid-operations/Masjid Console.dc.html#members';
   };
@@ -944,10 +994,14 @@ class Component extends DCLogic {
       profilePhone: s.profilePhone,
       profileHasMasjid: s.profileHasMasjid,
       profileManagedCount: 2,
-      profileManagedAttention: s.managedFirstRun ? 0 : 3,
+      profileManagedAttention: s.managedAttention,
       // The console entry appears on Home, Qaum and Profile for a committee member.
-      profileManagedName: s.profileManagedMasjid ? (s.managedFirstRun ? 'Masjid-e-Mohammadi' : 'Masjid E Bilal') : null,
-      profileManagedRole: 'Chairman',
+      // The name is the one thing cached access does not carry, so the phases that are still
+      // waiting on it genuinely have none.
+      profileManagedName: (s.managedPhase === 'identity' || s.managedPhase === 'unresolved')
+        ? null
+        : (s.profileManagedMasjid ? (s.managedFirstRun ? 'Masjid-e-Mohammadi' : 'Masjid E Bilal') : null),
+      profileManagedRole: s.managedRoleTitle,
       // Legacy values feed the collapsed musalleen context; Home no longer renders a stat strip.
       profileManagedStats: s.managedFirstRun
         ? [
@@ -961,6 +1015,19 @@ class Component extends DCLogic {
             { value: '3.1k', label: 'Reactions', delta: '+148' }
           ],
       managedStatsLoading: s.managedStatsLoading,
+      // Cold start: the card's phase, the access line and the send action. The last two are
+      // written from cached grants, so neither waits on a request.
+      managedPhase: s.managedPhase,
+      profileManagedAccess: s.managedAccess,
+      // The live device plays the revoked collapse; only the storyboard stills freeze it.
+      managedExitFrozen: false,
+      retryManagedSummary: this.retryManagedSummary,
+      homeSendPaigham: (s.profileManagedMasjid && s.managedCanSend) ? this.goSendPaigham : null,
+      // Display metadata only, and only once identity has resolved. Availability and
+      // destination stay with the cached organisation id + SEND_PAIGHAM above.
+      homeSendTarget: (s.managedPhase === 'identity' || s.managedPhase === 'unresolved')
+        ? null
+        : (s.profileManagedMasjid ? 'Masjid E Bilal' : null),
       qaumManageMasjid: s.profileManagedMasjid ? this.goMasjidAdmin : null,
       qaumSendPaigham: s.profileManagedMasjid ? this.goSendPaigham : null,
       qaumSendTarget: s.profileManagedMasjid || null,

@@ -148,6 +148,110 @@
   height:7px;
 }
 
+/* ── Cold start ────────────────────────────────────────────────────────────────
+   Cached organisation access already knows the membership, its role and its grants,
+   so the only unknown parts of this card at cold start are the masjid's NAME and
+   PHOTO. The skeleton therefore covers exactly those two boxes at exactly their
+   final size; everything else on the row is printed for real. A grey slab where the
+   role already reads `Chairman · Full admin` would be hiding what we know. */
+
+.masjid-mark.sk{
+  background:color-mix(in oklab,var(--color-neutral-white) 15%,transparent);
+}
+
+/* The waiting name line is sized by a real (hidden) character, not by a fixed height, so its
+   box is exactly one line of the same type the resolved name uses — at every dynamic-text
+   scale. That is what makes the card the same height before and after identity lands; a
+   hardcoded 18px would match at the default scale and drift at every other one. */
+.bhs-entry-name.sk{
+  position:relative;
+}
+
+.bhs-entry-name.sk::before{
+  content:"\00a0";
+  visibility:hidden;
+}
+
+.bhs-entry-name.sk i{
+  position:absolute;
+  top:50%;
+  left:0;
+  width:118px;
+  height:10px;
+  border-radius:var(--radius-circle);
+  background:color-mix(in oklab,var(--color-neutral-white) 20%,transparent);
+  transform:translateY(-50%);
+}
+
+/* Identity and summary land under a crossfade; the motion tokens collapse to 1ms
+   under prefers-reduced-motion, which turns this into immediate replacement. */
+.bhs-entry-resolved{
+  animation:bhs-entry-fade var(--motion-standard) var(--ease-out);
+}
+
+@keyframes bhs-entry-fade{
+  from{opacity:0}
+  to{opacity:1}
+}
+
+/* A summary that failed says so and offers the retry. It never becomes a zero, and
+   it never becomes `Ready to set up` — both of those are claims about the masjid
+   that nothing has verified. The row stays quiet: this is a degraded secondary
+   line on Home, not an error screen, and the console above it still opens. */
+.bhs-entry-status.unavailable{
+  cursor:pointer;
+}
+
+.bhs-entry-status.unavailable .bhs-entry-status-icon{
+  background:color-mix(in oklab,var(--color-neutral-white) 13%,transparent);
+  color:color-mix(in oklab,var(--color-neutral-white) 78%,transparent);
+}
+
+.bhs-entry-status-retry{
+  flex-shrink:0;
+  font-size:17px;
+  color:var(--color-action-primary);
+}
+
+/* Revocation removes the surface, and the removal is the one moment that could put
+   back the jump this whole card exists to remove. The card collapses its own height
+   with the content below riding up in the same pass, rather than vanishing between
+   two frames. Under reduced motion it is removed outright — an immediate
+   replacement, not a half-played collapse. */
+/* `minmax(0,…)`, never a bare `1fr`: a bare fr track keeps an automatic minimum equal to the
+   item's min-content size, so the collapse bottomed out at the card's own padding and left an
+   18px residue above Track Salaah after the card had gone. */
+.bhs-exit{
+  display:grid;
+  grid-template-rows:minmax(0,1fr);
+}
+
+.bhs-exit>div{
+  min-height:0;
+  overflow:hidden;
+}
+
+.bhs-exit.is-exiting{
+  animation:bhs-exit-collapse var(--motion-standard) var(--ease-out) forwards;
+}
+
+/* Storyboard stills only: hold the collapse at its midpoint so a static frame can
+   show the surface leaving. The live device runs the same animation unpaused. */
+.bhs-exit.frozen{
+  animation-delay:-20ms;
+  animation-play-state:paused;
+}
+
+@keyframes bhs-exit-collapse{
+  from{grid-template-rows:minmax(0,1fr);opacity:1}
+  to{grid-template-rows:minmax(0,0fr);opacity:0}
+}
+
+@media(prefers-reduced-motion:reduce){
+  .bhs-entry-resolved{animation:none}
+  .bhs-exit.is-exiting{display:none}
+}
+
 .bhs-entry button:focus-visible{
   outline:2px solid var(--color-action-primary);
   outline-offset:-3px;

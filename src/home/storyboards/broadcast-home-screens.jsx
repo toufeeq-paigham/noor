@@ -53,13 +53,48 @@ function HomeScreen({
     { value: '3.1k', label: 'Reactions', delta: '+148' }
   ],
   managedStatsLoading = false,
+  // Cold-start phase of the console card. Cached organisation access decides whether the card
+  // exists at all; the network only decides what is written inside it.
+  //   'ready'         — identity and summary resolved
+  //   'identity'      — membership known from cache, masjid name/photo still in flight
+  //   'summary-error' — identity resolved, summary failed → honest retry, never a zero
+  //   'unresolved'    — one snapshot carries both, and it failed: no name either
+  //   'revoked'       — 403 reconciled the membership away; the reserved surface leaves
+  managedPhase = 'ready',
+  // Written from the cached grants, not from the network: MANAGE_COMMITTEE → Full admin,
+  // SEND_PAIGHAM → Can send paighams, otherwise View only. Same source as the send FAB.
+  managedAccess = 'Full admin',
+  // Storyboard stills hold the revoked exit at its midpoint so a frame can show the surface
+  // leaving; the live device runs the same collapse to completion.
+  managedExitFrozen = true,
+  onRetryManagedSummary,
   onManageMasjid,
-  onManageCommittee
+  onManageCommittee,
+  // The send action is decided by membership id + SEND_PAIGHAM alone, so it is present from
+  // the first frame and never appears late. Its label carries no masjid name; the composer
+  // resolves the display name after navigation.
+  onSendPaigham,
+  sendTarget = null,
+  fabCompact = false        // storyboard override; the live device lets scroll position decide
 }) {
   const { PromptCard } = window;
+  const identityPending = managedPhase === 'identity';
+  const identityFailed = managedPhase === 'unresolved';
+  const summaryFailed = managedPhase === 'summary-error' || identityFailed;
+  const summaryPending = identityPending || managedStatsLoading;
+  const exiting = managedPhase === 'revoked';
+  // The send action's availability and destination come from the cached organisation id and
+  // SEND_PAIGHAM. The masjid's NAME is optional display metadata that arrives later, so until
+  // it has actually resolved the action announces itself generically rather than naming a
+  // masjid the app cannot yet name anywhere else on this screen.
+  const resolvedSendTarget = (identityPending || identityFailed) ? null : sendTarget;
+  // The card is reserved from cached membership, so it exists before any name does.
+  const showManagedEntry = !!onManageMasjid && (!!managedMasjid || managedPhase !== 'ready');
   // First run is derived from the numbers themselves, so the prompt and the strip can never
-  // disagree about whether this masjid has anything to show yet.
-  const managedFirstRun = managedStats.every((s) => String(s.value) === '0');
+  // disagree about whether this masjid has anything to show yet — and only ever from a summary
+  // that actually resolved. A missing summary is not a masjid with nothing in it.
+  const managedFirstRun = managedPhase === 'ready' && managedStats.every((s) => String(s.value) === '0');
+  const [fabScrolled, setFabScrolled] = React.useState(false);
   const bellIcon = notifOn ? 'notifications' : 'notifications_off';
   const bellFill = notifOn ? 1 : 0;
   const bellOpacity = notifOn ? 0.9 : 0.5;
@@ -183,8 +218,13 @@ function HomeScreen({
         </div>
       </div>
 
-      {/* Scroll layer — only the sheet scrolls; it rises over the fixed hero */}
-      <div style={{ position: 'absolute', inset: 0, overflowY: 'auto', WebkitOverflowScrolling: 'touch', paddingBottom: 80, zIndex: 2, boxSizing: 'border-box' }}>
+      {/* Scroll layer — only the sheet scrolls; it rises over the fixed hero.
+          The FAB's content clearance comes from the same cached capability the FAB does, so
+          the last row of Home never shifts when the network answers. */}
+      <div
+        onScroll={(e) => setFabScrolled(e.target.scrollTop > 24)}
+        style={{ position: 'absolute', inset: 0, overflowY: 'auto', WebkitOverflowScrolling: 'touch', paddingBottom: onSendPaigham ? 150 : 80, zIndex: 2, boxSizing: 'border-box' }}
+      >
         {/* Transparent spacer keeps the sheet below the hero at rest (clicks pass through to Suhoor/Iftaar) */}
         <div style={{ height: 272, flexShrink: 0, pointerEvents: 'none' }} />
 
@@ -192,25 +232,47 @@ function HomeScreen({
         <div style={{ position: 'relative', pointerEvents: 'auto', background: 'color-mix(in oklab, var(--color-surface-card) 82%, transparent)', backdropFilter: 'blur(28px) saturate(180%)', WebkitBackdropFilter: 'blur(28px) saturate(180%)', borderRadius: '24px 24px 0 0', paddingBottom: 32 }}>
           {/* Home is a window into the console. The identity row opens the console; the only
               separate row is work that needs a person, and it deep-links to that destination. */}
-          {managedMasjid && onManageMasjid ? (
+          {showManagedEntry ? (
+            <div className={`bhs-exit${exiting ? (managedExitFrozen ? ' is-exiting frozen' : ' is-exiting') : ''}`}>
             <div style={{ padding: '18px 20px 0' }}>
               <div className="bhs-entry">
+                {/* The destination is the masjid ID, which cached access already holds, so the
+                    row is pressable and the arrow is live before the name arrives. */}
                 <button className="bhs-entry-main" onClick={onManageMasjid}>
-                  <span className="masjid-mark" style={{ '--tile': '38px' }}>
-                    <img src="../../images/masjid-camera-preview.png" alt="" />
-                  </span>
+                  {identityPending || identityFailed ? (
+                    <span className="masjid-mark sk" style={{ '--tile': '38px' }} aria-hidden="true"></span>
+                  ) : (
+                    <span className="masjid-mark" style={{ '--tile': '38px' }}>
+                      <img src="../../images/masjid-camera-preview.png" alt="" />
+                    </span>
+                  )}
                   <span className="bhs-entry-copy">
                     <span className="bhs-entry-kicker">MASJID CONSOLE</span>
-                    <span className="bhs-entry-name">{managedMasjid}</span>
-                    <span className="bhs-entry-role">{managedRole} · Full admin</span>
+                    {identityPending ? (
+                      <span className="bhs-entry-name sk" aria-label="Loading masjid name"><i></i></span>
+                    ) : (
+                      <span className="bhs-entry-name bhs-entry-resolved">
+                        {identityFailed ? 'Your masjid' : managedMasjid}
+                      </span>
+                    )}
+                    <span className="bhs-entry-role">{managedRole} · {managedAccess}</span>
                   </span>
                   <span className="mi bhs-entry-go" data-i="arrow_forward"></span>
                 </button>
-                {managedStatsLoading ? (
+                {summaryPending ? (
                   <span className="bhs-entry-status loading" aria-label="Loading broadcast summary">
                     <span className="skeleton"></span>
                     <span className="skeleton short"></span>
                   </span>
+                ) : summaryFailed ? (
+                  <button className="bhs-entry-status unavailable bhs-entry-resolved" onClick={onRetryManagedSummary || onManageMasjid}>
+                    <span className="bhs-entry-status-icon"><span className="mi" data-i="info" aria-hidden="true"></span></span>
+                    <span>
+                      <strong>{identityFailed ? "Couldn't reach this masjid" : "Summary didn't load"}</strong>
+                      <small>{identityFailed ? 'Tap to try again' : 'Console still opens · Tap to retry'}</small>
+                    </span>
+                    <span className="mi bhs-entry-status-retry" data-i="replay" aria-hidden="true"></span>
+                  </button>
                 ) : managedAttention ? (
                   <button className="bhs-entry-status attention" onClick={onManageCommittee || onManageMasjid}>
                     <span className="bhs-entry-status-icon"><span className="mi" data-i="groups" aria-hidden="true"></span></span>
@@ -221,7 +283,7 @@ function HomeScreen({
                     <span className="mi bhs-entry-go" data-i="chevron_right"></span>
                   </button>
                 ) : (
-                  <span className={`bhs-entry-status${managedFirstRun ? ' first-run' : ''}`}>
+                  <span className={`bhs-entry-status bhs-entry-resolved${managedFirstRun ? ' first-run' : ''}`}>
                     <span className="bhs-entry-status-icon">
                       <span className="mi" data-i={managedFirstRun ? 'mosque' : 'campaign'} aria-hidden="true"></span>
                     </span>
@@ -232,6 +294,7 @@ function HomeScreen({
                   </span>
                 )}
               </div>
+            </div>
             </div>
           ) : null}
 
@@ -525,6 +588,22 @@ function HomeScreen({
         </div>
 
       </div>
+
+      {/* Send a paigham — decided by membership id + SEND_PAIGHAM in the cached access snapshot,
+          which is why it is here on the very first frame and never arrives late. The label
+          names the action, not the masjid, so nothing on it is waiting for the network; the
+          composer resolves the display name after navigation. Matches the Qaum tab's action. */}
+      {onSendPaigham && (
+        <button
+          className={`fab ${fabScrolled || fabCompact ? 'compact' : ''}`}
+          onClick={onSendPaigham}
+          aria-label={resolvedSendTarget ? `Send a paigham from ${resolvedSendTarget}` : 'Send a paigham'}
+          style={{ bottom: 104 }}
+        >
+          <span className="mi" data-i="campaign" aria-hidden="true"></span>
+          <span className="fab-label">Send a paigham</span>
+        </button>
+      )}
     </div>
   );
 }
