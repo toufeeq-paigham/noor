@@ -1,0 +1,181 @@
+/* ══════════════════════════════════════════════════════════════════════════
+   Salaah timing rules — feature stylesheet for the two rule pages.
+
+   Same idiom as ./broadcast-studio.css: the component CONSTRUCTIONS come from the kit
+   (.list-group/.list-item for the summary rows, .dd-item for the rule choices, .picker-field +
+   .dd-menu + .time-select for every value, SstDay for the axis, .snack, .empty-state, .skeleton),
+   and this sheet owns only what is specific to this feature — the marks on a row, the axis frame,
+   the saved-to-draft acknowledgement and the fault language.
+
+   Tokens only. No raw --noor-* primitives, no literal hex.
+
+   Colour vocabulary, inherited from the Salaah editor so the two screens agree:
+     green  = something CHANGED against the published rule
+     amber  = this rule stays on the clock and will drift
+     red    = this value cannot exist
+   Green and amber never letter (2.12:1 and 2.05:1 on card); red may (4.57:1 / 6.13:1).
+   ══════════════════════════════════════════════════════════════════════════ */
+
+/* ── Shell. The screens are a flex column inside the device; the app bar floats over the
+   body so its haze has something to blur. ── */
+.srl-shell{width:100%;height:100%;box-sizing:border-box;position:relative;overflow:hidden;
+  display:flex;flex-direction:column;background:var(--color-surface-primary);
+  font-family:var(--font-body);color:var(--color-info-primary)}
+.srl-body{flex:1;min-height:0;overflow-y:auto;overscroll-behavior:contain;box-sizing:border-box;
+  display:flex;flex-direction:column;padding:0 var(--content-gutter)}
+
+.srl-appbar-actions{display:flex;align-items:center;gap:var(--size-md);flex-shrink:0}
+
+/* ── Summary page ── */
+
+/* One lead sentence, not an introductory card: the reader came here to see six rules. */
+.srl-lead{font-family:var(--font-body);font-size:14px;line-height:1.55;
+  color:var(--color-info-secondary)}
+
+/* The load's own context, above the rules. `.seed` is a masjid whose setup has never been made
+   public; `.blocked` is a rule that cannot be published as it stands. */
+.srl-context{display:flex;align-items:flex-start;gap:var(--size-lg);box-sizing:border-box;
+  padding:var(--size-xl);border:1px solid var(--color-neutral-border);
+  border-radius:var(--radius-card);background:var(--color-surface-card)}
+.srl-context .mi{flex-shrink:0;font-size:var(--icon-sm);color:var(--color-info-secondary)}
+.srl-context-copy{min-width:0;flex:1;display:flex;flex-direction:column;gap:2px}
+.srl-context-copy strong{font:700 13px/1.4 var(--font-body);color:var(--color-info-primary)}
+.srl-context-copy span{font:12px/1.5 var(--font-body);color:var(--color-info-secondary)}
+.srl-context.seed{border-color:color-mix(in oklab,var(--color-status-warning) 42%,transparent);
+  background:color-mix(in oklab,var(--color-status-warning) 8%,var(--color-surface-card))}
+.srl-context.seed .mi{color:var(--color-status-warning-alt)}
+.srl-context.blocked{border-color:color-mix(in oklab,var(--color-status-error) 40%,transparent);
+  background:color-mix(in oklab,var(--color-status-error) 6%,var(--color-surface-card))}
+/* Red is the one accent on these screens that may carry type. */
+.srl-context.blocked .mi,.srl-context.blocked .srl-context-copy strong{color:var(--color-status-error)}
+.srl-context.changed{border-color:color-mix(in oklab,var(--color-action-primary) 40%,transparent);
+  background:var(--gradient-emerald),var(--color-surface-card)}
+.srl-context.changed .mi{color:var(--color-action-primary)}
+
+/* A summary row is the kit's .list-item; these are the marks this feature adds to it.
+   The prayer NAME is the row title, so the rule is its subtitle and today's answer its value. */
+.srl-row-rule{display:flex;flex-direction:column;gap:1px;min-width:0}
+.srl-row-rule strong{font:700 12.5px/1.4 var(--font-body);color:var(--color-info-primary)}
+.srl-row-rule small{font:11.5px/1.45 var(--font-body);color:var(--color-info-secondary)}
+/* Today's resolved azaan, right-aligned so the six answers form a column a committee can scan. */
+.srl-row-time{display:flex;flex-direction:column;align-items:flex-end;gap:1px;flex-shrink:0;
+  text-align:right}
+.srl-row-time b{font:700 14px/1.2 var(--font-body);font-variant-numeric:tabular-nums;
+  color:var(--color-info-primary)}
+.srl-row-time small{font:10.5px/1.3 var(--font-body);font-variant-numeric:tabular-nums;
+  white-space:nowrap;color:var(--color-info-secondary)}
+.srl-row-time.bad b{color:var(--color-status-error)}
+/* The changed mark is a bar on the row's leading edge, drawn rather than laid out so an edited
+   row does not shift its columns out of line with the rows above it. */
+.srl-row{position:relative}
+.srl-row.changed::before{content:"";position:absolute;left:0;top:var(--size-md);bottom:var(--size-md);
+  width:3px;border-radius:var(--radius-xs);background:var(--color-action-primary)}
+.srl-row.bad::before{content:"";position:absolute;left:0;top:var(--size-md);bottom:var(--size-md);
+  width:3px;border-radius:var(--radius-xs);background:var(--color-status-error)}
+/* The reason a row cannot be published sits under it, in the one accent allowed to be words. */
+.srl-row-fault{display:flex;align-items:flex-start;gap:var(--size-md);
+  padding:0 var(--size-2xl) var(--size-lg);box-sizing:border-box;
+  font:11.5px/1.45 var(--font-body);color:var(--color-status-error)}
+.srl-row-fault .mi{flex-shrink:0;font-size:14px}
+
+.srl-foot{padding:var(--size-lg) 4px 0;font-family:var(--font-body);font-size:11px;line-height:1.5;
+  color:var(--color-info-tertiary)}
+
+/* ── Detail page ── */
+
+/* This prayer on its own axis — one window of the same day the timings screen draws, so the number
+   arrives with the two bounds it has to sit between. It replaced a read-only hero stating the time. */
+.srl-axis{box-sizing:border-box;padding:var(--size-lg) var(--size-xl) var(--size-md);
+  border:1px solid var(--color-neutral-border);border-radius:var(--radius-card);
+  background:var(--color-surface-card);touch-action:pan-y}
+.srl-axis-head{display:flex;align-items:baseline;justify-content:space-between;gap:var(--size-lg);
+  margin-bottom:var(--size-sm)}
+.srl-axis-head small{font-family:var(--font-body);font-size:10.5px;font-variant-numeric:tabular-nums;
+  color:var(--color-info-tertiary)}
+
+/* ── The config card ────────────────────────────────────────────────────────
+   One card, four rows: the three azaan rules and the jamaat delay. SELECTION IS EXPANSION — the
+   chosen rule is the open one, so there is no second state to reason about and no parameters on
+   screen belonging to a rule this prayer is not using.
+
+   Collapsed, each row states its own value, so the whole config reads in four lines. */
+.srl-config{box-sizing:border-box;border:1px solid var(--color-neutral-border);
+  border-radius:var(--radius-card);background:var(--color-surface-card);overflow:hidden}
+.srl-rule+.srl-rule{border-top:1px solid var(--color-neutral-border)}
+/* The open rule takes a faint wash so the card says which row the fields below belong to. Green
+   locates here; it never letters. */
+.srl-rule.is-open{background:color-mix(in oklab,var(--color-action-primary) 5%,transparent)}
+
+.srl-rule-head{display:flex;align-items:center;gap:var(--size-lg);width:100%;min-height:52px;
+  padding:var(--size-lg) var(--size-xl);box-sizing:border-box;border:0;background:transparent;
+  text-align:left;font:inherit;color:inherit;cursor:pointer}
+.srl-rule-glyph{flex-shrink:0;font-size:19px;color:var(--color-info-faint)}
+.srl-rule.is-open .srl-rule-glyph{color:var(--color-action-primary)}
+.srl-rule-title{flex:1;min-width:0;font-family:var(--font-body);font-size:14px;font-weight:600;
+  color:var(--color-info-primary)}
+.srl-rule.is-open .srl-rule-title{font-weight:700}
+/* What a collapsed row is worth reading for: its own value. */
+.srl-rule-summary{flex-shrink:0;font-family:var(--font-body);font-size:12px;
+  font-variant-numeric:tabular-nums;color:var(--color-info-secondary)}
+.srl-rule-summary.strong{font-weight:700;color:var(--color-info-primary)}
+.srl-rule-summary.bad{color:var(--color-status-error)}
+.srl-rule-mark{flex-shrink:0;font-size:19px;color:var(--color-info-faint)}
+.srl-rule.is-open .srl-rule-mark{color:var(--color-action-primary)}
+
+/* The fields the open rule owns, inside its own row. */
+.srl-rule-fields{padding:0 var(--size-xl) var(--size-xl);box-sizing:border-box;
+  animation:srl-open var(--motion-quick) var(--ease-out)}
+.srl-rule-fields .field:last-child{margin-bottom:0}
+.srl-rule-note{margin:0;font-family:var(--font-body);font-size:12px;line-height:1.5;
+  color:var(--color-info-secondary)}
+.srl-rule-fields .field+.srl-rule-note{margin-top:calc(var(--size-md) * -1)}
+@keyframes srl-open{from{opacity:0;transform:translateY(-4px)}to{opacity:1;transform:none}}
+
+/* Three sections, each labelled ABOVE its card. A card carrying its own eyebrow reads as a titled
+   panel rather than as one part of a page — and it let the jamaat delay sit inside the rule panel,
+   where it read as a fourth rule you could pick instead of one of the three. */
+.srl-section{display:flex;flex-direction:column}
+.srl-section-label{padding:var(--size-2xl) 4px var(--size-md)}
+.srl-section .field{margin-bottom:0}
+
+/* A field label that carries its own action — `Remove` beside `Never before`. */
+.srl-field-head{display:flex;align-items:baseline;justify-content:space-between;gap:var(--size-lg);
+  margin-bottom:4px}
+.srl-field-head .flabel{margin-bottom:0}
+.srl-clear{font-size:12px}
+
+@media(prefers-reduced-motion:reduce){.srl-rule-fields{animation:none}}
+
+/* The app bar's subtitle when it is carrying STATE rather than the parent's name. Not green: green
+   locates on these screens and never letters. It is weighted instead, which is enough beside a title
+   and keeps the one accent that may be type (red) meaning "impossible". */
+.srl-appbar-state{font-weight:700;color:var(--color-info-primary) !important}
+
+/* Undo, in the app bar. Labelled rather than icon-only: a bare replay glyph does not say what it
+   reverts, and this one reverts a rule the reader may have spent a minute choosing. Its mere presence
+   is the "there is an unpublished change here" signal, which is why nothing else states it. */
+.srl-undo{flex-shrink:0;gap:4px;padding:6px 11px}
+.srl-undo .mi{font-size:15px}
+
+/* The reason a value is refused, beside the control that produced it. */
+.srl-fault{display:flex;align-items:flex-start;gap:var(--size-md);font-family:var(--font-body);
+  font-size:11.5px;line-height:1.45;color:var(--color-status-error)}
+.srl-fault .mi{flex-shrink:0;font-size:14px}
+
+/* The advanced disclosure. Text, not a control: it is the way to a field most masjids never set. */
+.srl-advanced{align-self:flex-start;min-height:44px;padding:var(--size-md) 0}
+
+/* The quiet way back to what is published. Text, never a button: restoring is a correction, not
+   one of the three things this page is for. */
+.srl-restore{align-self:flex-start;padding:var(--size-md) 0;min-height:44px}
+
+/* Loading. The skeleton matches the STRUCTURE it replaces — a lead line and six rows inside one
+   card — so nothing moves when the real rules arrive. */
+.srl-skeleton-rows{margin-top:var(--size-xl);padding:0 var(--size-lg);box-sizing:border-box;
+  border:1px solid var(--color-neutral-border);border-radius:var(--radius-card);
+  background:var(--color-surface-card)}
+.srl-skeleton-row{display:flex;align-items:center;gap:var(--size-xl);
+  padding:var(--size-lg) var(--size-lg)}
+.srl-skeleton-row+.srl-skeleton-row{border-top:1px solid var(--color-neutral-border)}
+.srl-skeleton-row .srl-skeleton-copy{flex:1;min-width:0;display:flex;flex-direction:column;gap:5px}
+

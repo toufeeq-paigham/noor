@@ -1,0 +1,324 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="../support.js"></script>
+<script src="../_theme/chrome.js"></script>
+<!-- Shared state model + storyboard frame table. Plain JS in <head> so `buildSrData` and
+     `SR_FRAMES` exist before the page logic below constructs its initial state. -->
+<script src="./storyboards/salaah-rules-state.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+  <link rel="stylesheet" href="../_ds/noor-design-system-46f42e91-1858-412f-bdb6-560a6cc3df9f/colors_and_type.css">
+  <link rel="stylesheet" href="../_theme/poc.css">
+  <link rel="stylesheet" href="../_theme/components.css">
+  <link rel="stylesheet" href="../_theme/icons.css">
+  <script src="../_ds/noor-design-system-46f42e91-1858-412f-bdb6-560a6cc3df9f/_ds_bundle.js"></script>
+  <style>
+    body{background:var(--canvas-bg);padding:36px 32px 90px;min-height:100vh;box-sizing:border-box}
+    ::-webkit-scrollbar{display:none}*{-ms-overflow-style:none;scrollbar-width:none}
+    /* Page chrome only — the feature's construction lives in ./storyboards/salaah-rules.css and
+       the components it composes live in _theme/components.css. */
+    @keyframes srl-step{from{transform:translateX(24px);opacity:0}to{transform:translateX(0);opacity:1}}
+    .srl-push{animation:srl-step var(--motion-standard) cubic-bezier(.2,.8,.2,1)}
+    @media(prefers-reduced-motion:reduce){.srl-push{animation:none}}
+  </style>
+  <!-- The rules pages read the SAME calculated day the Salaah editor's timeline draws, so the two
+       screens cannot disagree about when a prayer opens or closes. Loading the timeline module for
+       its fixture means loading its stylesheet too — it owns the `.sst-*` construction its own
+       components reference. -->
+  <link rel="stylesheet" href="./storyboards/salaah-scroll-timeline.css">
+  <link rel="stylesheet" href="./storyboards/salaah-rules.css">
+</helmet>
+
+<!-- Component layer: loads Dialog / EmptyState / Loader onto window for the screens -->
+<x-import component="Dialog" from="../_theme/components.jsx" hint-size="0,0"></x-import>
+<div style="display:none">
+  <!-- Loaded BEFORE the rule screens: the state model reads SstPrayerWindows off window. -->
+  <x-import component="SalaahScrollKit" from="./storyboards/salaah-scroll-timeline.jsx" hint-size="0,0"></x-import>
+  <x-import component="SalaahRulesScreen" from="./storyboards/salaah-rules-screens.jsx" hint-size="0,0"></x-import>
+</div>
+
+<x-import component="BoardHeader" from="../_theme/board.jsx"
+          title="Salaah Timings"
+          subtitle="The whole Salaah section, end to end. The day is dragged by RULE — a fixed prayer moves minute by minute, a rounded one jumps a whole step and carries its iqama, a sunset prayer will not move at all — and each prayer's own rule sits beside it in the rail. Publishing becomes the new baseline and is recorded. The device on the right is the working app; the board is the walkthrough."
+          hint-size="1440px,92px"></x-import>
+
+<div class="poc-stage">
+  <div class="poc-frames">
+    <x-import component="SalaahRulesBoard" from="./storyboards/salaah-rules-board.jsx"
+              active="{{ activeFrame }}" on-select-frame="{{ selectFrame }}"
+              hint-size="1600px,4000px"></x-import>
+  </div>
+
+  <x-import component="BoardLive" from="../_theme/board.jsx" restart="{{ restart }}"
+            hint-size="400px,900px">
+    <x-import component="IOSDevice" from="../ios-frame.jsx" hint-size="402px,874px">
+      <div style="width:100%;height:100%;position:relative;overflow:hidden;background:var(--color-surface-primary)">
+        <div class="{{ stepAnim }}" style="position:absolute;inset:0">
+          <x-import component="SalaahRulesScreen" from="./storyboards/salaah-rules-screens.jsx"
+                    data="{{ data }}" hint-size="100%,100%"></x-import>
+        </div>
+      </div>
+    </x-import>
+  </x-import>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script>
+class Component extends DCLogic {
+  // Entry points used by the Index and by the console's Salaah screen.
+  HASH_ROUTES = {
+    '#salaah': {},
+    '#timings': {},
+    '#rules': { route: 'summary' },
+    '#fajr': { route: 'detail', prayer: 'fajr' },
+    '#maghrib': { route: 'detail', prayer: 'maghrib' },
+    '#setup': { scenario: 'sourced' },
+    '#drifted': { scenario: 'drifted' },
+    '#incomplete': { route: 'summary', scenario: 'malformed' },
+    '#published': { justPublished: true },
+    '#history': { historyOpen: true },
+    '#loading': { status: 'loading' },
+    '#error': { status: 'error' },
+    '#conflict': { status: 'conflict' },
+  };
+
+  state = window.srApplyPatch(window.SR_DEFAULT_STATE, this.HASH_ROUTES[window.location.hash] || {});
+
+  _timers = [];
+
+  // Set by a drag commit, spoken once on release. A commit fires on every pointer move.
+  _pendingRefusal = null;
+
+  componentWillUnmount() { this.clearTimers(); }
+
+  clearTimers = () => {
+    this._timers.forEach((t) => { clearTimeout(t); clearInterval(t); });
+    this._timers = [];
+  };
+
+  after = (ms, fn) => { this._timers.push(setTimeout(fn, ms)); };
+
+  patch = (p) => this.setState((s) => window.srApplyPatch(s, p));
+
+  toast = (message, tone) => {
+    this.patch({ snack: { message, tone: tone || 'success' } });
+    this.after(2600, () => this.patch({ snack: null }));
+  };
+
+  // The rule currently in the draft for one prayer — the server's rule until the user has
+  // touched it. Every edit below starts from this, so a first edit and a fifth are the same code.
+  ruleFor = (key) => {
+    const s = this.state;
+    if (s.draft[key]) return s.draft[key];
+    const fixture = window.SR_SCENARIOS[s.scenario] || window.SR_SCENARIOS.published;
+    return fixture.config[key];
+  };
+
+  prayerFor = (key) => {
+    if (this.state.dayStatus !== 'loaded') return null;
+    const all = (window.SstPrayerWindows || []).concat(window.SstJumahWindow ? [window.SstJumahWindow] : []);
+    return all.find((p) => p.key === key) || null;
+  };
+
+  // ── Navigation. Back from a rule page RETAINS the draft and returns focus to its row. ──
+  onBack = () => {
+    const s = this.state;
+    if (s.route === 'detail') {
+      // Back to whichever entrance was used: the rail on the day, or the row in the list.
+      const to = s.from === 'summary' ? 'summary' : 'timings';
+      this.patch({ route: to, prayer: null, focusPrayer: to === 'summary' ? s.prayer : null, stepDir: 'back' });
+      return;
+    }
+    if (s.route === 'summary') {
+      // Back to the day. The draft is shared, so the timeline immediately re-resolves every rule
+      // that changed here — nothing is carried across and nothing is lost.
+      this.patch({ route: 'timings', stepDir: 'back' });
+      return;
+    }
+    // Leaving the section returns to the console it belongs to.
+    window.location.href = './Masjid Console.dc.html#salaah';
+  };
+
+  onOpenPrayer = (key) => this.patch({
+    route: 'detail', prayer: key, from: this.state.route === 'summary' ? 'summary' : 'timings', stepDir: 'forward',
+  });
+
+  onOpenRules = () => this.patch({ route: 'summary', stepDir: 'forward' });
+
+  onOpenHistory = () => this.patch({ historyOpen: true });
+  onCloseHistory = () => this.patch({ historyOpen: false });
+
+  onFocused = () => this.patch({ focusPrayer: null });
+
+  // ── Draft edits. All five go through the shared writers in salaah-rules-state.js, which is
+  //    also the path the timeline's drag uses — so a rule-page edit and a dragged edit are
+  //    indistinguishable afterwards and there is no second way into the config. ──
+  write = (key, rule) => this.patch({ draft: { [key]: rule } });
+
+  onPickVariant = (key, variant) => {
+    const cfg = this.ruleFor(key);
+    const prayer = this.prayerFor(key);
+    const resolved = window.srResolve(cfg, prayer ? prayer.opens : null);
+    // Re-picking the rule a prayer already has is a no-op — EXCEPT on an incomplete rule, where
+    // the variant matching is exactly what the user is being asked to complete.
+    if (cfg && cfg.variant === variant && !resolved.malformed) return;
+    this.write(key, window.srSetVariant(cfg, variant, {
+      azaan: resolved.azaan,
+      opens: prayer ? prayer.opens : null,
+    }));
+  };
+
+  onPickInterval = (key, step) => this.write(key, window.srSetInterval(this.ruleFor(key), step));
+
+  // The rule page's controls are selects, so they hand back the value itself rather than a delta.
+  onSetEarliest = (key, minutes) => this.write(key, window.srSetEarliest(this.ruleFor(key), minutes));
+
+  onSetFixed = (key, minutes) => this.write(key, window.srSetFixed(this.ruleFor(key), minutes));
+
+  onSetIqama = (key, minutes) => this.write(key, window.srSetIqama(this.ruleFor(key), minutes));
+
+  // Restoring puts back the COMPLETE server rule object — interval, earliest time, fixed time and
+  // iqama delay together — by dropping the override rather than by copying fields back.
+  onRestore = (key) => {
+    this.setState((s) => {
+      const draft = Object.assign({}, s.draft);
+      delete draft[key];
+      return Object.assign({}, s, { draft });
+    });
+    const fixture = window.SR_SCENARIOS[this.state.scenario] || window.SR_SCENARIOS.published;
+    this.toast(fixture.status === 'UNPUBLISHED' ? 'Restored the server setup' : 'Restored the published rule');
+  };
+
+  // ── The timeline's drag, translated into the prayer's rule ──
+  //
+  // The gesture reports a raw minute; `srCommitDrag` decides what that minute MEANS for this
+  // prayer. This is the one difference that matters between this section and the shipped console,
+  // which writes `variant: FIXED` for any azaan move and so converts a seasonal rule to a clock
+  // time on the first nudge.
+  onDragCommit = (key, value, meta) => {
+    const cfg = this.ruleFor(key);
+    const prayer = this.prayerFor(key);
+    const out = window.srCommitDrag(cfg, prayer, value, (meta || {}).field || 'azaan');
+    if (out.rule) this.write(key, out.rule);
+    // The refusal is remembered rather than announced: a commit fires on every pointer move, and a
+    // toast per move would be a strobe. It is spoken once, on release.
+    this._pendingRefusal = out.refusal || null;
+  };
+
+  onDragSettle = () => {
+    if (!this._pendingRefusal) { this.patch({ guideSeen: true }); return; }
+    const message = this._pendingRefusal;
+    this._pendingRefusal = null;
+    this.patch({ guideSeen: true });
+    this.toast(message, 'error');
+  };
+
+  // ── Publish. Never disabled — the press runs the check and answers in a sentence, because the
+  //    two ways it can refuse need completely different things from the reader. ──
+  onPublish = () => {
+    const s = this.state;
+    const data = window.buildSrData(s, {});
+    if (data.blocked.length) {
+      const first = data.blocked[0];
+      this.patch({ route: 'timings' });
+      this.toast(first.malformed || first.fault.text, 'error');
+      return;
+    }
+    if (!data.dirty && !data.needsFirstPublish) { this.toast('Nothing has changed yet.', 'error'); return; }
+    this.patch({ confirmPublish: true });
+  };
+
+  onCancelPublish = () => this.patch({ confirmPublish: false });
+
+  onConfirmPublish = () => {
+    // The draft BECOMES the baseline, and the change is recorded. Everything downstream reads the
+    // new baseline: the axis loses its green marks, `WAS` overlines retire, the rule summary shows
+    // no changes, and the record carries a fresh row in the publisher's name. That is what makes
+    // the prototype demonstrable as an app rather than as a set of frames.
+    const out = window.srPublish(window.buildSrData(this.state, {}), 'You');
+    this.patch({ confirmPublish: false, saving: true });
+    this.after(1200, () => this.setState((s) => Object.assign({}, s, {
+      saving: false,
+      justPublished: true,
+      serverConfig: out.config,
+      serverStatus: 'PUBLISHED',
+      historyExtra: [out.entry].concat(s.historyExtra || []),
+      draft: {},
+    })));
+  };
+
+  onDone = () => this.patch({ justPublished: false, route: 'timings', stepDir: 'back' });
+
+  // ── Load states ──
+  onRetry = () => {
+    this.patch({ status: 'loading' });
+    this.after(900, () => this.patch({ status: 'loaded' }));
+  };
+
+  onRefresh = () => {
+    // A refresh after someone else published discards this draft on purpose: merging two people's
+    // rule edits field by field is not something this screen can do honestly.
+    this.patch({ status: 'loading', draft: {} });
+    this.after(1000, () => {
+      this.setState((s) => Object.assign({}, s, { status: 'loaded', draft: {} }));
+      this.toast('Showing the latest published timings');
+    });
+  };
+
+  onCloseSnack = () => this.patch({ snack: null });
+
+  // ── Board ⇄ device ──
+  selectFrame = (index) => {
+    this.clearTimers();
+    const frame = (window.SR_FRAMES || [])[index];
+    if (!frame) return;
+    this.setState(Object.assign(window.srFrameState(frame), { stepDir: 'none' }));
+  };
+
+  restart = () => {
+    this.clearTimers();
+    this.setState(window.srApplyPatch(window.SR_DEFAULT_STATE, { stepDir: 'none' }));
+  };
+
+  renderVals() {
+    const s = this.state;
+    const handlers = {
+      onBack: this.onBack,
+      onOpenPrayer: this.onOpenPrayer,
+      onOpenRules: this.onOpenRules,
+      onFocused: this.onFocused,
+      onDragCommit: this.onDragCommit,
+      onDragSettle: this.onDragSettle,
+      onPublish: this.onPublish,
+      onConfirmPublish: this.onConfirmPublish,
+      onCancelPublish: this.onCancelPublish,
+      onDone: this.onDone,
+      onOpenHistory: this.onOpenHistory,
+      onCloseHistory: this.onCloseHistory,
+      onPickVariant: this.onPickVariant,
+      onPickInterval: this.onPickInterval,
+      onSetEarliest: this.onSetEarliest,
+      onSetFixed: this.onSetFixed,
+      onSetIqama: this.onSetIqama,
+      onRestore: this.onRestore,
+      onRetry: this.onRetry,
+      onRefresh: this.onRefresh,
+      onCloseSnack: this.onCloseSnack,
+    };
+
+    return {
+      data: window.buildSrData ? window.buildSrData(s, handlers) : {},
+      stepAnim: s.stepDir && s.stepDir !== 'none' ? 'srl-push' : '',
+      activeFrame: window.srActiveFrameIndex ? window.srActiveFrameIndex(s) : -1,
+      selectFrame: this.selectFrame,
+      restart: this.restart,
+    };
+  }
+}
+</script>
+</body>
+</html>
