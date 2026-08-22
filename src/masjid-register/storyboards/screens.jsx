@@ -163,8 +163,11 @@ function MyMasjidsSheet({ data = {} }) {
   const showTabs = hasManage && hasFollowing;
   const activeSection = showTabs ? tab : (hasManage ? 'manage' : 'follow');
   const isManage = activeSection === 'manage';
-  const manageItemCount = manageTiles.length + 1;
-  const finalManageItemIsOdd = manageItemCount % 2 === 1;
+  const manageItemCount = manageTiles.length + (registration ? 1 : 0);
+  const pendingRegistrationSpans = Boolean(
+    registration && registration.status === 'pending' && manageItemCount % 2 === 1
+  );
+  const showRegisterGridCard = manageItemCount % 2 === 1 && !pendingRegistrationSpans;
   const primaryMasjid = manageTiles.find((masjid) => masjid.isPrimary)
     || followRows.find((masjid) => masjid.checked);
   const activeCount = isManage ? manageCount : followRows.length;
@@ -234,16 +237,19 @@ function MyMasjidsSheet({ data = {} }) {
                   )}
                 </div>
               ))}
-              <div className={finalManageItemIsOdd ? 'masjid-manage-grid-item-wide' : undefined}>
-                {registration ? (
+              {registration ? (
+                <div className={`registration-grid-cell ${pendingRegistrationSpans ? 'masjid-manage-grid-item-wide' : ''}`}>
                   <RegistrationTile registration={registration} />
-                ) : (
+                </div>
+              ) : null}
+              {showRegisterGridCard ? (
+                <div>
                   <button className="register-masjid-tile" onClick={onRegister}>
                     <span className="mi" data-i="add"></span>
                     <span>Register masjid</span>
                   </button>
-                )}
-              </div>
+                </div>
+              ) : null}
             </div>
             {!hasFollowing ? (
               <button className="btn btn-tonal lg" onClick={onFind} style={{ width: '100%' }}>
@@ -458,10 +464,10 @@ function PhotoCaptureCard({ mode, captured, locationAttached, locationLabel, ima
     );
   }
   return (
-    <div className={`photo-source-panel ${selfie ? 'identity-source-panel' : 'masjid-source-panel'} ${error ? 'error' : ''}`}>
+    <div className={`photo-source-panel ${error ? 'error' : ''}`}>
       {selfie ? (
         <>
-          <div className="guided-illustration-preview identity-guided-preview" aria-label="Identity photo framing guide">
+          <div className="guided-illustration-preview" aria-label="Identity photo framing guide">
             <div className="identity-guided-glow"></div>
             <div className="identity-guided-face">
               <span className="mi" data-i="person"></span>
@@ -492,7 +498,7 @@ function PhotoCaptureCard({ mode, captured, locationAttached, locationLabel, ima
         </>
       ) : (
         <>
-          <div className="guided-illustration-preview masjid-guided-illustration" aria-label="Masjid entrance framing guide">
+          <div className="guided-illustration-preview" aria-label="Masjid entrance framing guide">
             <div className="masjid-guided-subject">
               <span className="mi fill" data-i="mosque"></span>
               <span className="identity-guide-corner top-left"></span>

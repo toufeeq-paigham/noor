@@ -88,6 +88,13 @@
     .register-masjid-tile .mi{font-size:22px}
     .masjid-manage-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px;margin-bottom:14px}
     .masjid-manage-grid-item-wide{grid-column:1 / -1}
+    .registration-grid-cell:not(.masjid-manage-grid-item-wide) .registration-tile{min-height:108px;position:relative;flex-direction:column;align-items:flex-start;gap:6px;padding:12px}
+    .registration-grid-cell:not(.masjid-manage-grid-item-wide) .registration-tile-icon{width:40px;height:40px}
+    .registration-grid-cell:not(.masjid-manage-grid-item-wide) .registration-tile-copy{width:100%;padding-right:18px;box-sizing:border-box}
+    .registration-grid-cell:not(.masjid-manage-grid-item-wide) .registration-tile-title{white-space:normal;display:-webkit-box;-webkit-box-orient:vertical;-webkit-line-clamp:2}
+    .registration-grid-cell:not(.masjid-manage-grid-item-wide) .registration-tile-meta{flex-direction:column;align-items:flex-start;gap:0}
+    .registration-grid-cell:not(.masjid-manage-grid-item-wide) .registration-tile-separator{display:none}
+    .registration-grid-cell:not(.masjid-manage-grid-item-wide) .registration-tile-chevron{position:absolute;top:12px;right:10px}
     .wizard-option-scrim{background:color-mix(in oklab,var(--color-surface-scrim) 88%,transparent);backdrop-filter:blur(8px) saturate(120%);-webkit-backdrop-filter:blur(8px) saturate(120%)}
     .wizard-option-sheet{max-height:68%;overflow:hidden;background:color-mix(in oklab,var(--color-surface-primary) 94%,transparent);backdrop-filter:blur(30px) saturate(165%);-webkit-backdrop-filter:blur(30px) saturate(165%)}
     .wizard-option-header{display:flex;align-items:center;justify-content:space-between;gap:12px;margin-bottom:var(--size-xl);flex-shrink:0}
