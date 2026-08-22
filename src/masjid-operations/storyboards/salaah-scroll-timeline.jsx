@@ -150,7 +150,13 @@ function SstRow({ p, cfg, published, scan, drag, bad, live, onGrab, floating = t
   const movedAzaan = cfg.azaan !== published.azaan;
   const movedIqama = cfg.iqama !== published.iqama;
   const grabbing = drag && drag.key === p.key ? drag.handle : null;
-  const isBad = bad && bad.key === p.key;
+  // Two ways a row is wrong, and they look the same because they ARE the same: a move the clamp just
+  // refused, and a value that is ALREADY outside its window. The second arrives from stored data — a
+  // FIXED azaan overtaken by a start that slid across the season — and it used to render in ordinary
+  // ink, so the screen named a prayer in its refusal that looked perfectly fine on the axis. Compose
+  // has drawn it red since it shipped; this is Noor catching up (2026-08-16).
+  const outOfWindow = cfg.azaan < p.opens || jamaat > p.closes - SST_JAMAAT_MIN;
+  const isBad = (bad && bad.key === p.key) || outOfWindow;
   // A board reading is not the value: it is worded beside it (`BOARD 5:12`, the same shape as
   // `WAS 5:30`) and becomes the value only when added to the draft. Its amber is mixed toward the
   // ink so it may letter — the raw token never does — and red says the reading cannot exist.
@@ -261,7 +267,7 @@ function SstRow({ p, cfg, published, scan, drag, bad, live, onGrab, floating = t
    value under the finger is the value the finger is on. Clamping is unchanged from the shipped
    screen — azaan cannot precede the calculated start, and azaan + delay cannot cross the close. */
 
-function useSstDrag({ cfgOf, onCommit, live, prayerOf = sstPrayer }) {
+function useSstDrag({ cfgOf, onCommit, onSettle, live, prayerOf = sstPrayer }) {
   const [drag, setDrag] = React.useState(null);
   const [bad, setBad] = React.useState(null);
   const grab = React.useRef(null);
@@ -309,7 +315,8 @@ function useSstDrag({ cfgOf, onCommit, live, prayerOf = sstPrayer }) {
       let why = null;
       if (raw < p.opens) { azaan = p.opens; why = `${p.label} does not begin until ${SstFmt(p.opens)}`; }
       else if (raw + SST_IQAMA_MIN > latest) { azaan = latest - SST_IQAMA_MIN; why = tooLate; }
-      onCommit(g.key, { azaan, iqama: Math.max(jamaat - azaan, SST_IQAMA_MIN) });
+      g.current = { azaan, iqama: Math.max(jamaat - azaan, SST_IQAMA_MIN) };
+      onCommit(g.key, g.current, { field: 'azaan' });
       if (why) flashBad(g.key, why); else setBad(null);
     } else {
       const raw = g.from.iqama + step;
@@ -317,12 +324,18 @@ function useSstDrag({ cfgOf, onCommit, live, prayerOf = sstPrayer }) {
       let why = null;
       if (raw < SST_IQAMA_MIN) { iqama = SST_IQAMA_MIN; why = `Iqama is at least ${SST_IQAMA_MIN} minutes after azaan`; }
       else if (g.from.azaan + raw > latest) { iqama = latest - g.from.azaan; why = tooLate; }
-      onCommit(g.key, { azaan: g.from.azaan, iqama });
+      g.current = { azaan: g.from.azaan, iqama };
+      onCommit(g.key, g.current, { field: 'iqama' });
       if (why) flashBad(g.key, why); else setBad(null);
     }
   };
 
-  const onRelease = () => { grab.current = null; setDrag(null); };
+  const onRelease = () => {
+    const g = grab.current;
+    if (g && g.moved && g.current && onSettle) onSettle(g.key, g.current, { field: g.handle });
+    grab.current = null;
+    setDrag(null);
+  };
 
   return { drag, bad, onGrab, onMove, onRelease };
 }
@@ -332,6 +345,11 @@ function useSstDrag({ cfgOf, onCommit, live, prayerOf = sstPrayer }) {
 function SstDay({
   prayers = SST_PRAYERS, cfgOf, pubOf, scanOf, drag, bad, live, onGrab, landingKey = null,
   spanFrom = SST_SPAN_FROM, spanTo = SST_SPAN_TO, breaks = SST_BREAKS, showNow = true,
+  // Optional per-prayer rule action, in a rail to the right of the cards. `ruleOf(key)` returns
+  // `{ icon, label }`. Opt-in: a caller that has no rules to open (the shipped console) passes
+  // nothing and the rail does not exist. It lives here rather than in the caller so it can use this
+  // module's own axis mapping — a button aligned by a second copy of `sstY` would drift.
+  ruleOf, onRule,
 }) {
   const scan = scanOf || (() => null);
   const sstY = sstAxis(spanFrom, spanTo, breaks);
@@ -355,7 +373,7 @@ function SstDay({
   const bounds = boundaries.map((b) => b.at);
 
   return (
-    <div className="sst-day" style={{ height: `${height}px` }}>
+    <div className={`sst-day${onRule ? ' has-rule' : ''}`} style={{ height: `${height}px` }}>
       {/* Gridlines first: a 4700px column with nothing on it has no scale, and the rows would float. */}
       {hours.filter((h) => !breaks.some((b) => h * 60 > b.from && h * 60 < b.to)).map((h) => (
         <div key={`h${h}`} className="sst-hour" style={{ top: `${sstY(h * 60)}px` }}>
@@ -429,6 +447,28 @@ function SstDay({
           drag={drag} bad={bad} live={live} onGrab={onGrab} yOf={sstY}
           landing={landingKey === p.key} />
       ))}
+
+      {/* The rule rail. The glyph IS the statement that this prayer follows a rule — sun for the
+          prayer's own start, clock-and-arrow for a rounded one, pin for a clock time — so the day
+          says which prayers are seasonal without a legend above it. Aligned to the azaan chip and
+          outside the card, because the card's right side belongs to the iqama chip at every delay
+          short enough to matter. `pointerdown` is stopped so the rail can never begin a drag. */}
+      {onRule ? prayers.map((p) => {
+        const rule = ruleOf ? ruleOf(p.key) : null;
+        return (
+          <button
+            type="button"
+            key={`rule${p.key}`}
+            className="sst-rule"
+            style={{ top: `${sstY(cfgOf(p).azaan) + SST_ROW_PAD}px` }}
+            onPointerDown={(e) => e.stopPropagation()}
+            onClick={() => onRule(p.key)}
+            aria-label={rule && rule.label ? rule.label : `${p.label} timing rule`}
+          >
+            <span className="mi" data-i={rule && rule.icon ? rule.icon : 'settings'} aria-hidden="true"></span>
+          </button>
+        );
+      }) : null}
     </div>
   );
 }

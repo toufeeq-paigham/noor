@@ -315,7 +315,6 @@
   </div>
 
   <x-import component="BoardLive" from="../_theme/board.jsx" restart="{{ restart }}"
-            hint="Fully interactive console: enter from the Home card, compose text, voice or photos, inspect engagement, manage the committee, edit Salaah, switch masjids and resolve every confirmation state."
             hint-size="400px,900px">
     <x-import component="IOSDevice" from="../ios-frame.jsx" hint-size="402px,874px">
       <div style="width:100%;height:100%;position:relative;overflow:hidden;background:var(--color-surface-primary)">
@@ -365,6 +364,9 @@ class Component extends DCLogic {
     '#can-post': { caps: ['post'], role: 'IMAM' },
     '#view-only': { caps: [], role: 'MUEZZIN' },
     '#salaah': { dest: 'salaah' },
+    '#salaah-setup': { dest: 'salaah', salaahNeverPublished: true, salaahDirty: true },
+    '#salaah-rules': { dest: 'salaahRules' },
+    '#drift': { dest: 'salaah', salaahDrifted: true },
     '#details': { dest: 'details' },
     '#invite': { dest: 'invite' },
     '#create': { route: 'create' },
@@ -402,6 +404,7 @@ class Component extends DCLogic {
     if (s.route === 'sent') { this.patch({ route: 'console', dest: 'home', stepDir: 'back' }); return; }
     if (s.route === 'invitations') { this.patch({ route: 'console', stepDir: 'back' }); return; }
     if (s.dest === 'member' || s.dest === 'invite') { this.patch({ dest: 'members', memberId: null, openMenu: null, stepDir: 'back' }); return; }
+    if (s.dest === 'salaahRules') { this.patch({ dest: 'salaah', stepDir: 'back' }); return; }
     if (s.dest !== 'home') {
       this.patch({ dest: 'home', openMenu: null, memberId: null, expandedPrayer: null, stepDir: 'back' });
       return;
@@ -605,18 +608,158 @@ class Component extends DCLogic {
   // ── Salaah ──
   onTogglePrayer = (expandedPrayer) => this.patch({ expandedPrayer, openMenu: null });
   onOpenMenu = (openMenu) => this.patch({ openMenu });
-  onConfigChange = (prayer, prayerPatch) => {
+  salaahWindow = (key) => (window.SstPrayerWindows || [])
+    .concat(window.SstJumahWindow ? [window.SstJumahWindow] : [])
+    .find((p) => p.key === key);
+
+  salaahResolvedAzaan = (cfg, key) => {
+    const w = this.salaahWindow(key);
+    const opens = w ? w.opens : 0;
+    if (!cfg) return opens;
+    if (cfg.salaahTime) {
+      const parts = cfg.salaahTime.split(':').map((n) => parseInt(n, 10));
+      return (parts[0] * 60) + (parts[1] || 0);
+    }
+    if (!cfg.neverBefore) return opens;
+    const floorParts = cfg.neverBefore.split(':').map((n) => parseInt(n, 10));
+    const floor = (floorParts[0] * 60) + (floorParts[1] || 0);
+    const step = parseInt(String(cfg.salaahTimeVariation || '').replace(/\D/g, ''), 10);
+    return step ? Math.max((Math.floor(opens / step) * step) + step, floor) : floor;
+  };
+
+  currentSalaah = (s) => ((window.buildOpsData(s || this.state, {}).salaah || {}).config || window.OPS_SALAAH_CONFIG);
+
+  salaahDraftFlags = (s, config) => {
+    const published = window.opsSalaahPublished(s) || window.OPS_SALAAH_CONFIG;
+    const ruleFields = ['variant', 'salaahTime', 'neverBefore', 'salaahTimeVariation'];
+    const same = (key, fields) => fields.every((field) => ((config[key] || {})[field] === (published[key] || {})[field]));
+    const ruleChanged = (window.OPS_SALAAH_ORDER || []).some(({ key }) => !same(key, ruleFields));
+    const iqamaChanged = (window.OPS_SALAAH_ORDER || []).some(({ key }) => ((config[key] || {}).iqamaDelay || 0) !== ((published[key] || {}).iqamaDelay || 0));
+    return {
+      salaahDirty: !!s.salaahNeverPublished || ruleChanged || iqamaChanged,
+    };
+  };
+
+  onConfigChange = (prayer, prayerPatch, meta = {}) => {
     this.setState((s) => {
-      const base = s.salaahConfig || window.OPS_SALAAH_CONFIG;
+      const base = this.currentSalaah(s);
+      const published = window.opsSalaahPublished(s) || window.OPS_SALAAH_CONFIG;
       const next = Object.assign({}, base);
-      next[prayer] = Object.assign({}, base[prayer], prayerPatch);
-      return window.opsApplyPatch(s, { salaahConfig: next, salaahDirty: true, openMenu: null });
+      const field = meta.field || 'azaan';
+      if (field === 'iqama') {
+        // Moving only the iqama must never collapse a seasonal azaan into a fixed clock time.
+        next[prayer] = Object.assign({}, base[prayer], { iqamaDelay: prayerPatch.iqamaDelay });
+      } else {
+        const parts = String(prayerPatch.salaahTime || '00:00').split(':').map((n) => parseInt(n, 10));
+        const azaan = (parts[0] * 60) + (parts[1] || 0);
+        const pub = published[prayer] || {};
+        const samePair = azaan === this.salaahResolvedAzaan(pub, prayer)
+          && prayerPatch.iqamaDelay === (pub.iqamaDelay || 0);
+        // Returning both visible values home restores the original object, including its hidden
+        // automatic behaviour. While away, the exact dragged value remains visible as a fixed draft
+        // until the gesture settles and the inference below can decide safely.
+        next[prayer] = samePair ? Object.assign({}, pub) : {
+          variant: 'FIXED',
+          salaahTime: prayerPatch.salaahTime,
+          iqamaDelay: prayerPatch.iqamaDelay,
+        };
+      }
+      return window.opsApplyPatch(s, Object.assign({
+        salaahConfig: next,
+        openMenu: null,
+      }, this.salaahDraftFlags(s, next)));
     });
   };
+
+  applySalaahRule = (key, kind, step, azaan, iqama) => this.setState((s) => {
+    const config = Object.assign({}, this.currentSalaah(s));
+    if (kind === 'on-time') {
+      config[key] = { variant: 'ON_TIME', iqamaDelay: iqama };
+    } else if (kind === 'round') {
+      config[key] = {
+        variant: 'VARIES_WITH_ON_TIME',
+        neverBefore: '00:00',
+        salaahTimeVariation: `VARIES_EVERY_${step}_MINS`,
+        iqamaDelay: iqama,
+      };
+    } else {
+      const h = String(Math.floor(azaan / 60)).padStart(2, '0');
+      const m = String(azaan % 60).padStart(2, '0');
+      config[key] = { variant: 'FIXED', salaahTime: `${h}:${m}`, iqamaDelay: iqama };
+    }
+    return window.opsApplyPatch(s, Object.assign({
+      salaahConfig: config,
+    }, this.salaahDraftFlags(s, config)));
+  });
+
+  onTimingSettled = (key, value, meta = {}) => {
+    if (meta.field === 'iqama') return;
+    const w = this.salaahWindow(key);
+    if (!w) return;
+    const published = window.opsSalaahPublished(this.state) || window.OPS_SALAAH_CONFIG;
+    const pub = published[key] || {};
+
+    // A seasonal prayer brought back to its published azaan keeps that rule even when its iqama was
+    // changed during the journey. This closes the old "looks restored but became FIXED" edge.
+    if (value.azaan === this.salaahResolvedAzaan(pub, key)) {
+      this.setState((s) => {
+        const config = Object.assign({}, this.currentSalaah(s));
+        config[key] = Object.assign({}, pub, { iqamaDelay: value.iqama });
+        return window.opsApplyPatch(s, Object.assign(
+          { salaahConfig: config },
+          this.salaahDraftFlags(s, config),
+        ));
+      });
+      return;
+    }
+
+    if (key === 'maghrib') {
+      if (value.azaan === w.opens) this.applySalaahRule(key, 'on-time', null, value.azaan, value.iqama);
+      // Any other value is the exact FIXED draft already written by onConfigChange.
+      return;
+    }
+
+    if (['fajr', 'asr', 'isha'].indexOf(key) !== -1) {
+      const matches = [15, 10, 5].filter((step) => ((Math.floor(w.opens / step) * step) + step) === value.azaan);
+      const publishedStep = parseInt(String(pub.salaahTimeVariation || '').replace(/\D/g, ''), 10);
+      if (matches.indexOf(publishedStep) !== -1) {
+        this.applySalaahRule(key, 'round', publishedStep, value.azaan, value.iqama);
+      } else if (matches.length === 1) {
+        this.applySalaahRule(key, 'round', matches[0], value.azaan, value.iqama);
+      } else if (matches.length > 1) {
+        // Coarsest matching interval wins. This is deterministic and mirrors how a masjid normally
+        // speaks: quarter-hour before ten-minute before five-minute. If nothing matches, the exact
+        // FIXED draft remains; no prompt interrupts the editor.
+        this.applySalaahRule(key, 'round', matches[0], value.azaan, value.iqama);
+      }
+    }
+    // Zohar and Jumah deliberately remain fixed; no question is necessary.
+  };
+
   onNoteChange = (salaahNote) => this.patch({ salaahNote });
-  // Publishing is public and unreviewed, so the confirmation is the only pause between an
-  // edit and every musalli seeing it. Keep it.
-  onSubmitSalaah = () => this.patch({ confirm: { kind: 'publishSalaah' } });
+  salaahFault = () => {
+    const config = this.currentSalaah(this.state);
+    const all = (window.SstPrayerWindows || []).concat(window.SstJumahWindow ? [window.SstJumahWindow] : []);
+    return all.find((w) => {
+      const cfg = config[w.key] || {};
+      const azaan = this.salaahResolvedAzaan(cfg, w.key);
+      return azaan < w.opens || azaan + (cfg.iqamaDelay || 0) > w.closes - 10;
+    });
+  };
+  // Publish stays pressable. The press can say "nothing changed", name an impossible prayer, show
+  // the rule receipt when automatic behaviour changed, or use the ordinary reach confirmation.
+  onSubmitSalaah = () => {
+    if (!this.state.salaahDirty) {
+      this.toast('salaah-no-change', 'Nothing changed — the published timings are already here.', 'error');
+      return;
+    }
+    const fault = this.salaahFault();
+    if (fault) {
+      this.toast('salaah-impossible', `${fault.label} cannot be published outside its prayer window.`, 'error');
+      return;
+    }
+    this.patch({ confirm: { kind: 'publishSalaah' } });
+  };
   // ── Scan the board ──
   onOpenScan = () => this.setState((s) => window.opsApplyPatch(s, {
     scanStage: 'camera',
@@ -647,6 +790,23 @@ class Component extends DCLogic {
   onScanConsumed = () => this.patch({ scanProposal: null });
   onDiscardScan = () => this.patch({ scanProposal: null, scanStage: null });
 
+  // ── The drift offer ──
+  // Accepting it is an ordinary DRAFT edit, exactly like a drag: the prayer becomes a rounding rule
+  // in the working copy and nothing reaches musalleen until Publish. The floor is 00:00 because
+  // there is no floor — the rounding is the whole rule, and pinning the floor to today's answer
+  // would bind wrongly next season.
+  onAdoptRounding = (key, step) => this.setState((s) => {
+    const config = Object.assign({}, (s.salaahConfig || window.opsSalaahPublished(s)));
+    config[key] = {
+      variant: 'VARIES_WITH_ON_TIME',
+      neverBefore: '00:00',
+      salaahTimeVariation: `VARIES_EVERY_${step}_MINS`,
+      iqamaDelay: (config[key] || {}).iqamaDelay || 0,
+    };
+    return window.opsApplyPatch(s, { salaahConfig: config, salaahDirty: true });
+  });
+
+  onOpenSalaahRules = () => this.patch({ dest: 'salaahRules', stepDir: 'fwd' });
   onOpenHistory = () => this.patch({ salaahHistoryOpen: true });
   onCloseHistory = () => this.patch({ salaahHistoryOpen: false });
   // "Done" after publishing returns to the Salaah tab of the console.
@@ -656,6 +816,8 @@ class Component extends DCLogic {
       dest: 'salaah',
       salaahStatus: 'loaded',
       salaahDirty: false,
+      salaahNeverPublished: false,
+      salaahScenario: null,
       expandedPrayer: null,
       salaahNote: '',
       scanApplied: null,
@@ -858,6 +1020,9 @@ class Component extends DCLogic {
       onInviteCapability: this.onInviteCapability, onSendInvite: this.onSendInvite,
       onTogglePrayer: this.onTogglePrayer, onOpenMenu: this.onOpenMenu, onConfigChange: this.onConfigChange,
       onNoteChange: this.onNoteChange, onSubmitSalaah: this.onSubmitSalaah,
+      onTimingSettled: this.onTimingSettled,
+      onAdoptRounding: this.onAdoptRounding,
+      onOpenSalaahRules: this.onOpenSalaahRules,
       onOpenHistory: this.onOpenHistory, onCloseHistory: this.onCloseHistory,
       onOpenScan: this.onOpenScan, onCloseScan: this.onCloseScan,
       onScanCapture: this.onScanCapture, onScanRetry: this.onScanRetry,

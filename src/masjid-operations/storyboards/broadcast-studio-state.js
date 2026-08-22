@@ -59,6 +59,10 @@
     salaahDirty: false,
     salaahSaving: false,
     salaahHistoryOpen: false,
+    // The timeline edits times; these flags model the small set of moments where a time cannot be
+    // translated into the durable rule shown on the separate explanation destination.
+    salaahNeverPublished: false,
+    salaahScenario: null, // storyboard fixture for the rule-translation states
     // Scan-the-board flow (console TRD §6). Recognition first creates a preview which the
     // user compares with the current timings. A one-column board must be identified as
     // Azaan or Jamaat before anything can be added to the working draft.
@@ -154,7 +158,7 @@
     const scope = {
       posts: onConsole && s.dest === 'home',
       members: onConsole && ['members', 'followers', 'member', 'invite'].indexOf(s.dest) !== -1,
-      salaah: onConsole && s.dest === 'salaah',
+      salaah: onConsole && ['salaah', 'salaahRules'].indexOf(s.dest) !== -1,
       post: s.route === 'create',
       invitations: s.route === 'invitations',
     };
@@ -210,6 +214,10 @@
         salaahEdited: !!s.salaahEdited,
         salaahSaving: !!s.salaahSaving,
         salaahHistoryOpen: !!s.salaahHistoryOpen,
+        salaahNeverPublished: !!s.salaahNeverPublished,
+        salaahScenario: s.salaahScenario || null,
+        salaahDrifted: !!s.salaahDrifted,
+        salaahDriftAdopted: !!s.salaahDriftAdopted,
         scanStage: s.scanStage || null,
         scanProposal: s.scanProposal || null,
         scanApplied: s.scanApplied || null,
@@ -322,10 +330,80 @@
     const base = window.OPS_SALAAH_CONFIG;
     if (!base) return null;
     return Object.assign({}, base, {
-      fajr: Object.assign({}, base.fajr, { salaahTime: '05:45', iqamaDelay: 25 }),
-      isha: Object.assign({}, base.isha, { salaahTime: '20:30' }),
+      // 15, not 25: Fajr's window closes at sunrise (06:14) and the jamaat has to FINISH inside it,
+      // so the latest it may START is 06:04. A 25-minute delay put it at 06:10 — this frame is named
+      // "publish enabled" and was quietly showing a draft Publish must refuse. Nothing caught it
+      // until the row began drawing a stored out-of-window value in red (2026-08-16).
+      fajr: { variant: 'FIXED', salaahTime: '05:45', iqamaDelay: 15 },
+      isha: { variant: 'FIXED', salaahTime: '20:30', iqamaDelay: base.isha.iqamaDelay },
     });
   };
+
+  // Static evidence for every point at which a direct time needs translating. The live device
+  // reaches the same shapes through onConfigChange/onTimingSettled; frames do not get a second UI.
+  const ruleScenarioConfig = (scenario) => {
+    const base = window.OPS_SALAAH_CONFIG;
+    if (!base || !scenario) return null;
+    if (scenario === 'rounding' || scenario === 'roundingAdopted') {
+      return Object.assign({}, base, {
+        asr: scenario === 'roundingAdopted'
+          ? { variant: 'VARIES_WITH_ON_TIME', neverBefore: '00:00', salaahTimeVariation: 'VARIES_EVERY_15_MINS', iqamaDelay: base.asr.iqamaDelay }
+          : { variant: 'FIXED', salaahTime: '16:15', iqamaDelay: base.asr.iqamaDelay },
+      });
+    }
+    if (scenario === 'fixedFallback') {
+      return Object.assign({}, base, { asr: { variant: 'FIXED', salaahTime: '16:17', iqamaDelay: base.asr.iqamaDelay } });
+    }
+    if (scenario === 'maghribFixed') {
+      return Object.assign({}, base, { maghrib: { variant: 'FIXED', salaahTime: '18:20', iqamaDelay: base.maghrib.iqamaDelay } });
+    }
+    if (scenario === 'iqamaOnly') {
+      return Object.assign({}, base, { fajr: Object.assign({}, base.fajr, { iqamaDelay: base.fajr.iqamaDelay + 5 }) });
+    }
+    return base;
+  };
+
+  const ruleScenarioPublished = (scenario) => {
+    const base = window.OPS_SALAAH_CONFIG;
+    if (!base || ['rounding', 'roundingAdopted'].indexOf(scenario) === -1) return null;
+    return Object.assign({}, base, {
+      asr: { variant: 'FIXED', salaahTime: '16:30', iqamaDelay: base.asr.iqamaDelay },
+    });
+  };
+
+  // A masjid whose PUBLISHED Fajr has fallen out of its own window. Fajr opens at 04:52 on the
+  // timeline's day, so a fixed 04:45 — perfectly legal when it was published in a shorter season —
+  // now sits seven minutes before the prayer exists. Every other prayer stays on a quarter hour, so
+  // the offer can read the masjid's own rounding habit off them rather than guessing at it.
+  const driftedConfig = () => {
+    const base = window.OPS_SALAAH_CONFIG;
+    if (!base) return null;
+    return Object.assign({}, base, {
+      fajr: { variant: 'FIXED', salaahTime: '04:45', iqamaDelay: base.fajr.iqamaDelay },
+      asr: { variant: 'FIXED', salaahTime: '16:30', iqamaDelay: 15 },
+    });
+  };
+
+  // What the committee gets after accepting the offer: Fajr follows the calculated start, rounded up
+  // to the next quarter-hour. The floor is 00:00 because there is no floor — the rounding is the
+  // whole rule, and a floor set to today's answer would bind wrongly next season.
+  const driftAdoptedConfig = () => {
+    const base = driftedConfig();
+    if (!base) return null;
+    return Object.assign({}, base, {
+      fajr: {
+        variant: 'VARIES_WITH_ON_TIME',
+        neverBefore: '00:00',
+        salaahTimeVariation: 'VARIES_EVERY_15_MINS',
+        iqamaDelay: base.fajr.iqamaDelay,
+      },
+    });
+  };
+
+  // The baseline a draft edit starts from, so a handler need not know which frame it is in.
+  const opsSalaahPublished = (s) => (
+    s.salaahDrifted ? driftedConfig() : (ruleScenarioPublished(s.salaahScenario) || window.OPS_SALAAH_CONFIG)
+  );
 
   const toMinutes = (hhmm) => {
     const parts = String(hhmm || '00:00').split(':').map((n) => parseInt(n, 10));
@@ -473,7 +551,7 @@
       .slice(0, s.followersPage || 4);
     const posts = visible((s.postsEmpty || s.fresh) ? [] : (window.OPS_POSTS || []));
     const invitations = visible(s.invitationsEmpty ? [] : (window.OPS_INVITATIONS || []));
-    const timingHistory = window.OPS_TIMING_HISTORY || [];
+    const timingHistory = s.salaahNeverPublished ? [] : (window.OPS_TIMING_HISTORY || []);
 
     return Object.assign({
       role: s.role,
@@ -524,8 +602,16 @@
 
       salaah: {
         status: s.salaahStatus,
+        // What musalleen currently receive. Normally the sample; the drift frames publish a Fajr
+        // that has fallen out of its window, which the sample deliberately cannot express.
+        published: s.salaahDrifted
+          ? driftedConfig()
+          : (ruleScenarioPublished(s.salaahScenario) || window.OPS_SALAAH_CONFIG),
         config: s.salaahConfig
+          || ruleScenarioConfig(s.salaahScenario)
           || (s.scanApplied ? scannedConfig(s.scanApplied === 'partial', s.scanColumnMeaning || 'jamaat') : null)
+          || (s.salaahDriftAdopted ? driftAdoptedConfig() : null)
+          || (s.salaahDrifted ? driftedConfig() : null)
           || (s.salaahEdited ? editedConfig() : window.OPS_SALAAH_CONFIG),
         scanStage: s.scanStage,
         // A pending reading, in the minutes the timeline draws with. It is deliberately NOT merged into
@@ -546,6 +632,7 @@
         historyOpen: s.salaahHistoryOpen,
         saving: s.salaahSaving,
         dirty: s.salaahDirty,
+        neverPublished: s.salaahNeverPublished,
       },
 
       post: s.post,
@@ -637,6 +724,20 @@
     { group: 'salaah', name: 'Scan · review sheet, Azaan column', screen: 'console', state: { route: 'console', dest: 'salaah', scanProposal: 'partial', scanColumnMeaning: 'azaan' } },
     { group: 'salaah', name: 'Scan · landed, publish is back', screen: 'console', state: { route: 'console', dest: 'salaah', scanApplied: 'partial', scanColumnMeaning: 'jamaat', salaahDirty: true } },
     { group: 'salaah', name: 'Scan · could not read', screen: 'console', state: { route: 'console', dest: 'salaah', scanStage: 'failed' } },
+    // Direct time → durable rule. Inference is silent on the editor; the explanation is a separate,
+    // read-only destination opened deliberately from the app bar.
+    { group: 'salaah', name: 'First setup · clean timeline', screen: 'console', state: { route: 'console', dest: 'salaah', salaahNeverPublished: true, salaahDirty: true } },
+    { group: 'salaah', name: 'Iqama only · azaan rule preserved', screen: 'console', state: { route: 'console', dest: 'salaah', salaahDirty: true, salaahScenario: 'iqamaOnly' } },
+    { group: 'salaah', name: 'Seasonal time · inferred silently', screen: 'console', state: { route: 'console', dest: 'salaah', salaahDirty: true, salaahScenario: 'roundingAdopted' } },
+    { group: 'salaah', name: 'How timings update', screen: 'console', state: { route: 'console', dest: 'salaahRules' } },
+    { group: 'salaah', name: 'How timings update · exact fixed', screen: 'console', state: { route: 'console', dest: 'salaahRules', salaahDirty: true, salaahScenario: 'fixedFallback' } },
+    { group: 'salaah', name: 'How timings update · Maghrib fixed', screen: 'console', state: { route: 'console', dest: 'salaahRules', salaahDirty: true, salaahScenario: 'maghribFixed' } },
+    { group: 'salaah', name: 'Publish · nothing changed', screen: 'console', state: { route: 'console', dest: 'salaah', snack: { kind: 'salaah-no-change', message: 'Nothing changed — the published timings are already here.', tone: 'error' } } },
+    { group: 'salaah', name: 'Publish · impossible timing', screen: 'console', state: { route: 'console', dest: 'salaah', salaahDrifted: true, snack: { kind: 'salaah-impossible', message: 'Fajr cannot be published before it begins at 4:52 AM.', tone: 'error' } } },
+    // A published timing that has stopped being possible. The offer is the durable fix, and it is
+    // asked here rather than on every edit — see .salaah-drift in broadcast-studio.css.
+    { group: 'salaah', name: 'Drifted · the offer', screen: 'console', state: { route: 'console', dest: 'salaah', salaahDrifted: true } },
+    { group: 'salaah', name: 'Drifted · rounding adopted', screen: 'console', state: { route: 'console', dest: 'salaah', salaahDrifted: true, salaahDriftAdopted: true, salaahDirty: true } },
     { group: 'salaah', name: 'Publish confirmation', screen: 'console', state: { route: 'console', dest: 'salaah', salaahDirty: true, salaahEdited: true, confirm: { kind: 'publishSalaah' } } },
     { group: 'salaah', name: 'Publishing', screen: 'console', state: { route: 'console', dest: 'salaah', salaahDirty: true, salaahSaving: true } },
     { group: 'salaah', name: 'Published', screen: 'console', state: { route: 'console', dest: 'salaah', salaahStatus: 'saved' } },
@@ -692,6 +793,7 @@
     OPS_FRAMES,
     OPS_GROUPS,
     opsApplyPatch: applyPatch,
+    opsSalaahPublished,
     opsFrameState: frameState,
     opsMatchesFrame: matchesFrame,
     opsActiveFrameIndex: activeFrameIndex,

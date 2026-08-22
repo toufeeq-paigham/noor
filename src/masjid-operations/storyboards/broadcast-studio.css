@@ -648,6 +648,45 @@
   .scan-sheet-meaning.is-asking{animation:none;outline:2px solid var(--color-status-error);outline-offset:4px;border-radius:var(--radius-md)}
 }
 
+/* ── Salaah: a published timing that can no longer exist ─────────────────────
+   A FIXED azaan keeps its clock time while the calculated start slides across the year, so it
+   eventually sits outside its own window. Dragging it to a new fixed time restarts the same clock;
+   the durable answer is a rounding rule, and only the masjid knows whether it has one. Asked here,
+   at drift, because that is where the evidence is — and never on an ordinary edit, which would tax
+   every masjid that genuinely does read fixed times off a board.
+
+   Out of flow, like .scan-capsule and for the same reason: it appears and retires while a finger may
+   be on the axis, and a card in flow would resize the day mid-drag. Bottom matches the capsule's, so
+   the two can never sit at different heights above the same docked action. */
+.salaah-drift{
+  position:absolute;
+  left:16px;
+  right:16px;
+  bottom:118px;
+  z-index:20;
+  display:flex;
+  gap:var(--size-lg);
+  padding:var(--size-xl);
+  border:1px solid var(--color-status-error);
+  border-radius:var(--radius-xl);
+  background:var(--color-surface-card);
+  box-shadow:var(--shadow-float, 0 14px 38px -14px rgba(9,9,11,.35));
+  animation:salaah-drift-in .3s cubic-bezier(.2,.8,.2,1);
+}
+.salaah-drift>.mi{flex-shrink:0;font-size:18px;color:var(--color-status-error)}
+.salaah-drift-copy{display:flex;flex-direction:column;gap:var(--size-md);min-width:0}
+/* Red letters here: it is the one accent on this screen that clears contrast as type, and it is the
+   same red the drifted row is already wearing, so the card and the card it names agree. */
+.salaah-drift-copy b{font-size:13px;font-weight:800;color:var(--color-status-error)}
+.salaah-drift-copy span{font-size:11.5px;line-height:1.45;color:var(--color-info-secondary)}
+/* The action states its own consequence — "next quarter-hour" means nothing until it also says that
+   today that is 5:00 — so it sizes to its content rather than stretching. */
+.salaah-drift-copy .chip{align-self:flex-start;margin-top:2px}
+@keyframes salaah-drift-in{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:translateY(0)}}
+@media (prefers-reduced-motion: reduce){
+  .salaah-drift{animation:none}
+}
+
 /* The clamp refusal, pinned above the docked action so it never displaces content mid-drag. */
 .salaah-refuse{
   display:flex;
@@ -666,3 +705,38 @@
   z-index:2;
 }
 .salaah-refuse .mi{flex-shrink:0;font-size:16px}
+
+/* ── Salaah: how timings update ──────────────────────────────────────────────
+   The timeline is intentionally only an editor. Automatic behaviour lives on its own read-only
+   destination, reached from the app bar when someone wants to understand it. */
+.salaah-appbar-actions{display:flex;align-items:center;gap:var(--size-md)}
+.salaah-rules-lead{
+  display:flex;
+  align-items:flex-start;
+  gap:var(--size-xl);
+  padding:0 var(--size-sm) var(--size-md);
+}
+.salaah-rules-lead>.mi{flex-shrink:0;font-size:24px;color:var(--color-action-primary)}
+.salaah-rules-lead>div{display:flex;min-width:0;flex-direction:column;gap:5px}
+.salaah-rules-lead strong{font:700 17px/1.25 var(--font-title);color:var(--color-info-primary)}
+.salaah-rules-lead p,.salaah-rules-section-head p,.salaah-rules-foot{margin:0;font-size:12px;line-height:1.5;color:var(--color-info-secondary)}
+.salaah-rules-section{display:flex;flex-direction:column;gap:var(--size-xl)}
+.salaah-rules-section-head{display:flex;flex-direction:column;gap:3px;padding:0 var(--size-sm)}
+.salaah-rules-section-head h2{margin:0;font:700 17px/1.25 var(--font-title);color:var(--color-info-primary)}
+.salaah-rules-page-list{overflow:hidden;border:1px solid var(--color-neutral-border);border-radius:var(--radius-xl);background:var(--color-surface-card)}
+.salaah-rules-page-row{
+  display:grid;
+  grid-template-columns:36px 54px minmax(0,1fr);
+  align-items:center;
+  gap:var(--size-md);
+  min-height:66px;
+  padding:var(--size-lg) var(--size-xl);
+  border-bottom:1px solid var(--color-neutral-border);
+}
+.salaah-rules-page-row:last-child{border-bottom:0}
+.salaah-rules-page-row>.icon-tile{--tile:34px}
+.salaah-rules-page-prayer{font-size:12px;font-weight:800;color:var(--color-info-primary)}
+.salaah-rules-page-copy{display:flex;min-width:0;flex-direction:column;gap:2px}
+.salaah-rules-page-copy strong{font-size:12.5px;line-height:1.35;color:var(--color-info-primary)}
+.salaah-rules-page-copy small{font-size:10.5px;line-height:1.4;color:var(--color-info-secondary)}
+.salaah-rules-foot{padding:0 var(--size-sm) var(--size-xl)}

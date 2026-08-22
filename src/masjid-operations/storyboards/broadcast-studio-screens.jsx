@@ -223,11 +223,15 @@ const SALAAH_ORDER = [
 ];
 
 const OPS_SALAAH_CONFIG = {
-  fajr: { variant: VARIANT_FIXED, salaahTime: '05:30', iqamaDelay: 20 },
+  // The recommended first-publish template mirrors the pattern committees already use: the three
+  // seasonal prayers follow the calculated day, Zohar and Jumah hold a clock time, and Maghrib is
+  // called at sunset. These wire variants never appear in the interface; the rule receipt below
+  // explains them in the language a committee uses.
+  fajr: { variant: VARIANT_VARIES, neverBefore: '00:00', salaahTimeVariation: 'VARIES_EVERY_15_MINS', iqamaDelay: 20 },
   zohar: { variant: VARIANT_FIXED, salaahTime: '13:30', iqamaDelay: 15 },
-  asr: { variant: VARIANT_VARIES, neverBefore: '16:30', salaahTimeVariation: 'VARIES_EVERY_10_MINS', iqamaDelay: 15 },
+  asr: { variant: VARIANT_VARIES, neverBefore: '00:00', salaahTimeVariation: 'VARIES_EVERY_15_MINS', iqamaDelay: 15 },
   maghrib: { variant: VARIANT_ON_TIME, iqamaDelay: 5 },
-  isha: { variant: VARIANT_FIXED, salaahTime: '20:15', iqamaDelay: 15 },
+  isha: { variant: VARIANT_VARIES, neverBefore: '00:00', salaahTimeVariation: 'VARIES_EVERY_15_MINS', iqamaDelay: 15 },
   jumah: { variant: VARIANT_FIXED, salaahTime: '13:20', iqamaDelay: 0 },
 };
 
@@ -276,8 +280,11 @@ const variationLabel = (value) => (VARIATION_OPTIONS.find((o) => o.value === val
 const salaahShort12 = (mins) => fmt12(salaahToHHMM(mins)).replace(/\s[AP]M$/, '');
 
 // What is published right now, against the working copy being edited.
-const salaahChanged = (working, prayerKey) => {
-  const published = (OPS_SALAAH_CONFIG || {})[prayerKey] || {};
+// `baseline` exists so a storyboard frame can publish something other than the sample — the drift
+// frames need a masjid whose PUBLISHED Fajr has fallen outside its window, which the default cannot
+// express. Live callers keep the sample.
+const salaahChanged = (working, prayerKey, baseline) => {
+  const published = ((baseline || OPS_SALAAH_CONFIG) || {})[prayerKey] || {};
   const draft = (working || {})[prayerKey] || {};
   return ['variant', 'salaahTime', 'neverBefore', 'salaahTimeVariation', 'iqamaDelay']
     .some((field) => published[field] !== draft[field]);
@@ -291,10 +298,18 @@ const salaahChangeCount = (working) => (SALAAH_ORDER || [])
 // make the board non-deterministic.
 const FRAME_NOW_MINUTES = 9 * 60 + 41;
 
-const prayerMinutes = (config = {}) => {
-  const time = config.variant === VARIANT_VARIES ? config.neverBefore : config.salaahTime;
-  if (!time) return null;
-  const [h, m] = time.split(':').map((n) => parseInt(n, 10));
+const prayerMinutes = (config = {}, key) => {
+  const starts = { fajr: 292, zohar: 748, asr: 972, maghrib: 1128, isha: 1206 };
+  if (config.variant === VARIANT_ON_TIME) return starts[key] == null ? null : starts[key];
+  if (config.variant === VARIANT_VARIES) {
+    const start = starts[key];
+    const step = parseInt(String(config.salaahTimeVariation || '').replace(/\D/g, ''), 10);
+    if (start == null || !step) return null;
+    const floor = config.neverBefore ? salaahToMinutes(config.neverBefore) : 0;
+    return Math.max((Math.floor(start / step) * step) + step, floor);
+  }
+  if (!config.salaahTime) return null;
+  const [h, m] = config.salaahTime.split(':').map((n) => parseInt(n, 10));
   return (h * 60) + m;
 };
 
@@ -304,11 +319,11 @@ const prayerMinutes = (config = {}) => {
 const nextPrayer = (config = {}) => {
   const day = SALAAH_ORDER.filter(({ key }) => key !== 'jumah');
   const upcoming = day.find(({ key }) => {
-    const mins = prayerMinutes(config[key]);
+    const mins = prayerMinutes(config[key], key);
     return mins !== null && mins > FRAME_NOW_MINUTES;
   });
   if (upcoming) return { ...upcoming, tomorrow: false };
-  const first = day.find(({ key }) => prayerMinutes(config[key]) !== null);
+  const first = day.find(({ key }) => prayerMinutes(config[key], key) !== null);
   return first ? { ...first, tomorrow: true } : null;
 };
 
@@ -317,8 +332,11 @@ const nextPrayer = (config = {}) => {
 const timeSummary = (config) => {
   if (!config) return '';
   if (config.variant === VARIANT_FIXED) return `${fmt12(config.salaahTime)} · iqama +${config.iqamaDelay}m`;
-  if (config.variant === VARIANT_VARIES) return `not before ${fmt12(config.neverBefore)} · iqama +${config.iqamaDelay}m`;
-  return `on time · iqama +${config.iqamaDelay}m`;
+  if (config.variant === VARIANT_VARIES) {
+    const step = parseInt(String(config.salaahTimeVariation || '').replace(/\D/g, ''), 10) || 15;
+    return `${step === 15 ? 'next quarter-hour' : `next ${step} minutes`} · iqama +${config.iqamaDelay}m`;
+  }
+  return `at sunset · iqama +${config.iqamaDelay}m`;
 };
 
 // Mirrors SalaahConfigScreen.describe(config).
@@ -1647,13 +1665,58 @@ const salaahToHHMM = (mins) => {
   const m = ((Math.round(mins) % 1440) + 1440) % 1440;
   return `${String(Math.floor(m / 60)).padStart(2, '0')}:${String(m % 60).padStart(2, '0')}`;
 };
+// The digits in the variation's name ARE its step, so a backend that adds one needs no edit here.
+const salaahVariationStep = (name) => {
+  const n = parseInt(String(name || '').replace(/\D/g, ''), 10);
+  return n > 0 ? n : null;
+};
+
 // An ON_TIME prayer stores no time at all — its azaan IS the calculated start, which is why Maghrib
 // has neither salaahTime nor neverBefore. Falling back to "00:00" put its azaan at midnight.
-const salaahAzaanMinutes = (cfg = {}, fallbackMinutes = 0) => (
-  cfg.salaahTime || cfg.neverBefore
-    ? salaahToMinutes(cfg.salaahTime || cfg.neverBefore)
-    : fallbackMinutes
-);
+//
+// A VARIES prayer stores a FLOOR, not an azaan (corrected 2026-08-16). The backend calls it at the
+// calculated start rounded UP to the next multiple of the variation, and uses the floor only when
+// that rounding lands earlier — so reading `neverBefore` as the azaan states a time the masjid does
+// not call. An Asr opening 4:12 with a 10-minute variation and a 4:30 floor is called at 4:30 here,
+// but move the floor to 4:00 and it is 4:20, not 4:00.
+const salaahAzaanMinutes = (cfg = {}, fallbackMinutes = 0) => {
+  if (cfg.salaahTime) return salaahToMinutes(cfg.salaahTime);
+  if (!cfg.neverBefore) return fallbackMinutes;
+  const floor = salaahToMinutes(cfg.neverBefore);
+  const step = salaahVariationStep(cfg.salaahTimeVariation);
+  if (!step) return floor;
+  return Math.max((Math.floor(fallbackMinutes / step) * step) + step, floor);
+};
+
+// ── The drift offer (approved 2026-08-16) ────────────────────────────────────────────────────────
+// A `FIXED` azaan holds its clock time while the calculated start slides across the year — measured
+// against adhan in Bangalore, the starts swing 31–65 minutes — so a timing that was legal when it was
+// published eventually sits outside its own window. Nothing between the editor and a musalli catches
+// that, and dragging it to a new fixed time only restarts the same clock.
+//
+// The durable fix is a rounding rule, and that is a question only the masjid can answer. It is asked
+// HERE, at drift, rather than on every edit: most masjids read fixed times off a printed board, so
+// asking each time an azaan moves taxes the majority to serve the minority. At drift the committee can
+// see the problem, and one tap ends it.
+//
+// The step is inferred from the masjid's OWN published times rather than guessed. A masjid whose
+// prayers all sit on quarter hours is describing quarter hours. Jumah is excluded: its time is a
+// congregation convention set by the khutbah, not part of a daily rounding habit. Fewer than two
+// times, or no common step, means no offer at all — the screen states the drift and says nothing it
+// cannot deliver.
+const salaahRoundingStep = (config = {}) => {
+  const mins = SALAAH_ORDER
+    .filter(({ key }) => key !== 'jumah')
+    .map(({ key }) => config[key] || {})
+    .filter((cfg) => cfg.salaahTime || cfg.neverBefore)
+    .map((cfg) => salaahToMinutes(cfg.salaahTime || cfg.neverBefore));
+  if (mins.length < 2) return null;
+  return [15, 10, 5].find((step) => mins.every((m) => m % step === 0)) || null;
+};
+
+// What the rounding rule would call this prayer today. The offer must show its own consequence: a
+// committee cannot accept "the next quarter-hour" without being told that today that is 5:00.
+const salaahRoundedAzaan = (opens, step) => (Math.floor(opens / step) * step) + step;
 
 // A scanned time has to clear the same two bounds a dragged one does. LED boards misread digits, so a
 // proposal that cannot exist is a normal outcome, not an edge case: it is shown, named, and left out of
@@ -1665,14 +1728,115 @@ const salaahProposalFault = (p, proposal) => {
   return null;
 };
 
+// The offer itself. Floating above the docked action and outside its measurement, for the same
+// reason the capsule is: this card appears and retires while a finger may be on the axis, and a card
+// in flow would resize the day under that finger. It carries ONE action — dragging is the other way
+// out and it is the screen itself, so making it a button would only compete with the day.
+function SalaahDriftOffer({ prayer, step, onAdopt }) {
+  if (!prayer) return null;
+  const today = salaahRoundedAzaan(prayer.opens, step);
+  const stepWord = step === 15 ? 'quarter-hour' : `${step} minutes`;
+  return (
+    <div className="salaah-drift" role="status">
+      <span className="mi" data-i="error" aria-hidden="true"></span>
+      <div className="salaah-drift-copy">
+        {/* Red may letter here — it is the one accent on this screen that clears contrast as type,
+            and it is the same red the row itself is already wearing. */}
+        {/* The card owns the OFFER and nothing else. It used to end with "drag it to a new time",
+            which the footer already says under every state of this screen — two lines telling the
+            same reader to drag, stacked. The manual path is the screen itself. */}
+        <b>{prayer.label} can no longer be called at {window.SstFormat(prayer.azaan)}</b>
+        <span>
+          It now begins at {window.SstFormat(prayer.opens)}, and a fixed time will drift again. Let it
+          follow the prayer instead:
+        </span>
+        <button type="button" className="chip solid" onClick={() => onAdopt(prayer.key, step)}>
+          {step === 15 ? 'Next quarter-hour' : `Next ${stepWord}`} · {window.SstFormat(today)} today
+        </button>
+      </div>
+    </div>
+  );
+}
+
+// The editor stays a timeline, not a configuration form. This receipt is the only place the
+// automatic behaviour is named, and it uses committee language rather than backend variants.
+// First publish shows all six rules together; an ambiguous drag asks only about the prayer touched.
+const salaahPolicy = (key, cfg, opens) => {
+  const label = (SALAAH_ORDER.find((p) => p.key === key) || {}).label || key;
+  if (!cfg) return { key, label, icon: 'schedule', title: 'Not set', detail: '' };
+  if (cfg.variant === VARIANT_ON_TIME) {
+    return { key, label, icon: 'wb_twilight', follows: true, title: 'At sunset', detail: `Moves every day · Iqama ${cfg.iqamaDelay} min later` };
+  }
+  if (cfg.variant === VARIANT_VARIES) {
+    const step = salaahVariationStep(cfg.salaahTimeVariation) || 15;
+    const today = salaahRoundedAzaan(opens || 0, step);
+    return {
+      key, label, icon: 'update', follows: true,
+      title: step === 15 ? 'Next quarter-hour' : `Next ${step} minutes`,
+      detail: `${window.SstFormat ? window.SstFormat(today) : fmt12(salaahToHHMM(today))} today · Iqama ${cfg.iqamaDelay} min later`,
+    };
+  }
+  return {
+    key, label, icon: 'keep', follows: false,
+    title: key === 'jumah' ? `${fmt12(cfg.salaahTime)} every Friday` : `${fmt12(cfg.salaahTime)} every day`,
+    detail: `Stays on the clock · Iqama ${cfg.iqamaDelay} min later`,
+  };
+};
+
+function SalaahRulesBody({ data }) {
+  const salaah = data.salaah || {};
+  const config = salaah.config || OPS_SALAAH_CONFIG;
+  const windows = (window.SstPrayerWindows || [])
+    .concat(window.SstJumahWindow ? [window.SstJumahWindow] : []);
+  const byKey = {};
+  windows.forEach((p) => { byKey[p.key] = p; });
+  const policies = SALAAH_ORDER.map(({ key }) => salaahPolicy(key, config[key], (byKey[key] || {}).opens));
+  const groups = [
+    { title: 'Moves with the prayer', copy: 'Paigham recalculates these as the days and seasons change.', rows: policies.filter((p) => p.follows) },
+    { title: 'Stays on the clock', copy: 'These remain at the same clock time until someone changes them.', rows: policies.filter((p) => !p.follows) },
+  ].filter((group) => group.rows.length);
+
+  return (
+    <Body bottomInset={24} style={{ paddingTop: BCS_APPBAR_H + 18, gap: 22 }}>
+      <div className="salaah-rules-lead">
+        <span className="mi" data-i="auto_awesome" aria-hidden="true"></span>
+        <div>
+          <strong>You set the time. Paigham keeps the pattern.</strong>
+          <p>The choice is made automatically from the prayer and the time you set. There is nothing else to configure.</p>
+        </div>
+      </div>
+      {groups.map((group) => (
+        <section className="salaah-rules-section" key={group.title}>
+          <div className="salaah-rules-section-head">
+            <h2>{group.title}</h2>
+            <p>{group.copy}</p>
+          </div>
+          <div className="salaah-rules-page-list" role="list">
+            {group.rows.map((row) => (
+              <div className="salaah-rules-page-row" role="listitem" key={row.key}>
+                <span className="icon-tile"><span className="mi" data-i={row.icon} aria-hidden="true"></span></span>
+                <span className="salaah-rules-page-prayer">{row.label}</span>
+                <span className="salaah-rules-page-copy"><strong>{row.title}</strong><small>{row.detail}</small></span>
+              </div>
+            ))}
+          </div>
+        </section>
+      ))}
+      <p className="salaah-rules-foot">To change a pattern, go back and move that prayer’s azaan on the timeline. Paigham will work it out again.</p>
+    </Body>
+  );
+}
+
 function SalaahConfigBody({ data }) {
   const {
     salaah = {}, onRetry, onConfigChange, onSubmitSalaah, onDone,
-    onOpenScan, onScanMeaning, onScanConsumed, onDiscardScan,
+    onOpenScan, onScanMeaning, onScanConsumed, onDiscardScan, onAdoptRounding,
+    onTimingSettled,
   } = data;
   const {
     status = 'loaded', config = OPS_SALAAH_CONFIG, history = [], saving, dirty,
     scanProposal, scanColumnMeaning, scanMissed = [],
+    published = OPS_SALAAH_CONFIG,
   } = salaah;
 
   const spineRef = React.useRef(null);
@@ -1685,7 +1849,7 @@ function SalaahConfigBody({ data }) {
   const windows = window.SstPrayerWindows || [];
   const jumahWindow = window.SstJumahWindow;
   const withPublished = (w) => {
-    const pub = OPS_SALAAH_CONFIG[w.key] || {};
+    const pub = published[w.key] || {};
     return Object.assign({}, w, { azaan: salaahAzaanMinutes(pub, w.opens), iqama: pub.iqamaDelay || 0 });
   };
   const prayers = windows.map(withPublished);
@@ -1706,18 +1870,22 @@ function SalaahConfigBody({ data }) {
     return fault ? Object.assign({}, proposal, { fault }) : proposal;
   };
 
-  const commit = (key, value) => onConfigChange && onConfigChange(key, {
+  const commit = (key, value, meta) => onConfigChange && onConfigChange(key, {
     salaahTime: salaahToHHMM(value.azaan),
     iqamaDelay: value.iqama,
-  });
+  }, meta);
   // The scrolling day (storyboards/salaah-scroll-timeline.jsx) replaced the compressed spine here:
   // the card is dragged directly at 1:1 and each prayer sits at its true position. The console still
   // owns the DRAFT and the timeline still owns the in-flight GESTURE — the Qibla rule is unchanged.
   const { drag, bad, onGrab, onMove, onRelease } = (window.useSstDrag || (() => ({})))({
-    cfgOf, prayerOf: (key) => byKey[key], onCommit: commit, live: true,
+    cfgOf, prayerOf: (key) => byKey[key], onCommit: commit,
+    onSettle: onTimingSettled, live: true,
   });
 
-  const changedCount = SALAAH_ORDER.filter(({ key }) => salaahChanged(config, key)).length;
+  const roundingStep = salaahRoundingStep(published);
+  const changedCount = salaah.neverPublished
+    ? SALAAH_ORDER.length
+    : SALAAH_ORDER.filter(({ key }) => salaahChanged(config, key, published)).length;
   const proposalKeys = scanProposal ? Object.keys(scanProposal) : [];
   const pending = proposalKeys.length > 0;
   const faulted = proposalKeys.filter((key) => salaahProposalFault(byKey[key], scanProposal[key]));
@@ -1733,6 +1901,16 @@ function SalaahConfigBody({ data }) {
   const walkTimer = React.useRef(null);
   const [walk, setWalk] = React.useState(null); // { queue, i, landingKey, done }
   const [needMeaning, setNeedMeaning] = React.useState(false);
+
+  // A prayer whose PUBLISHED pair cannot exist today, and whose draft has not yet rescued it.
+  // Both halves matter: dragging it back inside its window retires the offer without needing a
+  // dismissal, and so does accepting the offer, because a rounding of the start always resolves
+  // inside the window. Withheld during a walk — a landing sequence owns the screen while it runs.
+  const driftedPrayer = (roundingStep && !walk)
+    ? prayers.concat(jumah ? [jumah] : []).find((p) => (
+      salaahProposalFault(p, pubOf(p)) && salaahProposalFault(p, cfgOf(p))
+    ))
+    : null;
   React.useEffect(() => () => clearTimeout(walkTimer.current), []);
 
   const beginAdd = () => {
@@ -1750,7 +1928,11 @@ function SalaahConfigBody({ data }) {
     // footer's changed-count is the announcement.
     const reduced = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
     if (reduced) {
-      queue.forEach((it) => commit(it.key, { azaan: it.azaan, iqama: it.iqama }));
+      queue.forEach((it) => {
+        const value = { azaan: it.azaan, iqama: it.iqama };
+        commit(it.key, value, { field: 'azaan', source: 'scan' });
+        onTimingSettled && onTimingSettled(it.key, value, { field: 'azaan', source: 'scan' });
+      });
       return;
     }
     const step = (i) => {
@@ -1771,7 +1953,9 @@ function SalaahConfigBody({ data }) {
         bodyEl.scrollTo({ top: bodyEl.scrollTop + (r.top - b.top) - 150, behavior: 'smooth' });
       }
       walkTimer.current = setTimeout(() => {
-        commit(it.key, { azaan: it.azaan, iqama: it.iqama });
+        const value = { azaan: it.azaan, iqama: it.iqama };
+        commit(it.key, value, { field: 'azaan', source: 'scan' });
+        onTimingSettled && onTimingSettled(it.key, value, { field: 'azaan', source: 'scan' });
         walkTimer.current = setTimeout(() => step(i + 1), 650);
       }, 720);
     };
@@ -1912,6 +2096,15 @@ function SalaahConfigBody({ data }) {
       {/* One primary at a time, and it is always Publish now: the review SHEET owns the scan's
           decision (approved 2026-08-12), so the footer never trades its one job away. A scan still
           cannot reach musalleen without a human pressing Publish on values they have seen land. */}
+      {/* The drift offer sits above the refusal strip's slot but out of flow, so the two can coexist:
+          the strip is the transient "that move was refused", this is the standing "this timing has
+          stopped being possible, and here is the fix that lasts". */}
+      <SalaahDriftOffer
+        prayer={driftedPrayer}
+        step={roundingStep}
+        onAdopt={(key, step) => onAdoptRounding && onAdoptRounding(key, step)}
+      />
+
       {bad ? (
         <div className="salaah-refuse" role="alert">
           <span className="mi" data-i="error" aria-hidden="true"></span>
@@ -1922,9 +2115,8 @@ function SalaahConfigBody({ data }) {
         label={reachText ? `Publish to ${reachText} musalleen` : 'Publish timings'}
         busy={saving}
         busyLabel="Publishing timings…"
-        disabled={!dirty}
         helper={dirty
-          ? `${changedCount} ${changedCount === 1 ? 'prayer' : 'prayers'} changed · publishing updates musalleen and records your name.`
+          ? `${changedCount} ${salaah.neverPublished ? 'prayers ready' : `${changedCount === 1 ? 'prayer' : 'prayers'} changed`} · publishing updates musalleen and records your name.`
           : 'Drag a prayer’s azaan, or its iqama, to correct it.'}
         onClick={onSubmitSalaah}
       />
@@ -2172,19 +2364,25 @@ const destTransitionName = (dest) => `masjid-console-dest-${dest}`;
  * Offered only once there is a record: an icon that opens an empty sheet is a dead end, and
  * "nobody has published yet" is already said on the publish bar.
  */
-function SalaahHistoryAction(data) {
+function SalaahActions(data) {
   const history = ((data.salaah || {}).history) || [];
-  if (!history.length) return null;
   const last = history[0];
   return (
-    <button
-      type="button"
-      className="ib ib-tonal"
-      onClick={data.onOpenHistory}
-      aria-label={`Timing changes — last updated by ${last.by}`}
-    >
-      <span className="mi" data-i="receipt_long" aria-hidden="true"></span>
-    </button>
+    <div className="salaah-appbar-actions">
+      <button type="button" className="ib ib-tonal" onClick={data.onOpenSalaahRules} aria-label="How timings update">
+        <span className="mi" data-i="info" aria-hidden="true"></span>
+      </button>
+      {last ? (
+        <button
+          type="button"
+          className="ib ib-tonal"
+          onClick={data.onOpenHistory}
+          aria-label={`Timing changes — last updated by ${last.by}`}
+        >
+          <span className="mi" data-i="receipt_long" aria-hidden="true"></span>
+        </button>
+      ) : null}
+    </div>
   );
 }
 
@@ -2192,7 +2390,8 @@ function SalaahHistoryAction(data) {
 const CONSOLE_DESTINATIONS = {
   members: { title: 'Committee', body: CommitteeBody },
   followers: { title: 'Musalleen', body: FollowersBody },
-  salaah: { title: 'Salaah timings', body: SalaahConfigBody, trailing: SalaahHistoryAction },
+  salaah: { title: 'Salaah timings', body: SalaahConfigBody, trailing: SalaahActions },
+  salaahRules: { title: 'How timings update', body: SalaahRulesBody },
   details: { title: 'Masjid details', body: DetailsBody },
   // Opened from a committee row; its title is the member's name.
   // The member screen carries its own header (avatar + name + number), so no app bar.
