@@ -126,8 +126,7 @@ html.noor-canvas-mode .poc-frames {
   z-index: 2147483647;
   background: #000;
 }
-.poc-live.is-capture .poc-play,
-.poc-live.is-capture .poc-live-hint { display: none; }
+.poc-live.is-capture .poc-play { display: none; }
 body:has(.poc-live.is-capture) { overflow: hidden; }
 body:has(.poc-live.is-capture) #noor-chrome,
 body:has(.poc-live.is-capture) #noor-nav,
@@ -273,13 +272,6 @@ body:has(.poc-live.is-capture) #noor-nav-scrim { display: none !important; }
   box-shadow: var(--shadow-button);
 }
 .poc-play .mi { font-size: 18px; }
-.poc-live-hint {
-  font-family: var(--font-body, "Plus Jakarta Sans", sans-serif);
-  font-size: 11px;
-  color: var(--canvas-label);
-  text-align: center;
-  max-width: 260px;
-}
 
 /* DC wraps {{ }} interpolations in .sc-interp spans that get the body font,
    which kills Material Symbols ligatures for dynamically-bound icon names.

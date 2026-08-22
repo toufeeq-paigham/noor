@@ -515,16 +515,24 @@
   border:none;border-radius:var(--radius-circle);font-family:var(--font-body);font-size:15px;
   font-weight:700;line-height:1;white-space:nowrap;background:var(--color-action-primary);
   color:var(--color-action-primary-inverse);box-shadow:var(--shadow-elevated);
-  transition:padding var(--motion-standard) var(--ease-out),
+  transition:padding var(--motion-standard) var(--ease-spring),
+    gap var(--motion-standard) var(--ease-spring),
     bottom var(--motion-standard) var(--ease-out),
     transform var(--motion-press) var(--ease-out)}
 .fab>.mi{flex-shrink:0;font-size:var(--icon-md)}
 /* The label collapses by width, not display, so the circle and the pill are the same element
    animating — swapping nodes would restart the transition and flash the icon. */
+/* Padding, gap and the label's width run on ONE curve so nothing arrives early or late, and the
+   label only fades in over the back half of the travel — a full-width label fading into a circle
+   reads as text bleeding through the button. */
 .fab-label{overflow:hidden;max-width:200px;
-  transition:max-width var(--motion-standard) var(--ease-out),opacity var(--motion-quick) var(--ease-out)}
+  transition:max-width var(--motion-standard) var(--ease-spring),
+    opacity var(--motion-quick) var(--ease-out) var(--motion-press)}
 .fab.compact{padding:0;justify-content:center;gap:0}
-.fab.compact .fab-label{max-width:0;opacity:0}
+/* Collapsing, the word leaves first — the delay above is for the reveal only. */
+.fab.compact .fab-label{max-width:0;opacity:0;
+  transition:max-width var(--motion-standard) var(--ease-spring),
+    opacity var(--motion-exit) var(--ease-out)}
 .fab:active{transform:scale(.96)}
 @media(prefers-reduced-motion:reduce){
   .fab{transition:none}

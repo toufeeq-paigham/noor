@@ -33,6 +33,7 @@
 [data-i="chevron_right"]{--mi:url("../_ds/icons/chevron_right.svg")}
 [data-i="close"]{--mi:url("../_ds/icons/close.svg")}
 [data-i="contract"]{--mi:url("../_ds/icons/contract.svg")}
+[data-i="contrast"]{--mi:url("../_ds/icons/contrast.svg")}
 [data-i="corporate_fare"]{--mi:url("../_ds/icons/corporate_fare.svg");--mif:url("../_ds/icons/corporate_fare__fill.svg")}
 [data-i="dark_mode"]{--mi:url("../_ds/icons/dark_mode.svg")}
 [data-i="dashboard"]{--mi:url("../_ds/icons/dashboard.svg")}
@@ -53,10 +54,12 @@
 [data-i="hourglass_top"]{--mi:url("../_ds/icons/hourglass_top.svg")}
 [data-i="info"]{--mi:url("../_ds/icons/info.svg")}
 [data-i="import_contacts"]{--mi:url("../_ds/icons/import_contacts.svg")}
+[data-i="keep"]{--mi:url("../_ds/icons/keep.svg")}
 [data-i="keyboard_arrow_down"]{--mi:url("../_ds/icons/keyboard_arrow_down.svg")}
 [data-i="keyboard_arrow_left"]{--mi:url("../_ds/icons/keyboard_arrow_left.svg")}
 [data-i="keyboard_arrow_right"]{--mi:url("../_ds/icons/keyboard_arrow_right.svg")}
 [data-i="keyboard_arrow_up"]{--mi:url("../_ds/icons/keyboard_arrow_up.svg")}
+[data-i="light_mode"]{--mi:url("../_ds/icons/light_mode.svg")}
 [data-i="location_on"]{--mi:url("../_ds/icons/location_on.svg");--mif:url("../_ds/icons/location_on__fill.svg")}
 [data-i="login"]{--mi:url("../_ds/icons/login.svg")}
 [data-i="logout"]{--mi:url("../_ds/icons/logout.svg")}
@@ -102,6 +105,7 @@
 [data-i="stop"]{--mi:url("../_ds/icons/stop.svg")}
 [data-i="swap_horiz"]{--mi:url("../_ds/icons/swap_horiz.svg")}
 [data-i="travel_explore"]{--mi:url("../_ds/icons/travel_explore.svg")}
+[data-i="update"]{--mi:url("../_ds/icons/update.svg")}
 [data-i="unfold_more"]{--mi:url("../_ds/icons/unfold_more.svg")}
 [data-i="verified"]{--mi:url("../_ds/icons/verified.svg")}
 [data-i="videocam_off"]{--mi:url("../_ds/icons/videocam_off.svg")}

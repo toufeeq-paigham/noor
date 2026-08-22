@@ -82,7 +82,8 @@
     ]},
     { id: 'masjid', num: '04', title: 'Masjid', items: [
       { name: 'Masjid Onboarding', file: 'masjid-register/Masjid Onboarding.dc.html#entry', icon: 'add_home_work', meta: 'Section board · My Masjids sheet · screen-by-screen storyboard · 41 states' },
-      { name: 'Masjid Console', file: 'masjid-operations/Masjid Console.dc.html', icon: 'campaign', meta: 'Section board · the masjid console · hub → committee · timings · musalleen · details · invitations · send a paigham · 90 states' }
+      { name: 'Masjid Console', file: 'masjid-operations/Masjid Console.dc.html', icon: 'campaign', meta: 'Section board · the masjid console · hub → committee · timings · musalleen · details · invitations · send a paigham · 90 states' },
+      { name: 'Salaah Timing Rules', file: 'masjid-operations/Salaah Timing Rules.dc.html', icon: 'schedule', meta: 'Section board · the whole Salaah section · the day dragged by rule · per-prayer rule · publish · 25 states' }
     ]},
     { id: 'content', num: '05', title: 'Content & tools', items: [
       { name: 'Find Sehri', file: 'sehri/Sehri.dc.html#map', icon: 'restaurant', meta: 'Section board · Home → permission → map · list · 5 states' },
@@ -181,8 +182,11 @@
         if (curPath.indexOf('/' + fileNoHash) !== -1) a.classList.add('current');
         var ic = document.createElement('span');
         ic.className = 'nn-ic';
-        ic.innerHTML = '<span class="material-symbols-rounded"></span>';
-        ic.firstChild.textContent = p.icon;
+        // Local icon kit (_theme/icons.css renders the SVG through a CSS mask). The old
+        // material-symbols ligature only rendered on pages that happened to load the Google
+        // font, so on every other page the chrome printed the ligature NAME as text.
+        ic.innerHTML = '<span class="mi"></span>';
+        ic.firstChild.setAttribute('data-i', p.icon);
         var tx = document.createElement('span');
         tx.className = 'nn-tx';
         var nm = document.createElement('span');
@@ -235,7 +239,7 @@
       'cursor:pointer;color:var(--color-info-secondary,#71717B);display:flex;align-items:center;justify-content:center;padding:0}',
       '#noor-chrome .noor-chrome-seg button[data-active="1"]{background:var(--color-action-primary,#00C950);color:var(--color-action-primary-inverse,#F0FDF4)}',
       '#noor-chrome .noor-chrome-seg button:not([data-active="1"]):hover{color:var(--color-info-primary,#09090B)}',
-      '#noor-chrome .material-symbols-rounded{font-size:18px}',
+      '#noor-chrome .mi{font-size:18px}',
       /* ---- left nav drawer ---- */
       '#noor-nav-scrim{position:fixed;inset:0;z-index:100000;background:color-mix(in oklab,var(--color-info-primary,#000) 26%,transparent);',
       'backdrop-filter:blur(3px);-webkit-backdrop-filter:blur(3px);opacity:0;pointer-events:none;transition:opacity .3s ease}',
@@ -257,7 +261,7 @@
       '#noor-nav .nn-ic{width:34px;height:34px;flex:none;border-radius:10px;background:var(--color-surface-secondary,#F0FDF4);',
       'display:flex;align-items:center;justify-content:center;color:var(--color-action-primary,#00C950)}',
       '#noor-nav .nn-item.current .nn-ic{background:var(--color-action-primary,#00C950);color:var(--color-action-primary-inverse,#F0FDF4)}',
-      '#noor-nav .nn-ic .material-symbols-rounded{font-size:20px}',
+      '#noor-nav .nn-ic .mi{font-size:20px}',
       '#noor-nav .nn-tx{min-width:0;display:flex;flex-direction:column}',
       '#noor-nav .nn-name{font-size:14px;font-weight:700;line-height:1.2}',
       '#noor-nav .nn-meta{font-size:11px;color:var(--color-info-secondary,#71717B);line-height:1.3;margin-top:2px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}'
@@ -351,7 +355,8 @@
       var btn = document.createElement('button');
       btn.id = 'noor-chrome-' + m.id;
       btn.title = m.label;
-      btn.innerHTML = '<span class="material-symbols-rounded">' + m.icon + '</span>';
+      btn.innerHTML = '<span class="mi"></span>';
+      btn.firstChild.setAttribute('data-i', m.icon);
       btn.addEventListener('click', function () { setMode(m.id); });
       seg.appendChild(btn);
     });

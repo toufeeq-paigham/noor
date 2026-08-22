@@ -28,9 +28,8 @@ function BoardHeader({ title, subtitle }) {
 
 // ── Floating interactive pane: .poc-live › scaled device slot ───────────────
 // Children = the live device (IOSDevice import with the flow stages inside).
-// Optional props: restart (handler → renders the Restart pill under the device),
-// hint (one-line .poc-live-hint caption under the pane).
-function BoardLive({ scale = 0.82, restart, hint, children }) {
+// Optional props: restart (handler → renders the Restart pill under the device).
+function BoardLive({ scale = 0.82, restart, children }) {
   const captureMode = new URLSearchParams(window.location.search).get('capture');
   const isCaptureMode = captureMode === '1' || captureMode === 'android';
   const isAndroidCapture = captureMode === 'android';
@@ -46,7 +45,6 @@ function BoardLive({ scale = 0.82, restart, hint, children }) {
           <span className="mi" data-i="replay"></span>Restart
         </button>
       ) : null}
-      {hint ? <div className="poc-live-hint">{hint}</div> : null}
     </div>
   );
 }
