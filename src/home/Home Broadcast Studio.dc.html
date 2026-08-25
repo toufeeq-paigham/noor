@@ -251,7 +251,7 @@
                       admin-transition-enabled="true"
                       logout-open="{{ profileLogoutOpen }}"
                       on-toggle-logout-sheet="{{ toggleProfileLogoutSheet }}"
-                      on-confirm-logout="{{ resetToDefault }}"
+                      on-confirm-logout="{{ confirmLogout }}"
                       on-register="{{ noop }}"
                       on-invite="{{ noop }}"
                       on-approve="{{ noop }}"
@@ -271,6 +271,17 @@
                     on-select="{{ onNavSelect }}"
                     hint-size="100%,84px">
           </x-import>
+        </sc-if>
+
+        <!-- A session action the whole app is waiting on (ProfileTabViewModel logout / delete).
+             The sheet that asked has closed, so the capsule is what says the app is working — and it
+             floats over the tab bar rather than inside any tab, because what is ending is the
+             session, not the screen. -->
+        <sc-if value="{{ profileSessionLabel }}">
+          <div class="docked-status over-navbar status-capsule" role="status" aria-live="polite">
+            <span class="status-capsule-ring" aria-hidden="true"></span>
+            <b>{{ profileSessionLabel }}</b>
+          </div>
         </sc-if>
 
         <!-- Guest profile LoginSheet (HomeViewModel.kt) — guest taps the Profile tab.
@@ -391,6 +402,8 @@ class Component extends DCLogic {
 
     // Profile tab state
     profileLogoutOpen: false,
+    // 'logout' while the session is being cleared. Null when nothing is running.
+    profileSessionAction: null,
     profileUserName: "Toufeeq",
     profilePhone: "+91 87928 13003",
     profileHasMasjid: true,
@@ -702,7 +715,8 @@ class Component extends DCLogic {
       quranTab: 0,
       quranContentState: 'ready',
       salaahShowMasjidSheet: false,
-      profileLogoutOpen: false
+      profileLogoutOpen: false,
+      profileSessionAction: null
     });
   };
 
@@ -864,7 +878,7 @@ class Component extends DCLogic {
 
   // Timings are public — this is not gated on managing the masjid.
   goEditTimings = () => {
-    window.location.href = '../masjid-operations/Masjid Console.dc.html#salaah';
+    window.location.href = '../masjid-operations/Salaah Timing Rules.dc.html#timings';
   };
 
   goSehri = () => {
@@ -895,6 +909,13 @@ class Component extends DCLogic {
 
   // Profile handlers
   toggleProfileLogoutSheet = () => this.setState(s => ({ profileLogoutOpen: !s.profileLogoutOpen }));
+  // The sheet closes on confirm and the capsule takes over: clearing the session is real work
+  // (the app awaits its owner-scoped caches before it can route anywhere), so the tap cannot
+  // be the last thing the user sees.
+  confirmLogout = () => {
+    this.setState({ profileLogoutOpen: false, profileSessionAction: 'logout' });
+    setTimeout(() => this.resetToDefault(), 900);
+  };
 
   noop = () => {};
 
@@ -990,6 +1011,8 @@ class Component extends DCLogic {
 
       // Profile Screen props
       profileLogoutOpen: s.profileLogoutOpen,
+      profileSessionLabel: s.profileSessionAction === 'logout' ? 'Logging you out…' : null,
+      confirmLogout: this.confirmLogout,
       profileUserName: s.profileUserName,
       profilePhone: s.profilePhone,
       profileHasMasjid: s.profileHasMasjid,

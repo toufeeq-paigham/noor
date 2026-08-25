@@ -44,7 +44,7 @@
 
 <x-import component="BoardHeader" from="../_theme/board.jsx"
           title="Salaah Timings"
-          subtitle="The whole Salaah section, end to end. The day is dragged by RULE — a fixed prayer moves minute by minute, a rounded one jumps a whole step and carries its iqama, a sunset prayer will not move at all — and each prayer's own rule sits beside it in the rail. Publishing becomes the new baseline and is recorded. The device on the right is the working app; the board is the walkthrough."
+          subtitle="The whole Salaah section, end to end. The day is dragged by RULE — a fixed prayer moves minute by minute, a rounded one jumps a whole step and carries its iqama, a sunset prayer will not move at all — and each prayer's own rule sits beside it in the rail. Scanning the board is the same story from the other end: the reading lands as a receipt, an explicit Add walks each value onto its own row, and every landing is translated by the prayer's own rule. Publishing becomes the new baseline and is recorded. The device on the right is the working app; the board is the walkthrough."
           hint-size="1440px,92px"></x-import>
 
 <div class="poc-stage">
@@ -81,6 +81,8 @@ class Component extends DCLogic {
     '#incomplete': { route: 'summary', scenario: 'malformed' },
     '#published': { justPublished: true },
     '#history': { historyOpen: true },
+    '#scan': { scanStage: 'camera' },
+    '#board-read': { scanProposal: 'full' },
     '#loading': { status: 'loading' },
     '#error': { status: 'error' },
     '#conflict': { status: 'conflict' },
@@ -139,8 +141,8 @@ class Component extends DCLogic {
       this.patch({ route: 'timings', stepDir: 'back' });
       return;
     }
-    // Leaving the section returns to the console it belongs to.
-    window.location.href = './Masjid Console.dc.html#salaah';
+    // Leaving the section returns to the console hub it is opened from.
+    window.location.href = './Masjid Console.dc.html#admin';
   };
 
   onOpenPrayer = (key) => this.patch({
@@ -193,6 +195,21 @@ class Component extends DCLogic {
     this.toast(fixture.status === 'UNPUBLISHED' ? 'Restored the server setup' : 'Restored the published rule');
   };
 
+  // Accepting the drift offer is an ORDINARY DRAFT edit, exactly like a drag or a rule-page pick:
+  // it goes through the same two writers, so afterwards nothing can tell an adopted rounding from
+  // one chosen by hand and there is no second path into the config. The floor stays `00:00` because
+  // there is no floor — the rounding IS the whole rule, and one pinned to today's answer would bind
+  // wrongly next season. Nothing reaches musalleen until Publish.
+  onAdoptRounding = (key, step) => {
+    const cfg = this.ruleFor(key);
+    const prayer = this.prayerFor(key);
+    const rule = window.srSetVariant(cfg, window.SR_VARIANTS.VARIES, {
+      opens: prayer ? prayer.opens : null,
+    });
+    this.write(key, window.srSetInterval(rule, step));
+    this.patch({ guideSeen: true });
+  };
+
   // ── The timeline's drag, translated into the prayer's rule ──
   //
   // The gesture reports a raw minute; `srCommitDrag` decides what that minute MEANS for this
@@ -216,6 +233,39 @@ class Component extends DCLogic {
     this.patch({ guideSeen: true });
     this.toast(message, 'error');
   };
+
+  // ── The board scan ──
+  //
+  // An accelerator, never an invisible mutation. Recognition returns to the DAY: every current time
+  // is already drawn in its place there, so the reading lands on it as amber proposals and the
+  // comparison happens where the values live. Nothing here writes to the draft — the sheet's
+  // explicit `Add` hands over to the walk, and the walk commits through `onDragCommit`.
+  //
+  // The column meaning is deliberately NOT cleared when the scanner reopens: it is remembered for
+  // this masjid and stays editable on the sheet at every scan.
+  onOpenScan = () => this.patch({ scanStage: 'camera', scanProposal: null });
+
+  onCloseScan = () => this.patch({ scanStage: null, scanProposal: null });
+
+  onScanRetry = () => this.patch({ scanStage: 'camera', scanProposal: null });
+
+  onScanCapture = () => {
+    // Capture freezes the stage and the reading runs on the still. The stage closes onto the day
+    // with the proposals drawn on it, and the receipt opens over them.
+    this.patch({ scanStage: 'reading' });
+    this.after(1800, () => this.patch({ scanStage: null, scanProposal: 'full' }));
+  };
+
+  onScanMeaning = (scanColumnMeaning) => this.patch({ scanColumnMeaning });
+
+  // The walk owns Add: it takes the reading from here and lands each usable value through the same
+  // commit a drag uses. This only releases the proposal, so the sheet closes and the day is live
+  // again while the values arrive.
+  onScanConsumed = () => this.patch({ scanProposal: null });
+
+  // Scrim, back or `Discard reading` — the reading dies outright, so scan state never lingers over
+  // a day the reader has moved on with.
+  onDiscardScan = () => this.patch({ scanProposal: null, scanStage: null });
 
   // ── Publish. Never disabled — the press runs the check and answers in a sentence, because the
   //    two ways it can refuse need completely different things from the reader. ──
@@ -290,6 +340,14 @@ class Component extends DCLogic {
       onBack: this.onBack,
       onOpenPrayer: this.onOpenPrayer,
       onOpenRules: this.onOpenRules,
+      onAdoptRounding: this.onAdoptRounding,
+      onOpenScan: this.onOpenScan,
+      onCloseScan: this.onCloseScan,
+      onScanCapture: this.onScanCapture,
+      onScanRetry: this.onScanRetry,
+      onScanMeaning: this.onScanMeaning,
+      onScanConsumed: this.onScanConsumed,
+      onDiscardScan: this.onDiscardScan,
       onFocused: this.onFocused,
       onDragCommit: this.onDragCommit,
       onDragSettle: this.onDragSettle,

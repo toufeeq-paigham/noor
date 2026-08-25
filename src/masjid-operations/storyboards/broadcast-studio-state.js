@@ -16,13 +16,15 @@
     route: 'console', // 'console' | 'create' | 'sent' | 'invitations'
     role: 'CHAIRMAN',
     // Command deck: 'home' is the hub, everything else is a full destination screen.
-    dest: 'home', // 'home' | 'members' | 'member' | 'invite' | 'followers' | 'salaah' | 'details'
+    dest: 'home', // 'home' | 'members' | 'member' | 'invite' | 'followers' | 'details'
     masjidId: 'bilal', // which managed masjid the console is showing
     switcherOpen: false,
     consoleStatus: 'loaded', // 'loading' | 'loaded' | 'locked' | 'error'
 
     // Capabilities of the signed-in member (`OPS_MEMBERS[0]` by default: a full admin).
     // Salaah timings are public and deliberately absent from this set — see OPS_CAPABILITIES.
+    // They are also not a destination here: the editor is its own section board
+    // (../Salaah Timing Rules.dc.html) and the hub's Salaah tile navigates to it.
     caps: ['post', 'committee'],
 
     // Storyboard override for the floating action's collapsed form; the live device lets
@@ -49,31 +51,6 @@
     // invite is a destination screen, so the route owns whether it is showing.
     invite: { phone: '', role: null, caps: [], sending: false, error: null },
 
-    salaahStatus: 'loaded', // 'loading' | 'loaded' | 'error' | 'saved'
-    salaahConfig: null, // null → the published sample config
-    // Storyboard-only: resolve a working copy with two prayers moved, lazily (screens.jsx
-    // publishes the baseline after this file loads).
-    salaahEdited: false,
-    expandedPrayer: null,
-    salaahNote: '',
-    salaahDirty: false,
-    salaahSaving: false,
-    salaahHistoryOpen: false,
-    // The timeline edits times; these flags model the small set of moments where a time cannot be
-    // translated into the durable rule shown on the separate explanation destination.
-    salaahNeverPublished: false,
-    salaahScenario: null, // storyboard fixture for the rule-translation states
-    // Scan-the-board flow (console TRD §6). Recognition first creates a preview which the
-    // user compares with the current timings. A one-column board must be identified as
-    // Azaan or Jamaat before anything can be added to the working draft.
-    // 'review' is gone: the timeline is the comparison surface, so recognition returns straight to it
-    // with the board's reading drawn on as amber proposals.
-    scanStage: null, // null | 'camera' | 'reading' | 'failed'
-    scanProposal: null, // null | 'full' | 'partial' — a pending reading, NOT yet in the draft
-    scanApplied: null, // null | 'full' | 'partial' — a reading the user added to the draft
-    scanColumnMeaning: null, // null | 'azaan' | 'jamaat'
-    scanMeaningByMasjid: {}, // remembered choice, still editable on every scan
-
     // The compose wizard's own state. `step` is the screen, `recorder` / `picker` / `crop`
     // are its full-screen stages, `audience` is the PostTarget.
     post: {
@@ -94,7 +71,8 @@
 
     invitationsStatus: 'loaded', // 'loading' | 'loaded' | 'error'
     invitationsEmpty: false,
-    invitationActioningId: null,
+    // { id, kind: 'accept' | 'decline' } — the kind is what lets the capsule name itself.
+    invitationActioning: null,
     invitationAcceptedId: null, // accepted just now → the card offers the console
 
     openMenu: null,
@@ -158,7 +136,6 @@
     const scope = {
       posts: onConsole && s.dest === 'home',
       members: onConsole && ['members', 'followers', 'member', 'invite'].indexOf(s.dest) !== -1,
-      salaah: onConsole && ['salaah', 'salaahRules'].indexOf(s.dest) !== -1,
       post: s.route === 'create',
       invitations: s.route === 'invitations',
     };
@@ -205,27 +182,6 @@
         },
       });
     }
-    if (scope.salaah) {
-      Object.assign(slices, {
-        salaahStatus: s.salaahStatus,
-        expandedPrayer: s.expandedPrayer || null,
-        hasNote: !!(s.salaahNote || '').length,
-        salaahDirty: !!s.salaahDirty,
-        salaahEdited: !!s.salaahEdited,
-        salaahSaving: !!s.salaahSaving,
-        salaahHistoryOpen: !!s.salaahHistoryOpen,
-        salaahNeverPublished: !!s.salaahNeverPublished,
-        salaahScenario: s.salaahScenario || null,
-        salaahDrifted: !!s.salaahDrifted,
-        salaahDriftAdopted: !!s.salaahDriftAdopted,
-        scanStage: s.scanStage || null,
-        scanProposal: s.scanProposal || null,
-        scanApplied: s.scanApplied || null,
-        // The selected Azaan/Jamaat value changes the comparison data, not the screen state.
-        // Both choices therefore light the same "review changes" storyboard frame.
-        scanColumnMeaning: s.scanColumnMeaning ? 'chosen' : null,
-      });
-    }
     if (scope.post) {
       const photos = post.photos || [];
       slices.post = {
@@ -238,6 +194,10 @@
         crop: !!post.crop,
         audience: post.audience || 'MASJID',
         submitting: !!post.submitting,
+        // Which step of the send is running. Sending is a sequence of requests, so the
+        // status line names the one in flight rather than holding one sentence for all of
+        // them; null falls back to the final `Sending your paigham…`.
+        submitStatus: post.submitStatus || null,
         micBlocked: !!post.micBlocked,
         messageError: !!post.messageError,
         // Compose can retarget the masjid mid-draft, so the switcher is part of this
@@ -249,7 +209,7 @@
       Object.assign(slices, {
         invitationsStatus: s.invitationsStatus,
         invitationsEmpty: !!s.invitationsEmpty,
-        invitationActioningId: s.invitationActioningId || null,
+        invitationActioning: s.invitationActioning || null,
         invitationAcceptedId: s.invitationAcceptedId || null,
       });
     }
@@ -308,178 +268,11 @@
         onConfirm: h.onConfirmAction,
       };
     }
-    if (confirm.kind === 'publishSalaah') {
-      // Name the blast radius as a number, the way the delete dialog already does ("42 reactions
-      // will be lost"). "Every musalli of this masjid" is true but abstract; the count is the
-      // thing that makes someone pause and re-read the times before publishing.
-      const reach = ((window.OPS_MASJID || {}).stats || {}).followers;
-      return {
-        title: 'Publish new timings?',
-        description: `${reach ? `All ${reach.toLocaleString('en-IN')} musalleen of` : 'Every musalli of'} this masjid see the updated azaan and iqama times right away, and the change is recorded in your name.`,
-        confirmText: 'Publish',
-        onConfirm: h.onConfirmAction,
-      };
-    }
     return null;
   };
 
-  // The console shows one masjid at a time. Sample data only varies the identity fields;
-  // a second masjid keeps the same feed so the switch reads clearly in the storyboard.
-  // Two prayers moved against the published baseline.
-  const editedConfig = () => {
-    const base = window.OPS_SALAAH_CONFIG;
-    if (!base) return null;
-    return Object.assign({}, base, {
-      // 15, not 25: Fajr's window closes at sunrise (06:14) and the jamaat has to FINISH inside it,
-      // so the latest it may START is 06:04. A 25-minute delay put it at 06:10 — this frame is named
-      // "publish enabled" and was quietly showing a draft Publish must refuse. Nothing caught it
-      // until the row began drawing a stored out-of-window value in red (2026-08-16).
-      fajr: { variant: 'FIXED', salaahTime: '05:45', iqamaDelay: 15 },
-      isha: { variant: 'FIXED', salaahTime: '20:30', iqamaDelay: base.isha.iqamaDelay },
-    });
-  };
-
-  // Static evidence for every point at which a direct time needs translating. The live device
-  // reaches the same shapes through onConfigChange/onTimingSettled; frames do not get a second UI.
-  const ruleScenarioConfig = (scenario) => {
-    const base = window.OPS_SALAAH_CONFIG;
-    if (!base || !scenario) return null;
-    if (scenario === 'rounding' || scenario === 'roundingAdopted') {
-      return Object.assign({}, base, {
-        asr: scenario === 'roundingAdopted'
-          ? { variant: 'VARIES_WITH_ON_TIME', neverBefore: '00:00', salaahTimeVariation: 'VARIES_EVERY_15_MINS', iqamaDelay: base.asr.iqamaDelay }
-          : { variant: 'FIXED', salaahTime: '16:15', iqamaDelay: base.asr.iqamaDelay },
-      });
-    }
-    if (scenario === 'fixedFallback') {
-      return Object.assign({}, base, { asr: { variant: 'FIXED', salaahTime: '16:17', iqamaDelay: base.asr.iqamaDelay } });
-    }
-    if (scenario === 'maghribFixed') {
-      return Object.assign({}, base, { maghrib: { variant: 'FIXED', salaahTime: '18:20', iqamaDelay: base.maghrib.iqamaDelay } });
-    }
-    if (scenario === 'iqamaOnly') {
-      return Object.assign({}, base, { fajr: Object.assign({}, base.fajr, { iqamaDelay: base.fajr.iqamaDelay + 5 }) });
-    }
-    return base;
-  };
-
-  const ruleScenarioPublished = (scenario) => {
-    const base = window.OPS_SALAAH_CONFIG;
-    if (!base || ['rounding', 'roundingAdopted'].indexOf(scenario) === -1) return null;
-    return Object.assign({}, base, {
-      asr: { variant: 'FIXED', salaahTime: '16:30', iqamaDelay: base.asr.iqamaDelay },
-    });
-  };
-
-  // A masjid whose PUBLISHED Fajr has fallen out of its own window. Fajr opens at 04:52 on the
-  // timeline's day, so a fixed 04:45 — perfectly legal when it was published in a shorter season —
-  // now sits seven minutes before the prayer exists. Every other prayer stays on a quarter hour, so
-  // the offer can read the masjid's own rounding habit off them rather than guessing at it.
-  const driftedConfig = () => {
-    const base = window.OPS_SALAAH_CONFIG;
-    if (!base) return null;
-    return Object.assign({}, base, {
-      fajr: { variant: 'FIXED', salaahTime: '04:45', iqamaDelay: base.fajr.iqamaDelay },
-      asr: { variant: 'FIXED', salaahTime: '16:30', iqamaDelay: 15 },
-    });
-  };
-
-  // What the committee gets after accepting the offer: Fajr follows the calculated start, rounded up
-  // to the next quarter-hour. The floor is 00:00 because there is no floor — the rounding is the
-  // whole rule, and a floor set to today's answer would bind wrongly next season.
-  const driftAdoptedConfig = () => {
-    const base = driftedConfig();
-    if (!base) return null;
-    return Object.assign({}, base, {
-      fajr: {
-        variant: 'VARIES_WITH_ON_TIME',
-        neverBefore: '00:00',
-        salaahTimeVariation: 'VARIES_EVERY_15_MINS',
-        iqamaDelay: base.fajr.iqamaDelay,
-      },
-    });
-  };
-
-  // The baseline a draft edit starts from, so a handler need not know which frame it is in.
-  const opsSalaahPublished = (s) => (
-    s.salaahDrifted ? driftedConfig() : (ruleScenarioPublished(s.salaahScenario) || window.OPS_SALAAH_CONFIG)
-  );
-
-  const toMinutes = (hhmm) => {
-    const parts = String(hhmm || '00:00').split(':').map((n) => parseInt(n, 10));
-    return (parts[0] * 60) + (parts[1] || 0);
-  };
-
-  const addMinutes = (time, minutes) => {
-    const parts = (time || '00:00').split(':').map((part) => parseInt(part, 10));
-    const total = ((parts[0] * 60) + parts[1] + minutes + (24 * 60)) % (24 * 60);
-    return `${String(Math.floor(total / 60)).padStart(2, '0')}:${String(total % 60).padStart(2, '0')}`;
-  };
-
-  // What a successful one-column board scan yields. Fixed configurations store Jamaat time,
-  // so a Jamaat column maps directly; an Azaan column adds the current iqama delay. The
-  // partial variant leaves Zohar and Maghrib untouched — the two the parser most often loses
-  // to glare on real LED boards.
-  const scannedConfig = (partial, meaning, keepImpossible) => {
-    const base = window.OPS_SALAAH_CONFIG;
-    if (!base) return null;
-    const detected = {
-      fajr: '04:45',
-      zohar: '12:30',
-      asr: '16:45',
-      maghrib: '18:13',
-      isha: '19:45',
-      jumah: '12:30',
-    };
-    const read = {};
-    Object.keys(detected).forEach((key) => {
-      const current = base[key] || {};
-      const iqamaDelay = current.iqamaDelay || 0;
-      read[key] = {
-        variant: 'FIXED',
-        salaahTime: meaning === 'azaan' ? addMinutes(detected[key], iqamaDelay) : detected[key],
-        iqamaDelay,
-      };
-    });
-    if (partial) { delete read.zohar; delete read.maghrib; }
-    // A reading outside its prayer window is never applied. The proposal view marks it in red and the
-    // action excludes it, so this is the same rule enforced at the point the draft is actually written —
-    // the screen and the store cannot disagree about what got in.
-    const windows = keepImpossible ? [] : (window.SstPrayerWindows || []);
-    const all = windows.concat(!keepImpossible && window.SstJumahWindow ? [window.SstJumahWindow] : []);
-    all.forEach((w) => {
-      const r = read[w.key];
-      if (!r) return;
-      const azaan = toMinutes(r.salaahTime || r.neverBefore);
-      const delay = r.iqamaDelay || 0;
-      if (azaan < w.opens || azaan + delay > w.closes) delete read[w.key];
-    });
-    return Object.assign({}, base, read);
-  };
-
-  // The same reading as scannedConfig, expressed the way the timeline draws: minutes from midnight for
-  // the azaan, and the delay in minutes. One source, two shapes, so the amber dot on the rail and the
-  // value that lands in the draft can never disagree.
-  const scanProposalMinutes = (partial, meaning) => {
-    // Deliberately NOT scannedConfig: that one drops out-of-window readings because it feeds the draft.
-    // The proposal has to show them, marked as impossible, or the camera's mistake is invisible.
-    const cfg = scannedConfig(partial, meaning, true);
-    if (!cfg) return null;
-    const base = window.OPS_SALAAH_CONFIG || {};
-    const toMin = toMinutes;
-    const read = {};
-    Object.keys(cfg).forEach((key) => {
-      // Only the prayers the scan actually read carry a proposal; the rest are untouched, and the strip
-      // names them rather than leaving the reader to notice the absence.
-      if (partial && (key === 'zohar' || key === 'maghrib')) return;
-      const before = base[key] || {};
-      const after = cfg[key] || {};
-      if (after.salaahTime === before.salaahTime && (after.iqamaDelay || 0) === (before.iqamaDelay || 0)) return;
-      read[key] = { azaan: toMin(after.salaahTime || after.neverBefore), iqama: after.iqamaDelay || 0 };
-    });
-    return Object.keys(read).length ? read : null;
-  };
-
+  // The console shows one masjid at a time. Sample data only varies the identity fields; a second
+  // masjid keeps the same feed so the switch reads clearly in the storyboard.
   const activeMasjid = (state) => {
     const base = window.OPS_MASJID || {};
     const managed = window.OPS_MANAGED || [];
@@ -551,7 +344,6 @@
       .slice(0, s.followersPage || 4);
     const posts = visible((s.postsEmpty || s.fresh) ? [] : (window.OPS_POSTS || []));
     const invitations = visible(s.invitationsEmpty ? [] : (window.OPS_INVITATIONS || []));
-    const timingHistory = s.salaahNeverPublished ? [] : (window.OPS_TIMING_HISTORY || []);
 
     return Object.assign({
       role: s.role,
@@ -576,7 +368,6 @@
         posts: posts.length,
         members: s.fresh ? 1 : members.filter((m) => m.status !== 'INVITED').length,
         followers: s.fresh ? 0 : ((window.OPS_MASJID || { stats: {} }).stats.followers || followers.length),
-        timingChanges: timingHistory.length,
       },
       openMenu: s.openMenu,
       snack: s.snack,
@@ -600,47 +391,12 @@
         invite: s.invite,
       },
 
-      salaah: {
-        status: s.salaahStatus,
-        // What musalleen currently receive. Normally the sample; the drift frames publish a Fajr
-        // that has fallen out of its window, which the sample deliberately cannot express.
-        published: s.salaahDrifted
-          ? driftedConfig()
-          : (ruleScenarioPublished(s.salaahScenario) || window.OPS_SALAAH_CONFIG),
-        config: s.salaahConfig
-          || ruleScenarioConfig(s.salaahScenario)
-          || (s.scanApplied ? scannedConfig(s.scanApplied === 'partial', s.scanColumnMeaning || 'jamaat') : null)
-          || (s.salaahDriftAdopted ? driftAdoptedConfig() : null)
-          || (s.salaahDrifted ? driftedConfig() : null)
-          || (s.salaahEdited ? editedConfig() : window.OPS_SALAAH_CONFIG),
-        scanStage: s.scanStage,
-        // A pending reading, in the minutes the timeline draws with. It is deliberately NOT merged into
-        // `config`: a proposal the user has not accepted must not be able to reach Publish.
-        scanProposal: s.scanProposal
-          ? scanProposalMinutes(s.scanProposal === 'partial', s.scanColumnMeaning || 'jamaat')
-          : null,
-        scanMissed: s.scanProposal === 'partial' ? ['Zohar', 'Maghrib'] : [],
-        scanPreview: s.scanProposal,
-        scanConfig: s.scanProposal
-          ? scannedConfig(s.scanProposal === 'partial', s.scanColumnMeaning || 'jamaat')
-          : null,
-        scanApplied: s.scanApplied,
-        scanColumnMeaning: s.scanColumnMeaning,
-        expanded: s.expandedPrayer,
-        note: s.salaahNote,
-        history: timingHistory,
-        historyOpen: s.salaahHistoryOpen,
-        saving: s.salaahSaving,
-        dirty: s.salaahDirty,
-        neverPublished: s.salaahNeverPublished,
-      },
-
       post: s.post,
 
       invitations: {
         status: s.invitationsStatus,
         items: invitations,
-        actioning: s.invitationActioningId,
+        actioning: s.invitationActioning,
         acceptedId: s.invitationAcceptedId,
       },
 
@@ -684,7 +440,7 @@
     { group: 'console', name: 'Committee-only lock', screen: 'console', state: { route: 'console', consoleStatus: 'locked', caps: [] } },
     { group: 'console', name: 'Load failed · retry', screen: 'console', state: { route: 'console', consoleStatus: 'error' } },
 
-    // 03 · Committee & permissions
+    // 02 · Committee & permissions
     { group: 'members', name: 'Loading', screen: 'console', state: { route: 'console', dest: 'members', membersStatus: 'loading' } },
     { group: 'members', name: 'Committee · admin', screen: 'console', state: { route: 'console', dest: 'members' } },
     { group: 'members', name: 'Committee · read only', screen: 'console', state: { route: 'console', dest: 'members', role: 'MUEZZIN', caps: [] } },
@@ -698,7 +454,7 @@
     { group: 'members', name: 'Removed · confirmation', screen: 'console', state: { route: 'console', dest: 'members', snack: { kind: 'member-removed', message: 'Yusuf Ali removed from the committee' } } },
     { group: 'members', name: 'Load failed · retry', screen: 'console', state: { route: 'console', dest: 'members', membersStatus: 'error' } },
 
-    // 04 · Invitations & musalleen
+    // 03 · Invitations & musalleen
     { group: 'invite', name: 'Invite member', screen: 'console', state: { route: 'console', dest: 'invite' } },
     { group: 'invite', name: 'Role picker', screen: 'console', state: { route: 'console', dest: 'invite', invite: { phone: '98861 40219' }, openMenu: 'member-role' } },
     { group: 'invite', name: 'Permissions chosen', screen: 'console', state: { route: 'console', dest: 'invite', invite: { phone: '98861 40219', role: 'ASSISTANT_SECRETARY', caps: ['post'] } } },
@@ -709,41 +465,7 @@
     { group: 'invite', name: 'Musalleen · loading', screen: 'console', state: { route: 'console', dest: 'followers', followersStatus: 'loading' } },
     { group: 'invite', name: 'Musalleen · none', screen: 'console', state: { route: 'console', dest: 'followers', followersEmpty: true } },
 
-    // 05 · Salaah timings — public: any signed-in user, no review, every change recorded
-    { group: 'salaah', name: 'Loading', screen: 'console', state: { route: 'console', dest: 'salaah', salaahStatus: 'loading' } },
-    { group: 'salaah', name: 'The day, as published', screen: 'console', state: { route: 'console', dest: 'salaah' } },
-    { group: 'salaah', name: 'Two dragged · publish enabled', screen: 'console', state: { route: 'console', dest: 'salaah', salaahDirty: true, salaahEdited: true } },
-    { group: 'salaah', name: 'Change history', screen: 'console', state: { route: 'console', dest: 'salaah', salaahHistoryOpen: true } },
-    // Anyone can reach this screen, so the non-committee case is a first-class state.
-    { group: 'salaah', name: 'Timings · not committee', screen: 'console', state: { route: 'console', dest: 'salaah', role: 'MEMBER', caps: [] } },
-    { group: 'salaah', name: 'Scan · camera', screen: 'console', state: { route: 'console', dest: 'salaah', scanStage: 'camera' } },
-    { group: 'salaah', name: 'Scan · reading the board', screen: 'console', state: { route: 'console', dest: 'salaah', scanStage: 'reading' } },
-    { group: 'salaah', name: 'Scan · didn’t read', screen: 'console', state: { route: 'console', dest: 'salaah', scanStage: 'failed' } },
-    { group: 'salaah', name: 'Scan · review sheet, column unanswered', screen: 'console', state: { route: 'console', dest: 'salaah', scanProposal: 'partial' } },
-    { group: 'salaah', name: 'Scan · review sheet, Jamaat column', screen: 'console', state: { route: 'console', dest: 'salaah', scanProposal: 'partial', scanColumnMeaning: 'jamaat' } },
-    { group: 'salaah', name: 'Scan · review sheet, Azaan column', screen: 'console', state: { route: 'console', dest: 'salaah', scanProposal: 'partial', scanColumnMeaning: 'azaan' } },
-    { group: 'salaah', name: 'Scan · landed, publish is back', screen: 'console', state: { route: 'console', dest: 'salaah', scanApplied: 'partial', scanColumnMeaning: 'jamaat', salaahDirty: true } },
-    { group: 'salaah', name: 'Scan · could not read', screen: 'console', state: { route: 'console', dest: 'salaah', scanStage: 'failed' } },
-    // Direct time → durable rule. Inference is silent on the editor; the explanation is a separate,
-    // read-only destination opened deliberately from the app bar.
-    { group: 'salaah', name: 'First setup · clean timeline', screen: 'console', state: { route: 'console', dest: 'salaah', salaahNeverPublished: true, salaahDirty: true } },
-    { group: 'salaah', name: 'Iqama only · azaan rule preserved', screen: 'console', state: { route: 'console', dest: 'salaah', salaahDirty: true, salaahScenario: 'iqamaOnly' } },
-    { group: 'salaah', name: 'Seasonal time · inferred silently', screen: 'console', state: { route: 'console', dest: 'salaah', salaahDirty: true, salaahScenario: 'roundingAdopted' } },
-    { group: 'salaah', name: 'How timings update', screen: 'console', state: { route: 'console', dest: 'salaahRules' } },
-    { group: 'salaah', name: 'How timings update · exact fixed', screen: 'console', state: { route: 'console', dest: 'salaahRules', salaahDirty: true, salaahScenario: 'fixedFallback' } },
-    { group: 'salaah', name: 'How timings update · Maghrib fixed', screen: 'console', state: { route: 'console', dest: 'salaahRules', salaahDirty: true, salaahScenario: 'maghribFixed' } },
-    { group: 'salaah', name: 'Publish · nothing changed', screen: 'console', state: { route: 'console', dest: 'salaah', snack: { kind: 'salaah-no-change', message: 'Nothing changed — the published timings are already here.', tone: 'error' } } },
-    { group: 'salaah', name: 'Publish · impossible timing', screen: 'console', state: { route: 'console', dest: 'salaah', salaahDrifted: true, snack: { kind: 'salaah-impossible', message: 'Fajr cannot be published before it begins at 4:52 AM.', tone: 'error' } } },
-    // A published timing that has stopped being possible. The offer is the durable fix, and it is
-    // asked here rather than on every edit — see .salaah-drift in broadcast-studio.css.
-    { group: 'salaah', name: 'Drifted · the offer', screen: 'console', state: { route: 'console', dest: 'salaah', salaahDrifted: true } },
-    { group: 'salaah', name: 'Drifted · rounding adopted', screen: 'console', state: { route: 'console', dest: 'salaah', salaahDrifted: true, salaahDriftAdopted: true, salaahDirty: true } },
-    { group: 'salaah', name: 'Publish confirmation', screen: 'console', state: { route: 'console', dest: 'salaah', salaahDirty: true, salaahEdited: true, confirm: { kind: 'publishSalaah' } } },
-    { group: 'salaah', name: 'Publishing', screen: 'console', state: { route: 'console', dest: 'salaah', salaahDirty: true, salaahSaving: true } },
-    { group: 'salaah', name: 'Published', screen: 'console', state: { route: 'console', dest: 'salaah', salaahStatus: 'saved' } },
-    { group: 'salaah', name: 'Save failed · retry', screen: 'console', state: { route: 'console', dest: 'salaah', salaahStatus: 'error' } },
-
-    // 06 · Send a paigham — the guided wizard
+    // 04 · Send a paigham — the guided wizard
     { group: 'create', name: 'Step 1 · empty', screen: 'create', state: { route: 'create' } },
     { group: 'create', name: 'Step 1 · empty feedback', screen: 'create', state: { route: 'create', post: { messageError: true } } },
     { group: 'create', name: 'Step 1 · written', screen: 'create', state: { route: 'create', post: { message: SAMPLE_MESSAGE } } },
@@ -765,16 +487,19 @@
     { group: 'create', name: 'Step 4 · review voice', screen: 'create', state: { route: 'create', post: { step: 'review', audio: AUDIO_READY, audience: 'MASJID_PINCODE' } } },
     { group: 'create', name: 'Change the masjid', screen: 'create', state: { route: 'create', switcherOpen: true, post: { step: 'review', message: SAMPLE_MESSAGE, photos: [PHOTO(0), PHOTO(1)] } } },
     { group: 'create', name: 'Sending', screen: 'create', state: { route: 'create', post: { step: 'review', message: SAMPLE_MESSAGE, submitting: true } } },
+    { group: 'create', name: 'Sending · photo 2 of 3', screen: 'create', state: { route: 'create', post: { step: 'review', message: SAMPLE_MESSAGE, photos: [PHOTO(0), PHOTO(1), PHOTO(0)], submitting: true, submitStatus: 'Uploading photo 2 of 3…' } } },
+    { group: 'create', name: 'Sending · recording', screen: 'create', state: { route: 'create', post: { step: 'review', audio: AUDIO_READY, submitting: true, submitStatus: 'Uploading your recording…' } } },
     { group: 'create', name: 'Discard draft?', screen: 'create', state: { route: 'create', post: { message: SAMPLE_MESSAGE }, confirm: { kind: 'discardDraft' } } },
     { group: 'create', name: 'Sent · live', screen: 'sent', state: { route: 'sent' } },
 
-    // 08 · Invitations inbox
+    // 05 · Invitations inbox
     { group: 'invitations', name: 'Loading', screen: 'invitations', state: { route: 'invitations', invitationsStatus: 'loading' } },
     { group: 'invitations', name: 'Pending invitations', screen: 'invitations', state: { route: 'invitations' } },
-    { group: 'invitations', name: 'Accepting', screen: 'invitations', state: { route: 'invitations', invitationActioningId: 'i1' } },
+    { group: 'invitations', name: 'Accepting', screen: 'invitations', state: { route: 'invitations', invitationActioning: { id: 'i1', kind: 'accept' } } },
+    { group: 'invitations', name: 'Declining', screen: 'invitations', state: { route: 'invitations', invitationActioning: { id: 'i1', kind: 'decline' } } },
     { group: 'invitations', name: 'Accepted · open console', screen: 'invitations', state: { route: 'invitations', invitationAcceptedId: 'i1', snack: { kind: 'invitation-accepted', message: 'Invitation accepted' } } },
     { group: 'invitations', name: 'Decline confirmation', screen: 'invitations', state: { route: 'invitations', confirm: { kind: 'declineInvitation', id: 'i2' } } },
-    { group: 'invitations', name: 'Last day', screen: 'invitations', state: { route: 'invitations', invitationActioningId: 'i2' } },
+    { group: 'invitations', name: 'Last day', screen: 'invitations', state: { route: 'invitations', invitationActioning: { id: 'i2', kind: 'accept' } } },
     { group: 'invitations', name: 'No invitations', screen: 'invitations', state: { route: 'invitations', invitationsEmpty: true } },
     { group: 'invitations', name: 'Load failed · retry', screen: 'invitations', state: { route: 'invitations', invitationsStatus: 'error' } },
   ];
@@ -783,9 +508,8 @@
     { id: 'console', num: '01', title: 'Broadcast hub', icon: 'campaign' },
     { id: 'members', num: '02', title: 'Committee & permissions', icon: 'groups' },
     { id: 'invite', num: '03', title: 'Invitations & musalleen', icon: 'person' },
-    { id: 'salaah', num: '04', title: 'Salaah timings · public', icon: 'mosque_clock2' },
-    { id: 'create', num: '05', title: 'Broadcast composer', icon: 'edit' },
-    { id: 'invitations', num: '06', title: 'My invitations', icon: 'mail' },
+    { id: 'create', num: '04', title: 'Broadcast composer', icon: 'edit' },
+    { id: 'invitations', num: '05', title: 'My invitations', icon: 'mail' },
   ];
 
   Object.assign(window, {
@@ -793,7 +517,6 @@
     OPS_FRAMES,
     OPS_GROUPS,
     opsApplyPatch: applyPatch,
-    opsSalaahPublished,
     opsFrameState: frameState,
     opsMatchesFrame: matchesFrame,
     opsActiveFrameIndex: activeFrameIndex,

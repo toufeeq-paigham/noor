@@ -130,9 +130,290 @@ function SrlFullState({ icon, tone, title, description, action }) {
 // clock time. That is the whole reason this screen exists alongside the console's.
 // ══════════════════════════════════════════════════════════════════════
 
+// ══════════════════════════════════════════════════════════════════════
+// The board scan — an input accelerator, never an invisible mutation
+//
+// Flow: capture -> recognition -> a review SHEET -> an explicit `Add N to draft` -> a narrated
+// walk that lands each value on its own row in view -> the ordinary editable draft -> Publish.
+//
+// What is different here from a times-only editor is the LANDING. Every value commits through the
+// same path a drag uses, so on this section the reading is translated by the prayer's own rule:
+// a rounded prayer snaps up to its own grid, a fixed one takes the minute, and an anchored one
+// takes nothing at all. That last outcome has no equivalent on an editor that writes clock times,
+// so the receipt carries it as its own kind rather than skipping the prayer in silence.
+//
+// Nothing here publishes. A reading is a proposal until a human presses Publish on values they
+// watched land.
+// ══════════════════════════════════════════════════════════════════════
+
+// The scan LEADS the body. Dragging fifteen values by hand is the fallback path, and OCR reached
+// only from a small action beside the title is an accelerator nobody finds. It is a pressable band
+// rather than a description, and its tile carries the one idle animation this screen allows — a
+// reading line travelling behind the glyph, because a still glyph cannot say that the camera does
+// the typing.
+function SrlScanCallout({ onOpenScan }) {
+  return (
+    <button type="button" className="summary-hero action" onClick={onOpenScan}>
+      <span className="icon-tile scanning" style={{ '--tile': '38px' }}>
+        <span className="mi" data-i="filter_center_focus" aria-hidden="true"></span>
+      </span>
+      <span className="summary-hero-copy">
+        <span className="summary-hero-title" style={{ display: 'block' }}>Scan your timing board</span>
+        <span className="summary-hero-label" style={{ display: 'block' }}>
+          Point the camera at the board — the times come back as suggestions you check before publishing.
+        </span>
+      </span>
+      <span className="mi" style={{ fontSize: 20, color: 'var(--color-info-faint)' }} data-i="chevron_right" aria-hidden="true"></span>
+    </button>
+  );
+}
+
+// The capture stage owns the whole window, so it sits at shell level rather than inside the body.
+// Capture FREEZES it: the camera stops, the captured still fills the viewport and the reading line
+// sweeps it. A live feed under `Reading the captured photo` reads as the capture not having
+// happened, and a circular loader says busy without saying reading — so the framing guide, the
+// shutter and the by-hand escape all withdraw while it reads, and the control row keeps its height
+// so the still does not jump mid-read.
+function SrlScanStage({ stage, onClose, onCapture, onRetry }) {
+  const reading = stage === 'reading';
+  const failed = stage === 'failed';
+  return (
+    <div className="camera-stage scan-camera-stage">
+      <div className="camera-topbar">
+        <button type="button" className="ib ib-tonal camera-control" aria-label="Close scanner" onClick={onClose}>
+          <span className="mi" data-i="close" aria-hidden="true"></span>
+        </button>
+        <div className="camera-title">
+          {failed ? 'Couldn’t read the board' : 'Scan the timing board'}
+          {failed ? null : <small>{reading ? 'Reading the captured photo…' : 'Fill the frame with the board, square-on'}</small>}
+        </div>
+        <span style={{ width: 48, flexShrink: 0 }}></span>
+      </div>
+
+      {failed ? (
+        <div className="fullscreen-notice">
+          <span className="mi" data-i="filter_center_focus" aria-hidden="true"></span>
+          <strong>The board didn’t read</strong>
+          <span>
+            LED boards can defeat a camera — glare, angle, or a display that scrolls. Get closer and
+            square-on, or set the timings by hand; the day is one step away.
+          </span>
+          <button type="button" className="btn btn-filled lg" onClick={onRetry}>Try again</button>
+          <button type="button" className="btn btn-link" onClick={onClose}>Set them by hand instead</button>
+        </div>
+      ) : (
+        <React.Fragment>
+          <div className="camera-viewport">
+            <img src="../../images/salaah-board-sample.jpeg" alt="" />
+            {reading ? null : (
+              <div className="camera-guide scan-board-guide" aria-hidden="true">
+                <span className="scan-guide-corner tl"></span>
+                <span className="scan-guide-corner tr"></span>
+                <span className="scan-guide-corner bl"></span>
+                <span className="scan-guide-corner br"></span>
+              </div>
+            )}
+            {reading ? (
+              <div className="scan-reading" role="status" aria-label="Reading the captured photo">
+                <div className="scan-sweep" aria-hidden="true"></div>
+                <div className="scan-reading-label">
+                  <span className="btn-spinner" aria-hidden="true"></span>Reading captured photo…
+                </div>
+              </div>
+            ) : <div className="scan-capture-tip">Full board in frame · avoid glare</div>}
+          </div>
+
+          <div className="camera-controls">
+            <span></span>
+            {reading
+              ? <span className="camera-control" style={{ width: 72 }}></span>
+              : <button type="button" className="camera-shutter" aria-label="Capture the board" onClick={onCapture}></button>}
+            <span></span>
+          </div>
+          <div className="scan-stage-foot">
+            {reading ? null : <button type="button" className="btn btn-link" onClick={onClose}>Set them by hand instead</button>}
+          </div>
+        </React.Fragment>
+      )}
+    </div>
+  );
+}
+
+// The receipt. A counts line, one pill per prayer in day order, the column question, then exactly
+// one affirmative. No sentences: the strip this replaced was one paragraph that grew a clause per
+// condition, and committees read it as noise.
+//
+// Every prayer gets a pill, including the ones the board did not show. A pill is a reference, so its
+// time drops the meridiem, and it shows what the board PRINTED — a jamaat column prints the jamaat.
+// Amber never letters here: the ok pills keep the ordinary ink and locate with the action tint, red
+// says the reading cannot exist and may letter, and an anchored prayer stays quiet because nothing
+// about it is wrong.
+function SrlScanSheet({ open, rows, counts, usable, meaning, needMeaning, onMeaning, onAdd, onDiscard, onRescan }) {
+  const { Dialog } = window;
+  if (!open || !Dialog) return null;
+  return (
+    <Dialog
+      mode="sheet"
+      isOpen
+      onClose={onDiscard}
+      title="Board read"
+      description={counts}
+      primary={usable
+        ? { text: `Add ${usable} to draft`, onClick: onAdd }
+        // Nothing to add is not a dead end and never a dead button: the honest affirmative is the
+        // hand-over to the day, with the rescan one step below it.
+        : { text: 'Set them by hand instead', onClick: onDiscard }}
+      secondary={usable
+        ? { text: 'Discard reading', onClick: onDiscard }
+        : { text: 'Scan again', onClick: onRescan }}
+    >
+      <div className="scan-sheet-pills" role="list">
+        {rows.map((r) => (
+          <span key={r.key} role="listitem" className={`scan-sheet-pill is-${r.kind}`}>
+            {r.label}
+            <em>{r.kind === 'mut' ? '—' : srFmtShort(r.printed)}</em>
+            {r.kind === 'ok' ? <span className="mi" data-i="check" aria-hidden="true"></span> : null}
+            {r.kind === 'bad' ? <small>outside window</small> : null}
+            {/* Read fine, inside its window, and still unlandable: this prayer follows its own start
+                and stores no clock time. The pill says so and the prayer's rule page is where that
+                decision lives. */}
+            {r.kind === 'anchored' ? <small className="is-quiet">{r.note}</small> : null}
+          </span>
+        ))}
+      </div>
+      <div className={`scan-sheet-meaning${needMeaning ? ' is-asking' : ''}`} role="radiogroup" aria-label="What the scanned column shows">
+        <span className="eyebrow">What does that column show?</span>
+        <div>
+          {[{ value: 'jamaat', label: 'Jamaat times' }, { value: 'azaan', label: 'Azaan times' }].map((o) => (
+            <button
+              key={o.value}
+              type="button"
+              role="radio"
+              aria-checked={meaning === o.value}
+              className={`chip ${meaning === o.value ? 'solid' : 'outline'}`}
+              onClick={() => onMeaning(o.value)}
+            >
+              {o.label}
+            </button>
+          ))}
+        </div>
+      </div>
+    </Dialog>
+  );
+}
+
+// ══════════════════════════════════════════════════════════════════════
+// The drift offer
+//
+// A published FIXED azaan keeps its clock time while the calculated start slides across the year,
+// so it eventually sits outside its own window. Dragging it to a new fixed time only restarts the
+// clock that broke it. The durable answer is a rounding rule, and only the masjid knows whether it
+// has one — so this ASKS, at drift, where the evidence is, and never on an ordinary edit.
+//
+// Out of flow, like the scan's companion and for the same reason: it appears and retires while a
+// finger may be on the axis, and a card in flow would resize the day mid-drag. It shares that
+// capsule's bottom, so the two can never sit at different heights above the same docked action —
+// they never coexist, because a walk retires before anything can be found to have drifted.
+// ══════════════════════════════════════════════════════════════════════
+
+function SrlDriftOffer({ offer, onAdopt, bottom }) {
+  if (!offer) return null;
+  return (
+    <div className="srl-drift" style={bottom ? { bottom } : undefined} role="status">
+      <span className="mi" data-i="error" aria-hidden="true"></span>
+      <div className="srl-drift-copy">
+        {/* The card owns the OFFER and nothing else. The manual path is the screen itself, and the
+            docked helper already says to drag — two lines telling the same reader to drag, stacked,
+            is what the console's version was corrected for. */}
+        <b>{offer.label} can no longer be called at {srFmt(offer.azaan)}</b>
+        <span>
+          It now begins at {srFmt(offer.opens)}, and a fixed time will drift again. Let it follow the
+          prayer instead:
+        </span>
+        {/* ONE action, stating its own consequence. It has no dismissal: dragging the prayer back
+            inside its window retires the offer, and so does accepting. */}
+        <button type="button" className="chip solid" onClick={() => onAdopt && onAdopt(offer.key, offer.step)}>
+          {window.srStepLabel ? window.srStepLabel(offer.step) : `Next ${offer.step} minutes`} · {srFmt(offer.today)} today
+        </button>
+      </div>
+    </div>
+  );
+}
+
+// The narrating companion. It floats above the docked action and is deliberately OUTSIDE its
+// measurement: a line inside the bar would change the content's clearance and move the very rows the
+// walk is landing on.
+function SrlScanCapsule({ walk, bottom }) {
+  if (!walk) return null;
+  return (
+    <div
+      className={`scan-capsule status-capsule${walk.done ? ' is-done' : ''}`}
+      style={bottom ? { bottom } : undefined}
+      role="status"
+      aria-live="polite"
+    >
+      {walk.done
+        ? <span className="mi fill" data-i="check_circle" aria-hidden="true"></span>
+        : <span className="status-capsule-ring" aria-hidden="true"></span>}
+      <b>
+        {walk.done
+          ? `${walk.queue.length} added · publish when ready`
+          : `Adding ${walk.i + 1} of ${walk.queue.length} · ${walk.queue[walk.i].label}…`}
+      </b>
+    </div>
+  );
+}
+
+// `Add` never snaps. Each reading is scrolled into view, held under the amber landing ring, then
+// committed — so the change is watched rather than discovered. Reduced motion is immediate
+// replacement, not a slower walk: every value lands at once and the bar's changed-count is the
+// announcement.
+function useSrlScanWalk({ scrollerRef, landings, ready, onConsumed, onLand }) {
+  const timer = React.useRef(null);
+  const [walk, setWalk] = React.useState(null);
+  const [needMeaning, setNeedMeaning] = React.useState(false);
+  React.useEffect(() => () => clearTimeout(timer.current), []);
+
+  const begin = () => {
+    // The one thing the sheet cannot decide for itself. The question sits directly above the button,
+    // so the press points at it instead of refusing silently — no dead affirmatives.
+    if (!ready) { setNeedMeaning(true); return; }
+    const queue = landings.slice();
+    onConsumed && onConsumed();
+    if (!queue.length) return;
+    const reduced = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    if (reduced) { queue.forEach((it) => onLand(it)); return; }
+    const step = (i) => {
+      if (i >= queue.length) {
+        setWalk({ queue, i: queue.length - 1, done: true });
+        timer.current = setTimeout(() => setWalk(null), 1800);
+        return;
+      }
+      const it = queue[i];
+      setWalk({ queue, i, landingKey: it.key, done: false });
+      // "In view" means below the app bar, not at the top of the display: this body scrolls under an
+      // overlaid bar, so the reveal's lead is that bar's own height.
+      const scroller = scrollerRef.current;
+      const row = scroller ? scroller.querySelector(`.sst-row[data-key="${it.key}"]`) : null;
+      if (scroller && row) {
+        const box = scroller.getBoundingClientRect();
+        const at = row.getBoundingClientRect();
+        scroller.scrollTo({ top: scroller.scrollTop + (at.top - box.top) - (SRL_APPBAR_H + 16), behavior: 'smooth' });
+      }
+      timer.current = setTimeout(() => {
+        onLand(it);
+        timer.current = setTimeout(() => step(i + 1), 650);
+      }, 720);
+    };
+    step(0);
+  };
+
+  return { walk, needMeaning, answered: () => setNeedMeaning(false), begin };
+}
+
 // The docked action. Publish is never disabled: the two reasons it can refuse need completely
 // different things from the reader, and a grey button says something is wrong without saying what.
-function SrlPublishBar({ data }) {
+function SrlPublishBar({ data, hostRef }) {
   const { dirty, needsFirstPublish, changedCount, reachText, saving, guideSeen, onPublish } = data;
   const note = (() => {
     if (saving) return null;
@@ -142,17 +423,22 @@ function SrlPublishBar({ data }) {
     return 'Nothing has changed yet.';
   })();
   return (
-    <div className="docked-action bordered">
+    <div className="docked-host" ref={hostRef}>
+      {/* Above the bar and outside it: publishing must not move the hairline or the label that
+          states what is about to reach musalleen. One request, so one sentence — there is no
+          sequence here to count, and a manufactured `1 of 1` says nothing. */}
       {saving ? (
-        <div className="inline-loading-status" role="status">
-          <span className="btn-spinner" aria-hidden="true"></span>
-          Publishing timings…
+        <div className="docked-status status-capsule" role="status" aria-live="polite">
+          <span className="status-capsule-ring" aria-hidden="true"></span>
+          <b>Publishing timings…</b>
         </div>
       ) : null}
-      <button type="button" className="btn btn-filled lg" onClick={onPublish} disabled={saving}>
-        {reachText ? `Publish to ${reachText} musalleen` : 'Publish timings'}
-      </button>
-      {note ? <div className="docked-action-note">{note}</div> : null}
+      <div className="docked-action bordered">
+        <button type="button" className="btn btn-filled lg" onClick={onPublish} disabled={saving}>
+          {reachText ? `Publish to ${reachText} musalleen` : 'Publish timings'}
+        </button>
+        {note ? <div className="docked-action-note">{note}</div> : null}
+      </div>
     </div>
   );
 }
@@ -161,6 +447,9 @@ function SrlTimingsBody({ data }) {
   const {
     timelinePrayers = [], timelineJumah, cfgOf, pubOf, dragFeel,
     dayStatus, needsFirstPublish, blocked = [], onDragCommit, onDragSettle, onOpenRules, onOpenPrayer,
+    scanPending, scanRows = [], scanCounts, scanUsable = 0, scanLandings = [], scanColumnMeaning,
+    scanProposal, onOpenScan, onScanMeaning, onScanConsumed, onDiscardScan,
+    driftOffer, onAdoptRounding,
   } = data;
 
   // Each prayer's rule, as the glyph in its rail button. This is how the day states that a prayer
@@ -186,6 +475,48 @@ function SrlTimingsBody({ data }) {
     onCommit: (key, value, meta) => onDragCommit && onDragCommit(key, value, meta),
     onSettle: (key, value, meta) => onDragSettle && onDragSettle(key, value, meta),
     live: true,
+  });
+
+  // The reading's place ON the day, behind the sheet: an amber dot at the proposed minute and a
+  // `BOARD 5:15` overline on the chip. The big value stays the CURRENT time — the card's position
+  // IS that value, so a proposal may annotate it but never replace it.
+  const scanOf = (p) => (scanProposal ? scanProposal[p.key] || null : null);
+
+  // Landing a reading is an ORDINARY DRAFT EDIT: it goes through the same commit a drag uses, so
+  // afterwards nothing can tell a landed timing from a dragged one and there is no second path into
+  // the config. On this section that also means the prayer's own rule decides what the minute MEANS
+  // — which is why `scanLandings` excludes the prayers whose rule can take no clock time.
+  const scrollerRef = React.useRef(null);
+
+  // Both floats sit above the docked bar and OUTSIDE its measurement, so they have to be told how
+  // tall it currently is. A constant will not do on this screen: the bar's note wraps to two lines
+  // once a change exists and to three while the drag guide is still showing, which is a 24dp swing —
+  // enough for a card pinned at a fixed offset to clear the bar in one state and be buried by it in
+  // the next. Same reasoning as the content's own clearance, which is measured for the same reason.
+  const dockRef = React.useRef(null);
+  const [dockHeight, setDockHeight] = React.useState(0);
+  React.useLayoutEffect(() => {
+    const node = dockRef.current;
+    if (!node) return undefined;
+    const read = () => setDockHeight(node.offsetHeight);
+    read();
+    if (typeof ResizeObserver === 'undefined') return undefined;
+    const observer = new ResizeObserver(read);
+    observer.observe(node);
+    return () => observer.disconnect();
+  }, []);
+  const floatBottom = dockHeight ? dockHeight + 12 : undefined;
+
+  const scan = useSrlScanWalk({
+    scrollerRef,
+    landings: scanLandings,
+    ready: !!scanColumnMeaning,
+    onConsumed: onScanConsumed,
+    onLand: (it) => {
+      const value = { azaan: it.azaan, iqama: it.iqama };
+      onDragCommit && onDragCommit(it.key, value, { field: 'azaan', source: 'scan' });
+      onDragSettle && onDragSettle(it.key, value, { field: 'azaan', source: 'scan' });
+    },
   });
 
   if (dayStatus !== 'loaded') {
@@ -227,7 +558,13 @@ function SrlTimingsBody({ data }) {
         {/* pan-y so the day scrolls from the gutter and the empty bands, while the cards' own
             touch-action:none keeps the drag. Touch the prayer and you move it; touch anywhere else
             and you move the day. */}
-        <div className="srl-body" style={{ gap: 12, paddingTop: SRL_APPBAR_H + 12, paddingBottom: 16, touchAction: 'pan-y' }}>
+        <div ref={scrollerRef} className="srl-body" style={{ gap: 12, paddingTop: SRL_APPBAR_H + 12, paddingBottom: 16, touchAction: 'pan-y' }}>
+          {/* Withdrawn while a reading is pending — the sheet owns the scan then — and for the whole
+              walk: a "scan the board" invitation over readings that are still landing competes with
+              its own result, and anything appearing above the day mid-walk would ride the row the
+              walk had just revealed back up behind the app bar. */}
+          {!scanPending && !scan.walk ? <SrlScanCallout onOpenScan={onOpenScan} /> : null}
+
           {needsFirstPublish ? (
             <div className="srl-context seed" role="status">
               <span className="mi" data-i="info" aria-hidden="true"></span>
@@ -238,25 +575,34 @@ function SrlTimingsBody({ data }) {
             </div>
           ) : null}
 
-          {blocked.length ? (
-            <div className="srl-context blocked" role="alert">
-              <span className="mi" data-i="error" aria-hidden="true"></span>
-              <div className="srl-context-copy">
-                <strong>{blocked[0].label} can no longer be called at that time</strong>
-                <span>
-                  {blocked[0].malformed
-                    ? blocked[0].malformed
-                    : `${blocked[0].fault.text} Drag it back inside its window, or change how it updates so it follows the prayer.`}
-                </span>
+          {/* The prayer the drift offer speaks for is deliberately skipped here: one fault, one
+              statement, and the one carrying an action wins. This card keeps every fault the offer
+              cannot serve — an incomplete rule, a jamaat spilling past its close, and a drifted
+              prayer whose masjid has no readable rounding habit to offer. */}
+          {(() => {
+            const say = blocked.find((b) => !driftOffer || b.key !== driftOffer.key);
+            if (!say) return null;
+            return (
+              <div className="srl-context blocked" role="alert">
+                <span className="mi" data-i="error" aria-hidden="true"></span>
+                <div className="srl-context-copy">
+                  <strong>{say.label} can no longer be called at that time</strong>
+                  <span>
+                    {say.malformed
+                      ? say.malformed
+                      : `${say.fault.text} Drag it back inside its window, or change how it updates so it follows the prayer.`}
+                  </span>
+                </div>
               </div>
-            </div>
-          ) : null}
+            );
+          })()}
 
           {SstDay ? (
             <SstDay
               prayers={timelinePrayers}
-              cfgOf={cfgOf} pubOf={pubOf}
+              cfgOf={cfgOf} pubOf={pubOf} scanOf={scanOf}
               drag={drag.drag} bad={drag.bad} live onGrab={drag.onGrab}
+              landingKey={scan.walk ? scan.walk.landingKey : null}
               ruleOf={ruleOf} onRule={onOpenPrayer}
             />
           ) : null}
@@ -271,16 +617,43 @@ function SrlTimingsBody({ data }) {
               </div>
               <SstDay
                 prayers={[timelineJumah]}
-                cfgOf={cfgOf} pubOf={pubOf}
+                cfgOf={cfgOf} pubOf={pubOf} scanOf={scanOf}
                 spanFrom={timelineJumah.opens} spanTo={timelineJumah.closes} breaks={[]} showNow={false}
                 drag={drag.drag} bad={drag.bad} live onGrab={drag.onGrab}
+                landingKey={scan.walk ? scan.walk.landingKey : null}
                 ruleOf={ruleOf} onRule={onOpenPrayer}
               />
             </div>
           ) : null}
         </div>
       </div>
-      <SrlPublishBar data={data} />
+
+      {/* The reading LANDS as a sheet, not as prose above the day. Modal on purpose: a drag and an
+          unanswered reading can then never coexist, so there is no per-edit reconciliation to do. */}
+      <SrlScanSheet
+        open={!!scanPending && !scan.walk}
+        rows={scanRows}
+        counts={scanCounts}
+        usable={scanUsable}
+        meaning={scanColumnMeaning}
+        needMeaning={scan.needMeaning}
+        onMeaning={(v) => { scan.answered(); onScanMeaning && onScanMeaning(v); }}
+        onAdd={scan.begin}
+        onDiscard={onDiscardScan}
+        onRescan={onOpenScan}
+      />
+
+      <SrlScanCapsule walk={scan.walk} bottom={floatBottom} />
+
+      {/* Withheld while a reading is pending or landing: the sheet is modal and the walk owns the
+          screen, so an offer under either is a card nobody can act on. */}
+      <SrlDriftOffer
+        offer={!scanPending && !scan.walk ? driftOffer : null}
+        onAdopt={onAdoptRounding}
+        bottom={floatBottom}
+      />
+
+      <SrlPublishBar data={data} hostRef={dockRef} />
     </>
   );
 }
@@ -1017,6 +1390,17 @@ function SalaahRulesScreen({ data = {} }) {
           description={`All ${reachText} musalleen of this masjid see the updated azaan and iqama times right away, and the change is recorded in your name.`}
           primary={{ text: 'Publish', onClick: onConfirmPublish }}
           secondary={{ text: 'Cancel', onClick: onCancelPublish }}
+        />
+      ) : null}
+
+      {/* The capture stage owns the whole window, app bar included, so it is mounted at shell level
+          rather than inside the body it was opened from. */}
+      {data.scanStage ? (
+        <SrlScanStage
+          stage={data.scanStage}
+          onClose={data.onCloseScan}
+          onCapture={data.onScanCapture}
+          onRetry={data.onScanRetry}
         />
       ) : null}
 

@@ -1,8 +1,8 @@
-// Salaah timings — the scrolling day. The axis the Masjid Console's Salaah destination is built on.
+// Salaah timings — the scrolling day. The axis the Salaah Timing Rules board is built on.
 //
-// This module owns the axis, the row and the clamping rules; the console builds the screen around
-// them from its own store (`broadcast-studio-screens.jsx`, `SalaahConfigBody`). One implementation,
-// so the day cannot drift between whoever renders it.
+// This module owns the axis, the row and the clamping rules; the screen is built around them from
+// its own store (`salaah-rules-screens.jsx`, `SrlTimingsBody`), and the same `SstDay` draws the
+// Friday block. One implementation, so the day cannot drift between whoever renders it.
 //
 // It replaced a compressed spine that fitted the whole day on one phone at ~0.53px per minute. That
 // fitted, but it cost direct manipulation: at half a pixel a minute a value cannot track the finger,
@@ -346,9 +346,10 @@ function SstDay({
   prayers = SST_PRAYERS, cfgOf, pubOf, scanOf, drag, bad, live, onGrab, landingKey = null,
   spanFrom = SST_SPAN_FROM, spanTo = SST_SPAN_TO, breaks = SST_BREAKS, showNow = true,
   // Optional per-prayer rule action, in a rail to the right of the cards. `ruleOf(key)` returns
-  // `{ icon, label }`. Opt-in: a caller that has no rules to open (the shipped console) passes
-  // nothing and the rail does not exist. It lives here rather than in the caller so it can use this
-  // module's own axis mapping — a button aligned by a second copy of `sstY` would drift.
+  // `{ icon, label }`. Opt-in, and it stays opt-in with one caller: a rail whose button does nothing
+  // is a lie, so a host with no rules to open passes nothing and the rail does not exist. It lives
+  // here rather than in the caller so it can use this module's own axis mapping — a button aligned
+  // by a second copy of `sstY` would drift.
   ruleOf, onRule,
 }) {
   const scan = scanOf || (() => null);
@@ -475,18 +476,18 @@ function SstDay({
 
 /* ═══ Module loader ════════════════════════════════════════════════════════ */
 
-// The console x-imports this so the module's window exports exist before its own screens read them.
-// It renders nothing: the day is drawn by SalaahConfigBody, from the console's store.
+// The page x-imports this so the module's window exports exist before its own screens read them.
+// It renders nothing: the day is drawn by SrlTimingsBody, from the rules board's store.
 function SalaahScrollKit() { return null; }
 
-// The console hosts the same day from its own store, so the parts it needs are shared rather than
+// The screen hosts the day from its own store, so the parts it needs are shared rather than
 // reimplemented — one axis, one row, one set of clamping rules.
 Object.assign(window, {
   SalaahScrollKit,
   SstDay, SstRow, useSstDrag,
   SstMinutes: SstMin,
   SstFormat: SstFmt,
-  // The day fixture, for the console's own store and its scan parser.
+  // The day fixture, for the rules board's own store and its board reading.
   SstPrayerWindows: SST_PRAYERS,
   SstJumahWindow: SST_JUMAH,
 });

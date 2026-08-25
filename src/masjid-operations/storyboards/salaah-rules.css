@@ -179,3 +179,156 @@
 .srl-skeleton-row+.srl-skeleton-row{border-top:1px solid var(--color-neutral-border)}
 .srl-skeleton-row .srl-skeleton-copy{flex:1;min-width:0;display:flex;flex-direction:column;gap:5px}
 
+
+/* ══════════════════════════════════════════════════════════════════════════
+   The board scan
+
+   The camera stage, the scanning tile, the summary band and the status capsule are all the shared
+   kit in _theme/components.css, and the axis's own scan marks (the amber dot, the `BOARD 5:15`
+   overline, the landing ring) belong to salaah-scroll-timeline.css. What is left here is the
+   receipt, the question it asks, where the companion capsule sits, and the marks the capture stage
+   adds on top of the kit.
+
+   NOTE: the console's Salaah destination still carries its own copy of this construction — the
+   sheet in broadcast-studio.css, the stage in Masjid Console.dc.html's page chrome. That copy is
+   unreachable from the console board and is what collapses when the destination is removed.
+   ══════════════════════════════════════════════════════════════════════════ */
+
+/* ── The receipt ──
+   One pill per prayer, in day order. Amber never letters: an ok pill keeps the ordinary ink and
+   locates with the action tint; red says the reading cannot exist and may letter; an anchored
+   prayer stays quiet, because nothing about it is wrong. */
+.scan-sheet-pills{display:flex;flex-wrap:wrap;gap:var(--size-md);padding:var(--size-sm) 0 var(--size-md)}
+.scan-sheet-pill{
+  display:inline-flex;
+  align-items:center;
+  gap:6px;
+  padding:7px 12px;
+  border:1.5px solid var(--color-neutral-border);
+  border-radius:var(--radius-circle);
+  font-family:var(--font-body);
+  font-size:12.5px;
+  font-weight:700;
+  color:var(--color-info-primary);
+}
+.scan-sheet-pill em{font-style:normal;font-weight:800;font-variant-numeric:tabular-nums}
+.scan-sheet-pill>.mi{font-size:14px;color:var(--color-action-primary)}
+.scan-sheet-pill.is-ok{border-color:color-mix(in oklab,var(--color-action-primary) 55%,transparent)}
+.scan-sheet-pill.is-bad{border-color:var(--color-status-error)}
+.scan-sheet-pill.is-bad em{color:var(--color-status-error)}
+.scan-sheet-pill.is-bad small{font-size:9.5px;font-weight:800;letter-spacing:.04em;
+  color:var(--color-status-error);text-transform:uppercase}
+/* Read fine, and still unlandable: the prayer follows its own start. Stated, never coloured — this
+   is not a fault, and spending red on it would say the reading was wrong. */
+.scan-sheet-pill.is-anchored{border-style:dashed}
+.scan-sheet-pill.is-anchored em,
+.scan-sheet-pill.is-anchored small.is-quiet{font-weight:600;color:var(--color-info-secondary)}
+.scan-sheet-pill.is-anchored small.is-quiet{font-size:10.5px}
+.scan-sheet-pill.is-mut{color:var(--color-info-tertiary)}
+
+/* ── The column question ──
+   A single-column board does not say which column it is, and one edit cannot tell an azaan from a
+   jamaat. It keeps its place directly above the button that needs it, and stays after it is
+   answered so the next scan can correct it. */
+.scan-sheet-meaning{display:flex;flex-direction:column;gap:var(--size-md);padding-bottom:var(--size-sm)}
+.scan-sheet-meaning>div{display:flex;gap:var(--size-md);flex-wrap:wrap}
+/* Add was pressed before the question was answered: the press points here rather than refusing
+   silently. Two beats, then still — a looping plea reads as a fault. */
+.scan-sheet-meaning.is-asking{animation:scan-ask .5s ease-in-out 2}
+@keyframes scan-ask{50%{transform:translateX(4px)}}
+
+/* ── The companion capsule ──
+   Its SHAPE is `.status-capsule` in the theme, the app's one loader for committed work; this rule
+   owns only where it sits. Floating above the docked action and OUTSIDE its measurement, because a
+   line inside the bar would change the content's clearance and move the very rows being landed. */
+.scan-capsule{
+  position:absolute;
+  left:50%;
+  bottom:118px;
+  transform:translateX(-50%);
+  z-index:30;
+  animation:status-capsule-in .32s cubic-bezier(.2,.8,.2,1);
+}
+
+/* ── The capture stage's own marks, over the shared .camera-stage kit ──
+   Capture freezes the stage: the camera stops, the still fills the viewport and the reading line
+   sweeps it. A live feed under `Reading the captured photo` reads as the capture not having
+   happened, and a circular loader says busy without saying reading. */
+.scan-camera-stage .camera-topbar{height:118px}
+.scan-board-guide{inset:18px;border:0}
+.scan-guide-corner{position:absolute;width:34px;height:34px;border-style:solid;
+  border-color:color-mix(in oklab,var(--color-action-primary) 88%,var(--color-neutral-white))}
+.scan-guide-corner.tl{top:0;left:0;border-width:3px 0 0 3px;border-radius:12px 0 0}
+.scan-guide-corner.tr{top:0;right:0;border-width:3px 3px 0 0;border-radius:0 12px 0 0}
+.scan-guide-corner.bl{bottom:0;left:0;border-width:0 0 3px 3px;border-radius:0 0 0 12px}
+.scan-guide-corner.br{right:0;bottom:0;border-width:0 3px 3px 0;border-radius:0 0 12px}
+.scan-capture-tip{position:absolute;left:50%;bottom:18px;transform:translateX(-50%);
+  max-width:calc(100% - 52px);padding:7px 11px;border-radius:var(--radius-circle);
+  background:color-mix(in oklab,var(--color-neutral-black) 70%,transparent);
+  font:600 11.5px/1.25 var(--font-body);text-align:center;white-space:nowrap;
+  color:var(--color-neutral-white)}
+/* The sweep travels the viewport's own height, so the viewport is the container it queries. */
+.scan-camera-stage .camera-viewport{container-type:size}
+.scan-reading{position:absolute;inset:0;display:flex;align-items:flex-end;justify-content:center;
+  padding-bottom:18px;background:color-mix(in oklab,var(--color-neutral-black) 34%,transparent)}
+.scan-sweep{position:absolute;left:8px;right:8px;top:0;height:2px;border-radius:var(--radius-xs);
+  background:var(--color-action-primary);
+  box-shadow:0 0 14px 2px color-mix(in oklab,var(--color-action-primary) 70%,transparent);
+  animation:scan-sweep var(--motion-scan-sweep) ease-in-out infinite alternate}
+@keyframes scan-sweep{from{transform:translateY(8px)}to{transform:translateY(calc(100cqh - 16px))}}
+.scan-reading-label{display:flex;align-items:center;gap:var(--size-md);padding:8px 14px;
+  border-radius:var(--radius-xl);background:color-mix(in oklab,var(--color-neutral-black) 72%,transparent);
+  font:700 12px/1 var(--font-body);color:var(--color-neutral-white)}
+.scan-stage-foot{display:flex;justify-content:center;padding:0 20px 34px}
+.scan-stage-foot .btn-link{color:var(--color-neutral-white)}
+
+@media (prefers-reduced-motion:reduce){
+  .scan-capsule{animation:none}
+  .scan-sweep{animation:none;top:50%}
+  .scan-sheet-meaning.is-asking{animation:none;outline:2px solid var(--color-status-error);
+    outline-offset:4px;border-radius:var(--radius-md)}
+}
+
+/* ══════════════════════════════════════════════════════════════════════════
+   The drift offer
+
+   A published FIXED azaan keeps its clock time while the calculated start slides across the year,
+   so it eventually sits outside its own window. Dragging it to a new fixed time restarts the same
+   clock; the durable answer is a rounding rule, and only the masjid knows whether it has one. Asked
+   here, at drift, because that is where the evidence is — and never on an ordinary edit, which
+   would tax every masjid that genuinely does read fixed times off a printed board.
+
+   Out of flow, like `.scan-capsule` and for the same reason: it appears and retires while a finger
+   may be on the axis, and a card in flow would resize the day mid-drag. Its bottom matches the
+   capsule's, so the two can never sit at different heights above the same docked action.
+   ══════════════════════════════════════════════════════════════════════════ */
+.srl-drift{
+  position:absolute;
+  left:16px;
+  right:16px;
+  bottom:118px;
+  z-index:20;
+  display:flex;
+  gap:var(--size-lg);
+  padding:var(--size-xl);
+  box-sizing:border-box;
+  border:1px solid var(--color-status-error);
+  border-radius:var(--radius-xl);
+  background:var(--color-surface-card);
+  box-shadow:var(--shadow-float, 0 14px 38px -14px rgba(9,9,11,.35));
+  animation:srl-drift-in .3s cubic-bezier(.2,.8,.2,1);
+}
+.srl-drift>.mi{flex-shrink:0;font-size:18px;color:var(--color-status-error)}
+.srl-drift-copy{display:flex;flex-direction:column;gap:var(--size-md);min-width:0}
+/* Red letters here: it is the one accent on this screen that clears contrast as type, and it is the
+   same red the drifted row is already wearing, so the card and the row it names agree. Green and
+   amber still never letter. */
+.srl-drift-copy b{font-family:var(--font-body);font-size:13px;font-weight:800;color:var(--color-status-error)}
+.srl-drift-copy span{font-family:var(--font-body);font-size:11.5px;line-height:1.45;color:var(--color-info-secondary)}
+/* The action states its own consequence — "next quarter-hour" means nothing until it also says what
+   that is today — so it sizes to its content rather than stretching to the card. */
+.srl-drift-copy .chip{align-self:flex-start;margin-top:2px}
+@keyframes srl-drift-in{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:translateY(0)}}
+@media (prefers-reduced-motion:reduce){
+  .srl-drift{animation:none}
+}

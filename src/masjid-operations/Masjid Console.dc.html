@@ -39,23 +39,6 @@
     .console-head-role{margin-top:2px;font-size:12px;color:var(--color-info-secondary);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
     .console-eyebrow{padding:var(--size-2xl) 4px var(--size-lg)}
 
-    /* Today's salaah — the published strip doubling as the door into the editor. The whole
-       card is one target; the grid inside is the Salaah screen's published construction. */
-    .console-salaah{display:block;width:100%;box-sizing:border-box;margin-top:var(--size-xl);padding:var(--size-xl);
-      text-align:left;cursor:pointer;font:inherit;color:inherit;border:1px solid var(--color-neutral-border);
-      border-radius:var(--radius-card);background:var(--color-surface-card);
-      transition:transform var(--motion-press) var(--ease-out)}
-    .console-salaah:active{transform:scale(.995)}
-    .console-salaah-head{display:flex;align-items:baseline;justify-content:space-between;gap:var(--size-lg);
-      margin-bottom:var(--size-lg)}
-    .console-salaah-head>span:last-child{font-size:11px;font-weight:500;letter-spacing:0;text-transform:none;
-      white-space:nowrap;color:var(--color-info-tertiary)}
-    .console-salaah-foot{display:flex;align-items:center;gap:var(--size-md);margin-top:var(--size-lg);
-      padding-top:var(--size-lg);border-top:1px solid var(--color-neutral-border);
-      font-family:var(--font-body);font-size:12.5px;line-height:1.4;color:var(--color-info-primary)}
-    .console-salaah-foot>span:first-child{flex:1;min-width:0}
-    .console-salaah-foot .mi{flex-shrink:0;font-size:20px;color:var(--color-info-faint)}
-    @media(prefers-reduced-motion:reduce){.console-salaah{transition:none}.console-salaah:active{transform:none}}
     .console-feedhead{position:sticky;top:0;z-index:2;display:flex;align-items:baseline;gap:var(--size-md);padding:var(--size-2xl) 20px var(--size-lg);box-sizing:border-box;background:color-mix(in oklab,var(--color-surface-primary) 92%,transparent);backdrop-filter:blur(12px);-webkit-backdrop-filter:blur(12px)}
     .console-feedhead-title{flex:1}
     .console-feedhead-count{font-size:12px;color:var(--color-info-secondary)}
@@ -98,58 +81,6 @@
     /* ── Member screen header ── */
     .member-head-meta{display:flex;align-items:center;gap:var(--size-md);margin-top:2px;font-family:var(--font-body);font-size:12px;color:var(--color-info-secondary)}
 
-    /* ── Salaah timings: the published baseline ── */
-    .timings-published{padding:var(--size-xl);box-sizing:border-box;border:1px solid var(--color-neutral-border);border-radius:var(--radius-card);background:var(--color-surface-card)}
-    .timings-published-head{display:flex;align-items:baseline;justify-content:space-between;gap:var(--size-lg);margin-bottom:var(--size-lg)}
-    .timings-published-head>span:last-child{font-weight:500;letter-spacing:0;text-transform:none;font-size:11px;color:var(--color-info-tertiary)}
-    .timings-published-grid{display:grid;grid-template-columns:repeat(6,1fr);gap:var(--size-sm)}
-    .timings-published-grid>span{display:flex;flex-direction:column;align-items:center;gap:1px;padding:var(--size-md) 2px;border-radius:var(--radius-lg);background:color-mix(in oklab,var(--color-info-primary) 4%,transparent)}
-    .timings-published-grid b{font-family:var(--font-body);font-size:11.5px;font-weight:700;line-height:1.25;color:var(--color-info-primary)}
-    .timings-published-grid small{font-family:var(--font-body);font-size:11.5px;line-height:1.25;white-space:nowrap;font-variant-numeric:tabular-nums;color:var(--color-info-secondary)}
-    .timings-published-grid>span.changed{background:color-mix(in oklab,var(--color-status-warning) 18%,transparent)}
-    .timings-published-grid>span.changed small{text-decoration:line-through}
-    /* ── Scan-the-board (page chrome over the shared .camera-stage kit) ── */
-    /* The sweep is the "something is happening" signal while OCR runs on the frozen frame. */
-    .scan-reading{position:absolute;inset:0;display:flex;align-items:flex-end;justify-content:center;
-      padding-bottom:18px;background:color-mix(in oklab,var(--color-neutral-black) 34%,transparent)}
-    .scan-sweep{position:absolute;left:8px;right:8px;top:0;height:2px;border-radius:var(--radius-xs);
-      background:var(--color-action-primary);box-shadow:0 0 14px 2px color-mix(in oklab,var(--color-action-primary) 70%,transparent);
-      animation:scan-sweep var(--motion-scan-sweep) ease-in-out infinite alternate}
-    @keyframes scan-sweep{from{transform:translateY(8px)}to{transform:translateY(calc(100cqh - 16px))}}
-    .camera-viewport{container-type:size}
-    .scan-reading-label{display:flex;align-items:center;gap:var(--size-md);padding:8px 14px;
-      border-radius:var(--radius-xl);background:color-mix(in oklab,var(--color-neutral-black) 72%,transparent);
-      font:700 12px/1 var(--font-body);color:var(--color-neutral-white)}
-    .scan-board-guide{inset:18px;border:0}
-    .scan-guide-corner{position:absolute;width:34px;height:34px;border-color:color-mix(in oklab,var(--color-action-primary) 88%,var(--color-neutral-white));border-style:solid}
-    .scan-guide-corner.tl{top:0;left:0;border-width:3px 0 0 3px;border-radius:12px 0 0}
-    .scan-guide-corner.tr{top:0;right:0;border-width:3px 3px 0 0;border-radius:0 12px 0 0}
-    .scan-guide-corner.bl{bottom:0;left:0;border-width:0 0 3px 3px;border-radius:0 0 0 12px}
-    .scan-guide-corner.br{right:0;bottom:0;border-width:0 3px 3px 0;border-radius:0 0 12px}
-    .scan-capture-tip{position:absolute;left:50%;bottom:18px;transform:translateX(-50%);max-width:calc(100% - 52px);
-      padding:7px 11px;border-radius:var(--radius-circle);background:color-mix(in oklab,var(--color-neutral-black) 70%,transparent);
-      font:600 11.5px/1.25 var(--font-body);text-align:center;white-space:nowrap;color:var(--color-neutral-white)}
-    .scan-stage-foot{display:flex;justify-content:center;padding:0 20px 34px}
-    .scan-stage-foot .btn-link{color:var(--color-neutral-white)}
-    /* The camera stage's taller top bar. It shared a selector with the deleted review stage, which is
-       how removing that stage took this rule with it — the class guard caught it. */
-    .scan-camera-stage .camera-topbar{height:118px}
-    /* The scan's result is no longer a banner or a comparison destination: recognition returns to the
-       timeline and draws its reading onto it, so `.salaah-scan-strip` in broadcast-studio.css is the
-       whole surface. The banner, the review stage, the meaning card and the current-vs-scanned list
-       that used to live here are deleted rather than left as a second way to do the same job. */
-    @media(prefers-reduced-motion:reduce){.scan-sweep{animation:none;top:50%}}
-
-    /* `.next` — the prayer the console is counting down to. Only the hub sets it; the Salaah
-       editor marks changes instead. */
-    .timings-published-grid>span.next{background:var(--color-action-background)}
-    .timings-published-grid>span.next b{color:var(--color-action-primary)}
-    /* How many recorded changes there are — the record's weight, at a glance. */
-    .timings-history-count{flex-shrink:0;min-width:22px;padding:1px 7px;border-radius:var(--radius-circle);
-      background:var(--color-action-background);font-family:var(--font-body);font-size:11px;font-weight:700;
-      text-align:center;color:var(--color-action-primary)}
-
-
     /* ── Invitations inbox ── */
     .invite-card{box-sizing:border-box;padding:var(--size-2xl);border:1px solid var(--color-neutral-border);border-radius:var(--radius-card);background:var(--color-surface-card)}
     .invite-card.accepted{border-color:color-mix(in oklab,var(--color-status-success) 40%,transparent);background:color-mix(in oklab,var(--color-status-success) 7%,var(--color-surface-card))}
@@ -175,6 +106,9 @@
     .invite-card-caps-none{font-family:var(--font-body);font-size:11.5px;line-height:1.45;color:var(--color-info-secondary)}
     .invite-card-from{display:flex;align-items:center;gap:var(--size-md);margin-top:var(--size-lg);font-family:var(--font-body);font-size:11px;color:var(--color-info-secondary)}
     .invite-card-actions{display:flex;gap:var(--size-md);margin-top:var(--size-xl)}
+    /* The capsule stands in the pair's slot: same height, so replacing two 48px buttons with
+       one pill does not shorten the card mid-action. */
+    .invite-card-actions.is-working{justify-content:center;align-items:center;min-height:var(--control-h-lg)}
     .invite-card-actions>.btn{flex:1}
     .invite-card-note{margin-top:var(--size-lg);font-family:var(--font-body);font-size:11px;line-height:1.5;color:var(--color-info-tertiary)}
     .invite-foot{padding:var(--size-lg) 4px 0;font-family:var(--font-body);font-size:11px;line-height:1.5;text-align:center;color:var(--color-info-tertiary)}
@@ -287,24 +221,21 @@
     }
   </style>
   <link rel="stylesheet" href="./storyboards/broadcast-studio.css">
-  <!-- The Salaah destination IS the scrolling day, so the console loads its stylesheet rather than
-       reimplementing the spine here. -->
-  <link rel="stylesheet" href="./storyboards/salaah-scroll-timeline.css">
 </helmet>
 
 <!-- Component layer: loads Dialog/EmptyState/ListItem onto window for the screens -->
 <x-import component="Dialog" from="../_theme/components.jsx" hint-size="0,0"></x-import>
+<x-import component="PickerField" from="../_theme/components.jsx" hint-size="0,0"></x-import>
+<x-import component="OptionSheet" from="../_theme/components.jsx" hint-size="0,0"></x-import>
 <!-- Screen kit loader (the screens are used by both the board and the device below) -->
 <div style="display:none">
-  <!-- Loaded BEFORE the console screens: SalaahConfigBody reads SstDay / useSstDrag off window. -->
-  <x-import component="SalaahScrollKit" from="./storyboards/salaah-scroll-timeline.jsx" hint-size="0,0"></x-import>
   <x-import component="ConsoleScreen" from="./storyboards/broadcast-studio-screens.jsx" hint-size="0,0"></x-import>
   <x-import component="ComposePostScreen" from="./storyboards/broadcast-studio-compose.jsx" hint-size="0,0"></x-import>
 </div>
 
 <x-import component="BoardHeader" from="../_theme/board.jsx"
           title="Masjid Console"
-          subtitle="The finalised masjid console, built from the approved broadcast-first direction. Home entry, role-aware hub, every operational destination, guided media composer, confirmations, invitations and all loading, empty, error, locked and success states live here."
+          subtitle="The finalised masjid console, built from the approved broadcast-first direction. Home entry, role-aware hub, committee, musalleen, masjid details, guided media composer, confirmations, invitations and all loading, empty, error, locked and success states live here. Salaah timings are their own section board — the hub's Salaah tile opens it."
           hint-size="1440px,92px"></x-import>
 
 <div class="poc-stage">
@@ -363,10 +294,6 @@ class Component extends DCLogic {
     '#member': { dest: 'member', memberId: 'm3' },
     '#can-post': { caps: ['post'], role: 'IMAM' },
     '#view-only': { caps: [], role: 'MUEZZIN' },
-    '#salaah': { dest: 'salaah' },
-    '#salaah-setup': { dest: 'salaah', salaahNeverPublished: true, salaahDirty: true },
-    '#salaah-rules': { dest: 'salaahRules' },
-    '#drift': { dest: 'salaah', salaahDrifted: true },
     '#details': { dest: 'details' },
     '#invite': { dest: 'invite' },
     '#create': { route: 'create' },
@@ -404,9 +331,8 @@ class Component extends DCLogic {
     if (s.route === 'sent') { this.patch({ route: 'console', dest: 'home', stepDir: 'back' }); return; }
     if (s.route === 'invitations') { this.patch({ route: 'console', stepDir: 'back' }); return; }
     if (s.dest === 'member' || s.dest === 'invite') { this.patch({ dest: 'members', memberId: null, openMenu: null, stepDir: 'back' }); return; }
-    if (s.dest === 'salaahRules') { this.patch({ dest: 'salaah', stepDir: 'back' }); return; }
     if (s.dest !== 'home') {
-      this.patch({ dest: 'home', openMenu: null, memberId: null, expandedPrayer: null, stepDir: 'back' });
+      this.patch({ dest: 'home', openMenu: null, memberId: null, stepDir: 'back' });
       return;
     }
     this.transitionTo({ route: 'entry', stepDir: 'back' });
@@ -422,8 +348,16 @@ class Component extends DCLogic {
     if (!reduced && document.startViewTransition) document.startViewTransition(update);
     else update();
   };
-  onOpenDest = (dest) => this.transitionTo({ dest, openMenu: null, memberId: null, postMenuFor: null, expandedPrayer: null, stepDir: 'none' });
-  onCloseDest = () => this.transitionTo({ dest: 'home', openMenu: null, memberId: null, expandedPrayer: null, stepDir: 'none' });
+  // Salaah timings are their own section board now — the day, each prayer's rule, publishing and
+  // the change record all live on ./Salaah Timing Rules.dc.html. The tile hands the destination
+  // over rather than the console carrying a second copy of the editor.
+  goSalaahTimings = () => { window.location.href = './Salaah Timing Rules.dc.html#timings'; };
+
+  onOpenDest = (dest) => {
+    if (dest === 'salaah') { this.goSalaahTimings(); return; }
+    this.transitionTo({ dest, openMenu: null, memberId: null, postMenuFor: null, stepDir: 'none' });
+  };
+  onCloseDest = () => this.transitionTo({ dest: 'home', openMenu: null, memberId: null, stepDir: 'none' });
 
   onOpenAttention = (id) => {
     if (id === 'pending-invites') this.onOpenDest('members');
@@ -451,9 +385,6 @@ class Component extends DCLogic {
     } else if (s.dest === 'members') {
       this.patch({ membersStatus: 'loading' });
       this.after(900, () => this.patch({ membersStatus: 'loaded' }));
-    } else if (s.dest === 'salaah') {
-      this.patch({ salaahStatus: 'loading' });
-      this.after(900, () => this.patch({ salaahStatus: 'loaded' }));
     }
   };
   // ── Musalleen ──
@@ -514,6 +445,9 @@ class Component extends DCLogic {
   onDeletePost = (post) => this.patch({ confirm: { kind: 'deletePost', id: post.id }, postMenuFor: null });
 
   // ── Committee & permissions ──
+  // The member screen's role list opens through this.
+  onOpenMenu = (openMenu) => this.patch({ openMenu });
+
   onOpenMember = (member) => this.transitionTo({ dest: 'member', memberId: member.id, openMenu: null });
   onPickRole = (role) => {
     const id = this.state.memberId;
@@ -602,227 +536,6 @@ class Component extends DCLogic {
         }]),
       }));
       this.toast('invite-sent', 'Invitation sent · valid for 7 days');
-    });
-  };
-
-  // ── Salaah ──
-  onTogglePrayer = (expandedPrayer) => this.patch({ expandedPrayer, openMenu: null });
-  onOpenMenu = (openMenu) => this.patch({ openMenu });
-  salaahWindow = (key) => (window.SstPrayerWindows || [])
-    .concat(window.SstJumahWindow ? [window.SstJumahWindow] : [])
-    .find((p) => p.key === key);
-
-  salaahResolvedAzaan = (cfg, key) => {
-    const w = this.salaahWindow(key);
-    const opens = w ? w.opens : 0;
-    if (!cfg) return opens;
-    if (cfg.salaahTime) {
-      const parts = cfg.salaahTime.split(':').map((n) => parseInt(n, 10));
-      return (parts[0] * 60) + (parts[1] || 0);
-    }
-    if (!cfg.neverBefore) return opens;
-    const floorParts = cfg.neverBefore.split(':').map((n) => parseInt(n, 10));
-    const floor = (floorParts[0] * 60) + (floorParts[1] || 0);
-    const step = parseInt(String(cfg.salaahTimeVariation || '').replace(/\D/g, ''), 10);
-    return step ? Math.max((Math.floor(opens / step) * step) + step, floor) : floor;
-  };
-
-  currentSalaah = (s) => ((window.buildOpsData(s || this.state, {}).salaah || {}).config || window.OPS_SALAAH_CONFIG);
-
-  salaahDraftFlags = (s, config) => {
-    const published = window.opsSalaahPublished(s) || window.OPS_SALAAH_CONFIG;
-    const ruleFields = ['variant', 'salaahTime', 'neverBefore', 'salaahTimeVariation'];
-    const same = (key, fields) => fields.every((field) => ((config[key] || {})[field] === (published[key] || {})[field]));
-    const ruleChanged = (window.OPS_SALAAH_ORDER || []).some(({ key }) => !same(key, ruleFields));
-    const iqamaChanged = (window.OPS_SALAAH_ORDER || []).some(({ key }) => ((config[key] || {}).iqamaDelay || 0) !== ((published[key] || {}).iqamaDelay || 0));
-    return {
-      salaahDirty: !!s.salaahNeverPublished || ruleChanged || iqamaChanged,
-    };
-  };
-
-  onConfigChange = (prayer, prayerPatch, meta = {}) => {
-    this.setState((s) => {
-      const base = this.currentSalaah(s);
-      const published = window.opsSalaahPublished(s) || window.OPS_SALAAH_CONFIG;
-      const next = Object.assign({}, base);
-      const field = meta.field || 'azaan';
-      if (field === 'iqama') {
-        // Moving only the iqama must never collapse a seasonal azaan into a fixed clock time.
-        next[prayer] = Object.assign({}, base[prayer], { iqamaDelay: prayerPatch.iqamaDelay });
-      } else {
-        const parts = String(prayerPatch.salaahTime || '00:00').split(':').map((n) => parseInt(n, 10));
-        const azaan = (parts[0] * 60) + (parts[1] || 0);
-        const pub = published[prayer] || {};
-        const samePair = azaan === this.salaahResolvedAzaan(pub, prayer)
-          && prayerPatch.iqamaDelay === (pub.iqamaDelay || 0);
-        // Returning both visible values home restores the original object, including its hidden
-        // automatic behaviour. While away, the exact dragged value remains visible as a fixed draft
-        // until the gesture settles and the inference below can decide safely.
-        next[prayer] = samePair ? Object.assign({}, pub) : {
-          variant: 'FIXED',
-          salaahTime: prayerPatch.salaahTime,
-          iqamaDelay: prayerPatch.iqamaDelay,
-        };
-      }
-      return window.opsApplyPatch(s, Object.assign({
-        salaahConfig: next,
-        openMenu: null,
-      }, this.salaahDraftFlags(s, next)));
-    });
-  };
-
-  applySalaahRule = (key, kind, step, azaan, iqama) => this.setState((s) => {
-    const config = Object.assign({}, this.currentSalaah(s));
-    if (kind === 'on-time') {
-      config[key] = { variant: 'ON_TIME', iqamaDelay: iqama };
-    } else if (kind === 'round') {
-      config[key] = {
-        variant: 'VARIES_WITH_ON_TIME',
-        neverBefore: '00:00',
-        salaahTimeVariation: `VARIES_EVERY_${step}_MINS`,
-        iqamaDelay: iqama,
-      };
-    } else {
-      const h = String(Math.floor(azaan / 60)).padStart(2, '0');
-      const m = String(azaan % 60).padStart(2, '0');
-      config[key] = { variant: 'FIXED', salaahTime: `${h}:${m}`, iqamaDelay: iqama };
-    }
-    return window.opsApplyPatch(s, Object.assign({
-      salaahConfig: config,
-    }, this.salaahDraftFlags(s, config)));
-  });
-
-  onTimingSettled = (key, value, meta = {}) => {
-    if (meta.field === 'iqama') return;
-    const w = this.salaahWindow(key);
-    if (!w) return;
-    const published = window.opsSalaahPublished(this.state) || window.OPS_SALAAH_CONFIG;
-    const pub = published[key] || {};
-
-    // A seasonal prayer brought back to its published azaan keeps that rule even when its iqama was
-    // changed during the journey. This closes the old "looks restored but became FIXED" edge.
-    if (value.azaan === this.salaahResolvedAzaan(pub, key)) {
-      this.setState((s) => {
-        const config = Object.assign({}, this.currentSalaah(s));
-        config[key] = Object.assign({}, pub, { iqamaDelay: value.iqama });
-        return window.opsApplyPatch(s, Object.assign(
-          { salaahConfig: config },
-          this.salaahDraftFlags(s, config),
-        ));
-      });
-      return;
-    }
-
-    if (key === 'maghrib') {
-      if (value.azaan === w.opens) this.applySalaahRule(key, 'on-time', null, value.azaan, value.iqama);
-      // Any other value is the exact FIXED draft already written by onConfigChange.
-      return;
-    }
-
-    if (['fajr', 'asr', 'isha'].indexOf(key) !== -1) {
-      const matches = [15, 10, 5].filter((step) => ((Math.floor(w.opens / step) * step) + step) === value.azaan);
-      const publishedStep = parseInt(String(pub.salaahTimeVariation || '').replace(/\D/g, ''), 10);
-      if (matches.indexOf(publishedStep) !== -1) {
-        this.applySalaahRule(key, 'round', publishedStep, value.azaan, value.iqama);
-      } else if (matches.length === 1) {
-        this.applySalaahRule(key, 'round', matches[0], value.azaan, value.iqama);
-      } else if (matches.length > 1) {
-        // Coarsest matching interval wins. This is deterministic and mirrors how a masjid normally
-        // speaks: quarter-hour before ten-minute before five-minute. If nothing matches, the exact
-        // FIXED draft remains; no prompt interrupts the editor.
-        this.applySalaahRule(key, 'round', matches[0], value.azaan, value.iqama);
-      }
-    }
-    // Zohar and Jumah deliberately remain fixed; no question is necessary.
-  };
-
-  onNoteChange = (salaahNote) => this.patch({ salaahNote });
-  salaahFault = () => {
-    const config = this.currentSalaah(this.state);
-    const all = (window.SstPrayerWindows || []).concat(window.SstJumahWindow ? [window.SstJumahWindow] : []);
-    return all.find((w) => {
-      const cfg = config[w.key] || {};
-      const azaan = this.salaahResolvedAzaan(cfg, w.key);
-      return azaan < w.opens || azaan + (cfg.iqamaDelay || 0) > w.closes - 10;
-    });
-  };
-  // Publish stays pressable. The press can say "nothing changed", name an impossible prayer, show
-  // the rule receipt when automatic behaviour changed, or use the ordinary reach confirmation.
-  onSubmitSalaah = () => {
-    if (!this.state.salaahDirty) {
-      this.toast('salaah-no-change', 'Nothing changed — the published timings are already here.', 'error');
-      return;
-    }
-    const fault = this.salaahFault();
-    if (fault) {
-      this.toast('salaah-impossible', `${fault.label} cannot be published outside its prayer window.`, 'error');
-      return;
-    }
-    this.patch({ confirm: { kind: 'publishSalaah' } });
-  };
-  // ── Scan the board ──
-  onOpenScan = () => this.setState((s) => window.opsApplyPatch(s, {
-    scanStage: 'camera',
-    scanPreview: null,
-    scanColumnMeaning: (s.scanMeaningByMasjid || {})[s.masjidId] || null,
-  }));
-  onCloseScan = () => this.patch({ scanStage: null, scanProposal: null });
-  onScanRetry = () => this.patch({ scanStage: 'camera', scanProposal: null });
-  onScanCapture = () => {
-    this.patch({ scanStage: 'reading' });
-    // Recognition returns to the TIMELINE, not to a comparison destination: every current time is
-    // already drawn in its place there, so the board's reading lands on it as amber proposals and the
-    // comparison happens where the values live. Nothing is written to the draft here.
-    this.after(1800, () => this.patch({
-      scanStage: null,
-      scanProposal: 'partial',
-    }));
-  };
-  onScanMeaning = (scanColumnMeaning) => this.setState((s) => window.opsApplyPatch(s, {
-    scanColumnMeaning,
-    scanMeaningByMasjid: Object.assign({}, s.scanMeaningByMasjid, {
-      [s.masjidId]: scanColumnMeaning,
-    }),
-  }));
-  // The companion walk owns Add now (approved 2026-08-12): the screen takes the proposal from here
-  // and lands each usable reading through the SAME onConfigChange a drag uses, so the values become
-  // ordinary draft edits — still draggable, still unpublished. This only releases the proposal.
-  onScanConsumed = () => this.patch({ scanProposal: null });
-  onDiscardScan = () => this.patch({ scanProposal: null, scanStage: null });
-
-  // ── The drift offer ──
-  // Accepting it is an ordinary DRAFT edit, exactly like a drag: the prayer becomes a rounding rule
-  // in the working copy and nothing reaches musalleen until Publish. The floor is 00:00 because
-  // there is no floor — the rounding is the whole rule, and pinning the floor to today's answer
-  // would bind wrongly next season.
-  onAdoptRounding = (key, step) => this.setState((s) => {
-    const config = Object.assign({}, (s.salaahConfig || window.opsSalaahPublished(s)));
-    config[key] = {
-      variant: 'VARIES_WITH_ON_TIME',
-      neverBefore: '00:00',
-      salaahTimeVariation: `VARIES_EVERY_${step}_MINS`,
-      iqamaDelay: (config[key] || {}).iqamaDelay || 0,
-    };
-    return window.opsApplyPatch(s, { salaahConfig: config, salaahDirty: true });
-  });
-
-  onOpenSalaahRules = () => this.patch({ dest: 'salaahRules', stepDir: 'fwd' });
-  onOpenHistory = () => this.patch({ salaahHistoryOpen: true });
-  onCloseHistory = () => this.patch({ salaahHistoryOpen: false });
-  // "Done" after publishing returns to the Salaah tab of the console.
-  onDone = () => {
-    this.patch({
-      route: 'console',
-      dest: 'salaah',
-      salaahStatus: 'loaded',
-      salaahDirty: false,
-      salaahNeverPublished: false,
-      salaahScenario: null,
-      expandedPrayer: null,
-      salaahNote: '',
-      scanApplied: null,
-      scanColumnMeaning: null,
-      stepDir: 'back',
     });
   };
 
@@ -928,11 +641,11 @@ class Component extends DCLogic {
 
   // ── Invitations ──
   onAccept = (invitation) => {
-    this.patch({ invitationActioningId: invitation.id });
+    this.patch({ invitationActioning: { id: invitation.id, kind: 'accept' } });
     this.after(900, () => {
       // The card becomes the success state and offers the console — accepting a role is
       // only useful if it hands you the thing you were given.
-      this.patch({ invitationActioningId: null, invitationAcceptedId: invitation.id });
+      this.patch({ invitationActioning: null, invitationAcceptedId: invitation.id });
       this.toast('invitation-accepted', 'Invitation accepted');
     });
   };
@@ -971,18 +684,14 @@ class Component extends DCLogic {
       return;
     }
     if (confirm.kind === 'declineInvitation') {
-      this.patch({ invitationActioningId: confirm.id });
-      this.after(700, () => { this.hide(confirm.id); this.patch({ invitationActioningId: null }); this.toast('invitation-declined', 'Invitation declined'); });
+      this.patch({ invitationActioning: { id: confirm.id, kind: 'decline' } });
+      this.after(700, () => { this.hide(confirm.id); this.patch({ invitationActioning: null }); this.toast('invitation-declined', 'Invitation declined'); });
       return;
     }
     if (confirm.kind === 'discardDraft') {
       this.clearTimers();
       this.patch({ route: 'console', dest: 'home', stepDir: 'back', post: window.OPS_DEFAULT_STATE.post });
       return;
-    }
-    if (confirm.kind === 'publishSalaah') {
-      this.patch({ salaahSaving: true });
-      this.after(1100, () => this.patch({ salaahSaving: false, salaahStatus: 'saved' }));
     }
   };
 
@@ -1018,16 +727,7 @@ class Component extends DCLogic {
       onOpenRemove: this.onOpenRemove, onOpenInvite: this.onOpenInvite,
       onInvitePhone: this.onInvitePhone, onInviteRole: this.onInviteRole,
       onInviteCapability: this.onInviteCapability, onSendInvite: this.onSendInvite,
-      onTogglePrayer: this.onTogglePrayer, onOpenMenu: this.onOpenMenu, onConfigChange: this.onConfigChange,
-      onNoteChange: this.onNoteChange, onSubmitSalaah: this.onSubmitSalaah,
-      onTimingSettled: this.onTimingSettled,
-      onAdoptRounding: this.onAdoptRounding,
-      onOpenSalaahRules: this.onOpenSalaahRules,
-      onOpenHistory: this.onOpenHistory, onCloseHistory: this.onCloseHistory,
-      onOpenScan: this.onOpenScan, onCloseScan: this.onCloseScan,
-      onScanCapture: this.onScanCapture, onScanRetry: this.onScanRetry,
-      onScanMeaning: this.onScanMeaning, onScanConsumed: this.onScanConsumed,
-      onDiscardScan: this.onDiscardScan,
+      onOpenMenu: this.onOpenMenu,
       onDone: this.onDone,
       onMessage: this.onMessage, onNextStep: this.onNextStep, onGoToStep: this.onGoToStep,
       onOpenRecorder: this.onOpenRecorder, onStartRecording: this.onStartRecording,

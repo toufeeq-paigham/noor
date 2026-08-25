@@ -317,6 +317,15 @@
     // The drag guide is an opening instruction: which half of a row moves which value cannot be
     // discovered by looking, and once someone has done it the line is noise above the one action.
     guideSeen: false,
+
+    // ── The board scan. An accelerator, never an invisible mutation: a reading is a PROPOSAL that
+    //    lands as a sheet, and only an explicit Add walks it into the draft. Publish is still the
+    //    one moment anything reaches musalleen. ──
+    scanStage: null, // null | 'camera' | 'reading' | 'failed'
+    scanProposal: null, // null | 'full' | 'partial' — a pending reading, NOT yet in the draft
+    // A single-column board does not say which column it is. Asked on the sheet, and the question
+    // stays there after it is answered so every scan can correct it.
+    scanColumnMeaning: null, // null | 'azaan' | 'jamaat'
   };
 
   const cloneState = (state) => Object.assign({}, state, { draft: Object.assign({}, state.draft) });
@@ -340,6 +349,135 @@
   // ══════════════════════════════════════════════════════════════════
   // buildSrData — the assembly both the board and the device render from.
   // ══════════════════════════════════════════════════════════════════
+
+  // ══════════════════════════════════════════════════════════════════
+  // The drift offer — spec §8.4
+  //
+  // A FIXED azaan keeps its clock time while the calculated start slides across the year, so it
+  // eventually sits outside its own window. Dragging it to a new fixed time only restarts the clock
+  // that broke it; the durable answer is a rounding rule, and only the masjid knows whether it has
+  // one — so the screen OFFERS one and never adopts it.
+  // ══════════════════════════════════════════════════════════════════
+
+  // The step is READ off the masjid's own published times, never guessed: the coarsest of 15/10/5
+  // that divides all of them. Only the numbers a committee actually TYPED count — an anchored prayer
+  // has none, a `00:00` floor is the absence of one rather than midnight, and Jumah's time is a
+  // khutbah convention rather than a daily rounding habit. Fewer than two times, or no common step,
+  // means no offer at all: the screen says nothing it cannot deliver.
+  const srRoundingStep = (config) => {
+    const typed = [];
+    ORDER.forEach(({ key }) => {
+      if (key === 'jumah') return;
+      const cfg = config[key] || {};
+      if (cfg.variant === ON_TIME) return;
+      const at = toMinutes(cfg.variant === VARIES ? cfg.neverBefore : cfg.salaahTime);
+      if (at) typed.push(at);
+    });
+    if (typed.length < 2) return null;
+    return [15, 10, 5].find((step) => typed.every((m) => m % step === 0)) || null;
+  };
+
+  // Drift is a PUBLISHED value that has stopped being possible AND a draft that has not rescued it,
+  // which is what makes the offer retire on its own: dragging the prayer back inside its window
+  // ends it, and so does accepting. Only a FIXED rule can drift this way — an anchored prayer IS
+  // its start, and a rounded one already follows it — and only an AZAAN fault is one a rounding can
+  // fix; a jamaat spilling past the close needs a shorter delay, and rounding up would worsen it.
+  const srDriftOffer = (rows, server) => {
+    const row = rows.find((r) => (
+      r.dayReady
+      && (r.cfg || {}).variant === FIXED
+      && r.fault && r.fault.field === 'azaan'
+      && srFault(r.prayer, r.publishedResolved)
+    ));
+    if (!row) return null;
+    const step = srRoundingStep(server);
+    if (!step) return null;
+    return {
+      key: row.key,
+      label: row.label,
+      // The value the reader is LOOKING at, which is the draft's. It equals the published one in the
+      // ordinary case, and naming a time that is not on the axis helps nobody when it does not.
+      azaan: row.resolved.azaan,
+      opens: row.prayer.opens,
+      step,
+      // The offer has to state its own consequence: "the next quarter-hour" means nothing until it
+      // also says what that is today.
+      today: nextMultiple(row.prayer.opens, step),
+    };
+  };
+
+  // ══════════════════════════════════════════════════════════════════
+  // The board scan — spec §11. Server-side OCR with an on-device fallback; both readers converge
+  // on one shape, so everything below is identical whichever one read the photo.
+  // ══════════════════════════════════════════════════════════════════
+
+  // What the demo board prints. ONE column of times — which is the whole reason the sheet has to
+  // ask what the column is. Chosen against today's windows so the receipt carries every outcome a
+  // real board produces: readings that translate cleanly, one an LED misread put outside its own
+  // window, prayers glare lost entirely, and Maghrib, which no clock time can be set for.
+  const SR_BOARD = {
+    full: { fajr: '05:35', zohar: '13:50', asr: '16:45', maghrib: '18:58', isha: '20:30', jumah: '13:30' },
+    // Zohar and Maghrib are the two a real board most often loses to glare; Fajr's leading digit
+    // came back wrong, which is an ordinary misread rather than an edge case.
+    partial: { fajr: '04:20', asr: '16:45', isha: '20:30', jumah: '13:30' },
+  };
+
+  // The reading in the two shapes every surface needs: the azaan in minutes from midnight, and the
+  // time the board actually PRINTED. One source, so the amber dot on the axis, the pill on the
+  // sheet and the value the walk lands can never disagree.
+  //
+  // A printed jamaat is the azaan plus the delay the masjid already keeps, so the delay is read off
+  // the current rule rather than invented. An azaan column needs no arithmetic at all.
+  const scanReading = (which, meaning, rowByKey) => {
+    const printedBy = SR_BOARD[which];
+    if (!printedBy) return null;
+    const out = {};
+    ORDER.forEach(({ key }) => {
+      if (printedBy[key] == null) return;
+      const row = rowByKey[key] || {};
+      const resolved = row.resolved || {};
+      const delay = resolved.delay == null ? IQAMA_MIN : resolved.delay;
+      const printed = toMinutes(printedBy[key]);
+      out[key] = {
+        printed,
+        iqama: delay,
+        azaan: meaning === 'azaan' ? printed : printed - delay,
+      };
+    });
+    return out;
+  };
+
+  // The receipt, one entry per prayer in day order — including the prayers the board did not show,
+  // because silence about a prayer is what makes a reader distrust the four that did.
+  //
+  // Four outcomes, and the walk lands exactly one of them. `bad` is a reading that cannot exist:
+  // the same two bounds `srFault` enforces everywhere else, so the sheet cannot promise a value the
+  // day would then refuse. `anchored` is this section's own outcome and has no equivalent on a
+  // times-only editor: the reading is fine, but the prayer follows its own start and stores no clock
+  // time, so there is nothing for a landing to write. It is named, with the place the decision
+  // lives, rather than skipped in silence.
+  const scanRows = (s, rows) => {
+    if (!s.scanProposal) return [];
+    const rowByKey = {};
+    rows.forEach((r) => { rowByKey[r.key] = r; });
+    const reading = scanReading(s.scanProposal, s.scanColumnMeaning || 'jamaat', rowByKey);
+    if (!reading) return [];
+    return ORDER.map(({ key, label }) => {
+      const read = reading[key];
+      if (!read) return { key, label, kind: 'mut' };
+      const row = rowByKey[key] || {};
+      const prayer = row.prayer && row.prayer.opens != null ? row.prayer : null;
+      const entry = {
+        key, label, printed: read.printed, azaan: read.azaan, iqama: read.iqama,
+      };
+      if ((row.cfg || {}).variant === ON_TIME) {
+        return Object.assign(entry, { kind: 'anchored', note: srRuleCopy(key, label, row.cfg).short });
+      }
+      const fault = srFault(prayer, { azaan: read.azaan, jamaat: read.azaan + read.iqama });
+      if (fault) return Object.assign(entry, { kind: 'bad', note: fault.text });
+      return Object.assign(entry, { kind: 'ok' });
+    });
+  };
 
   const buildSrData = (state, handlers) => {
     const s = state;
@@ -412,6 +550,25 @@
     const cfgOf = (p) => pair(byRow[p.key] || {}, 'draft');
     const pubOf = (p) => pair(byRow[p.key] || {}, 'published');
 
+    // The offer, and the prayer it speaks for. The blocked card below must not restate that same
+    // prayer — one fault, one statement, and the actionable one wins.
+    const driftOffer = srDriftOffer(rows, server);
+
+    // The board reading, resolved against the rules the draft currently holds. Computed here rather
+    // than in the screen so the receipt and the walk read one array.
+    const scan = scanRows(s, rows);
+    const scanUsable = scan.filter((r) => r.kind === 'ok');
+    const scanFaulted = scan.filter((r) => r.kind === 'bad');
+    const scanAnchored = scan.filter((r) => r.kind === 'anchored');
+    const scanMissed = scan.filter((r) => r.kind === 'mut');
+    // Zeroes stay silent: `seen by 0` and `0 not read` are the same lie.
+    const scanCounts = [
+      scanUsable.length ? `${scanUsable.length} usable` : null,
+      scanFaulted.length ? `${scanFaulted.length} outside ${scanFaulted.length === 1 ? 'its' : 'their'} window` : null,
+      scanAnchored.length ? `${scanAnchored.length} ${scanAnchored.length === 1 ? 'follows its prayer' : 'follow their prayers'}` : null,
+      scanMissed.length ? `${scanMissed.length} not read` : null,
+    ].filter(Boolean).join(' · ');
+
     return {
       route: s.route,
       status: s.status,
@@ -422,6 +579,7 @@
       rows,
       changedCount: changed.length,
       blocked,
+      driftOffer,
       row: openRow,
       snack: s.snack,
       focusPrayer: s.focusPrayer,
@@ -434,6 +592,27 @@
       cfgOf,
       pubOf,
       dragFeel: (key) => srDragFeel((byRow[key] || {}).cfg),
+      // ── board scan ──
+      // The stage, the receipt and the walk's queue all come from ONE computation, so the sheet
+      // cannot promise a value the walk will not land. The queue is the `ok` entries in day order;
+      // a refused or unread prayer dies with the sheet that named it.
+      scanStage: s.scanStage || null,
+      scanColumnMeaning: s.scanColumnMeaning || null,
+      scanPending: !!s.scanProposal,
+      scanRows: scan,
+      scanUsable: scanUsable.length,
+      scanLandings: scanUsable,
+      scanCounts: scanCounts,
+      // What the axis draws behind the sheet: the reading's place ON the day. The big value on a
+      // card stays the CURRENT time — a proposal may annotate it, never replace it.
+      scanProposal: scan.length
+        ? scan.reduce((acc, r) => {
+          if (r.kind === 'mut') return acc;
+          acc[r.key] = { azaan: r.azaan, iqama: r.iqama, fault: r.kind === 'bad' ? r.note : null };
+          return acc;
+        }, {})
+        : null,
+
       // ── publish ──
       saving: !!s.saving,
       justPublished: !!s.justPublished,
@@ -458,6 +637,14 @@
       onCloseSnack: h.onCloseSnack,
       onFocused: h.onFocused,
       onOpenRules: h.onOpenRules,
+      onAdoptRounding: h.onAdoptRounding,
+      onOpenScan: h.onOpenScan,
+      onCloseScan: h.onCloseScan,
+      onScanCapture: h.onScanCapture,
+      onScanRetry: h.onScanRetry,
+      onScanMeaning: h.onScanMeaning,
+      onScanConsumed: h.onScanConsumed,
+      onDiscardScan: h.onDiscardScan,
       onDragCommit: h.onDragCommit,
       onDragSettle: h.onDragSettle,
       onPublish: h.onPublish,
@@ -672,10 +859,11 @@
   const SR_GROUPS = [
     { id: 'timings', num: '1', icon: 'schedule', title: 'The day' },
     { id: 'drag', num: '2', icon: 'unfold_more', title: 'What the rule does to the drag' },
-    { id: 'publish', num: '3', icon: 'campaign', title: 'Publishing' },
-    { id: 'summary', num: '4', icon: 'info', title: 'The rules behind the day' },
-    { id: 'detail', num: '5', icon: 'update', title: 'One prayer’s rule' },
-    { id: 'edge', num: '6', icon: 'error', title: 'Configs and failures the app must survive' },
+    { id: 'scan', num: '3', icon: 'filter_center_focus', title: 'Reading the board' },
+    { id: 'publish', num: '4', icon: 'campaign', title: 'Publishing' },
+    { id: 'summary', num: '5', icon: 'info', title: 'The rules behind the day' },
+    { id: 'detail', num: '6', icon: 'update', title: 'One prayer’s rule' },
+    { id: 'edge', num: '7', icon: 'error', title: 'Configs and failures the app must survive' },
   ];
 
   // Draft fixtures used by the detail frames. Named so a frame reads as an intention.
@@ -715,6 +903,34 @@
     },
   };
 
+  // What the companion walk LEAVES BEHIND, so the frame after it is the real thing rather than a
+  // drawing of it. Every value here came out of `srCommitDrag` — the same writer a drag uses — for
+  // the Jamaat reading of SR_BOARD.full against today's windows, which is why none of them is the
+  // minute the board printed: Fajr, Asr and Isha snap up to their own 15-minute grid, Zohar is the
+  // one rule that stores a minute, and Maghrib is absent because it follows sunset and no landing
+  // can write a clock time to it.
+  const SCAN = {
+    landed: {
+      fajr: { variant: VARIES, neverBefore: '05:15', salaahTimeVariation: STEP_TO_WIRE[15], iqamaDelay: 20 },
+      zohar: { variant: FIXED, salaahTime: '13:35', iqamaDelay: 15 },
+      asr: { variant: VARIES, neverBefore: '16:30', salaahTimeVariation: STEP_TO_WIRE[15], iqamaDelay: 15 },
+      isha: { variant: VARIES, neverBefore: '20:15', salaahTimeVariation: STEP_TO_WIRE[15], iqamaDelay: 15 },
+      jumah: { variant: FIXED, salaahTime: '13:30', iqamaDelay: 5 },
+    },
+  };
+
+  // What ACCEPTING the drift offer leaves behind — written by the same two writers the offer's own
+  // action calls, so the frame is the real thing rather than a drawing of it. The floor is `00:00`
+  // because there is no floor: the rounding is the whole rule, and one pinned to today's answer
+  // would bind wrongly next season. Fajr's 20-minute delay is carried across untouched — adopting a
+  // rounding is a decision about when the azaan is called, never about how long the congregation
+  // has to arrive.
+  const DRIFT = {
+    adopted: {
+      fajr: { variant: VARIES, neverBefore: '00:00', salaahTimeVariation: STEP_TO_WIRE[15], iqamaDelay: 20 },
+    },
+  };
+
   // The board is a DEMO SCRIPT, not a catalogue. Every state the app can be in is still reachable
   // on the live device — the logic below decides them, not this table — but 42 thumbnails asked a
   // reader to find the story instead of being told it. These are the frames that carry it, in the
@@ -725,6 +941,7 @@
     { group: 'timings', name: 'Today’s timings', state: {} },
     { group: 'timings', name: 'Never published yet', state: { scenario: 'sourced' } },
     { group: 'timings', name: 'A fixed timing has drifted', state: { scenario: 'drifted' } },
+    { group: 'timings', name: 'Drift · rounding adopted', state: { scenario: 'drifted', draft: DRIFT.adopted, guideSeen: true } },
     { group: 'timings', name: 'The change record', state: { historyOpen: true } },
 
     // ── 2 · What the rule does to the drag ──
@@ -732,7 +949,23 @@
     { group: 'drag', name: 'Rounded · snapped a whole step', state: { draft: DRAG.variesSnapped, guideSeen: true } },
     { group: 'drag', name: 'At sunset · anchored, refused', state: { guideSeen: true, snack: { message: 'Maghrib follows sunset. Change how it updates to set a time.', tone: 'error' } } },
 
-    // ── 3 · Publishing ──
+    // ── 3 · Reading the board ──
+    // The scan is an input accelerator, never an invisible mutation: capture → recognition →
+    // receipt → an explicit Add that WALKS each value onto its own row. Every landing goes through
+    // the same commit a drag uses, so a landed timing and a dragged one are indistinguishable
+    // afterwards — and on this section that means the reading is translated by the prayer's own
+    // rule, not stamped on as a clock time.
+    { group: 'scan', name: 'The board in frame', state: { scanStage: 'camera', guideSeen: true } },
+    { group: 'scan', name: 'Reading the captured photo', state: { scanStage: 'reading', guideSeen: true } },
+    { group: 'scan', name: 'The board didn’t read', state: { scanStage: 'failed', guideSeen: true } },
+    { group: 'scan', name: 'Read · which column is it?', state: { scanProposal: 'full', guideSeen: true } },
+    { group: 'scan', name: 'Read · Jamaat column', state: { scanProposal: 'full', scanColumnMeaning: 'jamaat', guideSeen: true } },
+    { group: 'scan', name: 'Read · Azaan column', state: { scanProposal: 'full', scanColumnMeaning: 'azaan', guideSeen: true } },
+    // An LED misread is an ordinary outcome, not an edge case: named on the pill, never landed.
+    { group: 'scan', name: 'Misread and glare-lost', state: { scanProposal: 'partial', scanColumnMeaning: 'jamaat', guideSeen: true } },
+    { group: 'scan', name: 'Landed · publish when ready', state: { draft: SCAN.landed, guideSeen: true } },
+
+    // ── 4 · Publishing ──
     { group: 'publish', name: 'Confirm · naming the reach', state: { draft: D.twoChanged, guideSeen: true, confirmPublish: true } },
     { group: 'publish', name: 'Published', state: { justPublished: true } },
     { group: 'publish', name: 'Refused · a prayer is impossible', state: { scenario: 'drifted', guideSeen: true, snack: { message: 'Fajr does not begin until 4:52 AM today, so the azaan cannot be called at 4:45 AM.', tone: 'error' } } },
@@ -769,6 +1002,8 @@
     saving: !!s.saving, justPublished: !!s.justPublished,
     confirmPublish: !!s.confirmPublish, historyOpen: !!s.historyOpen,
     guideSeen: !!s.guideSeen, snack: s.snack ? s.snack.message : null,
+    scanStage: s.scanStage || null, scanProposal: s.scanProposal || null,
+    scanColumnMeaning: s.scanColumnMeaning || null,
     serverConfig: canonConfig(s.serverConfig || {}), serverStatus: s.serverStatus || null,
   });
   const activeFrameIndex = (state) => SR_FRAMES.findIndex((frame) => signature(state) === signature(frameState(frame)));

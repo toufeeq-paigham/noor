@@ -4,9 +4,19 @@
 // live device uses (see ./salaah-rules-state.js), so a static frame cannot drift from the
 // prototype. Tapping a frame hands its state to the device.
 
+// The frames are not interactive — a tap anywhere on one selects it and hands its state to the
+// device — but they must still RENDER every affordance the device renders. `SstDay`'s rule rail is
+// opt-in on its handler being PRESENT (see ./salaah-scroll-timeline.jsx), so an empty handler bag
+// silently dropped the rail from all 25 frames while the device beside them drew it. One no-op
+// stands in for the whole set, so an affordance gated the same way in future cannot drift out of
+// the board either.
+const SRL_STATIC_HANDLERS = new Proxy({}, { get: () => () => {} });
+
 function SrlFrame({ frame, index, active, onSelectFrame }) {
   const Screen = window.SalaahRulesScreen;
-  const data = window.buildSrData ? window.buildSrData(window.srFrameState(frame), {}) : {};
+  const data = window.buildSrData
+    ? window.buildSrData(window.srFrameState(frame), SRL_STATIC_HANDLERS)
+    : {};
   return (
     <div className="poc-board-item" onClick={() => onSelectFrame && onSelectFrame(index)}>
       <div className={`noor-frame ${active === index ? 'is-active' : ''}`} style={{ '--s': '0.46', cursor: 'pointer' }}>
