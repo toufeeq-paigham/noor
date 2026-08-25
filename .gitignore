@@ -2,6 +2,9 @@
 .idea/
 .claude/*
 !.claude/skills/
+!.claude/CLAUDE.md
+!.claude/rules/
+!.claude/settings.json
 .claude/skills/*-workspace/
 .thumbnail
 node_modules/
@@ -16,6 +19,7 @@ graphify-out/graph.html
 graphify-out/cache/
 graphify-out/.graphify_*
 graphify-out/cost.json
+graphify-out/reflections/
 graphify-out/20*/
 .gstack/
 # design-tool scratch dumps (intro_* live in images/)
