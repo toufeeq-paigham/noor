@@ -55,6 +55,7 @@
                           name-error="{{ nameError }}"
                           gender-error="{{ genderError }}"
                           loading="{{ loading }}"
+                          submit-status="{{ submitStatus }}"
                           service-error="{{ serviceError }}"
                           shake-key="{{ shakeKey }}"
                           on-name-tap="{{ fillName }}"
@@ -95,6 +96,9 @@ class Component extends DCLogic {
     nameError: false,
     genderError: false,
     loading: false,
+    // Which of the three chained requests is in flight. Null while idle, and null on the
+    // first step too — the screen's own default names it.
+    submitStatus: null,
     serviceError: false,
     shakeKey: 0,        // bump to replay the gender-row shake on repeat invalid submits
   };
@@ -122,19 +126,30 @@ class Component extends DCLogic {
       this.setState(st => ({ nameError: nameBad, genderError: genderBad, shakeKey: st.shakeKey + 1 }));
       return;
     }
-    this.setState({ loading: true, serviceError: false, nameError: false, genderError: false });
+    // Three requests in a fixed order (PersonalDetailsViewModel): save the name and gender, follow
+    // every selected masjid, then confirm with the server that onboarding really is complete. The
+    // prototype walks them so the status line can be read doing its job — a single sentence held
+    // across all three cannot tell a working request from a stalled one.
+    this.setState({ loading: true, submitStatus: null, serviceError: false, nameError: false, genderError: false });
     clearTimeout(this._returnTimer);
+    const step = this.motionMillis('--motion-emphasized', 280) * 2.5;
     this._returnTimer = setTimeout(() => {
-      this.setState({ stage: 'success', stepDir: 'fwd', loading: false });
-      this._returnTimer = setTimeout(this.continueHome, this.motionMillis('--motion-success-hold', 2500));
-    }, this.motionMillis('--motion-emphasized', 280));
+      this.setState({ submitStatus: 'Following your masjid · 2 of 3' });
+      this._returnTimer = setTimeout(() => {
+        this.setState({ submitStatus: 'Finishing setup · 3 of 3' });
+        this._returnTimer = setTimeout(() => {
+          this.setState({ stage: 'success', stepDir: 'fwd', loading: false, submitStatus: null });
+          this._returnTimer = setTimeout(this.continueHome, this.motionMillis('--motion-success-hold', 2500));
+        }, step);
+      }, step);
+    }, step);
   };
 
   retrySetup = () => {
-    this.setState({ serviceError: false, loading: false });
+    this.setState({ serviceError: false, loading: false, submitStatus: null });
     setTimeout(this.completeSetup, 0);
   };
-  dismissError = () => this.setState({ serviceError: false, loading: false });
+  dismissError = () => this.setState({ serviceError: false, loading: false, submitStatus: null });
   continueHome = () => { window.location.href = '../home/Home Screen.dc.html'; };
 
   goBack = () => {
@@ -144,28 +159,33 @@ class Component extends DCLogic {
 
   restart = () => {
     clearTimeout(this._returnTimer);
-    this.setState({ stage: 'details', stepDir: 'back', name: '', gender: null, nameError: false, genderError: false, loading: false, serviceError: false, shakeKey: 0 });
+    this.setState({ stage: 'details', stepDir: 'back', name: '', gender: null, nameError: false, genderError: false, loading: false, submitStatus: null, serviceError: false, shakeKey: 0 });
   };
 
   // Tap a storyboard frame to jump the live device to that state.
   selectFrame = (i) => {
     clearTimeout(this._returnTimer);
+    // Positional: index i IS the i-th frame in details-row.jsx's DETAILS_STATES. Adding a frame
+    // to one list without the other silently jumps the device to the wrong state.
     const states = [
       { stage: 'details', name: '', gender: null, nameError: false, genderError: false },
       { stage: 'details', name: '', gender: null, nameError: true, genderError: true },
       { stage: 'details', name: 'Toufeeq Ahamed', gender: 'male', nameError: false, genderError: false },
       { stage: 'details', name: 'Toufeeq Ahamed', gender: 'male', nameError: false, genderError: false, loading: true },
+      { stage: 'details', name: 'Toufeeq Ahamed', gender: 'male', nameError: false, genderError: false, loading: true, submitStatus: 'Following your masjid · 2 of 3' },
+      { stage: 'details', name: 'Toufeeq Ahamed', gender: 'male', nameError: false, genderError: false, loading: true, submitStatus: 'Finishing setup · 3 of 3' },
       { stage: 'details', name: 'Toufeeq Ahamed', gender: 'male', nameError: false, genderError: false, serviceError: true },
       { stage: 'success', name: 'Toufeeq Ahamed', gender: 'male', nameError: false, genderError: false }
     ];
-    this.setState(s => ({ loading: false, serviceError: false, ...states[i], stepDir: 'none', shakeKey: s.shakeKey + 1 }));
+    this.setState(s => ({ loading: false, submitStatus: null, serviceError: false, ...states[i], stepDir: 'none', shakeKey: s.shakeKey + 1 }));
   };
 
   renderVals() {
     const s = this.state;
     const isDetails = s.stage === 'details';
     const isSuccess = s.stage === 'success';
-    const detailsActive = isSuccess ? 5 : (s.serviceError ? 4 : (s.loading ? 3 : ((s.nameError || s.genderError) ? 1 : ((s.name && s.gender) ? 2 : 0))));
+    const savingFrame = s.submitStatus ? (s.submitStatus.includes('3 of 3') ? 5 : 4) : 3;
+    const detailsActive = isSuccess ? 7 : (s.serviceError ? 6 : (s.loading ? savingFrame : ((s.nameError || s.genderError) ? 1 : ((s.name && s.gender) ? 2 : 0))));
 
     return {
       isDetailsStage: isDetails,
@@ -180,6 +200,7 @@ class Component extends DCLogic {
       nameError: s.nameError,
       genderError: s.genderError,
       loading: s.loading,
+      submitStatus: s.submitStatus,
       serviceError: s.serviceError,
       shakeKey: s.shakeKey,
       fillName: this.fillName,

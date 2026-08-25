@@ -607,21 +607,29 @@ function ComposePostScreen({ data = {} }) {
         {step === 'review' ? <CmpReviewStep data={data} /> : null}
       </div>
 
-      <div className="docked-action">
+      <div className="docked-host">
+        {/* Above the bar and outside it, so `Send paigham` keeps its bounds while the send runs.
+            Sending is a SEQUENCE — the recording, then each photo, then the paigham itself — and
+            the line names the step it is on. The photos are the variable part, so they are the
+            part that counts (`Uploading photo 2 of 3…`); the recording and the send are single
+            requests and are stated, not numbered. A synthetic total over all three would have to
+            invent a denominator that changes with the draft. */}
         {post.submitting ? (
-          <div className="inline-loading-status" role="status">
-            <span className="btn-spinner" aria-hidden="true"></span>Sending your paigham…
+          <div className="docked-status status-capsule" role="status" aria-live="polite">
+            <span className="status-capsule-ring" aria-hidden="true"></span>
+            <b>{post.submitStatus || 'Sending your paigham…'}</b>
           </div>
-        ) : helper ? (
-          <div className="docked-action-note">{helper}</div>
         ) : null}
-        <button
-          className="btn btn-filled lg"
-          disabled={ctaDisabled || post.submitting}
-          onClick={data.onNextStep}
-        >
-          {ctaLabel}
-        </button>
+        <div className="docked-action">
+          {!post.submitting && helper ? <div className="docked-action-note">{helper}</div> : null}
+          <button
+            className="btn btn-filled lg"
+            disabled={ctaDisabled || post.submitting}
+            onClick={data.onNextStep}
+          >
+            {ctaLabel}
+          </button>
+        </div>
       </div>
 
       <CmpRecorderStage data={data} />

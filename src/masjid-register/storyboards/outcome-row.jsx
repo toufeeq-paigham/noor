@@ -1,9 +1,12 @@
 // Row 03 — Outcome. Static frames for the post-submit states:
-//   0 · Submitting  1 · Pending (under review)  2 · Rejected
+//   0 · Pending (under review)  1 · Rejected
 // Renders the shared OutcomeScreen from ./screens.jsx.
+//
+// There is no `Submitting` outcome. Submitting is a state of the review STEP — progress above its
+// docked action, with the form and both photos still on screen — because a failure has to leave
+// every answer recoverable, and a full-screen spinner said busy without saying what was busy.
 
 const OUTCOME_FRAMES = [
-  { name: 'Submitting', data: { variant: 'submitting' } },
   { name: 'Under review', data: { variant: 'pending', contactName: 'Salim Shaikh', masjidSummaryName: 'Masjid-e-Noor', masjidSummaryAddr: 'Kabutar Khana, Mumbai, Maharashtra · 400016', role: 'Chairman', submittedDate: '5 Jul 2026', photoSrc: '../../images/masjid-camera-preview.png', selfieSrc: '../../images/identity-camera-preview.png' } },
   { name: 'Rejected', data: { variant: 'rejected', contactName: 'Salim Shaikh' } }
 ];
@@ -27,7 +30,7 @@ function frame(f, globalIdx, active, onSelectFrame) {
   );
 }
 
-function OutcomeRow({ active = -1, onSelectFrame, offset = 38 }) {
+function OutcomeRow({ active = -1, onSelectFrame, offset = 38 }) {  // 38 · pending  39 · rejected
   return (
     <div>
       <div className="poc-row-label"><span className="mi" data-i="verified"></span> 12 · Outcome · {OUTCOME_FRAMES.length} states</div>

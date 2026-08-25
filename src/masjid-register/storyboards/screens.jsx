@@ -98,7 +98,7 @@ function PrimaryMasjidSummary({ masjid }) {
   );
 }
 
-function SwitchMasjidAction({ current, onClick }) {
+function SwitchMasjidAction({ current, onClick, busy }) {
   if (current) {
     return (
       <span className="my-masjids-current">
@@ -107,8 +107,17 @@ function SwitchMasjidAction({ current, onClick }) {
       </span>
     );
   }
+  // Inert while a switch is in flight, and it keeps its label: the capsule above the discovery
+  // action is what says which masjid is being switched to, and a spinner in a 28px trailing chip
+  // would be a second indicator saying less. One switch at a time — every row goes inert, because
+  // the timings can only come from one masjid.
   return (
-    <button className="btn btn-tonal sm masjid-switch-action" onClick={onClick}>
+    <button
+      className="btn btn-tonal sm masjid-switch-action"
+      onClick={busy ? undefined : onClick}
+      aria-disabled={busy ? 'true' : 'false'}
+      style={busy ? { opacity: 'var(--opacity-emphasis, .6)' } : undefined}
+    >
       <span className="mi" aria-hidden="true" data-i="swap_horiz"></span>
       <span>Switch</span>
     </button>
@@ -155,6 +164,7 @@ function MyMasjidsSheet({ data = {} }) {
     onClose,
     onRegister,
     onFind,
+    switchingName = null,
   } = data;
   if (!isOpen) return null;
   const manageCount = manageTiles.length + (registration ? 1 : 0);
@@ -268,11 +278,21 @@ function MyMasjidsSheet({ data = {} }) {
                       <div className="my-masjids-row-name">{f.name}</div>
                       <div className="my-masjids-row-meta">{f.sub}</div>
                     </div>
-                    <SwitchMasjidAction current={f.checked} onClick={f.onToggle} />
+                    <SwitchMasjidAction current={f.checked} onClick={f.onToggle} busy={!!switchingName} />
                 </div>
               ))}
             </div>
-            <div className="my-masjids-discovery">
+            {/* Changing where the timings come from is a request, and the row's `Current` marker
+                cannot move until it lands — so the capsule floats above this sheet's pinned action
+                and NAMES the masjid. Outside the action's measurement, so the list beneath it does
+                not shift while the switch runs. */}
+            <div className="docked-host my-masjids-discovery">
+              {switchingName ? (
+                <div className="docked-status status-capsule" role="status" aria-live="polite">
+                  <span className="status-capsule-ring" aria-hidden="true"></span>
+                  <b>Switching to {switchingName}…</b>
+                </div>
+              ) : null}
               <button className="btn btn-filled lg" onClick={onFind}>
                 <span className="mi" data-i="travel_explore"></span>
                 Find another masjid
@@ -291,42 +311,6 @@ function MyMasjidsSheet({ data = {} }) {
 // ══════════════════════════════════════════════════════════════════════
 const WIZARD_TITLE = { fontFamily: FONT_T, letterSpacing: '-0.5px', color: 'var(--color-info-primary)' };
 const WIZARD_SUB = { fontFamily: FONT_B, fontSize: 14, lineHeight: 1.6, color: 'var(--color-info-secondary)' };
-
-function OptionSheet({ open, title, options, onClose }) {
-  if (!open) return null;
-  return (
-    <div className="dlg-scrim sheet wizard-option-scrim" onClick={onClose}>
-      <div className="dlg wizard-option-sheet" onClick={(event) => event.stopPropagation()}>
-        <div className="dlg-handle"></div>
-        <div className="wizard-option-header">
-          <span className="dlg-title">{title}</span>
-          <button className="ib ib-tonal md" onClick={onClose} aria-label="Close selection">
-            <span className="mi" data-i="close"></span>
-          </button>
-        </div>
-        <div className="wizard-option-list">
-          {options.map((opt, i) => (
-            <button key={i} className={`wizard-option ${opt.selected ? 'selected' : ''}`} onClick={opt.onSelect}>
-              <span>{opt.name}</span>
-              <span className="wizard-option-mark">
-                <span className="mi" data-i={opt.selected ? 'radio_button_checked' : 'radio_button_unchecked'}></span>
-              </span>
-            </button>
-          ))}
-        </div>
-      </div>
-    </div>
-  );
-}
-
-function PickerField({ display, filled, onOpen, error }) {
-  return (
-    <button className={`picker-field ${error ? 'error' : ''}`} onClick={onOpen} aria-haspopup="dialog">
-      <span className={filled ? 'picker-field-value' : 'picker-field-placeholder'}>{display}</span>
-      <span className="mi" data-i="expand_more"></span>
-    </button>
-  );
-}
 
 function ReviewRow({ label, value, onEdit, border }) {
   return (
@@ -684,7 +668,7 @@ function WizardBody({ d }) {
         <Field label="Masjid name" error={d.errors && d.errors.masjidName}><TextInput value={d.masjidName} onChange={d.onMasjidNameChange} placeholder="e.g. Masjid-e-Noor" error={d.errors && d.errors.masjidName} /></Field>
         <Field label="Address and landmark" error={d.errors && d.errors.address}><TextInput value={d.address} onChange={d.onAddressChange} placeholder="Street, landmark" error={d.errors && d.errors.address} /></Field>
         <Field label="Town or locality" error={d.errors && d.errors.city}><TextInput value={d.city} onChange={d.onCityChange} placeholder="e.g. Molakalmuru" error={d.errors && d.errors.city} /></Field>
-        <Field label="State" error={d.errors && d.errors.stateVal}><PickerField display={d.stateVal || 'Select state'} filled={!!d.stateVal} onOpen={d.onOpenStateSheet} error={d.errors && d.errors.stateVal} /></Field>
+        <Field label="State" error={d.errors && d.errors.stateVal}><PickerField value={d.stateVal} placeholder="Select state" onOpen={d.onOpenStateSheet} error={d.errors && d.errors.stateVal} /></Field>
         <Field label="Pincode" error={d.errors && d.errors.pincode} mb={20}><TextInput value={d.pincode} onChange={d.onPincodeChange} maxLength={6} inputMode="numeric" code readOnly error={d.errors && d.errors.pincode} /></Field>
         <div style={{ fontFamily: FONT_B, fontSize: 13, fontWeight: 700, color: 'var(--color-info-primary)', marginBottom: 8 }}>Pin the masjid entrance</div>
         <LocationMap d={d} />
@@ -706,7 +690,7 @@ function WizardBody({ d }) {
       <div>
         <div style={{ ...WIZARD_TITLE, fontSize: 26, marginBottom: 10 }}>What's your role?</div>
         <div style={{ ...WIZARD_SUB, marginBottom: 22 }}>Your role is verified by our team before this masjid is approved.</div>
-        <Field label="Your role" error={d.errors && d.errors.role} mb={0}><PickerField display={d.roleDisplay} filled={d.roleFilled} onOpen={d.onOpenRoleSheet} error={d.errors && d.errors.role} /></Field>
+        <Field label="Your role" error={d.errors && d.errors.role} mb={0}><PickerField value={d.role} placeholder="Select your role" onOpen={d.onOpenRoleSheet} error={d.errors && d.errors.role} /></Field>
       </div>
     );
   }
@@ -715,7 +699,7 @@ function WizardBody({ d }) {
       <div>
         <div style={{ ...WIZARD_TITLE, fontSize: 26, marginBottom: 10 }}>Which maslak does the masjid follow?</div>
         <div style={{ ...WIZARD_SUB, marginBottom: 22 }}>This helps members find the right community.</div>
-        <Field label="Maslak" error={d.errors && d.errors.maslak} mb={0}><PickerField display={d.maslakDisplay} filled={d.maslakFilled} onOpen={d.onOpenMaslakSheet} error={d.errors && d.errors.maslak} /></Field>
+        <Field label="Maslak" error={d.errors && d.errors.maslak} mb={0}><PickerField value={d.maslak} placeholder="Select maslak" onOpen={d.onOpenMaslakSheet} error={d.errors && d.errors.maslak} /></Field>
       </div>
     );
   }
@@ -858,17 +842,31 @@ function WizardScreen({ data = {} }) {
 
       <div style={{ flex: 1, overflowY: 'auto', padding: '12px 20px 16px', position: 'relative' }}>
         <WizardBody d={d} />
-        <OptionSheet open={d.roleSheetOpen} title="Select your role" options={d.roleOptions} onClose={d.onCloseSheets} />
-        <OptionSheet open={d.maslakSheetOpen} title="Select maslak" options={d.maslakOptions} onClose={d.onCloseSheets} />
-        <OptionSheet open={d.stateSheetOpen} title="Select state" options={d.stateOptions} onClose={d.onCloseSheets} />
+        <OptionSheet isOpen={d.roleSheetOpen} title="Select your role" options={d.roleOptions} value={d.role} onPick={d.onSelectRole} onClose={d.onCloseSheets} />
+        <OptionSheet isOpen={d.maslakSheetOpen} title="Select maslak" options={d.maslakOptions} value={d.maslak} onPick={d.onSelectMaslak} onClose={d.onCloseSheets} />
+        <OptionSheet isOpen={d.stateSheetOpen} title="Select state" options={d.stateOptions} value={d.stateVal} onPick={d.onSelectState} onClose={d.onCloseSheets} />
       </div>
 
-      <div style={{ flexShrink: 0, padding: '12px 20px 26px', display: 'flex', flexDirection: 'column', gap: 10 }}>
-        <button className="btn btn-filled lg" onClick={d.ctaOnClick} disabled={d.ctaDisabled} aria-busy={d.ctaBusy ? 'true' : 'false'} style={{ width: '100%' }}>
-          {d.ctaBusy ? <span className="btn-spinner"></span> : null}
+      {/* Progress above the bar and outside it, never inside the button: a spinner where
+          `Submit for verification` was removes the one line that says what is being committed, at
+          the moment the applicant most needs to know a two-photo upload is still running.
+          Submitting is THREE requests — the entrance photo, the applicant's photo, then the
+          registration itself — so the line names the step. `Uploading photos and submitting…` held
+          for all three cannot distinguish a working upload from a stalled one, and these are the
+          largest payloads the app sends. */}
+      <div className="docked-host">
+        {d.ctaBusy ? (
+          <div className="docked-status status-capsule" role="status" aria-live="polite">
+            <span className="status-capsule-ring" aria-hidden="true"></span>
+            <b>{d.ctaBusyLabel || 'Uploading masjid photo · 1 of 3'}</b>
+          </div>
+        ) : null}
+        <div style={{ flexShrink: 0, padding: '12px 20px 26px', display: 'flex', flexDirection: 'column', gap: 10 }}>
+        <button className="btn btn-filled lg" onClick={d.ctaOnClick} disabled={d.ctaDisabled || d.ctaBusy} style={{ width: '100%' }}>
           {d.ctaLabel}
         </button>
-        {d.step === 'review' && <div style={{ textAlign: 'center', fontFamily: FONT_B, fontSize: 12, color: 'var(--color-info-secondary)' }}>A member of our team reviews every submission by hand.</div>}
+        {d.step === 'review' && !d.ctaBusy && <div style={{ textAlign: 'center', fontFamily: FONT_B, fontSize: 12, color: 'var(--color-info-secondary)' }}>A member of our team reviews every submission by hand.</div>}
+        </div>
       </div>
       <CameraStage d={d} />
     </div>
@@ -876,18 +874,10 @@ function WizardScreen({ data = {} }) {
 }
 
 // ══════════════════════════════════════════════════════════════════════
-// 4 · Outcome — submitting · pending · rejected
+// 4 · Outcome — pending · rejected (submitting stays on the review step; see WizardScreen)
 // ══════════════════════════════════════════════════════════════════════
 function OutcomeScreen({ data = {} }) {
   const d = data;
-  if (d.variant === 'submitting') {
-    return (
-      <div style={{ width: '100%', height: '100%', background: 'var(--color-surface-primary)', display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', gap: 18 }}>
-        <div className="registration-spinner" style={{ width: 52, height: 52, borderRadius: '50%', border: '4px solid var(--color-surface-secondary)', borderTopColor: 'var(--color-action-primary)', animation: 'spin var(--motion-celebration) linear infinite' }}></div>
-        <div style={{ fontFamily: FONT_B, fontSize: 15, fontWeight: 600, color: 'var(--color-info-primary)' }}>Submitting for verification…</div>
-      </div>
-    );
-  }
   if (d.variant === 'pending') {
     return <PendingFolioScreen d={d} />;
   }

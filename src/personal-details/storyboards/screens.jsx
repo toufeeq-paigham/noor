@@ -26,7 +26,7 @@ function GenderCard({ illustration, label, selected, onClick, disabled = false }
 
 // PERSONAL DETAILS — profile completion form (PersonalDetailsScreen.kt). Complete Setup validates:
 // name < 3 chars → nameError, no gender → genderError (the gender row shakes via `shakeKey`).
-function PersonalDetailsScreen({ name = '', onNameTap, gender = null, onSelectGender, onCompleteSetup, onBack, onRetry, onDismissError, nameError = false, genderError = false, loading = false, serviceError = false, shakeKey = 0 }) {
+function PersonalDetailsScreen({ name = '', onNameTap, gender = null, onSelectGender, onCompleteSetup, onBack, onRetry, onDismissError, nameError = false, genderError = false, loading = false, submitStatus = null, serviceError = false, shakeKey = 0 }) {
   const APPBAR_H = 96;
   return (
     <div style={{ width: '100%', height: '100%', position: 'relative', overflow: 'hidden', background: 'var(--color-surface-primary)' }}>
@@ -60,18 +60,26 @@ function PersonalDetailsScreen({ name = '', onNameTap, gender = null, onSelectGe
 
       <AlmostThereAppBar onBack={onBack} />
 
-      {loading && (
-        <div className="inline-loading-status" role="status" aria-live="polite" style={{ position: 'absolute', left: 'var(--content-gutter)', right: 'var(--content-gutter)', bottom: 'calc(var(--control-h-lg) + var(--size-max) + var(--size-huge))' }}>
-          <span className="btn-spinner" aria-hidden="true"></span>
-          <span>Saving details…</span>
+      {/* Bottom bar — Complete Setup (CompleteSetupBottomBar). Progress sits above the bar and
+          OUTSIDE it, in a `.docked-host`, so its offset comes from the bar's real height instead
+          of a `calc()` that has to be re-derived every time the bar's padding changes.
+          Completing setup is THREE chained requests in a fixed order — save the name and gender,
+          follow every selected masjid, then confirm with the server that onboarding really is
+          complete — so the line names the one that is running. One sentence held across all three
+          cannot tell a working request from a stalled one, and this is the slowest submit in the
+          app on a first install. */}
+      <div className="docked-host" style={{ position: 'absolute', left: 0, right: 0, bottom: 0 }}>
+        {loading && (
+          <div className="docked-status status-capsule" role="status" aria-live="polite">
+            <span className="status-capsule-ring" aria-hidden="true"></span>
+            <b>{submitStatus || 'Saving your details · 1 of 3'}</b>
+          </div>
+        )}
+        <div style={{ padding: '12px 16px 28px', background: 'var(--color-surface-primary)', boxSizing: 'border-box' }}>
+          <button className="btn btn-filled lg" disabled={loading} aria-busy={loading ? 'true' : 'false'} onClick={onCompleteSetup} style={{ width: '100%' }}>
+            Complete Setup
+          </button>
         </div>
-      )}
-
-      {/* Bottom bar — Complete Setup (CompleteSetupBottomBar) */}
-      <div style={{ position: 'absolute', left: 0, right: 0, bottom: 0, padding: '12px 16px 28px', background: 'var(--color-surface-primary)', boxSizing: 'border-box' }}>
-        <button className="btn btn-filled lg" disabled={loading} aria-busy={loading ? 'true' : 'false'} onClick={onCompleteSetup} style={{ width: '100%' }}>
-          Complete Setup
-        </button>
       </div>
 
       {serviceError && (
