@@ -95,13 +95,6 @@
     .registration-grid-cell:not(.masjid-manage-grid-item-wide) .registration-tile-meta{flex-direction:column;align-items:flex-start;gap:0}
     .registration-grid-cell:not(.masjid-manage-grid-item-wide) .registration-tile-separator{display:none}
     .registration-grid-cell:not(.masjid-manage-grid-item-wide) .registration-tile-chevron{position:absolute;top:12px;right:10px}
-    .wizard-option-scrim{background:color-mix(in oklab,var(--color-surface-scrim) 88%,transparent);backdrop-filter:blur(8px) saturate(120%);-webkit-backdrop-filter:blur(8px) saturate(120%)}
-    .wizard-option-sheet{max-height:68%;overflow:hidden;background:color-mix(in oklab,var(--color-surface-primary) 94%,transparent);backdrop-filter:blur(30px) saturate(165%);-webkit-backdrop-filter:blur(30px) saturate(165%)}
-    .wizard-option-header{display:flex;align-items:center;justify-content:space-between;gap:12px;margin-bottom:var(--size-xl);flex-shrink:0}
-    .wizard-option-list{display:flex;flex-direction:column;gap:var(--size-sm);overflow-y:auto}
-    .wizard-option{width:100%;min-height:var(--control-h-lg);display:flex;align-items:center;justify-content:space-between;gap:12px;box-sizing:border-box;padding:12px 14px;border:1px solid var(--color-neutral-border);border-radius:var(--radius-xl);background:var(--color-surface-card);color:var(--color-info-primary);font-family:var(--font-body);font-size:15px;font-weight:600;text-align:left;cursor:pointer}
-    .wizard-option.selected{border-color:var(--color-action-primary);background:var(--color-surface-secondary)}
-    .wizard-option-mark{display:inline-flex;color:var(--color-action-primary)}
     .wizard-map{position:relative;height:188px;overflow:hidden;border:1px solid var(--color-neutral-border);border-radius:var(--radius-2xl);background:var(--color-surface-secondary);transition:height var(--motion-emphasized) var(--ease-out)}
     .wizard-map.expanded{height:330px}
     .wizard-map-grid{position:absolute;inset:-20%;opacity:.55;background-image:linear-gradient(var(--color-neutral-border) 1px,transparent 1px),linear-gradient(90deg,var(--color-neutral-border) 1px,transparent 1px);background-size:52px 52px;transform:rotate(-7deg) scale(1.15)}
@@ -217,6 +210,8 @@
 <div style="display:none">
   <x-import component="PromptCard" from="../_theme/components.jsx" hint-size="0,0"></x-import>
   <x-import component="Dialog" from="../_theme/components.jsx" hint-size="0,0"></x-import>
+  <x-import component="PickerField" from="../_theme/components.jsx" hint-size="0,0"></x-import>
+  <x-import component="OptionSheet" from="../_theme/components.jsx" hint-size="0,0"></x-import>
   <x-import component="RichNudgeSheet" from="../_theme/components.jsx" hint-size="0,0"></x-import>
   <x-import component="BottomNav" from="../home/storyboards/nav-bar.jsx" hint-size="0,0"></x-import>
   <x-import component="HomeScreen" from="../home/storyboards/screens.jsx" hint-size="0,0"></x-import>
@@ -279,7 +274,10 @@
 <script type="text/x-dc" data-dc-script>
 class Component extends DCLogic {
   state = {
-    step: 'home',            // home | salaah | profile | <wizard steps> | submitting | pending | rejected
+    step: 'home',            // home | salaah | profile | <wizard steps> | pending | rejected
+    // 0 idle, else which of the three submit requests is in flight. Submitting is a state OF
+    // the review step, not a screen of its own.
+    submitStep: 0,
     sheetOpen: false,
     sheetTab: 'manage',
     history: [],
@@ -302,6 +300,8 @@ class Component extends DCLogic {
     cameraMode: null, cameraStage: 'rationale', cameraPermission: 'unknown',
     locationExpanded: false, locationResolved: false, locationLookupFailed: false,
     errors: {}, ctaFeedback: '',
+    // The masjid a switch is in flight for; its name is what the capsule states.
+    masjidSwitchingId: null,
     primaryMasjidId: 'dargha',
     sheetPreview: 'standard',
     userName: 'Salim Shaikh',
@@ -393,12 +393,14 @@ class Component extends DCLogic {
       32: { ...S, step:'selfie', branch:'register', selfieTaken:false, cameraMode:'selfie', cameraPermission:'granted', cameraStage:'captured', sheetOpen:false },
       33: { ...S, step:'selfie', branch:'register', selfieTaken:true, sheetOpen:false },
       34: { ...S, step:'review', branch:'register', photoTaken:true, photoLocationAttached:true, selfieTaken:true, sheetOpen:false },
-      35: { ...S, step:'submitting', branch:'register', sheetOpen:false },
-      36: { ...S, step:'pending', branch:'register', sheetOpen:false },
-      37: { ...S, step:'rejected', branch:'register', sheetOpen:false }
+      35: { ...S, step:'review', branch:'register', photoTaken:true, photoLocationAttached:true, selfieTaken:true, submitStep:1, sheetOpen:false },
+      36: { ...S, step:'review', branch:'register', photoTaken:true, photoLocationAttached:true, selfieTaken:true, submitStep:2, sheetOpen:false },
+      37: { ...S, step:'review', branch:'register', photoTaken:true, photoLocationAttached:true, selfieTaken:true, submitStep:3, sheetOpen:false },
+      38: { ...S, step:'pending', branch:'register', sheetOpen:false },
+      39: { ...S, step:'rejected', branch:'register', sheetOpen:false }
     };
     clearTimeout(this._t);
-    this.setState({ history: [], stepDir: 'fwd', roleSheetOpen:false, maslakSheetOpen:false, stateSheetOpen:false, ...(map[i] || { step:'home', sheetOpen:false }) });
+    this.setState({ history: [], stepDir: 'fwd', roleSheetOpen:false, maslakSheetOpen:false, stateSheetOpen:false, submitStep:0, ...(map[i] || { step:'home', sheetOpen:false }) });
   };
 
   // ── entry tabs + sheet ──
@@ -409,8 +411,17 @@ class Component extends DCLogic {
   openPendingRegistration = () => this.goTo('pending');
   selectPrimary = (id) => {
     const m = this.MANAGE.concat(this.FOLLOW).find(x => x.id === id);
-    this.setState({ primaryMasjidId:id, masjidName: m ? m.name : this.state.masjidName });
-    clearTimeout(this._t); this._t = setTimeout(() => this.setState({ sheetOpen:false }), 420);
+    if (this.state.masjidSwitchingId) return;   // one switch at a time; the timings have one source
+    this.setState({ masjidSwitchingId: id });
+    clearTimeout(this._t);
+    this._t = setTimeout(() => {
+      this.setState({
+        masjidSwitchingId: null,
+        primaryMasjidId: id,
+        masjidName: m ? m.name : this.state.masjidName,
+      });
+      this._t = setTimeout(() => this.setState({ sheetOpen: false }), 420);
+    }, 800);
   };
   goMasjidAdmin = () => {
     window.location.href = '../masjid-operations/Masjid Console.dc.html#admin';
@@ -574,7 +585,23 @@ class Component extends DCLogic {
   editPhoto = () => this.goTo('photo');
   editSelfie = () => this.goTo('selfie');
 
-  submit = () => { this.goTo('submitting'); clearTimeout(this._t); this._t = setTimeout(() => this.setState({ step:'pending' }), 1300); };
+  // Submitting keeps the FORM on screen with its progress above the docked action. It used to take
+  // the whole screen as a bare spinner, which loses every answer and both photos at the one moment
+  // a failure has to leave them recoverable — and a circular loader on empty space says busy
+  // without saying what is busy. Three requests, named in order: the entrance photo, the
+  // applicant's photo, then the registration itself.
+  submit = () => {
+    clearTimeout(this._t);
+    const step = 700;
+    this.setState({ submitStep: 1 });
+    this._t = setTimeout(() => {
+      this.setState({ submitStep: 2 });
+      this._t = setTimeout(() => {
+        this.setState({ submitStep: 3 });
+        this._t = setTimeout(() => this.setState({ step:'pending', submitStep: 0 }), step);
+      }, step);
+    }, step);
+  };
   doneHome = () => { window.location.href = '../home/Home Screen.dc.html'; };
   togglePreview = () => this.setState(s => ({ step: s.step === 'pending' ? 'rejected' : 'pending' }));
   reapply = () => this.goTo('contact');
@@ -595,7 +622,7 @@ class Component extends DCLogic {
           this._t = setTimeout(() => this.setState(st => ({ history:[...st.history, 'searching'], branch: target==='400001'?'claim':null, step: target==='400001'?'claimList':'claimEmpty' })), 1100);
         }};
       }
-      case 'searching': return { label:'Searching nearby', disabled:true, busy:true, onClick: () => {} };
+      case 'searching': return { label:'Searching nearby', disabled:true, busy:true, busyLabel:`Searching for masjids in ${s.pincode}…`, onClick: () => {} };
       case 'claimList': {
         const valid = s.selectedMasjidId != null;
         return { label:'Continue', disabled:false, onClick: () => {
@@ -642,7 +669,10 @@ class Component extends DCLogic {
         this.setState({ errors:{}, ctaFeedback:'' });
         this.goTo('review');
       }};
-      case 'review': return { label:'Submit for verification', disabled:false, onClick: this.submit };
+      case 'review': {
+        const busyLabel = ['Uploading masjid photo · 1 of 3', 'Uploading your photo · 2 of 3', 'Submitting for verification · 3 of 3'][s.submitStep - 1];
+        return { label:'Submit for verification', disabled:false, busy: s.submitStep > 0, busyLabel, onClick: this.submit };
+      }
       default: return { label:'Continue', disabled:false, onClick: () => {} };
     }
   }
@@ -651,7 +681,7 @@ class Component extends DCLogic {
     const s = this.state;
     const isEntry = this.ENTRY_STEPS.includes(s.step);
     const isWizard = this.WIZARD_STEPS.includes(s.step);
-    const isOutcome = ['submitting','pending','rejected'].includes(s.step);
+    const isOutcome = ['pending','rejected'].includes(s.step);
 
     const navActive = { home:0, salaah:3, profile:4 }[s.step] || 0;
 
@@ -671,9 +701,11 @@ class Component extends DCLogic {
       selfie:s.cameraMode === 'selfie'
         ? (s.cameraStage === 'captured' ? 32 : 31)
         : (s.selfieTaken ? 33 : 30),
-      review:34
+      // Submitting is review's own state, so it rings review's submit frames rather than an
+      // outcome of its own.
+      review:s.submitStep > 0 ? 34 + s.submitStep : 34
     };
-    const outcomeIdxMap = { submitting:35, pending:36, rejected:37 };
+    const outcomeIdxMap = { pending:38, rejected:39 };
     let entryActive = -1, sheetActive = -1, wizardActive = -1, outcomeActive = -1;
     if (isEntry && s.sheetOpen) sheetActive = s.sheetTab === 'follow' ? 4 : 3;
     else if (isEntry) entryActive = { home:0, salaah:1, profile:2 }[s.step];
@@ -696,9 +728,9 @@ class Component extends DCLogic {
       ? { ...this.REGISTRATION, onOpen: this.openPendingRegistration }
       : null;
     const claimResults = this.CLAIM.map(m => ({ ...m, selected: s.selectedMasjidId === m.id, onSelect: () => this.selectMasjid(m.id) }));
-    const stateOptions = this.STATES.map(stateVal => ({ name:stateVal, selected: s.stateVal === stateVal, onSelect: () => this.selectState(stateVal) }));
-    const roleOptions = this.ROLES.map(r => ({ name:r, selected: s.role === r, onSelect: () => this.selectRole(r) }));
-    const maslakOptions = this.MASLAKS.map(m => ({ name:m, selected: s.maslak === m, onSelect: () => this.selectMaslak(m) }));
+    const stateOptions = this.STATES.map(stateVal => ({ value:stateVal, label:stateVal }));
+    const roleOptions = this.ROLES.map(r => ({ value:r, label:r }));
+    const maslakOptions = this.MASLAKS.map(m => ({ value:m, label:m }));
 
     const masjidLocked = s.branch === 'claim';
     const sel = this.CLAIM.find(m => m.id === s.selectedMasjidId);
@@ -731,26 +763,27 @@ class Component extends DCLogic {
       openSheet: this.openSheet,
       startWizard: this.startWizard,
 
-      myMasjidsData: { isOpen: isEntry && s.sheetOpen, tab: s.sheetTab, onTab: this.setSheetTab, manageTiles, followRows, registration, onClose: this.closeSheet, onRegister: this.startWizard, onFind: this.goExplore },
+      myMasjidsData: { isOpen: isEntry && s.sheetOpen, tab: s.sheetTab, onTab: this.setSheetTab, manageTiles, followRows, registration, onClose: this.closeSheet, onRegister: this.startWizard, onFind: this.goExplore,
+        switchingName: (this.MANAGE.concat(this.FOLLOW).find(x => x.id === s.masjidSwitchingId) || {}).name || null },
 
       wizardData: {
         step: s.step,
         progressIndex: this.STEP_PROGRESS[s.step] || 1,
         onBack: this.goBack,
-        ctaLabel: cta.label, ctaDisabled: cta.disabled, ctaBusy:cta.busy, ctaOnClick: cta.onClick, ctaFeedback:s.ctaFeedback,
+        ctaLabel: cta.label, ctaDisabled: cta.disabled, ctaBusy:cta.busy, ctaBusyLabel:cta.busyLabel, ctaOnClick: cta.onClick, ctaFeedback:s.ctaFeedback,
         errors:s.errors,
         showSkipLink: false,
         pincode: s.pincode, onPincodeChange: this.onPincodeChange,
         claimResults, onRegisterManually: this.goRegisterManually,
         masjidName: s.masjidName, address: s.address, city: s.city, stateVal: s.stateVal,
         onMasjidNameChange: this.onMasjidNameChange, onAddressChange: this.onAddressChange, onCityChange: this.onCityChange,
-        stateSheetOpen:s.stateSheetOpen, stateOptions, onOpenStateSheet:this.openStateSheet,
+        stateSheetOpen:s.stateSheetOpen, stateOptions, onOpenStateSheet:this.openStateSheet, onSelectState:this.selectState,
         pinDropped: s.pinDropped, onTogglePin: this.togglePin,
         locationExpanded:s.locationExpanded, locationResolved:s.locationResolved, locationLookupFailed:s.locationLookupFailed,
         onToggleLocationExpanded:this.toggleLocationExpanded, onRecenterLocation:this.recenterLocation,
         contactName: s.contactName, onContactNameChange: this.onContactNameChange,
-        roleDisplay: s.role || 'Select your role', roleFilled: !!s.role, onOpenRoleSheet: this.openRoleSheet, roleSheetOpen: s.roleSheetOpen, roleOptions,
-        maslakDisplay: s.maslak || 'Select maslak', maslakFilled: !!s.maslak, onOpenMaslakSheet: this.openMaslakSheet, maslakSheetOpen: s.maslakSheetOpen, maslakOptions,
+        onOpenRoleSheet: this.openRoleSheet, roleSheetOpen: s.roleSheetOpen, roleOptions, onSelectRole: this.selectRole,
+        onOpenMaslakSheet: this.openMaslakSheet, maslakSheetOpen: s.maslakSheetOpen, maslakOptions, onSelectMaslak: this.selectMaslak,
         onCloseSheets: this.closeSheets,
         photoTaken:s.photoTaken, photoSrc:s.photoSrc, photoLocationAttached:s.photoLocationAttached,
         onTakePhoto:this.takePhoto, onRetakePhoto:this.takePhoto, onRemovePhoto:this.removePhoto,

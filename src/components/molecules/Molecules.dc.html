@@ -262,7 +262,7 @@
   <div class="cp-card">
     <div class="cp-head">
       <div class="cp-h">Dropdown Menu</div>
-      <div class="cp-sub">Select field combined with an overlay menu. Click to open.</div>
+      <div class="cp-sub">A field and an overlay menu anchored to it. Click to open. NOT the default for a single choice — the option sheet is. This stays for a value that has to read as part of the card it sits in (the Zakaat karat, a prayer&rsquo;s rule fields) and for row action menus. Caps at half the window and scrolls, opening ON the chosen item.</div>
     </div>
     <div style="max-width:400px;position:relative;height:160px">
       <div class="input {{ ddOpenCls }}" onClick="{{ toggleDd }}" style="cursor:pointer;user-select:none">
@@ -356,12 +356,33 @@
   <div class="cp-card">
     <div class="cp-head">
       <div class="cp-h">Picker field</div>
-      <div class="cp-sub">A read-only field that opens a picker elsewhere — option sheet, dropdown menu, time picker. <code>.picker-field-value</code> for a made choice, <code>.picker-field-placeholder</code> for an empty one, <code>.error</code> for a failed one. Used by masjid registration (role, maslak, state) and the salaah editors.</div>
+      <div class="cp-sub">A read-only field that opens its choice elsewhere. <code>.picker-field-value</code> for a made choice, <code>.picker-field-placeholder</code> for an empty one, <code>.error</code> for a failed one. It opens an <b>option sheet</b> by default; the anchored <code>.dd-menu</code> is the exception. Used by masjid registration (role, maslak, state), the committee role picker and the salaah editors.</div>
     </div>
     <div style="display:flex;flex-direction:column;gap:12px;max-width:420px">
       <button class="picker-field"><span class="picker-field-placeholder">Select your role</span><span class="mi" data-i="expand_more"></span></button>
       <button class="picker-field"><span class="picker-field-value">Chairman</span><span class="mi" data-i="expand_more"></span></button>
       <button class="picker-field error"><span class="picker-field-placeholder">Select maslak</span><span class="mi" data-i="expand_more"></span></button>
+    </div>
+  </div>
+
+  <!-- Option sheet -->
+  <div class="cp-card">
+    <div class="cp-head">
+      <div class="cp-h">Option sheet</div>
+      <div class="cp-sub">The app's ONE single-choice picker, opened by a <code>.picker-field</code>. Each <code>.opt-row</code> is a bordered card with a radio mark; the chosen one takes the accent border over <code>surface-secondary</code>. Picking commits and closes, so there is no affirmative button and <b>no dismissal control</b> — the scrim, the drag handle and the rows are already three ways out. The list, not the sheet, scrolls, and it opens scrolled ON the chosen row. Kit component <code>OptionSheet</code>; Compose <code>OptionSheetField</code>.</div>
+    </div>
+    <div style="max-width:420px">
+      <div class="dlg" style="position:relative;width:100%;max-width:100%;animation:none;max-height:none">
+        <div class="dlg-handle"></div>
+        <div class="dlg-title">Select maslak</div>
+        <div class="dlg-body">
+          <div class="opt-list" role="listbox" aria-label="Select maslak">
+            <button class="opt-row" role="option" aria-selected="false">Hanafi<span class="opt-row-mark"><span class="mi" data-i="radio_button_unchecked"></span></span></button>
+            <button class="opt-row" role="option" aria-selected="false">Shafi&rsquo;i<span class="opt-row-mark"><span class="mi" data-i="radio_button_unchecked"></span></span></button>
+            <button class="opt-row selected" role="option" aria-selected="true">Ahle Hadith<span class="opt-row-mark"><span class="mi" data-i="radio_button_checked"></span></span></button>
+          </div>
+        </div>
+      </div>
     </div>
   </div>
 

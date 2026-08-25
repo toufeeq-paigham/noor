@@ -12,6 +12,7 @@
      ATOMS       .btn .ib · .badge .chip · .input .phone .otp · .sw .cb · .ind .dot
                  .eyebrow .screen-title .section-title
      MOLECULES   .choice-group .choice-card · .tbar .tab · .nb-bar .nb-* · .dd-menu .dd-item .chev · .rx-* .em
+                 .picker-field · .opt-sheet .opt-list .opt-row
                  .summary-hero .summary-hero-* · .media-identity-hero .media-identity-hero-*
      ORGANISMS   .app-bar .ab-* · .fullscreen-notice
    ============================================================ */
@@ -555,12 +556,53 @@
 .time-select>*{flex:1;min-width:0}
 
 /* ── Docked action (.docked-action) — the screen's committed action ──
-   Pinned below the scrolling body: asynchronous progress or a helper line ABOVE a
-   full-width primary, never inside it (the button keeps its label and geometry). */
+   Pinned below the scrolling body: a helper line ABOVE a full-width primary, never inside it
+   (the button keeps its label and geometry). Submit progress is NOT in here — see
+   `.docked-status` below. */
 .docked-action{flex-shrink:0;display:flex;flex-direction:column;gap:var(--size-lg);box-sizing:border-box;padding:var(--size-xl) var(--size-2xl) 26px;background:var(--color-surface-primary)}
 .docked-action.bordered{border-top:1px solid var(--color-neutral-border)}
 .docked-action>.btn{width:100%}
 .docked-action-note{font-family:var(--font-body);font-size:12px;line-height:1.5;text-align:center;color:var(--color-info-secondary)}
+
+/* ── Status capsule (.status-capsule) — what is happening, while it happens ──
+   The app's ONE loader for committed work. Proven as the scan walk's companion (`.scan-capsule`,
+   masjid-operations) and generalised here: a bordered pill on the float shadow, a ring rather
+   than a bar, and its label in bold. It is legible over whatever content it floats above, which
+   a bare text row on the page surface is not — and it reads as a thing that arrived and will
+   leave, not as the bar having grown.
+   Never in flow. It appears and retires while a finger may be on the content beneath it, so a
+   flow child would resize that content mid-gesture. Its host positions it; it never takes part
+   in the host's measurement. */
+.status-capsule{display:flex;align-items:center;gap:var(--size-md);box-sizing:border-box;padding:11px 18px 11px 12px;border:1px solid var(--color-neutral-border);border-radius:var(--radius-circle);background:var(--color-surface-card);box-shadow:0 14px 38px -14px rgba(9,9,11,.35);white-space:nowrap;font-family:var(--font-body);font-size:13px;font-weight:800;line-height:1.4;color:var(--color-info-primary)}
+.status-capsule>.mi{font-size:20px;color:var(--color-action-primary)}
+.status-capsule b{font-size:13px;font-weight:800}
+.status-capsule-ring{flex-shrink:0;width:18px;height:18px;border-radius:var(--radius-circle);border:3px solid color-mix(in oklab,var(--color-action-primary) 22%,transparent);border-top-color:var(--color-action-primary);animation:status-capsule-spin .9s linear infinite}
+@keyframes status-capsule-spin{to{transform:rotate(360deg)}}
+@keyframes status-capsule-in{from{opacity:0;transform:translate(-50%,10px)}to{opacity:1;transform:translate(-50%,0)}}
+@media (prefers-reduced-motion: reduce){
+  .status-capsule{animation:none}
+  .status-capsule-ring{animation:none}
+}
+
+/* ── Submit progress (.docked-host + .docked-status) ──
+   The capsule, floating directly above the docked action and OUTSIDE its measurement: the bar
+   keeps its own bounds, its hairline and its label, so pressing Send never changes the shape or
+   the wording of the thing that was pressed, and the content's clearance does not move either.
+   The host exists only to be the capsule's frame of reference. Progress replaces the helper note
+   rather than stacking with it — one voice at a time under a bar with one action.
+   What the capsule SAYS is the other half of this: a submit that is one request states it in one
+   sentence, and a submit that is a SEQUENCE of requests names the step it is on (`Uploading
+   masjid photo · 1 of 3`) or counts the repetition (`Uploading photo 2 of 3…`). A single
+   sentence held for three chained requests is a black box on a slow connection — the reader
+   cannot tell a working upload from a stalled one. Never synthesise a total to get a count:
+   count only what is genuinely countable. */
+.docked-host{position:relative;flex-shrink:0;display:flex;flex-direction:column}
+.docked-status{position:absolute;left:50%;bottom:100%;transform:translateX(-50%);margin-bottom:var(--size-lg);z-index:30;animation:status-capsule-in .32s cubic-bezier(.2,.8,.2,1)}
+/* Over the tab bar instead of a docked action: `.nb-bar` is absolutely positioned at the device
+   bottom, so there is no host whose top edge `bottom:100%` could measure from. Same reasoning as
+   `.scan-capsule`'s own offset — the capsule floats above a specific docked thing, so the
+   distance to clear it is stated. Used by the Home pages when a session action is running. */
+.docked-status.over-navbar{bottom:106px;margin-bottom:0;z-index:60}  /* .nb-bar is 96 tall; +10 is the kit's gap */
 
 /* ── Paigham preview (.post-preview) ──
    What a musalli will receive, shown to the author before sending: masjid identity,
@@ -706,6 +748,27 @@
 .picker-field-placeholder{color:var(--color-input-text-placeholder)}
 .picker-field-value{font-weight:600;color:var(--color-input-text-primary)}
 .picker-field .mi{font-size:22px;color:var(--color-info-secondary)}
+
+/* ── Option sheet (.opt-sheet) — the app's ONE single-choice picker ──
+   A `.picker-field` opens it. Every row is a bordered card carrying a radio mark, and the
+   chosen row takes the accent border over the secondary surface — the same construction the
+   registration claim rows use, so a list you pick one thing from looks the same everywhere.
+   Picking a row commits and closes, so the sheet carries no affirmative button and NO
+   dismissal control: the scrim, the drag handle and the rows are already three ways out, and
+   a `Close` would spend the sheet's most prominent position on the one thing a tap outside
+   already does.
+   The SHEET does not scroll — `.opt-list` does. That keeps the title in place while a long
+   list (every Indian state) runs beneath it, and it is what lets the list open ON the chosen
+   row rather than at the top.
+   The anchored `.dd-menu` stays the exception, for a value that has to read as part of the
+   card it sits in: the Zakaat karat and a prayer's rule fields. */
+.opt-sheet .dlg{max-height:68%;overflow:hidden}
+.opt-sheet .dlg-body{flex:1;min-height:0;display:flex}
+.opt-list{display:flex;flex-direction:column;gap:var(--size-sm);width:100%;overflow-y:auto}
+.opt-row{width:100%;min-height:var(--control-h-lg);display:flex;align-items:center;justify-content:space-between;gap:12px;box-sizing:border-box;padding:12px 14px;border:1px solid var(--color-neutral-border);border-radius:var(--radius-xl);background:var(--color-surface-card);color:var(--color-info-primary);font-family:var(--font-body);font-size:15px;font-weight:600;text-align:left;cursor:pointer;transition:border-color var(--motion-quick) var(--ease-out),background var(--motion-quick) var(--ease-out),transform var(--motion-press) var(--ease-out)}
+.opt-row:active{transform:scale(.99)}
+.opt-row.selected{border-color:var(--color-action-primary);background:var(--color-surface-secondary)}
+.opt-row-mark{display:inline-flex;flex-shrink:0;color:var(--color-action-primary)}
 
 /* ── Guided capture panel (.photo-guided-* / .photo-guidance-*) ──
    Teaches a photo before the camera opens: a framed example with corner guides, an

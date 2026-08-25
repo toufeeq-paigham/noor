@@ -26,14 +26,10 @@ function baseData(overrides = {}) {
     locationResolved: true,
     locationLookupFailed: false,
     contactName: 'Salim Shaikh',
-    roleDisplay: 'Select your role',
-    roleFilled: false,
-    maslakDisplay: 'Select maslak',
-    maslakFilled: false,
     stateSheetOpen: false,
-    stateOptions: STATES.map((name) => ({ name, selected: name === 'Maharashtra', onSelect: noop })),
-    roleOptions: ROLES.map((name) => ({ name, selected: false, onSelect: noop })),
-    maslakOptions: MASLAKS.map((name) => ({ name, selected: false, onSelect: noop })),
+    stateOptions: STATES.map((name) => ({ value: name, label: name })),
+    roleOptions: ROLES.map((name) => ({ value: name, label: name })),
+    maslakOptions: MASLAKS.map((name) => ({ value: name, label: name })),
     photoTaken: false,
     selfieTaken: false,
     photoSrc: null,
@@ -98,8 +94,8 @@ function claimResults(selectedId) {
   }));
 }
 
-function selectedOptions(items, selected) {
-  return items.map((name) => ({ name, selected: name === selected, onSelect: noop }));
+function options(items) {
+  return items.map((name) => ({ value: name, label: name }));
 }
 
 function journeyGroups() {
@@ -147,7 +143,7 @@ function journeyGroups() {
       frames: [
         { name: 'Unselected', data: baseData({ step: 'role', progressIndex: 4 }) },
         { name: 'Validation feedback', data: baseData({ step: 'role', progressIndex: 4, errors: { role: 'Select your role at this masjid.' } }) },
-        { name: 'Frosted selection sheet', data: baseData({ step: 'role', progressIndex: 4, roleSheetOpen: true, roleOptions: selectedOptions(ROLES, 'Chairman') }) },
+        { name: 'Frosted selection sheet', data: baseData({ step: 'role', progressIndex: 4, roleSheetOpen: true, role: 'Chairman', roleOptions: options(ROLES) }) },
       ],
     },
     {
@@ -156,7 +152,7 @@ function journeyGroups() {
       frames: [
         { name: 'Unselected', data: baseData({ step: 'maslak', progressIndex: 5 }) },
         { name: 'Validation feedback', data: baseData({ step: 'maslak', progressIndex: 5, errors: { maslak: 'Select the maslak followed by this masjid.' } }) },
-        { name: 'Frosted selection sheet', data: baseData({ step: 'maslak', progressIndex: 5, maslakSheetOpen: true, maslakOptions: selectedOptions(MASLAKS, 'Ahle Hadith') }) },
+        { name: 'Frosted selection sheet', data: baseData({ step: 'maslak', progressIndex: 5, maslakSheetOpen: true, maslak: 'Ahle Hadith', maslakOptions: options(MASLAKS) }) },
       ],
     },
     {
@@ -186,6 +182,11 @@ function journeyGroups() {
       label: '11 · Review and submit',
       frames: [
         { name: 'Complete submission', data: baseData({ step: 'review', progressIndex: 8, ctaLabel: 'Submit for verification', photoTaken: true, photoLocationAttached: true, selfieTaken: true, photoSrc: '../../images/masjid-camera-preview.png', selfieSrc: '../../images/identity-camera-preview.png' }) },
+        // Submitting is a state OF this step, not a screen of its own: three requests, each named,
+        // with every answer and both photos still on screen in case one of them fails.
+        { name: 'Submitting · 1 of 3', data: baseData({ step: 'review', progressIndex: 8, ctaLabel: 'Submit for verification', ctaBusy: true, ctaBusyLabel: 'Uploading masjid photo · 1 of 3', photoTaken: true, photoLocationAttached: true, selfieTaken: true, photoSrc: '../../images/masjid-camera-preview.png', selfieSrc: '../../images/identity-camera-preview.png' }) },
+        { name: 'Submitting · 2 of 3', data: baseData({ step: 'review', progressIndex: 8, ctaLabel: 'Submit for verification', ctaBusy: true, ctaBusyLabel: 'Uploading your photo · 2 of 3', photoTaken: true, photoLocationAttached: true, selfieTaken: true, photoSrc: '../../images/masjid-camera-preview.png', selfieSrc: '../../images/identity-camera-preview.png' }) },
+        { name: 'Submitting · 3 of 3', data: baseData({ step: 'review', progressIndex: 8, ctaLabel: 'Submit for verification', ctaBusy: true, ctaBusyLabel: 'Submitting for verification · 3 of 3', photoTaken: true, photoLocationAttached: true, selfieTaken: true, photoSrc: '../../images/masjid-camera-preview.png', selfieSrc: '../../images/identity-camera-preview.png' }) },
       ],
     },
   ];

@@ -181,7 +181,8 @@ function Dialog({
   destructive = false,       // primary uses the destructive fill
   children,                  // optional content slot
   cornerClose,               // optional () => void — floating close button pinned to the sheet's top-right corner
-  dismissOnScrim = true
+  dismissOnScrim = true,
+  className = ''             // extra class on the scrim, for presets that restyle the shell (.opt-sheet)
 }) {
   if (!isOpen) return null;
   const isSheet = mode === 'sheet';
@@ -192,7 +193,7 @@ function Dialog({
 
   return (
     <div
-      className={`dlg-scrim ${isSheet ? 'sheet' : ''}`}
+      className={`dlg-scrim ${isSheet ? 'sheet' : ''} ${className}`.trim()}
       onClick={dismissOnScrim ? onClose : undefined}
       onWheel={(e) => e.stopPropagation()}
       onTouchMove={(e) => e.stopPropagation()}
@@ -219,6 +220,83 @@ function Dialog({
         )}
       </div>
     </div>
+  );
+}
+
+// ── PickerField — the read-only field that opens a picker ──
+// The tap target for a choice made elsewhere. It states the current value (or a placeholder)
+// and carries the chevron that says the value can be changed; a bare read-only field reads as
+// a value someone else set, with no way in. Pair it with OptionSheet.
+function PickerField({ value, placeholder = 'Select', error, disabled, onOpen, ariaLabel }) {
+  const filled = value !== undefined && value !== null && value !== '';
+  return (
+    <button
+      type="button"
+      className={`picker-field ${error ? 'error' : ''}`}
+      aria-haspopup="dialog"
+      aria-label={ariaLabel}
+      disabled={disabled}
+      onClick={() => !disabled && onOpen && onOpen()}
+    >
+      <span className={filled ? 'picker-field-value' : 'picker-field-placeholder'}>{filled ? value : placeholder}</span>
+      <span className="mi" data-i="expand_more" aria-hidden="true"></span>
+    </button>
+  );
+}
+
+// ── OptionSheet — the app's ONE single-choice picker ──
+// Mirrors the Compose OptionSheetField: a PickerField opens this sheet, every option is a
+// bordered row with a radio mark, and picking one commits and closes. Built on the Dialog
+// sheet with both action slots explicitly null — the rows ARE the affirmative, so a button
+// row underneath would be a second way to do the thing that just happened.
+//   options: [{ value, label }] · `value` is the current one · onPick(value)
+function OptionSheet({ isOpen, onClose, title, options = [], value, onPick }) {
+  const list = React.useRef(null);
+  // Open ON the chosen row. A list long enough to scroll — every Indian state, every committee
+  // role — that starts at the top makes the reader hunt for the value the field is already
+  // showing them. The list's own scrollTop is moved rather than scrollIntoView(): this sheet is
+  // mounted inside a scrolling screen body, and scrollIntoView walks up and scrolls that too.
+  React.useEffect(() => {
+    const box = list.current;
+    if (!isOpen || !box) return;
+    const chosen = box.querySelector('.opt-row.selected');
+    if (!chosen) return;
+    const boxRect = box.getBoundingClientRect();
+    const rowRect = chosen.getBoundingClientRect();
+    box.scrollTop += (rowRect.top - boxRect.top) - (boxRect.height - rowRect.height) / 2;
+  }, [isOpen]);
+
+  return (
+    <Dialog
+      mode="sheet"
+      className="opt-sheet"
+      isOpen={isOpen}
+      onClose={onClose}
+      title={title}
+      primary={null}
+      secondary={null}
+    >
+      <div className="opt-list" role="listbox" aria-label={title} ref={list}>
+        {options.map((option) => {
+          const selected = String(option.value) === String(value);
+          return (
+            <button
+              key={String(option.value)}
+              type="button"
+              role="option"
+              aria-selected={selected}
+              className={`opt-row ${selected ? 'selected' : ''}`}
+              onClick={() => { if (onPick) onPick(option.value); if (onClose) onClose(); }}
+            >
+              <span>{option.label}</span>
+              <span className="opt-row-mark">
+                <span className="mi" data-i={selected ? 'radio_button_checked' : 'radio_button_unchecked'} aria-hidden="true"></span>
+              </span>
+            </button>
+          );
+        })}
+      </div>
+    </Dialog>
   );
 }
 
@@ -400,4 +478,4 @@ function SearchBar({
   );
 }
 
-Object.assign(window, { PromptCard, BottomSheet, Dialog, RichNudgeSheet, EmptyState, Loader, ListItem, SearchBar });
+Object.assign(window, { PromptCard, BottomSheet, Dialog, PickerField, OptionSheet, RichNudgeSheet, EmptyState, Loader, ListItem, SearchBar });
