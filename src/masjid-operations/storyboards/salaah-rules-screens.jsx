@@ -538,7 +538,7 @@ function SrlTimingsBody({ data }) {
             <span className="skeleton" style={{ width: '100%', height: 320, borderRadius: 'var(--radius-card)' }} aria-hidden="true"></span>
           ) : null}
           <button type="button" className="btn btn-tonal lg" onClick={onOpenRules} style={{ marginTop: 4 }}>
-            <span className="mi" data-i="info" style={{ fontSize: 20 }} aria-hidden="true"></span>
+            <span className="mi" data-i="settings" style={{ fontSize: 20 }} aria-hidden="true"></span>
             How timings update
           </button>
         </SrlBody>
@@ -1283,14 +1283,18 @@ function SrlRuleActions({ data }) {
   );
 }
 
-// The timings screen's two trailing actions. Info opens the rules; the record is offered only once
-// there is a record — an icon that opens an empty sheet is a dead end.
+// The timings screen's two trailing actions. The gear opens how the timings update; the record is
+// offered only once there is a record — an icon that opens an empty sheet is a dead end.
+//
+// A gear, not an `info` glyph (ratified 2026-08-25): what it opens is where each prayer's RULE is
+// chosen, so it is a way in to settings rather than a note about the screen. `info` also reads as
+// the same thing as the two informational context cards below, which are notes and nothing else.
 function SrlTimingsActions({ data }) {
   const { history = [], onOpenRules, onOpenHistory } = data;
   return (
     <div className="srl-appbar-actions">
       <button type="button" className="ib ib-tonal" onClick={onOpenRules} aria-label="How timings update">
-        <span className="mi" data-i="info" aria-hidden="true"></span>
+        <span className="mi" data-i="settings" aria-hidden="true"></span>
       </button>
       {history.length ? (
         <button
