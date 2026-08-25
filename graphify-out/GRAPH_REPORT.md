@@ -1,16 +1,16 @@
 # Graph Report - noor  (2026-08-25)
 
 ## Corpus Check
-- 115 files · ~689,695 words
+- 126 files · ~689,140 words
 - Verdict: corpus is large enough that graph structure adds value.
 
 ## Summary
-- 1417 nodes · 1974 edges · 127 communities (76 shown, 51 thin omitted)
+- 1455 nodes · 2002 edges · 137 communities (79 shown, 58 thin omitted)
 - Extraction: 90% EXTRACTED · 10% INFERRED · 0% AMBIGUOUS · INFERRED: 204 edges (avg confidence: 0.51)
 - Token cost: 0 input · 0 output
 
 ## Graph Freshness
-- Built from commit: `29130ac1`
+- Built from commit: `57835dce`
 - Run `git rev-parse HEAD` and compare to check if the graph is stale.
 - Run `graphify update .` after code changes (no API cost).
 
@@ -139,6 +139,15 @@
 - react-dom
 - tailwind-merge
 - canonicalCommitteePhone
+- Agent behavior
+- Noor architecture
+- AGENTS.md
+- ai-communication.md
+- graphify.md
+- no-auto-md-files.md
+- noor.md
+- self-improve.md
+- .claude/CLAUDE.md
 
 ## God Nodes (most connected - your core abstractions)
 1. `tokenKinds` - 187 edges
@@ -148,8 +157,8 @@
 5. `compilerOptions` - 16 edges
 6. `ScreenshotEditor()` - 15 edges
 7. `cn()` - 14 edges
-8. `HomeScreen()` - 13 edges
-9. `Agent Behavior` - 13 edges
+8. `Agent behavior` - 13 edges
+9. `HomeScreen()` - 13 edges
 10. `Agent Behavior` - 13 edges
 
 ## Surprising Connections (you probably didn't know these)
@@ -167,7 +176,7 @@
 ## Import Cycles
 - None detected.
 
-## Communities (127 total, 51 thin omitted)
+## Communities (137 total, 58 thin omitted)
 
 ### Community 0 - "tokenKinds"
 Cohesion: 0.01
@@ -461,22 +470,30 @@ Nodes (3): 12.1 What scan may change, 12.2 Applying an azaan reading by rule, 12
 Cohesion: 0.67
 Nodes (3): 6.1 Salaah timings app bar, 6.2 Back behaviour, 6. Navigation and information architecture
 
+### Community 127 - "Agent behavior"
+Cohesion: 0.14
+Nodes (13): Agent behavior, Rule 10 — Checkpoint after every significant step, Rule 11 — Match the codebase's conventions, even if you disagree, Rule 12 — Fail loud, Rule 1 — Think Before Coding, Rule 2 — Simplicity First, Rule 3 — Surgical Changes, Rule 4 — Goal-Driven Execution (+5 more)
+
+### Community 128 - "Noor architecture"
+Cohesion: 0.22
+Nodes (8): Canonical Product Flows — Read Before Journey Design, Commit Messages, Design System Rules, Layer Architecture — HARD RULES (do not violate), Noor architecture, Project Structure, Run Commands, Skill routing
+
 ## Knowledge Gaps
-- **630 isolated node(s):** `$schema`, `style`, `rsc`, `tsx`, `config` (+625 more)
+- **656 isolated node(s):** `Rule 1 — Think Before Coding`, `Rule 2 — Simplicity First`, `Rule 3 — Surgical Changes`, `Rule 4 — Goal-Driven Execution`, `Rule 5 — Use the model only for judgment calls` (+651 more)
   These have ≤1 connection - possible missing edges or undocumented components.
-- **51 thin communities (<3 nodes) omitted from report** — run `graphify query` to explore isolated nodes.
+- **58 thin communities (<3 nodes) omitted from report** — run `graphify query` to explore isolated nodes.
 
 ## Suggested Questions
 _Questions this graph is uniquely positioned to answer:_
 
 - **Why does `react` connect `react` to `home/storyboards/screens.jsx`, `support.js`, `components.jsx`, `zakaat/storyboards/screens.jsx`, `useNoorDark`, `dependencies`, `@dnd-kit/core`, `describeConfig`, `describeConfig`, `inspector.tsx`, `toolbar.tsx`, `salaah-rules-screens.jsx`, `types.ts`, `VARIATION_OPTIONS`, `slide-canvas.tsx`, `salaah-scroll-timeline.jsx`?**
-  _High betweenness centrality (0.112) - this node is a cross-community bridge._
+  _High betweenness centrality (0.129) - this node is a cross-community bridge._
 - **Why does `dependencies` connect `dependencies` to `@dnd-kit/core`, `SalaahConfigBody`, `react`, `@dnd-kit/utilities`, `react-dom`, `jszip`, `next`, `@radix-ui/react-dialog`, `@radix-ui/react-label`, `@radix-ui/react-popover`, `@radix-ui/react-select`, `@radix-ui/react-slot`, `@radix-ui/react-tabs`, `@radix-ui/react-tooltip`, `@dnd-kit/core`, `tailwind-merge`?**
-  _High betweenness centrality (0.038) - this node is a cross-community bridge._
+  _High betweenness centrality (0.032) - this node is a cross-community bridge._
 - **Why does `MemberBody()` connect `describeConfig` to `screenshot-editor.tsx`, `react`?**
-  _High betweenness centrality (0.029) - this node is a cross-community bridge._
-- **What connects `$schema`, `style`, `rsc` to the rest of the system?**
-  _630 weakly-connected nodes found - possible documentation gaps or missing edges._
+  _High betweenness centrality (0.031) - this node is a cross-community bridge._
+- **What connects `Rule 1 — Think Before Coding`, `Rule 2 — Simplicity First`, `Rule 3 — Surgical Changes` to the rest of the system?**
+  _656 weakly-connected nodes found - possible documentation gaps or missing edges._
 - **Should `tokenKinds` be split into smaller, more focused modules?**
   _Cohesion score 0.0106951871657754 - nodes in this community are weakly interconnected._
 - **Should `support.js` be split into smaller, more focused modules?**

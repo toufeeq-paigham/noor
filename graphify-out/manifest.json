@@ -10,8 +10,8 @@
     "semantic_hash": ""
   },
   "CLAUDE.md": {
-    "mtime": 1787642047.431658,
-    "ast_hash": "36d43cb337af63764415a4b11c15969f",
+    "mtime": 1787643141.5916834,
+    "ast_hash": "242048b574aba2b643eb4f70e06401ed",
     "semantic_hash": ""
   },
   ".claude/skills/add-screen/scripts/check_page.py": {
@@ -55,8 +55,8 @@
     "semantic_hash": ""
   },
   ".agents/AGENTS.md": {
-    "mtime": 1785337263.3061614,
-    "ast_hash": "06b361a2520a5e38317add5812d0fbde",
+    "mtime": 1787643141.5921435,
+    "ast_hash": "3a201a916ab3e1794c8503e950becafc",
     "semantic_hash": ""
   },
   ".agents/skills/add-screen/SKILL.md": {
@@ -1677,6 +1677,61 @@
   "src/_ds/icons/update.svg": {
     "mtime": 1786969768.7591312,
     "ast_hash": "f08e733d34f7bf0ccd23a77fa7ef84fa",
+    "semantic_hash": ""
+  },
+  ".claude/settings.json": {
+    "mtime": 1787642047.432047,
+    "ast_hash": "3f4cccd12497bd3e1ede6ce6dca8c50b",
+    "semantic_hash": ""
+  },
+  ".agents/rules/agent-behavior.md": {
+    "mtime": 1787643141.5909722,
+    "ast_hash": "ec9b1590e06b3c072ed23577a43cf2fe",
+    "semantic_hash": ""
+  },
+  ".agents/rules/ai-communication.md": {
+    "mtime": 1784721346.3448145,
+    "ast_hash": "c824a88cb34faf99766b4ef0f3900d7f",
+    "semantic_hash": ""
+  },
+  ".agents/rules/graphify.md": {
+    "mtime": 1784721346.348891,
+    "ast_hash": "75dd32cbab72be5f28f3c2cf06d9e101",
+    "semantic_hash": ""
+  },
+  ".agents/rules/no-auto-md-files.md": {
+    "mtime": 1784721346.3491213,
+    "ast_hash": "d2c24bcc363a2193ecb60adcf3ae14d8",
+    "semantic_hash": ""
+  },
+  ".agents/rules/noor-global.md": {
+    "mtime": 1787643141.591067,
+    "ast_hash": "a956b28afffe633431389e37096f5e07",
+    "semantic_hash": ""
+  },
+  ".agents/rules/noor.md": {
+    "mtime": 1787643141.5911367,
+    "ast_hash": "823944646922502fc5144d4eb0186388",
+    "semantic_hash": ""
+  },
+  ".agents/rules/self-improve.md": {
+    "mtime": 1784721346.3499224,
+    "ast_hash": "ecd80c61395446dade44580f32b69df1",
+    "semantic_hash": ""
+  },
+  ".claude/CLAUDE.md": {
+    "mtime": 1787643141.591478,
+    "ast_hash": "4d1225a13c0fae8e5a1f888ea7438580",
+    "semantic_hash": ""
+  },
+  ".claude/rules/canonical-rules.md": {
+    "mtime": 1787643141.5919335,
+    "ast_hash": "41f5f7655b58ff13838bc8d4d837bd7c",
+    "semantic_hash": ""
+  },
+  "AGENTS.md": {
+    "mtime": 1787643141.5918305,
+    "ast_hash": "b89a3667db9d2a11656fb73b0a1eee5f",
     "semantic_hash": ""
   }
 }
